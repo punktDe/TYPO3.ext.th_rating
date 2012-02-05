@@ -1,0 +1,67 @@
+<f:layout name="defaultLayout" />
+
+<f:section name="content">
+	<div style="width: 500px;">Number of ratingobjecs: <f:count
+		subject="{ratingobjects}" />
+	<p><span style="font-size: 0.6em"> A <b>ratingobject</b> is
+	the unique identified combination out of
+	<ul>
+		<li>tablename</li>
+		<li>fieldname</li>
+	</ul>
+	</span></p>
+	<p><span style="font-size: 0.6em"> A <b>rating</b> is the
+	unique identified combination out of
+	<ul>
+		<li>ratingobject</li>
+		<li>value of the field uid in the row</li>
+	</ul>
+	</span></p>
+	</div>
+	<f:if condition="{ratingobjects}">
+		<f:then>
+			<table style="width: 100%;">
+				<tr>
+					<th title="RateTable">RateTable</th>
+					<th title="Ratefield">Ratefield</th>
+					<th title="Ratingobject">RObj</th>
+					<th title="RatedobjectUid">RatedObj Uid</th>
+					<th title="Rating">Rating</th>
+					<th title="Current Rating">Cur Rating</th>
+				</tr>
+				<f:for each="{ratingobjects}" as="ratingobject">
+					<f:if condition="{ratingobject.ratings}">
+						<f:then>
+							<f:for each="{ratingobject.ratings}" as="rating">
+								<tr>
+									<td>{ratingobject.rateTable}</td>
+									<td>{ratingobject.rateField}</td>
+									<td>{ratingobject.uid}</td>
+									<td>{rating.ratedobjectuid}</td>
+									<td>{rating.uid}</td>
+									<td>{rating.currentrates.currentrate}</td>
+								</tr>
+							</f:for>
+							</tr>
+						</f:then>
+						<f:else>
+							<td>{ratingobject.rateTable}</td>
+							<td>{ratingobject.rateField}</td>
+							<td>{ratingobject.uid}</td>
+							<td colspan="3">No ratings yet</td>
+						</f:else>
+					</f:if>
+					<tr>
+						<td colspan="7">
+						<hr />
+						</td>
+					</tr>
+				</f:for>
+			</table>
+		</f:then>
+		<f:else>
+			<span>No entries yet</span>
+		</f:else>
+	</f:if>
+	</div>
+</f:section>

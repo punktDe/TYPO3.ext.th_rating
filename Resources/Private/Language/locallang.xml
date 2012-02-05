@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<T3locallang>
+	<meta type="array">
+		<type>module</type>
+		<description>Sprachlabels für die Thrating Extension</description>
+	</meta>
+	<data type="array">
+		<languageKey index="default" type="array">
+			<label index="error.validator.ratingobject_table">Missing table name in ratingobject.</label>
+			<label index="error.validator.ratingobject_field">Missing field name in ratingobject.</label>
+			<label index="error.validator.rating.ratedobjectuid">Missing UID in rating.</label>
+			<label index="error.validator.rating.ratingobject">False ratingobject in rating</label>
+			<label index="error.validator.vote.vote">Missing vote.</label>
+			<label index="error.validator.vote.voter">False voter reference in vote</label>
+			<label index="error.validator.vote.stepconf">False voting reference in vote</label>
+			<label index="error.vote.noFEuser">FE user cannot be identified!</label>
+			<label index="error.vote.renderCSS.defaultImage">Issue found with configuration for rating display - using default image.</label>
+			<label index="error.vote.show.notRated">Not already rated</label>
+			<label index="error.vote.ratinglinks.wrongDisplayConfig">Check TSConfig setting for display name.</label>
+			<label index="error.vote.create.noPermission">No permission for this action.</label>
+			<label index="error.vote.create.alreadyRated">Already rated</label>
+			<label index="error.vote.create.newCreated">Your new vote was created.</label>
+			<label index="error.translation">Missing translation: </label>
+			<label index="ratingstep.Schlecht">Bad</label>
+			<label index="ratingstep.Besser">Better</label>
+			<label index="ratingstep.Gut">Good</label>
+			<label index="ratingstep.Spitze">Best</label>
+		</languageKey>
+		<languageKey index="de" type="array">
+			<label index="error.vote.noFEuser">Benutzer nicht identifizierbar!</label>
+			<label index="error.vote.create.noPermission">Sie haben keine Berechtigung die Aktion auszuführen.</label>
+			<label index="error.vote.create.alreadyRated">Sie haben bereits diese Bewertung durchgefuehrt.</label>
+			<label index="error.translation">Übersetzung fehlt: </label>
+			<label index="ratingstep.Schlecht">Schlecht</label>
+			<label index="ratingstep.Besser">Besser</label>
+			<label index="ratingstep.Gut">Gut</label>
+			<label index="ratingstep.Spitze">Spitze</label>
+		</languageKey>
+	</data>
+</T3locallang>

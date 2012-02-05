@@ -1,0 +1,9 @@
+<f:layout name="defaultLayout" />
+
+<f:section name="content">
+	<div class="tx-thrating-showVote">
+	<f:if condition="{vote}"><f:then>
+			<p style="white-space:nowrap;">{voter.username} has voted '{vote}' on {ratingobject.ratetable}:{ratingobject.ratefield}:{rating.ratedobjectuid}</p>
+	</f:then></f:if>
+	</div>
+</f:section>

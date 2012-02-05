@@ -1,0 +1,38 @@
+{namespace thr=Tx_ThRating_ViewHelpers}
+<f:layout name="defaultLayout" />
+
+<f:if condition="{ratingName}"><f:then>
+<f:section name="content">
+	<div name='tx-thrating-ratinglinks'>
+		<ul class='thRating thRating-{ratingClass} thRating-RObj{ratingobject.uid}-{ratingName}'>
+			<f:if condition="{calculatedRate}"><f:then>
+			<li class='current-rating {barimage}' style="{calculatedRate}" title='Current rating is {currentRates} out of {stepCount}' >Current rating is {currentRates} out of {stepCount}</li>
+			</f:then></f:if>
+			<!-- Only generate links if a  FE user is logged on -->
+			<f:if condition="{voter}"><f:then>
+				<f:for each="{ajaxSelections}" as="ajaxSelection">
+				<li><thr:ratinglink class="ajaxLink RObj{ratingobject.uid}-StpOdr{ajaxSelection.step.steporder}-ratingstep-{ratingClass} {barimage}" title='{ajaxSelection.step.stepname}' href='#' tabindex='-1' ><input type="hidden" name="ajaxSelect" value="{ajaxSelection.ajaxvalue}" />{ajaxSelection.step.steporder}</thr:ratinglink></li>
+				</f:for>
+			</f:then></f:if>
+		</ul>	
+		<p style="white-space:nowrap; font-size:0.6em; line-height:1.4em; margin-top:1em;">
+		<f:if condition="{calculatedRate}"><f:then>
+			Rating: {currentRates} of {stepCount}. <f:count>{rating.votes}</f:count> vote(s).
+		</f:then><f:else>
+			No rating done at all.
+		</f:else></f:if>
+		<br/>
+		<f:if condition="{voting}"><f:then>
+			Your vote was '{voting}' ({voting.vote.steporder} of {stepCount})
+		</f:then><f:else>
+			<!-- Check if a  FE user is logged on -->
+			<f:if condition="{voter}"><f:then>
+				Click the rating bar to rate this item
+			</f:then><f:else>
+				Please log on to do ratings
+			</f:else></f:if>	
+		</f:else></f:if>	
+		</p>
+	</div>
+</f:section>
+</f:then></f:if>
