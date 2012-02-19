@@ -186,10 +186,15 @@ class Tx_ThRating_Controller_VoteController extends Tx_Extbase_MVC_Controller_Ac
 	Tx_Extbase_Domain_Model_FrontendUser $voter = NULL) {
 
 		$this->checkDoubleRate($rating, $vote, $voter );  //just to set all properties
+
+		if ($this->settings["valueOnly"]) {
+			$currentRates = $this->rating->getCurrentrates();
+			return strval($currentRates["currentrate"]);
+		}
 		$this->view->assign('ajaxRef', $this->ajaxSelections['ajaxRef']);
 		//if $vote is not given or not existent it appears as an instance of Tx_ThRating_Controller_VoteController instead of Tx_ThRating_Domain_Model_Vote
 		if ($this->vote instanceof Tx_ThRating_Domain_Model_Vote && $this->voteValidator->isValid($this->vote)) {
-			if ($this->accessControllService->backendAdminIsLoggedIn() || $this->accessControllService->isLoggedIn($this->vote->getVoter())) {
+			if ($this->accessControllService->backendAdminIsLoggedIn() || $this->accessControllService->isLoggedIn($this->vote->getVoter()) || $this->settings['preferTSSettings']) {
 				$this->view->assign('vote', $this->vote);
 				$this->view->assign('voter', $this->voter);
 				$this->view->assign('rating', $this->rating);
@@ -197,8 +202,9 @@ class Tx_ThRating_Controller_VoteController extends Tx_Extbase_MVC_Controller_Ac
 			} else {
 				$this->flashMessageContainer->add(Tx_Extbase_Utility_Localization::translate('error.vote.create.noPermission', 'ThRating', t3lib_FlashMessage::ERROR));
 			}
-		} elseif ( $voter instanceof Tx_Extbase_Domain_Model_FrontendUser )
-		$this->flashMessageContainer->add(Tx_Extbase_Utility_Localization::translate('error.vote.show.notRated', 'ThRating', t3lib_FlashMessage::NOTICE));
+		} elseif ( $voter instanceof Tx_Extbase_Domain_Model_FrontendUser ) {
+			$this->flashMessageContainer->add(Tx_Extbase_Utility_Localization::translate('error.vote.show.notRated', 'ThRating', t3lib_FlashMessage::NOTICE));
+		}
 	}
 
 
@@ -292,7 +298,6 @@ class Tx_ThRating_Controller_VoteController extends Tx_Extbase_MVC_Controller_Ac
 		$arguments = $this->request->getArguments();
 		if (strtolower($arguments['action']) != 'create') {
 			$this->rating->checkCurrentrates();
-			//t3lib_utility_Debug::debug($this->settings,'Debug');
 		}
 
 		//choose default ratingConfiguration if nothing is defined
@@ -526,13 +531,7 @@ class Tx_ThRating_Controller_VoteController extends Tx_Extbase_MVC_Controller_Ac
 			$frameworkConfiguration['persistence']['storagePid'] = implode(',',$storagePids);
 		}
 		
-		//set all newRecordStoragePids to siteRoot if not already set
-		if (empty($frameworkConfiguration['persistence']['classes']['Tx_ThRating_Domain_Model_Ratingobject']['newRecordStoragePid'])) {
-			$frameworkConfiguration['persistence']['classes']['Tx_ThRating_Domain_Model_Ratingobject']['newRecordStoragePid'] = $siteRoot;
-			$frameworkConfiguration['persistence']['classes']['Tx_ThRating_Domain_Model_Stepconf']['newRecordStoragePid'] = $siteRoot;
-			$frameworkConfiguration['persistence']['classes']['Tx_ThRating_Domain_Model_Rating']['newRecordStoragePid'] = $siteRoot;
-			$frameworkConfiguration['persistence']['classes']['Tx_ThRating_Domain_Model_Vote']['newRecordStoragePid'] = $siteRoot;
-		}
+		//t3lib_utility_Debug::debug($frameworkConfiguration,'Debug');
 		$this->configurationManager->setConfiguration($frameworkConfiguration);
 	}
 	
