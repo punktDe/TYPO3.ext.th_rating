@@ -4,6 +4,8 @@ plugin.tx_thrating {
 		showExamples = 0
 		# cat=plugin.tx_thrating/enable/a; type=boolean; label=Info on not logged in user: make message visible (set to 1)
 		showNoFEUser = 0
+		# cat=plugin.tx_thrating/enable/a; type=boolean; label=Allow anonymous votings (set to 1)
+		allowAnonymous = 0
 	}
 	settings {
 		# cat=plugin.tx_thrating//a; type=int; label=New Records PID: Enter the storage PID for new records (default = 0 - uses STORAGE_PID of the page or if also 0 the SITEROOT page)

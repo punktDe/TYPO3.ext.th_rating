@@ -38,6 +38,7 @@ plugin.tx_thrating {
 		preferTSSettings = 1
 
 	   showNoFEUser = {$plugin.tx_thrating.config.showNoFEUser}
+	   allowAnonymous = {$plugin.tx_thrating.config.allowAnonymous}
 		defaultObject {
 			ratingobject = 1
 			#this is similar to
