@@ -194,7 +194,7 @@ class Tx_ThRating_Controller_VoteController extends Tx_Extbase_MVC_Controller_Ac
 		$this->view->assign('ajaxRef', $this->ajaxSelections['ajaxRef']);
 		//if $vote is not given or not existent it appears as an instance of Tx_ThRating_Controller_VoteController instead of Tx_ThRating_Domain_Model_Vote
 		if ($this->vote instanceof Tx_ThRating_Domain_Model_Vote && $this->voteValidator->isValid($this->vote)) {
-			if ($this->accessControllService->backendAdminIsLoggedIn() || $this->accessControllService->isLoggedIn($this->vote->getVoter()) || $this->settings['preferTSSettings']) {
+			if ($this->accessControllService->backendAdminIsLoggedIn() || $this->accessControllService->isLoggedIn($this->vote->getVoter()) || $this->settings['preferTSSettings'] || $this->settings['allowAnonymous']) {
 				$this->view->assign('vote', $this->vote);
 				$this->view->assign('voter', $this->voter);
 				$this->view->assign('rating', $this->rating);
@@ -217,7 +217,7 @@ class Tx_ThRating_Controller_VoteController extends Tx_Extbase_MVC_Controller_Ac
 	 */
 	//http://localhost:8503/index.php?id=71&tx_thrating_pi1[controller]=Vote&tx_thrating_pi1[action]=create&tx_thrating_pi1[vote][rating]=1&tx_thrating_pi1[vote][voter]=1&tx_thrating_pi1[vote][vote]=1
 	public function createAction(Tx_ThRating_Domain_Model_Vote $vote) {
-		if ($this->accessControllService->backendAdminIsLoggedIn() || $this->accessControllService->isLoggedIn($vote->getVoter())) {
+		if ($this->accessControllService->backendAdminIsLoggedIn() || $this->accessControllService->isLoggedIn($vote->getVoter()) || $this->settings['allowAnonymous']) {
 			$matchVote = $this->voteRepository->findMatchingRatingAndVoter($vote->getRating(),$vote->getVoter());
 			if (!($matchVote instanceof Tx_ThRating_Domain_Model_Vote) || !$this->voteValidator->isValid($matchVote)) {
 				$vote->getRating()->addVote($vote);
@@ -381,14 +381,29 @@ class Tx_ThRating_Controller_VoteController extends Tx_Extbase_MVC_Controller_Ac
 			if ( $rating instanceof Tx_ThRating_Domain_Model_Rating ) {
 				$this->rating = $rating;
 			} else {
-				if ( isset($GLOBALS['TSFE']->currentRecord) ) $currentRecord = explode(':',$GLOBALS['TSFE']->currentRecord);	//build array [0=>cObj tablename, 1=> cObj uid] - initialize with content information (usage as normal content)
-				else $currentRecord = array('pages',$GLOBALS['TSFE']->page['uid']);	//build array [0=>cObj tablename, 1=> cObj uid] - initialize with page info if used by typoscript
-				if ($this->request->hasArgument('ratetable')) $this->settings['ratetable'] = $requArgs['ratetable'];
-				elseif (empty($this->settings['ratetable'])) $this->settings['ratetable'] = $currentRecord[1];
-				if ($this->request->hasArgument('ratefield')) $this->settings['ratefield'] = $requArgs['ratefield'];
-				elseif (empty($this->settings['ratefield'])) $this->settings['ratefield'] = $currentRecord[1];
-				if ($this->request->hasArgument('ratedobjectuid')) $this->settings['ratedobjectuid'] = $requArgs['ratedobjectuid'];
-				elseif (empty($this->settings['ratedobjectuid'])) $this->settings['ratedobjectuid'] = $currentRecord[1];
+				if ( isset($GLOBALS['TSFE']->currentRecord) ) {
+						$currentRecord = explode(':',$GLOBALS['TSFE']->currentRecord);	//build array [0=>cObj tablename, 1=> cObj uid] - initialize with content information (usage as normal content)
+					} else {
+						$currentRecord = array('pages',$GLOBALS['TSFE']->page['uid']);	//build array [0=>cObj tablename, 1=> cObj uid] - initialize with page info if used by typoscript
+					}
+
+					if ($this->request->hasArgument('ratetable')) {
+						$this->settings['ratetable'] = $requArgs['ratetable'];
+					} elseif (empty($this->settings['ratetable'])) {
+						$this->settings['ratetable'] = $currentRecord[1];
+					}
+
+					if ($this->request->hasArgument('ratefield')) { 
+						$this->settings['ratefield'] = $requArgs['ratefield'];
+					} elseif (empty($this->settings['ratefield'])) {
+						$this->settings['ratefield'] = $currentRecord[1];
+					}
+					
+					if ($this->request->hasArgument('ratedobjectuid')) {
+						$this->settings['ratedobjectuid'] = $requArgs['ratedobjectuid'];
+					} elseif (empty($this->settings['ratedobjectuid'])) {
+						$this->settings['ratedobjectuid'] = $currentRecord[1];
+					}
 			}
 			$this->loadSettingsObjects();
 		}
@@ -396,13 +411,15 @@ class Tx_ThRating_Controller_VoteController extends Tx_Extbase_MVC_Controller_Ac
 		if (!$this->vote instanceof Tx_ThRating_Domain_Model_Vote || !$this->voteValidator->isValid($this->vote)) {
 			$notRated = true;
 			//check if a valid FE user is logged
-			if (!$this->accessControllService->backendAdminIsLoggedIn() && !$this->accessControllService->isLoggedIn($this->voter)) {
+			if (!$this->accessControllService->backendAdminIsLoggedIn() && !$this->accessControllService->isLoggedIn($this->voter) && !$this->settings['allowAnonymous']) {
 				$notRated = false;
 			}
 		}
-		//set array to create voteing information
-		if ($this->vote instanceof Tx_ThRating_Domain_Model_Vote)
-		$this->setAjaxSelections($this->vote);
+		//t3lib_utility_Debug::debug($this->vote,'Debug');
+		//set array to create voting information
+		if ($this->vote instanceof Tx_ThRating_Domain_Model_Vote) {
+			$this->setAjaxSelections($this->vote);
+		}
 		return $notRated;
 	}
 
