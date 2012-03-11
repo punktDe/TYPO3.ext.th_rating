@@ -79,34 +79,35 @@ class Tx_ThRating_Controller_VoteController extends Tx_Extbase_MVC_Controller_Ac
 	protected $voteValidator;
 	/**
 	 * @param Tx_ThRating_Domain_Validator_VoteValidator $voteRepository
+	 * @return void
 	 */
 	public function injectVoteValidator(Tx_ThRating_Domain_Validator_VoteValidator $voteValidator) {
 		$this->voteValidator = $voteValidator;
 	}
 
 	/**
-	 * @var Tx_ThRating_Domain_Repository_RatingobjectRepository
+	 * @var Tx_ThRating_Domain_Repository_RatingobjectRepository	$ratingobjectRepository
 	 */
 	protected $ratingobjectRepository;
 	/**
-	 * @param Tx_ThRating_Domain_Repository_RatingobjectRepository $voteRepository
+	 * @param Tx_ThRating_Domain_Repository_RatingobjectRepository $ratingobjectRepository
+	 * @return void
 	 */
 	public function injectRatingobjectRepository(Tx_ThRating_Domain_Repository_RatingobjectRepository $ratingobjectRepository) {
 		$this->ratingobjectRepository = $ratingobjectRepository;
 	}
 
 	/**
-	 * @var Tx_ThRating_Domain_Repository_RatingRepository
+	 * @var Tx_ThRating_Domain_Repository_RatingRepository	$ratingRepository
 	 */
 	protected $ratingRepository;
 	/**
-	 * @param Tx_ThRating_Domain_Repository_RatingRepository $voteRepository
+	 * @param Tx_ThRating_Domain_Repository_RatingRepository $ratingRepository
+	 * @return void
 	 */
 	public function injectRatingRepository(Tx_ThRating_Domain_Repository_RatingRepository $ratingRepository) {
 		$this->ratingRepository = $ratingRepository;
 	}
-
-
 
 	/**
 	 * Initializes the current action
@@ -193,8 +194,8 @@ class Tx_ThRating_Controller_VoteController extends Tx_Extbase_MVC_Controller_Ac
 		}
 		$this->view->assign('ajaxRef', $this->ajaxSelections['ajaxRef']);
 		//if $vote is not given or not existent it appears as an instance of Tx_ThRating_Controller_VoteController instead of Tx_ThRating_Domain_Model_Vote
-		if ($this->vote instanceof Tx_ThRating_Domain_Model_Vote && $this->voteValidator->isValid($this->vote)) {
-			if ($this->accessControllService->backendAdminIsLoggedIn() || $this->accessControllService->isLoggedIn($this->vote->getVoter()) || $this->settings['preferTSSettings'] || $this->settings['allowAnonymous']) {
+		if ($this->voteValidator->isValid($this->vote)) {
+			if ($this->accessControllService->backendAdminIsLoggedIn() || $this->accessControllService->isLoggedIn($this->vote->getVoter()) || $this->settings['preferTSSettings'] ) {
 				$this->view->assign('vote', $this->vote);
 				$this->view->assign('voter', $this->voter);
 				$this->view->assign('rating', $this->rating);
@@ -217,9 +218,10 @@ class Tx_ThRating_Controller_VoteController extends Tx_Extbase_MVC_Controller_Ac
 	 */
 	//http://localhost:8503/index.php?id=71&tx_thrating_pi1[controller]=Vote&tx_thrating_pi1[action]=create&tx_thrating_pi1[vote][rating]=1&tx_thrating_pi1[vote][voter]=1&tx_thrating_pi1[vote][vote]=1
 	public function createAction(Tx_ThRating_Domain_Model_Vote $vote) {
-		if ($this->accessControllService->backendAdminIsLoggedIn() || $this->accessControllService->isLoggedIn($vote->getVoter()) || $this->settings['allowAnonymous']) {
+		//t3lib_utility_Debug::debug($vote,'Debug');
+		if ($this->accessControllService->backendAdminIsLoggedIn() || $this->accessControllService->isLoggedIn($vote->getVoter())) {
 			$matchVote = $this->voteRepository->findMatchingRatingAndVoter($vote->getRating(),$vote->getVoter());
-			if (!($matchVote instanceof Tx_ThRating_Domain_Model_Vote) || !$this->voteValidator->isValid($matchVote)) {
+			if (!$this->voteValidator->isValid($matchVote)) {
 				$vote->getRating()->addVote($vote);
 				//persist newly added object to enable redirect to show action
 				Tx_Extbase_Dispatcher::getPersistenceManager()->persistAll();
@@ -332,7 +334,7 @@ class Tx_ThRating_Controller_VoteController extends Tx_Extbase_MVC_Controller_Ac
 				$this->view->assign('currentRates', $currentrate['currentrate']);
 				$this->view->assign('stepCount', count($currentrate['weightedVotes']));
 				$this->view->assign('rating', $this->rating);
-				if ( $this->vote instanceof Tx_ThRating_Domain_Model_Vote && $this->voteValidator->isValid($this->vote) ) {
+				if ( $this->voteValidator->isValid($this->vote) ) {
 					$this->view->assign('voting', $this->vote);
 				}
 			}
@@ -360,7 +362,7 @@ class Tx_ThRating_Controller_VoteController extends Tx_Extbase_MVC_Controller_Ac
 	 *	false: an FE user is not logged on
 	 *
 	 * @param Tx_ThRating_Domain_Model_Rating 		$rating 	the vote this selection is for
-	 * @param Tx_ThRating_Domain_Model_Vote 		$vote 	the vote this selection is for
+	 * @param Tx_ThRating_Domain_Model_Vote 			$vote 	the vote this selection is for
 	 * @param Tx_Extbase_Domain_Model_FrontendUser 	$voter 	The UID of the voter
 	 * @dontvalidate $vote
 	 * @return boolean
@@ -377,6 +379,8 @@ class Tx_ThRating_Controller_VoteController extends Tx_Extbase_MVC_Controller_Ac
 			$requArgs = $this->request->getArguments();		//read additional parameters to find the concerned rating
 			if ( $voter instanceof Tx_Extbase_Domain_Model_FrontendUser ) {
 				$this->voter = $voter;
+			} elseif ( $this->settings['mapAnonymous'] ) {
+				$this->voter = $this->accessControllService->getFrontendUser($this->settings['mapAnonymous']);
 			}
 			if ( $rating instanceof Tx_ThRating_Domain_Model_Rating ) {
 				$this->rating = $rating;
@@ -408,14 +412,13 @@ class Tx_ThRating_Controller_VoteController extends Tx_Extbase_MVC_Controller_Ac
 			$this->loadSettingsObjects();
 		}
 
-		if (!$this->vote instanceof Tx_ThRating_Domain_Model_Vote || !$this->voteValidator->isValid($this->vote)) {
+		if (!$this->voteValidator->isValid($this->vote)) {
 			$notRated = true;
 			//check if a valid FE user is logged
-			if (!$this->accessControllService->backendAdminIsLoggedIn() && !$this->accessControllService->isLoggedIn($this->voter) && !$this->settings['allowAnonymous']) {
+			if (!$this->accessControllService->backendAdminIsLoggedIn() && !$this->accessControllService->isLoggedIn($this->voter) && !$this->settings['mapAnonymous'] ) {
 				$notRated = false;
-			}
+			} 
 		}
-		//t3lib_utility_Debug::debug($this->vote,'Debug');
 		//set array to create voting information
 		if ($this->vote instanceof Tx_ThRating_Domain_Model_Vote) {
 			$this->setAjaxSelections($this->vote);
@@ -454,7 +457,7 @@ class Tx_ThRating_Controller_VoteController extends Tx_Extbase_MVC_Controller_Ac
 		//first check TS settings for vote object
 		( $this->settings['vote'] ) && $this->vote = $this->voteRepository->findByUid($this->settings['vote']);
 
-		if ($this->vote instanceof Tx_ThRating_Domain_Model_Vote) {
+		if ($this->voteValidator->isValid($this->vote)) {
 			$this->voter = $this->vote->getVoter();
 			$this->rating = $this->vote->getRating();
 			$this->ratingobject = $this->rating->getRatingobject();
@@ -474,7 +477,7 @@ class Tx_ThRating_Controller_VoteController extends Tx_Extbase_MVC_Controller_Ac
 					$this->ratingobject = $this->ratingobjectRepository->findByUid($this->settings['ratingobject']);
 				}
 				//if no rating is found then ratingobject is also empty
-				if ( !$this->ratingobject instanceof Tx_ThRating_Domain_Model_Ratingobject && $this->settings['ratetable']  && $this->settings['ratefield'] ) {
+				if ( !(!$this->ratingobject instanceof Tx_ThRating_Domain_Model_Ratingobject && $this->settings['ratetable']  && $this->settings['ratefield'] )) {
 
 					//last chance: fetch ratingobject for given table and fieldname / add object if not found
 					if ( !$this->ratingobject instanceof Tx_ThRating_Domain_Model_Ratingobject ) {
@@ -489,7 +492,7 @@ class Tx_ThRating_Controller_VoteController extends Tx_Extbase_MVC_Controller_Ac
 			if ( $this->ratingobject instanceof Tx_ThRating_Domain_Model_Ratingobject && $this->settings['ratedobjectuid'] ) {
 				$this->rating = $this->ratingRepository->findMatchingObjectAndUid($this->ratingobject,$this->settings['ratedobjectuid'],Tx_ThRating_Domain_Repository_RatingRepository::addIfNotFound);
 			}
-			
+
 			//get voter from settings
 			if (!$this->voter instanceof Tx_Extbase_Domain_Model_FrontendUser) {
 				$this->voter = $this->accessControllService->getFrontendUser($this->settings['voter']); 
@@ -503,9 +506,13 @@ class Tx_ThRating_Controller_VoteController extends Tx_Extbase_MVC_Controller_Ac
 
 			if ($this->rating instanceof Tx_ThRating_Domain_Model_Rating && $this->voter instanceof Tx_Extbase_Domain_Model_FrontendUser ) {
 				$this->vote = $this->voteRepository->findMatchingRatingAndVoter($this->rating->getUid(),$this->voter->getUid());
-				if ( !$this->vote instanceof Tx_ThRating_Domain_Model_Vote ) {
-					$this->vote = $this->objectManager->create('Tx_ThRating_Domain_Model_Vote');
+			}
+			if (!$this->voteValidator->isValid($this->vote)) {
+				$this->vote = $this->objectManager->create('Tx_ThRating_Domain_Model_Vote');
+				if ($this->rating instanceof Tx_ThRating_Domain_Model_Rating) {
 					$this->vote->setRating($this->rating);
+				}
+				if ($this->voter instanceof Tx_Extbase_Domain_Model_FrontendUser) {
 					$this->vote->setVoter($this->voter);
 				}
 			}
