@@ -33,16 +33,17 @@ class Tx_ThRating_Service_AccessControlService implements t3lib_Singleton {
 	/**
 	 * Tests, if the given person is logged into the frontend
 	 *
-	 * @param string $person The person 
+	 * @param Tx_Extbase_Domain_Model_FrontendUser $person The person 
 	 * @return bool The result; TRUE if the given person is logged in; otherwise FALSE
 	 */
-	public function isLoggedIn($person = NULL) {
+	public function isLoggedIn(Tx_Extbase_Domain_Model_FrontendUser $person = NULL) {
 		if ($person instanceof Tx_Extbase_Persistence_LazyLoadingProxy) {
 			$person->_loadRealInstance();
 		}
 		if (is_object($person)) {
-			if ($person->getUid() === $this->getFrontendUserUid()) {
-				return TRUE;
+			if ( 	 $person->getUid() &&
+					($person->getUid() === $this->getFrontendUserUid()) ) {
+				return TRUE;	//treat anonymous user also as logged in
 			}
 		}
 		return FALSE;
