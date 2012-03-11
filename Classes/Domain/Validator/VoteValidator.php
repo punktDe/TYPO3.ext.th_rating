@@ -41,13 +41,17 @@ class Tx_ThRating_Domain_Validator_VoteValidator extends Tx_Extbase_Validation_V
 	 * @return boolean true
 	 */
 	public function isValid($vote) {
+		//a vote object must be given
+		if (!$vote instanceof Tx_ThRating_Domain_Model_Vote) {
+			return false;
+		} 
 		//a vote object must have a vote
 		if (!$vote->getVote() instanceof Tx_ThRating_Domain_Model_Stepconf) {
 			$this->addError(Tx_Extbase_Utility_Localization::translate('error.validator.vote.vote', 'ThRating'), 1283537235);
 			return false;
 		}
 		//if anonymous votings are forbidden a vote must have a valid voter
-		if (!$this->settings['allowAnonymous'] && !$vote->getVoter() instanceof Tx_Extbase_Domain_Model_FrontendUser) {
+		if (!$vote->getVoter() instanceof Tx_Extbase_Domain_Model_FrontendUser) {
 			$this->addError(Tx_Extbase_Utility_Localization::translate('error.validator.vote.voter', 'ThRating'), 1283540684);
 			return false;
 		}
