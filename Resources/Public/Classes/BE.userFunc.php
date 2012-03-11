@@ -72,7 +72,7 @@ class user_BEfunc {
 	 *
 	 * @return void
 	 */
-    public function clearCachePostProc($_funcRef,$params, $pObj) {
+    public function clearCachePostProc($_funcRef,$params, $pObj=NULL) {
     	if (file_exists(PATH_site.'typo3temp/thratingDyn.css'))
     		unlink( PATH_site.'typo3temp/thratingDyn.css');
 			//recreate file with zero length - so its still included via TS
