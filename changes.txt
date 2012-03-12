@@ -1,9 +1,3 @@
-- If Stepname starts with 'LLL:' a translation according locallang will be done.
-- VoteController: in case of allow_url_fopen is disabled imagefiles must reside on the server
-- VoteController: path has to be relative to SITE_ROOT
-- VoteController: fixed calculation of new values right after voting
-- RatingobjectRepository: fixed CSS creation for ratingobjects that reside on other pages than '1'
-- setup.txt: fixed issue with case sensitive CSS-filename
-- setup.txt: Always integrate jQuery via Typoscript config
-- setup.txt: obsolete newRecordStoragePid - fixed to parent object pid
-	
+- TYPO3 Forge project (http://forge.typo3.org/projects/extension-th_rating)
+- added anonymous votings
+- moved documentation to http://forge.typo3.org/projects/extension-th_rating/wiki
