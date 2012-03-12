@@ -17,7 +17,7 @@
 		</ul>	
 		<p style="white-space:nowrap; font-size:0.6em; line-height:1.4em; margin-top:1em;">
 		<f:if condition="{calculatedRate}"><f:then>
-			Rating: {currentRates} of {stepCount}. <f:count>{rating.votes}</f:count> vote(s).
+			Rating: <f:format.number decimals="1" decimalSeparator="," thousandsSeparator=".">{currentRates}</f:format.number> of {stepCount}. <f:count>{rating.votes}</f:count> vote(s).
 			<f:if condition="{anonymousVotes}"><f:then>
 			<br/>{anonymousVotes} anonymous votes
 			</f:then></f:if>
