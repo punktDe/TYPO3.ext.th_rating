@@ -25,6 +25,10 @@
 		<f:if condition="{voting}"><f:then>
 			Your vote was '{voting}' ({voting.vote.steporder} of {stepCount})
 		</f:then><f:else>
+			<f:if condition="{anonymousVoting}"><f:then>
+				Your are an anonymous user.<br/>
+				You may log on to do personalized votings<br/>
+			</f:then></f:if>
 			<!-- Check if a  FE user is logged on -->
 			<f:if condition="{voter}"><f:then>
 				Click the rating bar to rate this item
