@@ -76,6 +76,10 @@ class Tx_ThRating_Domain_Model_Rating extends Tx_Extbase_DomainObject_AbstractEn
 	 */
 	protected $currentrates;
 	
+	/**
+	 * @var array
+	 */
+	protected $settings;
 	
 	/**
 	 * Constructs a new rating object
@@ -88,6 +92,15 @@ class Tx_ThRating_Domain_Model_Rating extends Tx_Extbase_DomainObject_AbstractEn
 	}
 
 
+	/**
+	 * Initializes a new rating object
+	 * @return void
+	 */
+	 public function initializeObject() {
+		$configurationManager = t3lib_div::makeInstance( 'Tx_Extbase_Configuration_ConfigurationManager');
+		$this->settings = $configurationManager->getConfiguration('Settings', 'thRating', 'pi1');
+	 }
+	 
 	/**
 	 * Sets the ratingobject this rating is part of
 	 *
@@ -182,12 +195,30 @@ class Tx_ThRating_Domain_Model_Rating extends Tx_Extbase_DomainObject_AbstractEn
 		foreach ( $this->getRatingobject()->getStepconfs() as $stepConf ) {
 			$stepOrder = $stepConf->getSteporder();
 			$voteCount = $voteRepository->countByMatchingRatingAndVote($this, $stepConf);
+			$anonymousCount = $voteRepository->countAnonymousByMatchingRatingAndVote($this, $stepConf, $this->settings['mapAnonymous']);
 			$currentratesDecoded['weightedVotes'][$stepOrder] = $voteCount * $stepConf->getStepweight();
 			$currentratesDecoded['sumWeightedVotes'][$stepOrder] = $currentratesDecoded['weightedVotes'][$stepOrder] * $stepOrder;
 			$numAllVotes += $voteCount;
+			$numAllAnonymousVotes += $anonymousCount;
 		}
 		$currentratesDecoded['numAllVotes'] = $numAllVotes;
+		$currentratesDecoded['anonymousVotes'] = $numAllAnonymousVotes;
 		$this->currentrates = json_encode($currentratesDecoded);
+	}
+
+
+	/**
+	 * Checks if given user is the anonymous one
+	 *
+	 * @param Tx_Extbase_Domain_Model_FrontendUser $person U´Person to check against anonymous
+	 * @return bool The result; TRUE if the given person is anonymous; otherwise FALSE
+	 */
+	public function isAnonymous(Tx_Extbase_Domain_Model_FrontendUser $person) {
+		if (	$this->settings['mapAnonymous'] && 
+ 			  ($person->getUid() == $this->settings['mapAnonymous']) ) {
+			return true;
+		}
+		return false;
 	}
 
 	/**
@@ -201,6 +232,9 @@ class Tx_ThRating_Domain_Model_Rating extends Tx_Extbase_DomainObject_AbstractEn
 		//$this->checkCurrentrates(); //check for possible inconsistencies
 		$currentratesDecoded = $this->currentrates ? json_decode($this->currentrates, true) : '';
 		$currentratesDecoded['numAllVotes']++;
+		if (	$this->isAnonymous($voting->getVoter()) ) {
+			$currentratesDecoded['anonymousVotes']++;
+		}
 		$votingStep = $voting->getVote();
 		$votingSteporder = $votingStep->getSteporder(); 
 		$votingStepwheight = $votingStep->getStepweight(); 
@@ -223,12 +257,13 @@ class Tx_ThRating_Domain_Model_Rating extends Tx_Extbase_DomainObject_AbstractEn
 		$weightedVotes = $currentratesDecoded['weightedVotes'];
 		$sumWeightedVotes = $currentratesDecoded['sumWeightedVotes'];
 		$numAllVotes = $currentratesDecoded['numAllVotes'];
+		$numAnonymousVotes = $currentratesDecoded['anonymousVotes'];
 		if (!empty($numAllVotes)) {
 			$currentrate = array_sum ( $sumWeightedVotes ) / $numAllVotes;
 		} else {
 			$currentrate = 0;
 		}
-		return array ('currentrate' => $currentrate, 'weightedVotes' => $weightedVotes, 'sumWeightedVotes' => $sumWeightedVotes);
+		return array ('currentrate' => $currentrate, 'weightedVotes' => $weightedVotes, 'sumWeightedVotes' => $sumWeightedVotes, 'anonymousVotes' => $numAnonymousVotes);
 	}
 
 	/**
