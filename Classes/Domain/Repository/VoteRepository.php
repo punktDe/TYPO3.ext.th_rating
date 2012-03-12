@@ -71,6 +71,30 @@ class Tx_ThRating_Domain_Repository_VoteRepository extends Tx_Extbase_Persistenc
 		);
 		return $query->execute()->count();
 	}
+	
+	/**
+	 * Counts all anonymous votings by giving the rating and ratingstep 
+	 *
+	 * @param Tx_ThRating_Domain_Model_Rating 	$rating 				The concerned ratingobject
+	 * @param Tx_ThRating_Domain_Model_Stepconf	$stepconf 			The stepconf object
+	 * @param int 											$anonymousVoter	UID of the anonymous account
+	 * @return int
+	 */
+	public function countAnonymousByMatchingRatingAndVote($rating = NULL, $stepconf = NULL, $anonymousVoter = NULL ) {
+		if ( !empty($anonymous) ) {
+			$query = $this->createQuery();
+			$query->matching(
+				$query->logicalAnd(
+					$query->equals('rating', $rating->getUid()),
+					$query->equals('vote', $stepconf->getUid()),
+					$query->equals('voter', $anonymousVoter)
+				)
+			);
+			return $query->execute()->count();
+		}
+		return 0;
+	}
+
 }
 
 ?>
