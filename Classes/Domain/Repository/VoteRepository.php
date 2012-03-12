@@ -81,7 +81,7 @@ class Tx_ThRating_Domain_Repository_VoteRepository extends Tx_Extbase_Persistenc
 	 * @return int
 	 */
 	public function countAnonymousByMatchingRatingAndVote($rating = NULL, $stepconf = NULL, $anonymousVoter = NULL ) {
-		if ( !empty($anonymous) ) {
+		if ( !empty($anonymousVoter) ) {
 			$query = $this->createQuery();
 			$query->matching(
 				$query->logicalAnd(
