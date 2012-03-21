@@ -54,6 +54,10 @@ class Tx_ThRating_Controller_VoteController extends Tx_Extbase_MVC_Controller_Ac
 	 * @var boolean
 	 */
 	protected $anonymousVoting;
+	/**
+	 * @var boolean
+	 */
+	protected $hasRated;
 	
 
 	/**
@@ -345,7 +349,8 @@ class Tx_ThRating_Controller_VoteController extends Tx_Extbase_MVC_Controller_Ac
 				$this->view->assign('anonymousVotes', $currentrate['anonymousVotes']);
 				$this->view->assign('stepCount', count($currentrate['weightedVotes']));
 				$this->view->assign('rating', $this->rating);
-				if ( !$this->anonymousVoting && $this->voteValidator->isValid($this->vote) ) {
+				if ( !$this->anonymousVoting && $this->voteValidator->isValid($this->vote) &&
+						$this->vote->getVoter()->getUid() == $this->accessControllService->getFrontendUserUid()) {
 					$this->view->assign('voting', $this->vote);
 				}
 			}
@@ -391,7 +396,7 @@ class Tx_ThRating_Controller_VoteController extends Tx_Extbase_MVC_Controller_Ac
 			$requArgs = $this->request->getArguments();		//read additional parameters to find the concerned rating
 			if ( $voter instanceof Tx_Extbase_Domain_Model_FrontendUser ) {
 				$this->voter = $voter;
-			} elseif ( $this->settings['mapAnonymous'] ) {
+			} elseif ( $this->settings['mapAnonymous'] && !$this->accessControllService->getFrontendUserUid() ) {
 				$this->voter = $this->accessControllService->getFrontendUser($this->settings['mapAnonymous']);
 			}
 			if ( $rating instanceof Tx_ThRating_Domain_Model_Rating ) {
@@ -426,18 +431,19 @@ class Tx_ThRating_Controller_VoteController extends Tx_Extbase_MVC_Controller_Ac
 
 		if ($this->vote instanceof Tx_ThRating_Domain_Model_Vote) {
 			$notRated = true;
-			//check if a valid FE user is logged
-			if (!$this->accessControllService->backendAdminIsLoggedIn() && !$this->accessControllService->isLoggedIn($this->voter) && !$this->settings['mapAnonymous'] ) {
+			if (	$this->settings['mapAnonymous'] && !$this->accessControllService->getFrontendUserUid() &&
+						($this->vote->getVoter()->getUid() == $this->settings['mapAnonymous'])){
+				$this->anonymousVoting = true;
+			}
+			//check if a valid FE user is logged and has NOT already voted
+			if ((!$this->accessControllService->backendAdminIsLoggedIn() && !$this->accessControllService->isLoggedIn($this->vote->getVoter()) && !$this->anonymousVoting ) ||
+					$this->hasRated ) {
 				$notRated = false;
 			} 
 		}
 		//set array to create voting information
 		if ($this->vote instanceof Tx_ThRating_Domain_Model_Vote) {
 			$this->setAjaxSelections($this->vote);
-			if (	$this->settings['mapAnonymous'] && 
-					($this->vote->getVoter()->getUid() == $this->settings['mapAnonymous']) ) {
-				$this->anonymousVoting = true;
-			}
 		}
 		return $notRated;
 	}
@@ -522,6 +528,9 @@ class Tx_ThRating_Controller_VoteController extends Tx_Extbase_MVC_Controller_Ac
 
 			if ($this->rating instanceof Tx_ThRating_Domain_Model_Rating && $this->voter instanceof Tx_Extbase_Domain_Model_FrontendUser ) {
 				$this->vote = $this->voteRepository->findMatchingRatingAndVoter($this->rating->getUid(),$this->voter->getUid());
+				if ($this->voteValidator->isValid($this->vote)) {
+					$this->hasRated = true;
+				}
 			}
 			if (!$this->voteValidator->isValid($this->vote)) {
 				$this->vote = $this->objectManager->create('Tx_ThRating_Domain_Model_Vote');

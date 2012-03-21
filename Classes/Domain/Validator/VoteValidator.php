@@ -50,7 +50,7 @@ class Tx_ThRating_Domain_Validator_VoteValidator extends Tx_Extbase_Validation_V
 			$this->addError(Tx_Extbase_Utility_Localization::translate('error.validator.vote.vote', 'ThRating'), 1283537235);
 			return false;
 		}
-		//if anonymous votings are forbidden a vote must have a valid voter
+		//a vote must have a valid voter
 		if (!$vote->getVoter() instanceof Tx_Extbase_Domain_Model_FrontendUser) {
 			$this->addError(Tx_Extbase_Utility_Localization::translate('error.validator.vote.voter', 'ThRating'), 1283540684);
 			return false;
