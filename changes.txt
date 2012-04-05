@@ -1,3 +1,2 @@
-- TYPO3 Forge project (http://forge.typo3.org/projects/extension-th_rating)
-- added anonymous votings
-- moved documentation to http://forge.typo3.org/projects/extension-th_rating/wiki
+- major bugfixes
+- added configuration option 'showSummary'

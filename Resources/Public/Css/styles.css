@@ -71,6 +71,12 @@ background-position: center bottom;
 	position:relative;
 	width:0px;
 }
+.tx-thrating-summary{
+	white-space:nowrap; 
+	font-size:0.6em; 
+	line-height:1.4em; 
+	margin-top:1em;
+}
 .tx-thrating-flash-message{
 	position:absolute;
 	display:none;

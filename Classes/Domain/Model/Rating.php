@@ -89,6 +89,7 @@ class Tx_ThRating_Domain_Model_Rating extends Tx_Extbase_DomainObject_AbstractEn
 		$this->votes = new Tx_Extbase_Persistence_ObjectStorage();
 		if ($ratingobject) $this->setRatingobject( $ratingobject );
 		if ($ratedobjectuid) $this->setRatedobjectuid( $ratedobjectuid );
+		$this->initializeObject();
 	}
 
 
@@ -151,9 +152,9 @@ class Tx_ThRating_Domain_Model_Rating extends Tx_Extbase_DomainObject_AbstractEn
 	 */
 	public function addVote(Tx_ThRating_Domain_Model_Vote $vote) {
 		$this->votes->attach($vote);
+		$this->addCurrentrate($vote);
 		$persistenceManager = t3lib_div::makeInstance('Tx_Extbase_Persistence_Manager');
 		$persistenceManager->persistAll();
-		$this->addCurrentrate($vote);
 	}
 
 	/**
@@ -228,7 +229,6 @@ class Tx_ThRating_Domain_Model_Rating extends Tx_Extbase_DomainObject_AbstractEn
 	 * @return void
 	 */
 	public function addCurrentrate(Tx_ThRating_Domain_Model_Vote $voting) {
-		//TODO check deactivation for production use
 		//$this->checkCurrentrates(); //check for possible inconsistencies
 		$currentratesDecoded = $this->currentrates ? json_decode($this->currentrates, true) : '';
 		$currentratesDecoded['numAllVotes']++;

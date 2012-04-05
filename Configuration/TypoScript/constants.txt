@@ -2,6 +2,8 @@ plugin.tx_thrating {
 	config {
 		# cat=plugin.tx_thrating//a; type=int; label=Map anonymous votings to FEUser Uid
 		mapAnonymous = 0
+		# cat=plugin.tx_thrating/enable/a; type=boolean; label=Show summary block in output
+		showSummary = 1
 		# cat=plugin.tx_thrating/enable/b; type=boolean; label=Display examples: make plugin examples invisible (set to 0)
 		showExamples = 0
 		# cat=plugin.tx_thrating/enable/b; type=boolean; label=Info on not logged in user: make message visible (set to 1)

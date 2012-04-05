@@ -5,6 +5,13 @@ config.tx_extbase.persistence.classes.Tx_Extbase_Domain_Model_FrontendUser.mappi
    tableName = fe_users
    recordType >
 }
+config.tx_extbase.persistence.classes {
+	Tx_ThRating_Domain_Model_Voter	{
+		mapping {
+			tableName = fe_users
+		}
+	}
+}
 
 #########################################################################
 # Plugin configuration
@@ -36,7 +43,8 @@ plugin.tx_thrating {
 	settings {
 		#set this to ignore GP parameters
 		preferTSSettings = 1
-
+		
+		showSummary = {$plugin.tx_thrating.config.showSummary}
 	   showNoFEUser = {$plugin.tx_thrating.config.showNoFEUser}
 	   mapAnonymous = {$plugin.tx_thrating.config.mapAnonymous}
 		defaultObject {

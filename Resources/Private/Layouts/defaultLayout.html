@@ -1,5 +1,34 @@
 <div class='tx-thrating-pi1-content' id='tx-thrating-pi1-{ajaxRef}'>
-	<f:render section="content" />
+	<div class='tx-thrating-content'>
+		<f:render section="content" />
+		<f:if condition="{showSummary}"><f:then>
+		<div class='tx-thrating-summary'>
+			<f:if condition="{currentRates}"><f:then>
+				Rating: <f:format.number decimals="1" decimalSeparator="," thousandsSeparator=".">{currentRates}</f:format.number> of {stepCount}. <f:count>{rating.votes}</f:count> vote(s).
+				<f:if condition="{anonymousVotes}"><f:then>
+				<br/>{anonymousVotes} anonymous votes
+				</f:then></f:if>
+			</f:then><f:else>
+				No rating done at all.
+			</f:else></f:if>
+			<br/>
+			<f:if condition="{voting}"><f:then>
+				Your vote was '{voting}' ({voting.vote.steporder} of {stepCount})
+			</f:then><f:else>
+				<f:if condition="{anonymousVoting}"><f:then>
+					Your are an anonymous user.<br/>
+					You may log on to do personalized votings<br/>
+				</f:then></f:if>
+				<!-- Check if a  FE user is logged on -->
+				<f:if condition="{voter}"><f:then>
+					Click the rating bar to rate this item
+				</f:then><f:else>
+					Please log on to do ratings
+				</f:else></f:if>	
+			</f:else></f:if>	
+		</div>
+		</f:then></f:if>	
+	</div>
 	<div class='tx-thrating-flash-message'>
 		<!--f:translate key="label_recent_posts">Below are the most recent posts:</f:translate-->
 		<f:flashMessages renderMode="div" />

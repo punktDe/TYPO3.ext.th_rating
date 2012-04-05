@@ -57,6 +57,12 @@ class Tx_ThRating_Domain_Model_Vote extends Tx_Extbase_DomainObject_AbstractEnti
 	protected $vote;
 
 	/**
+	 * @var array
+	 */
+	protected $settings;
+
+
+	/**
 	 * Constructs a new rating object
 	 *
 	 * @return void
@@ -68,9 +74,21 @@ class Tx_ThRating_Domain_Model_Vote extends Tx_Extbase_DomainObject_AbstractEnti
 		If ($rating)  $this->setRating($rating);
 		If ($voter)   $this->setVoter($voter);
 		If ($vote)    $this->setVote($vote);
+		$this->initializeObject();
 	}
 	
 	
+	/**
+	 * Initializes the new vote object
+	 * @return void
+	 */
+	 public function initializeObject() {
+		parent::initializeObject();
+		$configurationManager = t3lib_div::makeInstance( 'Tx_Extbase_Configuration_ConfigurationManager');
+		$this->settings = $configurationManager->getConfiguration('Settings', 'thRating', 'pi1');
+	 }
+	 
+
 	/**
 	 * Sets the rating this vote is part of
 	 *
@@ -145,6 +163,15 @@ class Tx_ThRating_Domain_Model_Vote extends Tx_Extbase_DomainObject_AbstractEnti
 	 */
 	public function __toString() {
 		return (strval($this->vote));
+	}	
+
+	/**
+	 * Checks if vote is done by anonymous user
+	 * 
+	 * @return booelan
+	 */
+	public function isAnonymous() {
+		return ($this->getVoter()->getUid() == $this->settings['mapAnonymous']);
 	}	
 }
 ?>

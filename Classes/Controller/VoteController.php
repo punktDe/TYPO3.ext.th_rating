@@ -53,11 +53,11 @@ class Tx_ThRating_Controller_VoteController extends Tx_Extbase_MVC_Controller_Ac
 	/**
 	 * @var boolean
 	 */
-	protected $anonymousVoting;
-	/**
-	 * @var boolean
-	 */
 	protected $hasRated;
+	/**
+	 * @var string
+	 */
+	protected $ratingName;
 	
 
 	/**
@@ -137,6 +137,12 @@ class Tx_ThRating_Controller_VoteController extends Tx_Extbase_MVC_Controller_Ac
 		
 		//Set default storage pids to SITEROOT
 		$this->setStoragePids();
+		$this->hasRated = false;
+
+		if ( $this->request->hasArgument('ratingName') ) {
+			//read unique AJAX identification on AJAX request
+			$this->ratingName = $this->request->getArgument('ratingName'); 
+		}
 		
 		if ( $this->request->hasArgument('ajaxRef') ) {
 			//read unique AJAX identification on AJAX request
@@ -201,14 +207,10 @@ class Tx_ThRating_Controller_VoteController extends Tx_Extbase_MVC_Controller_Ac
 			$currentRates = $this->rating->getCurrentrates();
 			return strval($currentRates["currentrate"]);
 		}
-		$this->view->assign('ajaxRef', $this->ajaxSelections['ajaxRef']);
-		//if $vote is not given or not existent it appears as an instance of Tx_ThRating_Controller_VoteController instead of Tx_ThRating_Domain_Model_Vote
 		if ($this->voteValidator->isValid($this->vote)) {
-			if ($this->accessControllService->backendAdminIsLoggedIn() || $this->accessControllService->isLoggedIn($this->vote->getVoter()) || $this->settings['preferTSSettings'] ) {
+			if ($this->accessControllService->isLoggedIn($this->vote->getVoter()) || $this->settings['preferTSSettings'] ) {
 				$this->view->assign('vote', $this->vote);
-				$this->view->assign('voter', $this->voter);
-				$this->view->assign('rating', $this->rating);
-				$this->view->assign('ratingobject', $this->ratingobject);
+				$this->fillSummaryView();
 			} else {
 				$this->flashMessageContainer->add(Tx_Extbase_Utility_Localization::translate('error.vote.create.noPermission', 'ThRating', t3lib_FlashMessage::ERROR));
 			}
@@ -227,15 +229,13 @@ class Tx_ThRating_Controller_VoteController extends Tx_Extbase_MVC_Controller_Ac
 	 */
 	//http://localhost:8503/index.php?id=71&tx_thrating_pi1[controller]=Vote&tx_thrating_pi1[action]=create&tx_thrating_pi1[vote][rating]=1&tx_thrating_pi1[vote][voter]=1&tx_thrating_pi1[vote][vote]=1
 	public function createAction(Tx_ThRating_Domain_Model_Vote $vote) {
-		if (	$this->settings['mapAnonymous'] && 
-				($vote->getVoter()->getUid() == $this->settings['mapAnonymous']) ) {
-			$this->anonymousVoting = true;
-		}
-		if ($this->accessControllService->backendAdminIsLoggedIn() || $this->accessControllService->isLoggedIn($vote->getVoter())  || $this->anonymousVoting ) {
-			if (!$this->anonymousVoting) {
+		if ($this->accessControllService->isLoggedIn($vote->getVoter())  || $vote->isAnonymous() ) {
+			//if not anonymous check if vote is already done
+			if (!$vote->isAnonymous()) {
 				$matchVote = $this->voteRepository->findMatchingRatingAndVoter($vote->getRating(),$vote->getVoter());
 			}
-			if (!$this->voteValidator->isValid($matchVote) || $this->anonymousVoting ) {
+			//add new or anonymous vote
+			if (!$this->voteValidator->isValid($matchVote) || $vote->isAnonymous() ) {
 				$vote->getRating()->addVote($vote);
 				//persist newly added object to enable redirect to show action
 				Tx_Extbase_Dispatcher::getPersistenceManager()->persistAll();
@@ -276,16 +276,10 @@ class Tx_ThRating_Controller_VoteController extends Tx_Extbase_MVC_Controller_Ac
 										Tx_Extbase_Domain_Model_FrontendUser 	$voter = NULL,
 										Tx_ThRating_Domain_Model_Vote 			$vote = NULL) {
 		//find vote using additional information
-		$notRated = $this->checkDoubleRate($rating, $vote, $voter );
-		//TODO teporary
-		//$this->rating->checkCurrentrates();
-		if ( $notRated ) {
-			$this->view->assign('ratingobject', $this->ratingobject);
+		$this->checkDoubleRate($rating, $vote, $voter );
+		if ( !$this->hasRated || $this->vote->isAnonymous() ) {
 			$this->view->assign('ajaxSelections', $this->ajaxSelections['json']);
-			$this->view->assign('ajaxRef', $this->ajaxSelections['ajaxRef']);
-			$this->view->assign('vote', $this->vote);
-			$this->view->assign('stepconfs', $this->ratingobject->getStepconfs());
-			$this->view->assign('voter', $this->voter);
+			$this->fillSummaryView();
 		} else {
 			$this->forward('show');
 		}
@@ -305,25 +299,21 @@ class Tx_ThRating_Controller_VoteController extends Tx_Extbase_MVC_Controller_Ac
 	 * @dontvalidate $vote
 	 */
 	//http://localhost:8503/index.php?id=71&tx_thrating_pi1[controller]=Vote&tx_thrating_pi1[action]=ratinglinks&tx_thrating_pi1[rating]=1&tx_thrating_pi1[voter]=1
-	public function RatinglinksAction(	Tx_ThRating_Domain_Model_Rating 		$rating = NULL,
+	public function RatinglinksAction(	Tx_ThRating_Domain_Model_Rating 			$rating = NULL,
 													Tx_Extbase_Domain_Model_FrontendUser 	$voter = NULL,
 													Tx_ThRating_Domain_Model_Vote 			$vote = NULL) {
 
-		$notRated = $this->checkDoubleRate($rating, $vote, $voter );
-		//TODO temporary
-		$arguments = $this->request->getArguments();
-		if (strtolower($arguments['action']) != 'create') {
-			$this->rating->checkCurrentrates();
+		if ( empty($this->ratingName) ) {
+			//choose default ratingConfiguration if nothing is defined
+			if ( !empty($this->settings['display']) ) {
+				$this->ratingName = $this->settings['display'];
+			} else {
+				$this->ratingName = $this->settings['ratingConfigurations']['default'];
+			}
 		}
-
-		//choose default ratingConfiguration if nothing is defined
-		if ( !empty($this->settings['display']) ) {
-			$ratingName = $this->settings['display'];
-		} else {
-			$ratingName = $this->settings['ratingConfigurations']['default'];
-		}
-
-		$ratingConfiguration = $this->settings['ratingConfigurations'][$ratingName];
+			
+		$this->checkDoubleRate($rating, $vote, $voter );
+		$ratingConfiguration = $this->settings['ratingConfigurations'][$this->ratingName];
 
 		//first check if given ratingConfiguration exists
 		if ( isset($ratingConfiguration) ) {
@@ -343,28 +333,14 @@ class Tx_ThRating_Controller_VoteController extends Tx_Extbase_MVC_Controller_Ac
 			if ($this->rating instanceof Tx_ThRating_Domain_Model_Rating ) {
 				$calculatedRate .= $this->rating->getCalculatedRate().'%';
 				$this->view->assign('calculatedRate', $calculatedRate);
-				$currentrate = $this->rating->getCurrentrates();
-
-				$this->view->assign('currentRates', $currentrate['currentrate']);
-				$this->view->assign('anonymousVotes', $currentrate['anonymousVotes']);
-				$this->view->assign('stepCount', count($currentrate['weightedVotes']));
-				$this->view->assign('rating', $this->rating);
-				if ( !$this->anonymousVoting && $this->voteValidator->isValid($this->vote) &&
-						$this->vote->getVoter()->getUid() == $this->accessControllService->getFrontendUserUid()) {
-					$this->view->assign('voting', $this->vote);
-				}
 			}
-			$this->view->assign('ratingName', $ratingName);
+			$this->view->assign('ratingName', $this->ratingName);
 			$this->view->assign('ratingClass', $ratingClass);
-			$this->view->assign('ajaxRef', $this->ajaxSelections['ajaxRef']);
-			$this->view->assign('ratingobject', $this->ratingobject);
-			$this->view->assign('voter', $this->voter);
-			$this->view->assign('anonymousVoting', $this->anonymousVoting);
-			empty($calculatedRate) && $this->flashMessageContainer->add(Tx_Extbase_Utility_Localization::translate('error.vote.show.notRated', 'ThRating', t3lib_FlashMessage::ERROR));
-			if ( $notRated ) {
+			if ( !$this->hasRated || $this->vote->isAnonymous() ) {
 				//if user hasn´t voted yet then include ratinglinks
 				$this->view->assign('ajaxSelections', $this->ajaxSelections['steporder']);
 			}
+			$this->fillSummaryView();
 		} else {
 			$this->flashMessageContainer->add(Tx_Extbase_Utility_Localization::translate('error.vote.ratinglinks.wrongDisplayConfig', 'ThRating', t3lib_FlashMessage::ERROR));
 		}
@@ -374,15 +350,11 @@ class Tx_ThRating_Controller_VoteController extends Tx_Extbase_MVC_Controller_Ac
 	/**
 	 * Check preconditions for rating
 	 *
-	 * The return value tells if
-	 *	false: the user has already given a vote for this rating or
-	 *	false: an FE user is not logged on
-	 *
 	 * @param Tx_ThRating_Domain_Model_Rating 		$rating 	the vote this selection is for
 	 * @param Tx_ThRating_Domain_Model_Vote 			$vote 	the vote this selection is for
 	 * @param Tx_Extbase_Domain_Model_FrontendUser 	$voter 	The UID of the voter
 	 * @dontvalidate $vote
-	 * @return boolean
+	 * @return viod
 	 */
 	protected function checkDoubleRate(	Tx_ThRating_Domain_Model_Rating 			$rating = null,
 													Tx_ThRating_Domain_Model_Vote 			$vote = null,
@@ -397,6 +369,7 @@ class Tx_ThRating_Controller_VoteController extends Tx_Extbase_MVC_Controller_Ac
 			if ( $voter instanceof Tx_Extbase_Domain_Model_FrontendUser ) {
 				$this->voter = $voter;
 			} elseif ( $this->settings['mapAnonymous'] && !$this->accessControllService->getFrontendUserUid() ) {
+				//set anonymous vote
 				$this->voter = $this->accessControllService->getFrontendUser($this->settings['mapAnonymous']);
 			}
 			if ( $rating instanceof Tx_ThRating_Domain_Model_Rating ) {
@@ -429,23 +402,10 @@ class Tx_ThRating_Controller_VoteController extends Tx_Extbase_MVC_Controller_Ac
 			$this->loadSettingsObjects();
 		}
 
-		if ($this->vote instanceof Tx_ThRating_Domain_Model_Vote) {
-			$notRated = true;
-			if (	$this->settings['mapAnonymous'] && !$this->accessControllService->getFrontendUserUid() &&
-						($this->vote->getVoter()->getUid() == $this->settings['mapAnonymous'])){
-				$this->anonymousVoting = true;
-			}
-			//check if a valid FE user is logged and has NOT already voted
-			if ((!$this->accessControllService->backendAdminIsLoggedIn() && !$this->accessControllService->isLoggedIn($this->vote->getVoter()) && !$this->anonymousVoting ) ||
-					$this->hasRated ) {
-				$notRated = false;
-			} 
-		}
 		//set array to create voting information
 		if ($this->vote instanceof Tx_ThRating_Domain_Model_Vote) {
 			$this->setAjaxSelections($this->vote);
 		}
-		return $notRated;
 	}
 
 
@@ -460,14 +420,40 @@ class Tx_ThRating_Controller_VoteController extends Tx_Extbase_MVC_Controller_Ac
 			$key = utf8_encode(json_encode( array(
 				'value' 	=> $stepConf->getUid(),
 				'voter' 	=> $vote->getVoter()->getUid(),
-				'rating' 	=> $vote->getRating()->getUid(),
-				'actionName'=> strtolower($this->request->getControllerActionName()),
-				'ajaxRef' 	=> $this->ajaxSelections['ajaxRef'])));
+				'rating' 		=> $vote->getRating()->getUid(),
+				'ratingName'	=> $this->ratingName,
+				'actionName'	=> strtolower($this->request->getControllerActionName()),
+				'ajaxRef' 		=> $this->ajaxSelections['ajaxRef'])));
 			$this->ajaxSelections['json'][$key] = $stepConf->getStepname();
 			$this->ajaxSelections['steporder'][$stepConf->getSteporder()]['step'] = $stepConf;
 			$this->ajaxSelections['steporder'][$stepConf->getSteporder()]['ajaxvalue'] = $key;
 		}
 	}
+
+	/**
+	 * Fill all variables for FLUID
+	 *
+	 * @return void
+	 */
+	protected function fillSummaryView() {
+			$this->view->assign('showSummary', $this->settings['showSummary']);
+			$this->view->assign('ajaxRef', $this->ajaxSelections['ajaxRef']);
+			$this->view->assign('ratingobject', $this->ratingobject);
+			$this->view->assign('rating', $this->rating);
+			$this->view->assign('voter', $this->voter);
+			
+			$currentrate = $this->rating->getCurrentrates();
+			$this->view->assign('currentRates', $currentrate['currentrate']);
+			$this->view->assign('stepCount', count($currentrate['weightedVotes']));
+			$this->view->assign('anonymousVotes', $currentrate['anonymousVotes']);
+			$this->view->assign('anonymousVoting', $this->vote->isAnonymous());
+			empty($currentrate['currentrate']) && $this->flashMessageContainer->add(Tx_Extbase_Utility_Localization::translate('error.vote.show.notRated', 'ThRating', t3lib_FlashMessage::ERROR));
+			if ( $this->voteValidator->isValid($this->vote) && !$this->vote->isAnonymous() && 
+					$this->vote->getVoter()->getUid() == $this->accessControllService->getFrontendUserUid()) {
+				$this->view->assign('voting', $this->vote);
+			}
+	}
+
 
 	/**
 	 * Loads objects from repositories
@@ -526,13 +512,14 @@ class Tx_ThRating_Controller_VoteController extends Tx_Extbase_MVC_Controller_Ac
 				}
 			}
 
-			if ($this->rating instanceof Tx_ThRating_Domain_Model_Rating && $this->voter instanceof Tx_Extbase_Domain_Model_FrontendUser ) {
+			if ($this->rating instanceof Tx_ThRating_Domain_Model_Rating && ($this->voter instanceof Tx_Extbase_Domain_Model_FrontendUser) && 
+					($this->voter->getUid() != $this->settings['mapAnonymous']) ) {
 				$this->vote = $this->voteRepository->findMatchingRatingAndVoter($this->rating->getUid(),$this->voter->getUid());
 				if ($this->voteValidator->isValid($this->vote)) {
 					$this->hasRated = true;
 				}
 			}
-			if (!$this->voteValidator->isValid($this->vote)) {
+			if (!$this->voteValidator->isValid($this->vote) || $this->vote->isAnonymous()) {
 				$this->vote = $this->objectManager->create('Tx_ThRating_Domain_Model_Vote');
 				if ($this->rating instanceof Tx_ThRating_Domain_Model_Rating) {
 					$this->vote->setRating($this->rating);
