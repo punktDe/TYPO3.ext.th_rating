@@ -72,11 +72,11 @@ class Tx_ThRating_Domain_Model_Ratingobject extends Tx_Extbase_DomainObject_Abst
 	
 	/**
 	 * Constructs a new rating object
-	 * @param string $ratetable The rating objects table name
-	 * @validate 	  $ratetable StringLength(minimum = 3, maximum = 60)
-	 * @param string $ratefield The rating objects field name
-	 * @validate 	  $ratefield StringLength(minimum = 3, maximum = 60)
-	 * @return void
+	 * @param	string	$ratetable The rating objects table name
+	 * @param	string	$ratefield The rating objects field name
+	 * @validate 	$ratetable StringLength(minimum = 3, maximum = 60)
+	 * @validate	$ratefield StringLength(minimum = 3, maximum = 60)
+	 * @return 	void
 	 */
 	public function __construct($ratetable = NULL, $ratefield = NULL) {
 		$this->stepconfs = new Tx_Extbase_Persistence_ObjectStorage();

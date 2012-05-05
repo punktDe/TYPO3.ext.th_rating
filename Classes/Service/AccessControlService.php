@@ -33,8 +33,8 @@ class Tx_ThRating_Service_AccessControlService implements t3lib_Singleton {
 	/**
 	 * Tests, if the given person is logged into the frontend
 	 *
-	 * @param Tx_Extbase_Domain_Model_FrontendUser $person The person 
-	 * @return bool The result; TRUE if the given person is logged in; otherwise FALSE
+	 * @param	Tx_Extbase_Domain_Model_FrontendUser	$person	The person 
+	 * @return	bool 											The result; TRUE if the given person is logged in; otherwise FALSE
 	 */
 	public function isLoggedIn(Tx_Extbase_Domain_Model_FrontendUser $person = NULL) {
 		if ($person instanceof Tx_Extbase_Persistence_LazyLoadingProxy) {
@@ -74,8 +74,8 @@ class Tx_ThRating_Service_AccessControlService implements t3lib_Singleton {
 	/**
 	 * Loads objects from repositories
 	 *
-	 * @param mixed $voter 
-	 * @return Tx_Extbase_Domain_Model_FrontendUser 
+	 * @param	mixed									$voter 
+	 * @return	Tx_Extbase_Domain_Model_FrontendUser 
 	 */
 	public function getFrontendUser($voter = null) {
 		//set userobject
@@ -91,5 +91,26 @@ class Tx_ThRating_Service_AccessControlService implements t3lib_Singleton {
 		}
 		return $voter;
 	}			
+
+	/**
+	 * Loads objects from repositories
+	 *
+	 * @param	mixed							$voter 
+	 * @return	Tx_ThRating_Domain_Model_Voter 
+	 */
+	public function getFrontendVoter($voter = null) {
+		//set userobject
+		if (!$voter instanceof Tx_ThRating_Domain_Model_Voter) {
+			$frontendUserRepository = t3lib_div::makeInstance('Tx_ThRating_Domain_Repository_VoterRepository');
+			//TODO Errorhandling if no user is logged in
+			if (!is_integer(intval($voter)) || intval($voter) == 0) {
+				//get logged in fe-user
+				$voter = $frontendUserRepository->findByUid($this->getFrontendUserUid());
+			} else {
+				$voter = $frontendUserRepository->findByUid(intval($voter));
+			}
+		}
+		return $voter;
+		}			
 }
 ?>

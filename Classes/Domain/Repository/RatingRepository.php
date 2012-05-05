@@ -37,18 +37,18 @@ class Tx_ThRating_Domain_Repository_RatingRepository extends Tx_Extbase_Persiste
 	/**
 	 * Finds the specific rating by giving the object and row uid
 	 *
-	 * @param Tx_ThRating_Domain_Model_Ratingobject 	$ratingobject The concerned ratingobject
-	 * @validate $ratingobject Tx_ThRating_Domain_Validator_RatingobjectValidator
-	 * @param int 	$ratedobjectuid The Uid of the rated row
-	 * @validate 	$ratedobjectuid NumberRange(startRange = 1)
-	 * @param bool $addIfNotFound Set to true if new objects should instantly be added
+	 * @param	Tx_ThRating_Domain_Model_Ratingobject	$ratingobject 	The concerned ratingobject
+	 * @param	int 									$ratedobjectuid The Uid of the rated row
+	 * @param	bool									$addIfNotFound	Set to true if new objects should instantly be added
+	 * @validate	$ratingobject Tx_ThRating_Domain_Validator_RatingobjectValidator
+	 * @validate	$ratedobjectuid NumberRange(startRange = 1)
 	 * @return Tx_ThRating_Domain_Model_Rating 		The rating
 	 */
 	public function findMatchingObjectAndUid($ratingobject, $ratedobjectuid, $addIfNotFound = false ) {
 		$query = $this->createQuery();
 		$query	->matching(
 						$query->logicalAnd(
-							$query->equals('ratingobject', $ratingobject),
+							$query->equals('ratingobject', $ratingobject->getUid()),
 							$query->equals('ratedobjectuid', $ratedobjectuid)
 							)
 						)

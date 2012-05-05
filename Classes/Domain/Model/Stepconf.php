@@ -182,7 +182,7 @@ class Tx_ThRating_Domain_Model_Stepconf extends Tx_Extbase_DomainObject_Abstract
 	/**
 	 * Returns all votes in this rating
 	 *
-	 * @return Tx_Extbase_Persistence_ObjectStorage
+	 * @return Tx_Extbase_Persistence_ObjectStorage<Tx_ThRating_Domain_Model_Vote>
 	 */
 	public function getVotes() {
 		return clone $this->votes;

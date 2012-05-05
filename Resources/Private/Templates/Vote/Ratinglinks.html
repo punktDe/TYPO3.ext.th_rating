@@ -9,7 +9,7 @@
 			<li class='current-rating {barimage}' style="{calculatedRate}" title='Current rating is {currentRates} out of {stepCount}' >Current rating is {currentRates} out of {stepCount}</li>
 			</f:then></f:if>
 			<!-- Only generate links if a  FE user is logged on -->
-			<f:if condition="{voter}"><f:then>
+			<f:if condition="{ajaxSelections}"><f:then>
 				<f:for each="{ajaxSelections}" as="ajaxSelection">
 				<li><thr:ratinglink class="ajaxLink RObj{ratingobject.uid}-StpOdr{ajaxSelection.step.steporder}-ratingstep-{ratingClass} {barimage}" title='{ajaxSelection.step.stepname}' href='#' tabindex='-1' ><input type="hidden" name="ajaxSelect" value="{ajaxSelection.ajaxvalue}" />{ajaxSelection.step.steporder}</thr:ratinglink></li>
 				</f:for>

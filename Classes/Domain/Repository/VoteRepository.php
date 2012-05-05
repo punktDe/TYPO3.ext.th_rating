@@ -37,9 +37,9 @@ class Tx_ThRating_Domain_Repository_VoteRepository extends Tx_Extbase_Persistenc
 	/**
 	 * Finds the voting by giving the rating and voter objects 
 	 *
-	 * @param Tx_ThRating_Domain_Model_Rating 		$rating The concerned ratingobject
-	 * @param Tx_Extbase_Domain_Model_FrontendUser	$voter 	The Uid of the rated row
-	 * @return Tx_ThRating_Domain_Model_Vote The voting
+	 * @param 	Tx_ThRating_Domain_Model_Rating	$rating The concerned ratingobject
+	 * @param 	Tx_ThRating_Domain_Model_Voter	$voter 	The Uid of the rated row
+	 * @return 	Tx_ThRating_Domain_Model_Vote 			The voting
 	 */
 	public function findMatchingRatingAndVoter($rating = NULL, $voter = NULL ) {
 		$query = $this->createQuery();
@@ -57,9 +57,9 @@ class Tx_ThRating_Domain_Repository_VoteRepository extends Tx_Extbase_Persistenc
 	/**
 	 * Counts all votings by giving the rating and ratingstep 
 	 *
-	 * @param Tx_ThRating_Domain_Model_Rating 	$rating 	The concerned ratingobject
-	 * @param Tx_ThRating_Domain_Model_Stepconf	$stepconf 	The stepconf object
-	 * @return int
+	 * @param 	Tx_ThRating_Domain_Model_Rating 	$rating 	The concerned ratingobject
+	 * @param 	Tx_ThRating_Domain_Model_Stepconf	$stepconf 	The stepconf object
+	 * @return 	Int
 	 */
 	public function countByMatchingRatingAndVote($rating = NULL, $stepconf = NULL ) {
 		$query = $this->createQuery();
@@ -75,10 +75,10 @@ class Tx_ThRating_Domain_Repository_VoteRepository extends Tx_Extbase_Persistenc
 	/**
 	 * Counts all anonymous votings by giving the rating and ratingstep 
 	 *
-	 * @param Tx_ThRating_Domain_Model_Rating 	$rating 				The concerned ratingobject
-	 * @param Tx_ThRating_Domain_Model_Stepconf	$stepconf 			The stepconf object
-	 * @param int 											$anonymousVoter	UID of the anonymous account
-	 * @return int
+	 * @param 	Tx_ThRating_Domain_Model_Rating 	$rating 		The concerned ratingobject
+	 * @param 	Tx_ThRating_Domain_Model_Stepconf	$stepconf 		The stepconf object
+	 * @param 	Int 								$anonymousVoter	UID of the anonymous account
+	 * @return 	Int
 	 */
 	public function countAnonymousByMatchingRatingAndVote($rating = NULL, $stepconf = NULL, $anonymousVoter = NULL ) {
 		if ( !empty($anonymousVoter) ) {

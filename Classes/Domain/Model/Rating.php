@@ -179,7 +179,7 @@ class Tx_ThRating_Domain_Model_Rating extends Tx_Extbase_DomainObject_AbstractEn
 	/**
 	 * Returns all votes in this rating
 	 *
-	 * @return Tx_Extbase_Persistence_ObjectStorage
+	 * @return	Tx_Extbase_Persistence_ObjectStorage<Tx_ThRating_Domain_Model_Vote>
 	 */
 	public function getVotes() {
 		return clone $this->votes;
@@ -209,20 +209,6 @@ class Tx_ThRating_Domain_Model_Rating extends Tx_Extbase_DomainObject_AbstractEn
 
 
 	/**
-	 * Checks if given user is the anonymous one
-	 *
-	 * @param Tx_Extbase_Domain_Model_FrontendUser $person U´Person to check against anonymous
-	 * @return bool The result; TRUE if the given person is anonymous; otherwise FALSE
-	 */
-	public function isAnonymous(Tx_Extbase_Domain_Model_FrontendUser $person) {
-		if (	$this->settings['mapAnonymous'] && 
- 			  ($person->getUid() == $this->settings['mapAnonymous']) ) {
-			return true;
-		}
-		return false;
-	}
-
-	/**
 	 * Adds a vote to the calculations of this rating
 	 *
 	 * @param Tx_ThRating_Domain_Model_Vote $voteToRemove The vote to be removed
@@ -232,7 +218,7 @@ class Tx_ThRating_Domain_Model_Rating extends Tx_Extbase_DomainObject_AbstractEn
 		//$this->checkCurrentrates(); //check for possible inconsistencies
 		$currentratesDecoded = $this->currentrates ? json_decode($this->currentrates, true) : '';
 		$currentratesDecoded['numAllVotes']++;
-		if (	$this->isAnonymous($voting->getVoter()) ) {
+		if ( $voting->isAnonymous() ) {
 			$currentratesDecoded['anonymousVotes']++;
 		}
 		$votingStep = $voting->getVote();

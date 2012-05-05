@@ -51,7 +51,7 @@ class Tx_ThRating_Domain_Validator_VoteValidator extends Tx_Extbase_Validation_V
 			return false;
 		}
 		//a vote must have a valid voter
-		if (!$vote->getVoter() instanceof Tx_Extbase_Domain_Model_FrontendUser) {
+		if (!$vote->getVoter() instanceof Tx_ThRating_Domain_Model_Voter) {
 			$this->addError(Tx_Extbase_Utility_Localization::translate('error.validator.vote.voter', 'ThRating'), 1283540684);
 			return false;
 		}

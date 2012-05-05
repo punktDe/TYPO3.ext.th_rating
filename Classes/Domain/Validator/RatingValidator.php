@@ -29,7 +29,7 @@
  * A validator for Ratings
  *
  * @author		Thomas Hucke <thucke@web.de>
- * @copyright Copyright belongs to the respective authors
+ * @copyright 	Copyright belongs to the respective authors
  * @scope singleton
  */
 class Tx_ThRating_Domain_Validator_RatingValidator extends Tx_Extbase_Validation_Validator_AbstractValidator {
@@ -41,6 +41,10 @@ class Tx_ThRating_Domain_Validator_RatingValidator extends Tx_Extbase_Validation
 	 * @return boolean true
 	 */
 	public function isValid($rating) {
+		//a rating object must be given
+		if (!$rating instanceof Tx_ThRating_Domain_Model_Rating) {
+			return false;
+		} 
 		$ratedobjectuid = $rating->getRatedobjectuid();
 		if (empty($ratedobjectuid)) {
 			$this->addError(Tx_Extbase_Utility_Localization::translate('error.validator.rating.ratedobjectuid', 'ThRating'), 1283536994);

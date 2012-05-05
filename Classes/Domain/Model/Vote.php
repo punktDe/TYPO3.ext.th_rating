@@ -34,16 +34,17 @@
 class Tx_ThRating_Domain_Model_Vote extends Tx_Extbase_DomainObject_AbstractEntity {
 
 	/**
-	 * @var Tx_ThRating_Domain_Model_Rating
-	 * @validate Tx_ThRating_Domain_Validator_RatingValidator
-	 * @lazy
+	 * @var 		Tx_ThRating_Domain_Model_Rating
+	 * @validate 	Tx_ThRating_Domain_Validator_RatingValidator
+	 * lazy
 	 */
 	protected $rating;
 	
 	/**
 	 * The voter of this object
 	 *
-	 * @var Tx_Extbase_Domain_Model_FrontendUser
+	 * @var 	Tx_ThRating_Domain_Model_Voter
+	 * validate Tx_ThRating_Domain_Validator_VoterValidator
 	 * @lazy
 	 */
 	protected $voter;
@@ -51,8 +52,9 @@ class Tx_ThRating_Domain_Model_Vote extends Tx_Extbase_DomainObject_AbstractEnti
 	/**
 	 * The actual voting of this object
 	 *
-	 * @var Tx_ThRating_Domain_Model_Stepconf
-	 * @lazy
+	 * @var 		Tx_ThRating_Domain_Model_Stepconf
+	 * @validate	Tx_ThRating_Domain_Validator_StepconfValidator
+	 * lazy
 	 */
 	protected $vote;
 
@@ -61,7 +63,6 @@ class Tx_ThRating_Domain_Model_Vote extends Tx_Extbase_DomainObject_AbstractEnti
 	 */
 	protected $settings;
 
-
 	/**
 	 * Constructs a new rating object
 	 *
@@ -69,7 +70,7 @@ class Tx_ThRating_Domain_Model_Vote extends Tx_Extbase_DomainObject_AbstractEnti
 	 */
 	public function __construct( 
 					Tx_ThRating_Domain_Model_Rating			$rating = NULL,
-					Tx_Extbase_Domain_Model_FrontendUser 	$voter = NULL, 
+					Tx_ThRating_Domain_Model_Voter			$voter = NULL, 
 					Tx_ThRating_Domain_Model_Stepconf		$vote  = NULL ) {
 		If ($rating)  $this->setRating($rating);
 		If ($voter)   $this->setVoter($voter);
@@ -115,17 +116,17 @@ class Tx_ThRating_Domain_Model_Vote extends Tx_Extbase_DomainObject_AbstractEnti
 	/**
 	 * Sets the frontenduser of this vote 
 	 *
-	 * @param Tx_Extbase_Domain_Model_FrontendUser $voter An object storage containing the frontenduser
+	 * @param Tx_ThRating_Domain_Model_Voter	$voter	The frontenduser
 	 * @return void
 	 */
-	public function setVoter(Tx_Extbase_Domain_Model_FrontendUser $voter) {
+	public function setVoter(Tx_ThRating_Domain_Model_Voter $voter) {
 		$this->voter = $voter;
 	}
 
 	/**
 	 * Returns the frontenduser of this vote
 	 *
-	 * @return Tx_Extbase_Domain_Model_FrontendUser	The frontenduser of this vote
+	 * @return Tx_ThRating_Domain_Model_Voter	The frontenduser of this vote
 	 */
 	public function getVoter() {
 		if ($this->voter instanceof Tx_Extbase_Persistence_LazyLoadingProxy) {
@@ -156,14 +157,15 @@ class Tx_ThRating_Domain_Model_Vote extends Tx_Extbase_DomainObject_AbstractEnti
 		}
 		return $this->vote;
 	}
+
 	/**
-	 * Method to use Object as plain string
-	 * 
-	 * @return string
+	 * Sets the rating this vote is part of
+	 *
+	 * @return boolean
 	 */
-	public function __toString() {
-		return (strval($this->vote));
-	}	
+	public function hasRated() {
+		return (get_class($this->getVote()) == 'Tx_ThRating_Domain_Model_Stepconf');
+	}
 
 	/**
 	 * Checks if vote is done by anonymous user
@@ -172,6 +174,15 @@ class Tx_ThRating_Domain_Model_Vote extends Tx_Extbase_DomainObject_AbstractEnti
 	 */
 	public function isAnonymous() {
 		return ($this->getVoter()->getUid() == $this->settings['mapAnonymous']);
+	}	
+
+	/**
+	 * Method to use Object as plain string
+	 * 
+	 * @return string
+	 */
+	public function __toString() {
+		return (strval($this->vote));
 	}	
 }
 ?>
