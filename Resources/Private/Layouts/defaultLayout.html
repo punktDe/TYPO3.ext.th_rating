@@ -21,7 +21,9 @@
 				</f:then></f:if>
 				<!-- Check if a  FE user is logged on -->
 				<f:if condition="{voter}"><f:then>
-					Click the rating bar to rate this item
+					<f:if condition="{ratingName}"><f:then>
+						Click the rating bar to rate this item
+					</f:then></f:if>
 				</f:then><f:else>
 					Please log on to do ratings
 				</f:else></f:if>	

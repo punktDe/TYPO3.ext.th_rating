@@ -271,3 +271,55 @@ page.1349058981.20 {
 # Static extension configuration - do not override!!					#
 #########################################################################
 [global]
+#########################################################################
+# Include all needed javascript and CSS styles
+-------------------------------------------------------------------------
+page {
+	includeJSlibs {
+		jQueryFormPlugin = EXT:th_rating/Resources/Public/Js/jquery.form.js
+		actions = EXT:th_rating/Resources/Public/Js/actions.js
+	}
+	includeCSS {
+		thRatingdyn = typo3temp/thratingDyn.css
+		thRating = EXT:th_rating/Resources/Public/Css/styles.css
+	}
+}
+
+
+#########################################################################
+# Page configuration for AJAX requests
+-------------------------------------------------------------------------
+thrating_ajax = PAGE
+thrating_ajax {
+	typeNum = 1349058974
+	config {
+		disableAllHeaderCode = 1 
+        no_cache = 1
+		xhtml_cleaning = 1
+		admPanel = 0
+		debug = 0
+	}
+	10 =< tt_content.list.20.thrating_pi1
+}
+
+
+#########################################################################
+# Include jQuery once per page
+-------------------------------------------------------------------------
+includeLibs.t3jquery = EXT:t3jquery/class.tx_t3jquery.php
+page.1288250056 = USER
+page.1288250056.userFunc = tx_t3jquery->addJS
+
+#########################################################################
+# Include FLUID form only once per page
+-------------------------------------------------------------------------
+page.1288250055 = USER
+page.1288250055 < plugin.tx_thrating
+page.1288250055 {
+	action = singleton
+	switchableControllerActions {
+		Vote {
+			1 = singleton
+		}
+	}
+}
