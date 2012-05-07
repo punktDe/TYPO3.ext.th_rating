@@ -134,7 +134,7 @@ class Tx_ThRating_Controller_VoteController extends Tx_Extbase_MVC_Controller_Ac
 			$this->ajaxSelections['ajaxRef'] = $this->request->getArgument('ajaxRef'); 
 		} else { 
 			//set unique AJAX identification
-			$this->ajaxSelections['ajaxRef'] = $this->getRandomId(); 
+			$this->ajaxSelections['ajaxRef'] = $this->prefixId.'_'.$this->getRandomId(); 
 		}
 	}
 

@@ -34,22 +34,25 @@ $TCA['tx_thrating_domain_model_ratingobject'] = array (
 //t3lib_extMgm::allowTableOnStandardPages('tx_thrating_domain_model_stepconf');
 $TCA['tx_thrating_domain_model_stepconf'] = array (
 	'ctrl' => array (
-		'title'				=> 'Ratingstep configuration',
-		'label'				=> 'uid',
-		'label_alt' 		=> 'ratingobject,steporder',
- 		'label_userFunc' 	=> 'user_BEfunc->getStepconfRecordTitle',
-		'tstamp'			=> 'tstamp',
-		'crdate'			=> 'crdate',
-		'cruser_id'			=> 'cruser_id',
-		'delete'			=> 'deleted',
-		'adminOnly'			=> true,
-		'hideTable'			=> true,
-		'editlock'			=> 'steporder,stepweight',
-		'enablecolumns'		=> array(
-			'disabled'	=> 'hidden'
-			),
+		'title'						=> 'Ratingstep configuration',
+		'label'						=> 'uid',
+		'label_alt' 				=> 'ratingobject,steporder,sys_language_uid',
+ 		'label_userFunc' 			=> 'user_BEfunc->getStepconfRecordTitle',
+		'type'						=> '1',
+		'tstamp'					=> 'tstamp',
+		'crdate'					=> 'crdate',
+		'cruser_id'					=> 'cruser_id',
+		'languageField'           	=> 'sys_language_uid',
+		'transOrigPointerField'    	=> 'l18n_parent',
+		//'transOrigDiffSourceField'	=> 'l18n_diffsource',		//deactivated due to bug #19920 
+		'delete'					=> 'deleted',
+		'adminOnly'					=> false,
+		'hideTable'					=> false,
+		'editlock'					=> 'sys_language_uid,steporder,stepweight',
+		'dividers2tabs'				=> true,
+		'enablecolumns'				=> array( 'disabled'	=> 'hidden' ),
 		'dynamicConfigFile'	=> t3lib_extMgm::extPath($_EXTKEY) . 'Configuration/TCA/tx_thrating_domain_model_stepconf.php',
-		'iconfile'			=> t3lib_extMgm::extRelPath($_EXTKEY) . 'Resources/Public/Icons/tx_thrating_domain_model_stepconf.gif'
+		'iconfile'			=> t3lib_extMgm::extRelPath($_EXTKEY) . 'Resources/Public/Icons/tx_thrating_domain_model_stepconf.gif',
 	)
 );
 
@@ -84,7 +87,7 @@ $TCA['tx_thrating_domain_model_vote'] = array (
  		'label_userFunc'	=> 'user_BEfunc->getVoteRecordTitle',
 		'tstamp'			=> 'tstamp',
 		'crdate'			=> 'crdate',
-		'cruser_id'		=> 'cruser_id',
+		'cruser_id'			=> 'cruser_id',
 		'delete'			=> 'deleted',
 		'adminOnly'			=> true,
 		'hideTable'			=> true,

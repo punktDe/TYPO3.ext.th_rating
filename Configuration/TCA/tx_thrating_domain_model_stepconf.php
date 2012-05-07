@@ -4,35 +4,34 @@ if (!defined ('TYPO3_MODE')) 	die ('Access denied.');
 $TCA['tx_thrating_domain_model_stepconf'] = array(
 	'ctrl' => $TCA['tx_thrating_domain_model_stepconf']['ctrl'],
 	'interface' => array(
-		'showRecordFieldList' => 'hidden, steporder, stepweight, stepname'
+		'showRecordFieldList' => 'hidden, ratingobject, steporder, stepweight, stepname'
 	),
 	'columns' => array(
 		'pid' => Array (  
 			'exclude' => 1,
 			'config' => Array (
 				'type' => 'none',
-			)
+			),
 		),
 		'hidden' => array(
 			'exclude' => 1,
 			'label'   => 'LLL:EXT:lang/locallang_general.xml:LGL.hidden',
 			'config'  => array(
-				'type' => 'check'
-			)
+				'type' => 'check',
+				'default' => 0,
+			),
 		),
 		'ratingobject' => Array (		
 			'exclude' => 1,		
 			'label'   => 'Rating Object',
 			'config' => Array (
-				'type' => 'select',
-				'foreign_table' => 'tx_thrating_domain_model_ratingobject',
-				'maxitems' => 1,
-				'minitems' => 1,
-				'disableNoMatchingValueElement' => 1
-			)
+				'type' => 'passthrough',
+			),
 		),		
 		'steporder' => Array (
-			'label'		=> 'Ratingstep order',
+			'label'			=> 'Ratingstep order',
+			'l10n_display'	=> 'defaultAsReadonly',
+			//'l10n_cat'		=> 'media',
 			'config'=> Array (
 				'type'		=> 'input',
 				'size'		=> '8',
@@ -40,38 +39,45 @@ $TCA['tx_thrating_domain_model_stepconf'] = array(
 				'eval'		=> 'tx_thrating_unlinkDynCss_eval,int,required',
 				'default'	=> 0,
 				'range'		=> array('lower' => 1)
-			)
+			),
 		),
 		'stepweight' => Array (
-			'label' => 'Ratingstep weight',
-			'config' => Array (
-				'type'		=> 'input',
-				'size'		=> '8',
-				'max'		=> '12',
-				'eval'		=> 'tx_thrating_unlinkDynCss_eval,int',
-			)
+			'label' 		=> 'Ratingstep weight',
+			'l10n_display'	=> 'defaultAsReadonly',
+			//'l10n_cat'		=> 'media',
+			'config' 		=> Array (
+				'type'	=> 'input',
+				'size'	=> '8',
+				'max'	=> '12',
+				'eval'	=> 'tx_thrating_unlinkDynCss_eval,int',
+			),
 		),
 		'stepname' => Array (
-			'label' => 'Ratingstep name',
+			'label' 		=> 'Ratingstep name',
+			'l10n_mode'		=> 'prefixLangTitle ',
+			'l10n_display'	=> 'hideDiff ',
 			'config' => Array (
 				'type'		=> 'input',
 				'size'		=> '15',
 				'max'		=> '60',
 				'eval'		=> 'trim,alphanum_x',
-			)
+			),
 		),
 		'votes' => array(
-			'label'   => 'Assigned votes',
+			'label'   		=> 'Assigned votes',
+			'l10n_mode' 	=> 'exclude',
+			//'l10n_display'	=> 'hideDiff',
 			'config' => array(
 				'type' => 'inline',
-				'foreign_table' => 'tx_thrating_domain_model_vote',
-				'foreign_field' => 'vote',
-				'foreign_sortby' => 'uid',
-				'maxitems'      => 999999,
-				'appearance' => array(
-					'levelLinksPosition' => 'bottom',
-					'collapseAll' => 1,
-					'expandSingle' => 1,
+				'foreign_table' 	=> 'tx_thrating_domain_model_vote',
+				'foreign_field' 	=> 'vote',
+				'foreign_sortby' 	=> 'uid',
+				'maxitems'      	=> 999999,
+				'appearance' 		=> array(
+					'levelLinksPosition'	=> 'bottom',
+					'collapseAll' 			=> 1,
+					'expandSingle' 			=> 1,
+					'newRecordLinkAddTitle' => true,
 				),
 			),
 		),
@@ -79,14 +85,45 @@ $TCA['tx_thrating_domain_model_stepconf'] = array(
 			'label'   => 'Ratingstep configuration list',
 			'config' => array(
 				'type' => 'passthrough',
-			)
+			),
 		),
+		'sys_language_uid' => array (
+			'exclude' => 1,
+			'label'  => 'LLL:EXT:lang/locallang_general.xml:LGL.language',
+			'config' => array (
+				'type'                => 'select',
+				'foreign_table'       => 'sys_language',
+				'foreign_table_where' => 'ORDER BY sys_language.title',
+				'items' => array(
+					array('LLL:EXT:lang/locallang_general.xml:LGL.allLanguages', -1),
+					array('LLL:EXT:lang/locallang_general.xml:LGL.default_value', 0)
+				),
+			),
 		),
+		'l18n_parent' => array (
+			'displayCond' => 'FIELD:sys_language_uid:>:0',
+			'exclude'     => 1,
+			'label'       => 'LLL:EXT:lang/locallang_general.xml:LGL.l18n_parent',
+			'config'      => array (
+				'type'  => 'select',
+				'items' => array (
+					array('', 0),
+				),
+				'foreign_table'       => 'tx_thrating_domain_model_stepconf',
+				'foreign_table_where' => 'AND tx_thrating_domain_model_stepconf.uid=###REC_FIELD_l18n_parent### AND tx_thrating_domain_model_stepconf.sys_language_uid IN (-1,0)',
+			),
+		),
+		/*'l18n_diffsource' => array (
+			'config' => array (
+				'type' => 'passthrough'
+			),
+		),*/			//deactivated due to bug #19920 
+	),
 	'types' => array(
-		'1' => array('showitem' => 'hidden, steporder, stepweight, stepname, votes')
+		'0' => Array('showitem' => '--div--;Display,stepname,--div--;Rating,steporder, stepweight,votes,--div--;General,hidden'),
 	),
 	'palettes' => array(
-		'1' => array('showitem' => '')
-	)
+		'1' => array('showitem' => ''),
+	),
 );
 ?>

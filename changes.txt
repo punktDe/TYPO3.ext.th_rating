@@ -1,2 +1,4 @@
-- major bugfixes
+- major redesign
+- remove all former manual additions to templates (config.tx_extbase.persistence.classes) when upgrading
+- removed display of examples
 - added configuration option 'showSummary'

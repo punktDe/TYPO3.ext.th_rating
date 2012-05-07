@@ -36,7 +36,7 @@ class user_BEfunc {
 	 * @return byRef $params
 	 */
 	public function getRatingObjectRecordTitle($params, $pObj) {
-        $params['title'] = $params['row']['ratetable'].' ['.$params['row']['ratefield'].']';
+        $params['title'] = '#'.$params['row']['uid'].': '.$params['row']['ratetable'].' ['.$params['row']['ratefield'].']';
     }
 
 	/**
@@ -45,7 +45,7 @@ class user_BEfunc {
 	 * @return byRef $params
 	 */
     public function getStepconfRecordTitle($params, $pObj) {
-        $params['title'] = 'Ratingstep ['.$params['row']['steporder'].']';
+        $params['title'] = 'Ratingobject['.$params['row']['ratingobject'].'] - Step ['.$params['row']['steporder'].']';
     }
 
 	 /**
@@ -54,7 +54,7 @@ class user_BEfunc {
 	 * @return byRef $params
 	 */
     public function getRatingRecordTitle($params, $pObj) {
-        $params['title'] = 'Row Uid ['.$params['row']['ratedobjectuid'].']';
+        $params['title'] = '#'.$params['row']['uid']. ': Ratingobject['.$params['row']['ratingobject'].'] - RowUid ['.$params['row']['ratedobjectuid'].']';
     }
 
 	/**

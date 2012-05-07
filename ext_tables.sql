@@ -40,6 +40,9 @@ CREATE TABLE tx_thrating_domain_model_stepconf (
 	cruser_id int(11) DEFAULT '0' NOT NULL,
 	deleted tinyint(4) unsigned DEFAULT '0' NOT NULL,
 	hidden tinyint(4) unsigned DEFAULT '0' NOT NULL,
+	sys_language_uid int(11) DEFAULT '0' NOT NULL,
+	l18n_parent int(11) DEFAULT '0' NOT NULL,
+#l18n_diffsource mediumblob NOT NULL,	//deactivated due to bug #19920 
 
 	PRIMARY KEY (uid),
 	KEY parent (pid),

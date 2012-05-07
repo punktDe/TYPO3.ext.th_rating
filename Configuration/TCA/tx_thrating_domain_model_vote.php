@@ -37,7 +37,8 @@ $TCA['tx_thrating_domain_model_vote'] = array(
 			'config' => Array (
 				'type' => 'select',
 				'foreign_table' => 'fe_users',
-				'foreign_table_where' => 'AND fe_users.pid=###CURRENT_PID###',
+				//'foreign_table_where' => 'AND fe_users.pid=###CURRENT_PID###',
+				'foreign_table_where' => 'AND fe_users.disable=0',
 				'items'	=> Array (
 					Array ('--div--',0),
 				),
