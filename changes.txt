@@ -5,4 +5,4 @@
 - added configuration option 'hideSummary'
 - reworked direct FE plugin implementation
 - added flexform configuration for direct FE plugin usage
-- added congiguration for newStoragePid
+- added configuration for newStoragePid
