@@ -1,5 +1,6 @@
 - major redesign
-- remove all former manual additions to templates (config.tx_extbase.persistence.classes) when upgrading
+- !! remove all former manual additions to templates (config.tx_extbase.persistence.classes) when upgrading
+- !! move all table objects from pid 1 to you normal storage pid (e.g. with phpMyAdmin)
 - removed display of examples
 - added configuration option 'hideSummary'
 - reworked direct FE plugin implementation
