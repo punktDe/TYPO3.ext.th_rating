@@ -75,10 +75,55 @@ class user_BEfunc {
     public function clearCachePostProc($_funcRef,$params, $pObj=NULL) {
     	if (file_exists(PATH_site.'typo3temp/thratingDyn.css'))
     		unlink( PATH_site.'typo3temp/thratingDyn.css');
-			//recreate file with zero length - so its still included via TS
-			$fp = fopen ( PATH_site.'typo3temp/thratingDyn.css', 'w' );
-			fwrite ( $fp, '');
-			fclose ( $fp );
+		//recreate file with zero length - so its still included via TS
+		$fp = fopen ( PATH_site.'typo3temp/thratingDyn.css', 'w' );
+		fwrite ( $fp, '');
+		fclose ( $fp );
+	}
+		
+		
+	/**
+	 * Returns all configured ratinglink display types for flexform
+	 *
+	 * @param	array	$config
+	 * @return 	array	ratinglink configurations
+	 */
+	public function dynFlexRatinglinkConfig($config) {
+		$settings = $this->loadTypoScriptForBEModule('tx_thrating',$config['row']['pid']);
+		$ratingconfigs = $settings['settings.']['ratingConfigurations.'];
+		$optionList = array();
+		// add first option
+		$optionList[0] = array(0 => 'Default', 1 => $ratingconfigs['default']);
+		foreach ( $ratingconfigs as $configKey => $configValue ) {
+			$lastDot = strrpos( $configKey, '.' );
+			if ( $lastDot ) {
+				$name = substr($configKey,0,$lastDot);
+				// add option
+				$optionList[] = array(0 => $name, 1 => $name);
+			}
 		}
+		$config['items'] = array_merge($config['items'],$optionList);		
+		//t3lib_utility_Debug::debug($config['items'],'conf');		
+		return $config;
+	}
+	
+	
+	/**
+	 * Loads the TypoScript for the given extension prefix, e.g. tx_cspuppyfunctions_pi1, for use in a backend module.
+	 *
+	 * @param 	string 	$extKey	Extension key to look for config
+	 * @param	int		$pid	pageUid 
+	 * @return 	array
+	 */
+	function loadTypoScriptForBEModule($extKey,$pid) {
+		$sysPageObj = t3lib_div::makeInstance('t3lib_pageSelect');
+        $rootLine = $sysPageObj->getRootLine($pid);
+        $TSObj = t3lib_div::makeInstance('t3lib_tsparser_ext');
+        $TSObj->tt_track = 0;
+        $TSObj->init();
+        $TSObj->runThroughTemplates($rootLine);
+        $TSObj->generateConfig();
+        return $TSObj->setup['plugin.'][$extKey.'.'];
+	}
 }
 ?>

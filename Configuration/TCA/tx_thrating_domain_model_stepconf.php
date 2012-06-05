@@ -91,9 +91,10 @@ $TCA['tx_thrating_domain_model_stepconf'] = array(
 			'exclude' => 1,
 			'label'  => 'LLL:EXT:lang/locallang_general.xml:LGL.language',
 			'config' => array (
-				'type'                => 'select',
-				'foreign_table'       => 'sys_language',
-				'foreign_table_where' => 'ORDER BY sys_language.title',
+				'readOnly'				=> true,
+				'type'                	=> 'select',
+				'foreign_table'       	=> 'sys_language',
+				'foreign_table_where' 	=> 'ORDER BY sys_language.title',
 				'items' => array(
 					array('LLL:EXT:lang/locallang_general.xml:LGL.allLanguages', -1),
 					array('LLL:EXT:lang/locallang_general.xml:LGL.default_value', 0)
@@ -120,7 +121,7 @@ $TCA['tx_thrating_domain_model_stepconf'] = array(
 		),*/			//deactivated due to bug #19920 
 	),
 	'types' => array(
-		'0' => Array('showitem' => '--div--;Display,stepname,--div--;Rating,steporder, stepweight,votes,--div--;General,hidden'),
+		'0' => Array('showitem' => '--div--;Display,sys_language_uid,stepname,--div--;Rating,steporder, stepweight,votes,--div--;General,hidden'),
 	),
 	'palettes' => array(
 		'1' => array('showitem' => ''),

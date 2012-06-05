@@ -1,7 +1,8 @@
 <div class='tx-thrating-pi1-content' id='tx-thrating-pi1-{ajaxRef}'>
 	<div class='tx-thrating-content'>
 		<f:render section="content" />
-		<f:if condition="{settings.showSummary}"><f:then>
+		<f:if condition="{settings.hideSummary}"><f:then>
+		</f:then><f:else>
 		<div class='tx-thrating-summary'>
 			<f:if condition="{currentRates}"><f:then>
 				Rating: <f:format.number decimals="1" decimalSeparator="," thousandsSeparator=".">{currentRates}</f:format.number> of {stepCount}. <f:count>{rating.votes}</f:count> vote(s).
@@ -29,7 +30,7 @@
 				</f:else></f:if>	
 			</f:else></f:if>	
 		</div>
-		</f:then></f:if>	
+		</f:else></f:if>	
 	</div>
 	<div class='tx-thrating-flash-message'>
 		<!--f:translate key="label_recent_posts">Below are the most recent posts:</f:translate-->

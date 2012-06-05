@@ -6,6 +6,7 @@
 	</meta>
 	<data type="array">
 		<languageKey index="default" type="array">
+			<label index="error.vote.general.invalidStoragePid">Invalid storage page</label>
 			<label index="error.validator.ratingobject_table">Missing table name in ratingobject.</label>
 			<label index="error.validator.ratingobject_field">Missing field name in ratingobject.</label>
 			<label index="error.validator.rating.ratedobjectuid">Missing UID in rating.</label>

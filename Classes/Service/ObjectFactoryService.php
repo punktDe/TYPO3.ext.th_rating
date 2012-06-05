@@ -50,11 +50,12 @@ class Tx_ThRating_Service_ObjectFactoryService implements t3lib_Singleton {
 			$settings['ratetable'] = $currentRecord[0];
 		}
 		if (empty($settings['ratefield'])) {
-			$settings['ratefield'] = $currentRecord[1];
+			$settings['ratefield'] = 'uid';
 		}		
 		if (empty($settings['ratedobjectuid'])) {
 			$settings['ratedobjectuid'] = $currentRecord[1];
 		}
+		//t3lib_utility_Debug::debug($settings,'completeConfigurationSettings');		
 		return $settings;
 	}
 

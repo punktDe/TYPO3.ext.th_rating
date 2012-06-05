@@ -172,10 +172,6 @@ class Tx_ThRating_Domain_Model_Stepconf extends Tx_Extbase_DomainObject_Abstract
 	public function getStepname() {
 		$value = $this->stepname;
 		empty($value) && $value = strval($this->stepweight);
-		if (t3lib_div::isFirstPartOfStr($value, 'LLL:')) {
-			$value = Tx_Extbase_Utility_Localization::translate('ratingstep.'.substr($value, 4), 'ThRating');
-			empty($value) && $value = Tx_Extbase_Utility_Localization::translate('error.translation','ThRating') . $this->stepname;
-		}
 		return $value;
 	}
 	

@@ -6,19 +6,21 @@
 	</meta>
 	<data type="array">
 		<languageKey index="default" type="array">
-			<label index="overrideTsSettings">Override TS settings</label>
 			<label index="sheet_general">General</label>
-			<label index="general_disableRespectStoragePid">Search records on all pages (not functional)</label>
-			<label index="general_newRecordStoragePid">Store new records on</label>
-			<label index="general_templateRootPath">Template root path</label>
-			<label index="general_partialRootPath">Partial root path</label>
-			<label index="general_layoutRootPath">Layout root path</label>
-			<label index="sheet_feusers">Websiteusers</label>
-			<label index="feusers_pages">Search users and groups on</label>
+			<label index="general_actions">Plugin action</label>
+			<label index="general_display">Ratinglink configuration</label>
+			<label index="general_hideSummary">Hide rating summary</label>
+			<label index="sheet_paths">Paths</label>
+			<label index="paths_templateRootPath">Template root path</label>
+			<label index="paths_partialRootPath">Partial root path</label>
+			<label index="paths_layoutRootPath">Layout root path</label>
 		</languageKey>
 		<languageKey index="de" type="array">
-			<label index="das.ist.der.key">Das ist die deutsche Ausgabe</label>
-			<label index="test">TESTAusgabeDE</label>
+			<label index="sheet_general">Basis</label>
+			<label index="general_actions">Aktion des Plugins</label>
+			<label index="general_display">Ratinglink Darstellung</label>
+			<label index="general_hideSummary">Verstecke Rating Zusammenfassung</label>
+			<label index="sheet_paths">Pfade</label>
 		</languageKey>
 	</data>
 </T3locallang>

@@ -1,4 +1,7 @@
 - major redesign
 - remove all former manual additions to templates (config.tx_extbase.persistence.classes) when upgrading
 - removed display of examples
-- added configuration option 'showSummary'
+- added configuration option 'hideSummary'
+- reworked direct FE plugin implementation
+- added flexform configuration for direct FE plugin usage
+- added congiguration for newStoragePid

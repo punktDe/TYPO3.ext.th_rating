@@ -30,6 +30,8 @@
  */
 class Tx_ThRating_Controller_VoteController extends Tx_Extbase_MVC_Controller_ActionController {
 
+//TODO: Errormessage, wenn kein Step konfiguriert
+//TODO: Flexform bei FE-Plugin
 	/**
 	 * @var Tx_ThRating_Domain_Model_Stepconf
 	 */
@@ -260,7 +262,6 @@ class Tx_ThRating_Controller_VoteController extends Tx_Extbase_MVC_Controller_Ac
 				$this->ratingName = $this->settings['ratingConfigurations']['default'];
 			}
 		}
-		
 		$this->initVoting( $vote );
 		$ratingConfiguration = $this->settings['ratingConfigurations'][$this->ratingName];
 
@@ -318,6 +319,7 @@ class Tx_ThRating_Controller_VoteController extends Tx_Extbase_MVC_Controller_Ac
 				}
 			}
 		}
+		//t3lib_utility_Debug::debug($this->settings,'ratinglinksAction');		
 
 		//set array to create voting information
 		if ($this->vote instanceof Tx_ThRating_Domain_Model_Vote) {
@@ -396,14 +398,25 @@ class Tx_ThRating_Controller_VoteController extends Tx_Extbase_MVC_Controller_Ac
 	protected function setStoragePids() {
 		$siteRootPids = $GLOBALS['TSFE']->getStorageSiterootPids();
 		$siteRoot = $siteRootPids['_SITEROOT'];
+		$storagePid = $siteRootPids['_STORAGE_PID'];
 		$frameworkConfiguration = $this->configurationManager->getConfiguration(Tx_Extbase_Configuration_ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
+		//t3lib_utility_Debug::debug($frameworkConfiguration,'frameworkConfiguration');		
 
 		$storagePids = explode(',',$frameworkConfiguration['persistence']['storagePid']);
-		sort($storagePids);
-		if (empty($storagePids[0])) {
-			$storagePids[0] = $siteRoot;	//change storagePid to SITEROOT page
-			$frameworkConfiguration['persistence']['storagePid'] = implode(',',$storagePids);
+		foreach ($storagePids as $i => $value) {
+			if ( !is_null($value) && (empty($value) || $value==$siteRoot) ) {
+				unset($storagePids[$i]);		//cleanup invalid values
+			}
 		}
+		$storagePids = array_values($storagePids); 	//re-index array
+		if ( count($storagePids)<2 && !is_null($storagePid) && !(empty($storagePid) || $storagePid==$siteRoot) ) {
+			array_unshift($storagePids,$storagePid);	//append the page storagePid if it is assumed to be missed and is valid
+		}
+
+		if (empty($storagePids[0])) {
+			$this->flashMessageContainer->add(Tx_Extbase_Utility_Localization::translate('error.vote.general.invalidStoragePid', 'ThRating', t3lib_FlashMessage::ERROR));
+		} 
+		$frameworkConfiguration['persistence']['storagePid'] = implode(',',$storagePids);
 		$this->configurationManager->setConfiguration($frameworkConfiguration);
 	}
 	

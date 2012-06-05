@@ -11,8 +11,8 @@
 ########################################################################
 
 $EM_CONF[$_EXTKEY] = array(
-	'title' => 'Rating of any content object.',
-	'description' => 'Inspired by the extentsion \'ratings\' and \'tt_rating\' moved to extbase/fluid. Allows multiple AJAX ratings (jQuery) within one page. Flexible usage as a cObj especially in other extensions.',
+	'title' => 'Rating AX',
+	'description' => 'Inspired by the extentsion \'ratings\' and \'tt_rating\' moved to extbase/fluid. Allows multiple AJAX ratings (jQuery) within one page. Flexible usage as a cObj especially in other extensions. A rating is not only done using numbers. Each ratingstep could also have a name - international localization included.',
 	'category' => 'plugin',
 	'shy' => 0,
 	'version' => '0.5.0',
@@ -35,7 +35,7 @@ $EM_CONF[$_EXTKEY] = array(
 	'constraints' => array(
 		'depends' => array(
 			'php' => '5.2.0-0.0.0',
-			'typo3' => '4.4.5-0.0.0',
+			'typo3' => '4.5.0-0.0.0',
 			'extbase' => '1.3.0',
 			'fluid' => '1.3.0',
 			't3jquery' => '1.8.8',

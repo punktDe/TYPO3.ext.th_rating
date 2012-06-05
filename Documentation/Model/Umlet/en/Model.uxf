@@ -4,10 +4,10 @@
   <element>
     <type>com.umlet.element.Class</type>
     <coordinates>
-      <x>490</x>
+      <x>470</x>
       <y>240</y>
       <w>370</w>
-      <h>240</h>
+      <h>250</h>
     </coordinates>
     <panel_attributes>&lt;&lt;Tx_ThRating_Domain_Model_Rating&gt;&gt;
 --
@@ -23,6 +23,7 @@
 #removeAllVotes()
 #checkCurrentrates()
 #addCurrentrate(vote: Tx_ThRating_Domain_Model_Vote)
+#getCurrentrates(): array
 #getCalculatedRate(): string
 
 </panel_attributes>
@@ -31,7 +32,7 @@
   <element>
     <type>com.umlet.element.Class</type>
     <coordinates>
-      <x>490</x>
+      <x>470</x>
       <y>20</y>
       <w>370</w>
       <h>170</h>
@@ -52,7 +53,7 @@
   <element>
     <type>com.umlet.element.Class</type>
     <coordinates>
-      <x>20</x>
+      <x>0</x>
       <y>20</y>
       <w>370</w>
       <h>220</h>
@@ -75,7 +76,7 @@
   <element>
     <type>com.umlet.element.Relation</type>
     <coordinates>
-      <x>360</x>
+      <x>340</x>
       <y>60</y>
       <w>150</w>
       <h>80</h>
@@ -89,7 +90,7 @@ has&gt;</panel_attributes>
   <element>
     <type>com.umlet.element.Relation</type>
     <coordinates>
-      <x>360</x>
+      <x>340</x>
       <y>110</y>
       <w>150</w>
       <h>220</h>
@@ -103,10 +104,10 @@ has&gt;</panel_attributes>
   <element>
     <type>com.umlet.element.Class</type>
     <coordinates>
-      <x>990</x>
+      <x>970</x>
       <y>140</y>
       <w>320</w>
-      <h>140</h>
+      <h>170</h>
     </coordinates>
     <panel_attributes>&lt;&lt;Tx_ThRating_Domain_Model_Vote&gt;&gt;
 --
@@ -116,7 +117,9 @@ has&gt;</panel_attributes>
 -rating:	 		Tx_ThRating_Domain_Model_Rating
 -voter:				Tx_Extbase_Domain_Model_FrontendUser
 --
-# __toString():string
+#hasRated(): boolean
+#isAnonymous(): boolean
+#__toString(): string
 
 </panel_attributes>
     <additional_attributes/>
@@ -124,7 +127,7 @@ has&gt;</panel_attributes>
   <element>
     <type>com.umlet.element.Relation</type>
     <coordinates>
-      <x>830</x>
+      <x>810</x>
       <y>200</y>
       <w>180</w>
       <h>160</h>
@@ -138,7 +141,7 @@ has&gt;</panel_attributes>
   <element>
     <type>com.umlet.element.Relation</type>
     <coordinates>
-      <x>830</x>
+      <x>810</x>
       <y>120</y>
       <w>180</w>
       <h>110</h>
@@ -152,8 +155,36 @@ has&gt;</panel_attributes>
   <element>
     <type>com.umlet.element.Class</type>
     <coordinates>
-      <x>990</x>
+      <x>970</x>
       <y>370</y>
+      <w>300</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;Tx_ThRating_Domain_Model_Voter&gt;&gt;
+
+
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>1240</x>
+      <y>190</y>
+      <w>138</w>
+      <h>220</h>
+    </coordinates>
+    <panel_attributes>lt=-
+m1=0..n
+m2=1
+has&gt;</panel_attributes>
+    <additional_attributes>50;30;100;30;100;200;30;200</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>970</x>
+      <y>450</y>
       <w>300</w>
       <h>110</h>
     </coordinates>
@@ -163,7 +194,7 @@ has&gt;</panel_attributes>
 -pid: 				Int(11)
 -username:	 		String
 --
-#isLoggedIn():boolean
+#isLoggedIn(): boolean
 
 </panel_attributes>
     <additional_attributes/>
@@ -171,15 +202,12 @@ has&gt;</panel_attributes>
   <element>
     <type>com.umlet.element.Relation</type>
     <coordinates>
-      <x>1260</x>
-      <y>190</y>
-      <w>138</w>
-      <h>240</h>
+      <x>1090</x>
+      <y>380</y>
+      <w>50</w>
+      <h>90</h>
     </coordinates>
-    <panel_attributes>lt=-
-m1=0..n
-m2=1
-has&gt;</panel_attributes>
-    <additional_attributes>50;30;100;30;100;220;30;220</additional_attributes>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-</panel_attributes>
+    <additional_attributes>30;70;30;30</additional_attributes>
   </element>
 </diagram>

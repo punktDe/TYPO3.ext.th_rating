@@ -5,12 +5,12 @@ if (!defined ('TYPO3_MODE')) die ('Access denied.');
 include_once(t3lib_extMgm::extPath($_EXTKEY) . 'Resources/Public/Classes/BE.userFunc.php');
 
 Tx_Extbase_Utility_Extension::registerPlugin(
-	$_EXTKEY,				// The extension name (in UpperCamelCase) or the extension key (in lower_underscore)
-	'Pi1',					// A unique name of the plugin in UpperCamelCase
-	'Rating features Extbase/Fluid'	// A title shown in the backend dropdown field
+	$_EXTKEY,		// The extension name (in UpperCamelCase) or the extension key (in lower_underscore)
+	'Pi1',			// A unique name of the plugin in UpperCamelCase
+	'Rating AX'		// A title shown in the backend dropdown field
 );
 
-t3lib_extMgm::addStaticFile($_EXTKEY, 'Configuration/TypoScript', 'Rating with extbase');
+t3lib_extMgm::addStaticFile($_EXTKEY, 'Configuration/TypoScript', 'Rating AX');
 
 t3lib_extMgm::allowTableOnStandardPages('tx_thrating_domain_model_ratingobject');
 $TCA['tx_thrating_domain_model_ratingobject'] = array (
@@ -102,7 +102,7 @@ $TCA['tx_thrating_domain_model_vote'] = array (
 
 $extensionName = t3lib_div::underscoredToUpperCamelCase($_EXTKEY);
 $pluginSignature = strtolower($extensionName) . '_pi1';
-$GLOBALS['TCA']['tt_content']['types']['list']['subtypes_excludelist'][$pluginSignature] = 'layout,select_key,recursive,pages';
-#$TCA['tt_content']['types']['list']['subtypes_addlist'][$pluginSignature] = 'pi_flexform';
-#t3lib_extMgm::addPiFlexFormValue($pluginSignature, 'FILE:EXT:'.$_EXTKEY.'/Configuration/Flexforms/flexform_pi1.xml');
+$TCA['tt_content']['types']['list']['subtypes_excludelist'][$pluginSignature ] = 'layout,select_key,recursive,pages';
+$TCA['tt_content']['types']['list']['subtypes_addlist'][$pluginSignature] = 'pi_flexform';
+t3lib_extMgm::addPiFlexFormValue($pluginSignature, 'FILE:EXT:'.$_EXTKEY.'/Configuration/Flexforms/flexform_pi1.xml');
 ?>
