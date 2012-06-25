@@ -26,8 +26,15 @@
 /**
  * A repository for votes
  */
-class Tx_ThRating_Domain_Repository_VoterRepository extends Tx_Extbase_Domain_Repository_FrontendUserRepository {			
-
+class Tx_ThRating_Domain_Repository_VoterRepository extends Tx_Extbase_Domain_Repository_FrontendUserRepository {		
+	
+	/**
+	 * Initialze this repository
+	 */
+	public function initializeObject() {
+		$configurationManager = $this->objectManager->get('Tx_Extbase_Configuration_ConfigurationManager');
+		$settings = $configurationManager->getConfiguration('Settings', 'thRating', 'pi1');
+	}
 }
 
 ?>

@@ -1,8 +1,4 @@
-- major redesign
-- !! remove all former manual additions to templates (config.tx_extbase.persistence.classes) when upgrading
-- !! move all table objects from pid 1 to you normal storage pid (e.g. with phpMyAdmin)
-- removed display of examples
-- added configuration option 'hideSummary'
-- reworked direct FE plugin implementation
-- added flexform configuration for direct FE plugin usage
-- added configuration for newStoragePid
+- Bugfix: malfunction when no anonymous user ist configured
+- display errormessage, if no ratingstep is configured
+- update of field in foreign table with current ratingvalue
+- removed some deprecated calls

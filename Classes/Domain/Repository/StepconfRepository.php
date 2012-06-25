@@ -30,5 +30,14 @@ class Tx_ThRating_Domain_Repository_StepconfRepository extends Tx_Extbase_Persis
 	protected $defaultOrderings = array(
          'steporder' => Tx_Extbase_Persistence_QueryInterface::ORDER_ASCENDING
 	);
+
+	/**
+	 * Initialze this repository
+	 */
+	public function initializeObject() {
+		$configurationManager = $this->objectManager->get('Tx_Extbase_Configuration_ConfigurationManager');
+		$settings = $configurationManager->getConfiguration('Settings', 'thRating', 'pi1');
+	}
+
 }
 ?>

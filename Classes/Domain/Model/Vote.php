@@ -173,7 +173,7 @@ class Tx_ThRating_Domain_Model_Vote extends Tx_Extbase_DomainObject_AbstractEnti
 	 * @return booelan
 	 */
 	public function isAnonymous() {
-		return ($this->getVoter()->getUid() == $this->settings['mapAnonymous']);
+		return ($this->getVoter()->getUid() == $this->settings['mapAnonymous'] && !empty($this->settings['mapAnonymous']));
 	}	
 
 	/**

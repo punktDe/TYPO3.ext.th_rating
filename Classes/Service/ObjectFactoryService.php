@@ -118,13 +118,15 @@ class Tx_ThRating_Service_ObjectFactoryService implements t3lib_Singleton {
 		//first fetch real voter or anonymous
 		$accessControllService = t3lib_div::makeInstance( 'Tx_ThRating_Service_AccessControlService' );
 		$frontendUserUid = $accessControllService->getFrontendUserUid();
-		if ( $settings['mapAnonymous'] && !$frontendUserUid ) {
+		if ( !empty($settings['mapAnonymous']) && !$frontendUserUid ) {
 			//set anonymous vote
 			$voter =  $accessControllService->getFrontendVoter($settings['mapAnonymous']);
 		} else {
 			//set FEUser
 			$voter =  $accessControllService->getFrontendVoter( $frontendUserUid );
-			$vote = $voteRepository->findMatchingRatingAndVoter($rating->getUid(),$voter->getUid());
+			if ($voter instanceof Tx_ThRating_Domain_Model_Voter) {
+				$vote = $voteRepository->findMatchingRatingAndVoter($rating->getUid(),$voter->getUid());
+			}
 		}
 		
 		//voting not found in database or anonymous vote? - create new one

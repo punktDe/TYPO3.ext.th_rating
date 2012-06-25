@@ -35,6 +35,22 @@ class Tx_ThRating_Domain_Repository_RatingRepository extends Tx_Extbase_Persiste
 	const addIfNotFound = true;
 
 	/**
+	 * @var Tx_Extbase_Persistence_Manager
+	 */
+	protected $persistenceManager;
+
+	/**
+	 * Initialze this repository
+	 */
+	public function initializeObject() {
+		$this->persistenceManager = $this->objectManager->get('Tx_Extbase_Persistence_Manager');
+		/*
+		$configurationManager = $this->objectManager->get('Tx_Extbase_Configuration_ConfigurationManager');
+		$settings = $configurationManager->getConfiguration('Settings', 'thRating', 'pi1');
+		*/
+	}
+
+	/**
 	 * Finds the specific rating by giving the object and row uid
 	 *
 	 * @param	Tx_ThRating_Domain_Model_Ratingobject	$ratingobject 	The concerned ratingobject
@@ -64,7 +80,7 @@ class Tx_ThRating_Domain_Repository_RatingRepository extends Tx_Extbase_Persiste
 				$foundRow->setRatedobjectuid($ratedobjectuid);	
 				$validator = $this->objectManager->create('Tx_ThRating_Domain_Validator_RatingValidator');
 				$validator->isValid($foundRow) && $this->add($foundRow);
-				Tx_Extbase_Dispatcher::getPersistenceManager()->persistAll();
+				$this->persistenceManager->persistAll();
 			} else {
 				unset($foundRow);
 			}

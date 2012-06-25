@@ -1,5 +1,7 @@
 <div class='tx-thrating-pi1-content' id='tx-thrating-pi1-{ajaxRef}'>
 	<div class='tx-thrating-content'>
+	<f:if condition="{stepCount} > 0">
+	  <f:then>
 		<f:render section="content" />
 		<f:if condition="{settings.hideSummary}"><f:then>
 		</f:then><f:else>
@@ -31,6 +33,9 @@
 			</f:else></f:if>	
 		</div>
 		</f:else></f:if>	
+	</f:then><f:else>
+		No ratingsteps configured.
+	</f:else></f:if>
 	</div>
 	<div class='tx-thrating-flash-message'>
 		<!--f:translate key="label_recent_posts">Below are the most recent posts:</f:translate-->

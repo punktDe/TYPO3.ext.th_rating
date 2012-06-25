@@ -14,6 +14,7 @@
 			<label index="error.validator.vote.vote">Missing vote.</label>
 			<label index="error.validator.vote.voter">False voter reference in vote</label>
 			<label index="error.validator.vote.stepconf">False voting reference in vote</label>
+			<label index="error.ratingobject.noRatingsteps">No ratingsteps configured!</label>
 			<label index="error.vote.noFEuser">FE user cannot be identified!</label>
 			<label index="error.vote.renderCSS.defaultImage">Issue found with configuration for rating display - using default image.</label>
 			<label index="error.vote.show.notRated">Not already rated</label>
@@ -21,21 +22,16 @@
 			<label index="error.vote.create.noPermission">No permission for this action.</label>
 			<label index="error.vote.create.alreadyRated">Already rated</label>
 			<label index="error.vote.create.newCreated">Your new vote was created.</label>
-			<label index="error.translation">Missing translation: </label>
-			<label index="ratingstep.Schlecht">Bad</label>
-			<label index="ratingstep.Besser">Better</label>
-			<label index="ratingstep.Gut">Good</label>
-			<label index="ratingstep.Spitze">Best</label>
+			<label index="error.vote.create.foreignUpdateFailed">Update of foreign field has failed.</label>
 		</languageKey>
 		<languageKey index="de" type="array">
+			<label index="error.ratingobject.noRatingsteps">Ratingsteps fehlen!</label>
 			<label index="error.vote.noFEuser">Benutzer nicht identifizierbar!</label>
+			<label index="error.vote.show.notRated">Noch unbewertet</label>
 			<label index="error.vote.create.noPermission">Sie haben keine Berechtigung die Aktion auszuführen.</label>
 			<label index="error.vote.create.alreadyRated">Sie haben bereits diese Bewertung durchgefuehrt.</label>
-			<label index="error.translation">Übersetzung fehlt: </label>
-			<label index="ratingstep.Schlecht">Schlecht</label>
-			<label index="ratingstep.Besser">Besser</label>
-			<label index="ratingstep.Gut">Gut</label>
-			<label index="ratingstep.Spitze">Spitze</label>
+			<label index="error.vote.create.newCreated">Die Stimme wurde gezählt.</label>
+			<label index="error.vote.create.foreignUpdateFailed">Update der Fremdtabelle fehlgeschlagen</label>
 		</languageKey>
 	</data>
 </T3locallang>

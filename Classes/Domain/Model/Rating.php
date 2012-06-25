@@ -223,9 +223,9 @@ class Tx_ThRating_Domain_Model_Rating extends Tx_Extbase_DomainObject_AbstractEn
 		}
 		$votingStep = $voting->getVote();
 		$votingSteporder = $votingStep->getSteporder(); 
-		$votingStepwheight = $votingStep->getStepweight(); 
-		$currentratesDecoded['weightedVotes'][$votingSteporder] += $votingStepwheight;
-		$currentratesDecoded['sumWeightedVotes'][$votingSteporder] += $votingStepwheight * $votingSteporder;
+		$votingStepweight = $votingStep->getStepweight(); 
+		$currentratesDecoded['weightedVotes'][$votingSteporder] += $votingStepweight;
+		$currentratesDecoded['sumWeightedVotes'][$votingSteporder] += $votingStepweight * $votingSteporder;
 		$this->currentrates = json_encode($currentratesDecoded);
 	}
 

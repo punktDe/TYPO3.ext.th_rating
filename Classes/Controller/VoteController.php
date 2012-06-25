@@ -30,8 +30,6 @@
  */
 class Tx_ThRating_Controller_VoteController extends Tx_Extbase_MVC_Controller_ActionController {
 
-//TODO: Errormessage, wenn kein Step konfiguriert
-//TODO: Flexform bei FE-Plugin
 	/**
 	 * @var Tx_ThRating_Domain_Model_Stepconf
 	 */
@@ -53,6 +51,17 @@ class Tx_ThRating_Controller_VoteController extends Tx_Extbase_MVC_Controller_Ac
 		//... to make static functions of this singleton avaiable
 	}
 	
+	/**
+	 * @var Tx_Extbase_Persistence_Manager
+	 */
+	protected $persistenceManager;
+	/**
+	 * @param Tx_Extbase_Persistence_Manager $persistenceManager
+	 */
+	public function injectPersistenceManager(Tx_Extbase_Persistence_Manager $persistenceManager) {
+		$this->persistenceManager = $persistenceManager;
+	}
+
 	/**
 	 * @var Tx_ThRating_Service_AccessControlService
 	 */
@@ -205,7 +214,11 @@ class Tx_ThRating_Controller_VoteController extends Tx_Extbase_MVC_Controller_Ac
 			if ( !$this->voteValidator->isValid($matchVote) || $vote->isAnonymous() ) {
 				$vote->getRating()->addVote($vote);
 				//persist newly added object to enable redirect to show action
-				Tx_Extbase_Dispatcher::getPersistenceManager()->persistAll();
+				//$this->persistenceManager->persistAll();
+				$setResult = $this->setForeignRatingValues($vote);
+				If (!$setResult) {
+					$this->flashMessageContainer->add(Tx_Extbase_Utility_Localization::translate('error.vote.create.foreignUpdateFailed', 'ThRating'));
+				}
 				$this->flashMessageContainer->add(Tx_Extbase_Utility_Localization::translate('error.vote.create.newCreated', 'ThRating'));
 			} else {
 				$vote = $matchVote;
@@ -312,6 +325,10 @@ class Tx_ThRating_Controller_VoteController extends Tx_Extbase_MVC_Controller_Ac
 			$ratingobject = Tx_ThRating_Service_ObjectFactoryService::getRatingobject( $this->settings );
 			$rating = Tx_ThRating_Service_ObjectFactoryService::getRating( $this->settings, $ratingobject );
 			$this->vote = Tx_ThRating_Service_ObjectFactoryService::getVote( $this->settings, $rating );
+			$countSteps=$ratingobject->getStepconfs()->count();
+			If ( empty($countSteps)) {
+				$this->flashMessageContainer->add(Tx_Extbase_Utility_Localization::translate('error.ratingobject.noRatingsteps', 'ThRating', t3lib_FlashMessage::ERROR)); 
+			}
 
 			if (!$this->vote->getVoter() instanceof Tx_ThRating_Domain_Model_Voter) {
 				If ( !empty($this->settings['showNoFEUser']) ) {
@@ -319,12 +336,8 @@ class Tx_ThRating_Controller_VoteController extends Tx_Extbase_MVC_Controller_Ac
 				}
 			}
 		}
-		//t3lib_utility_Debug::debug($this->settings,'ratinglinksAction');		
-
 		//set array to create voting information
-		if ($this->vote instanceof Tx_ThRating_Domain_Model_Vote) {
-			$this->setAjaxSelections($this->vote);
-		}
+		$this->setAjaxSelections($this->vote);
 	}
 
 
@@ -335,17 +348,19 @@ class Tx_ThRating_Controller_VoteController extends Tx_Extbase_MVC_Controller_Ac
 	 * @return array
 	 */
 	protected function setAjaxSelections(Tx_ThRating_Domain_Model_Vote $vote) {
-		foreach ( $vote->getRating()->getRatingobject()->getStepconfs() as $i => $stepConf ) {
-			$key = utf8_encode(json_encode( array(
-				'value' 	=> $stepConf->getUid(),
-				'voter' 	=> $vote->getVoter()->getUid(),
-				'rating' 		=> $vote->getRating()->getUid(),
-				'ratingName'	=> $this->ratingName,
-				'actionName'	=> strtolower($this->request->getControllerActionName()),
-				'ajaxRef' 		=> $this->ajaxSelections['ajaxRef'])));
-			$this->ajaxSelections['json'][$key] = $stepConf->getStepname();
-			$this->ajaxSelections['steporder'][$stepConf->getSteporder()]['step'] = $stepConf;
-			$this->ajaxSelections['steporder'][$stepConf->getSteporder()]['ajaxvalue'] = $key;
+		if ($vote->getVoter() instanceof Tx_ThRating_Domain_Model_Voter) {
+			foreach ( $vote->getRating()->getRatingobject()->getStepconfs() as $i => $stepConf ) {
+				$key = utf8_encode(json_encode( array(
+					'value' 	=> $stepConf->getUid(),
+					'voter' 	=> $vote->getVoter()->getUid(),
+					'rating' 		=> $vote->getRating()->getUid(),
+					'ratingName'	=> $this->ratingName,
+					'actionName'	=> strtolower($this->request->getControllerActionName()),
+					'ajaxRef' 		=> $this->ajaxSelections['ajaxRef'])));
+				$this->ajaxSelections['json'][$key] = $stepConf->getStepname();
+				$this->ajaxSelections['steporder'][$stepConf->getSteporder()]['step'] = $stepConf;
+				$this->ajaxSelections['steporder'][$stepConf->getSteporder()]['ajaxvalue'] = $key;
+			}
 		}
 	}
 
@@ -364,7 +379,7 @@ class Tx_ThRating_Controller_VoteController extends Tx_Extbase_MVC_Controller_Ac
 			$this->view->assign('currentRates', $currentrate['currentrate']);
 			$this->view->assign('stepCount', count($currentrate['weightedVotes']));
 			$this->view->assign('anonymousVotes', $currentrate['anonymousVotes']);
-			$this->view->assign('anonymousVoting', $this->vote->isAnonymous());
+			$this->view->assign('anonymousVoting', !empty($this->settings['mapAnonymous']) && !$this->accessControllService->getFrontendUserUid());
 			empty($currentrate['currentrate']) && $this->flashMessageContainer->add(Tx_Extbase_Utility_Localization::translate('error.vote.show.notRated', 'ThRating', t3lib_FlashMessage::ERROR));
 			if ( $this->voteValidator->isValid($this->vote) && !$this->vote->isAnonymous() && 
 					$this->vote->getVoter()->getUid() == $this->accessControllService->getFrontendUserUid()) {
@@ -401,8 +416,8 @@ class Tx_ThRating_Controller_VoteController extends Tx_Extbase_MVC_Controller_Ac
 		$storagePid = $siteRootPids['_STORAGE_PID'];
 		$frameworkConfiguration = $this->configurationManager->getConfiguration(Tx_Extbase_Configuration_ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
 		//t3lib_utility_Debug::debug($frameworkConfiguration,'frameworkConfiguration');		
-
-		$storagePids = explode(',',$frameworkConfiguration['persistence']['storagePid']);
+		//$storagePids = explode(',',$frameworkConfiguration['persistence']['storagePid']);
+		$storagePids = Tx_Extbase_Utility_Arrays::integerExplode(',',$frameworkConfiguration['persistence']['storagePid'],true);
 		foreach ($storagePids as $i => $value) {
 			if ( !is_null($value) && (empty($value) || $value==$siteRoot) ) {
 				unset($storagePids[$i]);		//cleanup invalid values
@@ -437,9 +452,10 @@ class Tx_ThRating_Controller_VoteController extends Tx_Extbase_MVC_Controller_Ac
 	 * Render CSS-styles for ratings and ratingsteps
 	 * Only called by singeltonAction to render styles once per page.
 	 * The file 'typo3temp/thratingDyn.css' will be created if it doesn´t exist
+	 * 
 	 * @return void
 	 */
-	public function renderCSS() {
+	protected function renderCSS() {
 	//create file if it does not exist
 		if (file_exists(PATH_site.'typo3temp/thratingDyn.css')) {
 			$fstat = stat (PATH_site.'typo3temp/thratingDyn.css');
@@ -518,6 +534,70 @@ class Tx_ThRating_Controller_VoteController extends Tx_Extbase_MVC_Controller_Ac
 		fwrite ( $fp, $cssFile);
 		fclose ( $fp );
 		return;
+	}
+
+	/**
+	 * Sets the rating values in the foreign table
+	 * Recommended field type is DOUBLE
+	 *
+	 * @param Tx_ThRating_Domain_Model_Vote 		$vote The vote
+	 * 
+	 * @return boolean
+	 *
+	 */
+	protected function setForeignRatingValues(	Tx_ThRating_Domain_Model_Vote	$vote = NULL) {
+		$lockedFieldnames = $this->getLockedfieldnames($ratingobject->getRatetable());
+		$rateField = $vote->getRating()->getRatingobject()->getRatefield();
+		if ( !in_array($rateField,$lockedFieldnames )) {
+			$rateTable = $vote->getRating()->getRatingobject()->getRatetable();
+			$rateUid = $vote->getRating()->getRatedobjectuid();
+			$currentRatesArray = $vote->getRating()->getCurrentrates();
+			$currentRate = round($currentRatesArray["currentrate"],2);
+			#do update foreign table
+			$queryResult = $GLOBALS['TYPO3_DB']->exec_UPDATEquery ($rateTable,'uid = '.$rateUid,array($rateField => $currentRate)) ;
+			return !empty($queryResult);
+		} else {
+			return true;
+		}
+	}
+	
+	
+	/**
+	 * Create a list of fieldnamed that must not be updated with ratingvalues
+	 *
+	 * @param string 		$table	tablename looking for system fields
+	 * 
+	 * @return array
+	 *
+	 */
+	protected function getLockedfieldnames(string	$table ) {
+		$GLOBALS['TSFE']->includeTCA();
+		t3lib_div::loadTCA($table);
+		$TCA = &$GLOBALS["TCA"][$table]['ctrl']; // Set private TCA var
+		$lockedFields = Tx_Extbase_Utility_Arrays::trimExplode(',',$TCA['label_alt'],true);
+		$lockedFields[] .= 'pid';
+		$lockedFields[] .= $TCA['label'];
+		$lockedFields[] .= $TCA['tstamp'];
+		$lockedFields[] .= $TCA['crdate'];
+		$lockedFields[] .= $TCA['cruser_id'];
+		$lockedFields[] .= $TCA['delete'];
+		$lockedFields[] .= $TCA['enablecolumns']['disabled'];
+		$lockedFields[] .= $TCA['enablecolumns']['starttime'];
+		$lockedFields[] .= $TCA['enablecolumns']['endtime'];
+		$lockedFields[] .= $TCA['enablecolumns']['fe_group'];
+		$lockedFields[] .= $TCA['selicon_field'];
+		$lockedFields[] .= $TCA['sortby'];
+		$lockedFields[] .= $TCA['editlock'];
+		$lockedFields[] .= $TCA['origUid'];
+		$lockedFields[] .= $TCA['fe_cruser_id'];
+		$lockedFields[] .= $TCA['fe_crgroup_id'];
+		$lockedFields[] .= $TCA['fe_admin_lock'];
+		$lockedFields[] .= $TCA['languageField'];
+		$lockedFields[] .= $TCA['transOrigPointerField'];
+		$lockedFields[] .= $TCA['transOrigPointerTable'];
+		$lockedFields[] .= $TCA['transOrigDiffSourceField'];
+		$lockedFields[] .= $TCA['transForeignTable'];
+		return $lockedFields;
 	}
 }
 ?>

@@ -35,6 +35,14 @@ class Tx_ThRating_Domain_Repository_VoteRepository extends Tx_Extbase_Persistenc
 	const addIfNotFound = true;
 
 	/**
+	 * Initialze this repository
+	 */
+	public function initializeObject() {
+		$configurationManager = $this->objectManager->get('Tx_Extbase_Configuration_ConfigurationManager');
+		$settings = $configurationManager->getConfiguration('Settings', 'thRating', 'pi1');
+	}
+
+	/**
 	 * Finds the voting by giving the rating and voter objects 
 	 *
 	 * @param 	Tx_ThRating_Domain_Model_Rating	$rating The concerned ratingobject

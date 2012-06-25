@@ -18,15 +18,15 @@
 								<type>select</type>
 								<items>
 									<numIndex index="0">
-										<numIndex index="0">Ratinglinks</numIndex>
-										<numIndex index="1">Vote->ratinglinks</numIndex>
-									</numIndex>
-									<numIndex index="1">
-										 <numIndex index="0">Ansicht</numIndex>
+										 <numIndex index="0">LLL:EXT:th_rating/Resources/Private/Language/locallang_ff.xml:general_actions_1</numIndex>
 										 <numIndex index="1">Vote->show</numIndex>
 									</numIndex>
+									<numIndex index="1">
+										<numIndex index="0">LLL:EXT:th_rating/Resources/Private/Language/locallang_ff.xml:general_actions_2</numIndex>
+										<numIndex index="1">Vote->ratinglinks</numIndex>
+									</numIndex>
 									<numIndex index="2">
-										 <numIndex index="0">Form</numIndex>
+										 <numIndex index="0">LLL:EXT:th_rating/Resources/Private/Language/locallang_ff.xml:general_actions_3</numIndex>
 										 <numIndex index="1">Vote->new</numIndex>
 									</numIndex>
 								</items>
