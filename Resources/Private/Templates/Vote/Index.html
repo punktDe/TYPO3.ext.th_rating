@@ -1,6 +1,6 @@
-<f:layout name="defaultLayout" />
+<div class='tx-thrating-pi1-content' id='tx-thrating-pi1-{ajaxRef}'>
+	<div class='tx-thrating-content'>
 
-<f:section name="content">
 	<div style="width: 500px;">Number of ratingobjecs: <f:count
 		subject="{ratingobjects}" />
 	<p><span style="font-size: 0.6em"> A <b>ratingobject</b> is
@@ -28,6 +28,7 @@
 					<th title="RatedobjectUid">RatedObj Uid</th>
 					<th title="Rating">Rating</th>
 					<th title="Current Rating">Cur Rating</th>
+					<th title="Votecount">Votecount</th>
 				</tr>
 				<f:for each="{ratingobjects}" as="ratingobject">
 					<f:if condition="{ratingobject.ratings}">
@@ -40,6 +41,7 @@
 									<td>{rating.ratedobjectuid}</td>
 									<td>{rating.uid}</td>
 									<td>{rating.currentrates.currentrate}</td>
+									<td><f:count subject="{rating.votes}" /></td>
 								</tr>
 							</f:for>
 							</tr>
@@ -64,4 +66,4 @@
 		</f:else>
 	</f:if>
 	</div>
-</f:section>
+</div>

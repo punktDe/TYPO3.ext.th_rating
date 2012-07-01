@@ -156,6 +156,12 @@ class Tx_ThRating_Controller_VoteController extends Tx_Extbase_MVC_Controller_Ac
 	 * @return string The rendered view
 	 */
 	public function indexAction() {
+		//update foreign table for each rating
+		foreach ( $this->ratingobjectRepository->findAll() as $ratingobject ) {
+			foreach ( $ratingobject->getRatings() as $rating ) {
+						$setResult = $this->setForeignRatingValues($rating);
+			}
+		}
 		$this->view->assign('ratingobjects', $this->ratingobjectRepository->findAll() );
 	}
 
@@ -215,7 +221,7 @@ class Tx_ThRating_Controller_VoteController extends Tx_Extbase_MVC_Controller_Ac
 				$vote->getRating()->addVote($vote);
 				//persist newly added object to enable redirect to show action
 				//$this->persistenceManager->persistAll();
-				$setResult = $this->setForeignRatingValues($vote);
+				$setResult = $this->setForeignRatingValues($vote->getRating());
 				If (!$setResult) {
 					$this->flashMessageContainer->add(Tx_Extbase_Utility_Localization::translate('error.vote.create.foreignUpdateFailed', 'ThRating'));
 				}
@@ -540,18 +546,19 @@ class Tx_ThRating_Controller_VoteController extends Tx_Extbase_MVC_Controller_Ac
 	 * Sets the rating values in the foreign table
 	 * Recommended field type is DOUBLE
 	 *
-	 * @param Tx_ThRating_Domain_Model_Vote 		$vote The vote
+	 * @param Tx_ThRating_Domain_Model_Rating 		$rating The rating
 	 * 
 	 * @return boolean
 	 *
 	 */
-	protected function setForeignRatingValues(	Tx_ThRating_Domain_Model_Vote	$vote = NULL) {
-		$lockedFieldnames = $this->getLockedfieldnames($ratingobject->getRatetable());
-		$rateField = $vote->getRating()->getRatingobject()->getRatefield();
+	protected function setForeignRatingValues(	Tx_ThRating_Domain_Model_Rating	$rating ) {
+		$table=$rating->getRatingobject()->getRatetable();
+		$lockedFieldnames = $this->getLockedfieldnames($table);
+		$rateField = $rating->getRatingobject()->getRatefield();
 		if ( !in_array($rateField,$lockedFieldnames )) {
-			$rateTable = $vote->getRating()->getRatingobject()->getRatetable();
-			$rateUid = $vote->getRating()->getRatedobjectuid();
-			$currentRatesArray = $vote->getRating()->getCurrentrates();
+			$rateTable = $rating->getRatingobject()->getRatetable();
+			$rateUid = $rating->getRatedobjectuid();
+			$currentRatesArray = $rating->getCurrentrates();
 			$currentRate = round($currentRatesArray["currentrate"],2);
 			#do update foreign table
 			$queryResult = $GLOBALS['TYPO3_DB']->exec_UPDATEquery ($rateTable,'uid = '.$rateUid,array($rateField => $currentRate)) ;
@@ -565,12 +572,12 @@ class Tx_ThRating_Controller_VoteController extends Tx_Extbase_MVC_Controller_Ac
 	/**
 	 * Create a list of fieldnamed that must not be updated with ratingvalues
 	 *
-	 * @param string 		$table	tablename looking for system fields
+	 * @param	string 	$table	tablename looking for system fields
 	 * 
 	 * @return array
 	 *
 	 */
-	protected function getLockedfieldnames(string	$table ) {
+	protected function getLockedfieldnames( $table ) {
 		$GLOBALS['TSFE']->includeTCA();
 		t3lib_div::loadTCA($table);
 		$TCA = &$GLOBALS["TCA"][$table]['ctrl']; // Set private TCA var

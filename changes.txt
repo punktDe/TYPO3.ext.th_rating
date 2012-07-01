@@ -1,4 +1,3 @@
-- Bugfix: malfunction when no anonymous user ist configured
-- display errormessage, if no ratingstep is configured
-- update of field in foreign table with current ratingvalue
-- removed some deprecated calls
+- added indexAction in flexform does some reorgs and display all objects
+- Voters are now handled even when they are hidden or deleted
+- some bugfixes

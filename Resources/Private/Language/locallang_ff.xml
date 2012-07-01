@@ -11,6 +11,7 @@
 			<label index="general_actions_1">Display</label>
 			<label index="general_actions_2">Ratinglinks</label>
 			<label index="general_actions_3">Voteform</label>
+			<label index="general_actions_4">Index</label>
 			<label index="general_display">Ratinglink configuration</label>
 			<label index="general_hideSummary">Hide rating summary</label>
 			<label index="sheet_paths">Paths</label>

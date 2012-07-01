@@ -29,6 +29,10 @@
 										 <numIndex index="0">LLL:EXT:th_rating/Resources/Private/Language/locallang_ff.xml:general_actions_3</numIndex>
 										 <numIndex index="1">Vote->new</numIndex>
 									</numIndex>
+									<numIndex index="3">
+										 <numIndex index="0">LLL:EXT:th_rating/Resources/Private/Language/locallang_ff.xml:general_actions_4</numIndex>
+										 <numIndex index="1">Vote->index</numIndex>
+									</numIndex>									
 								</items>
 						  </config>
 					</TCEforms>

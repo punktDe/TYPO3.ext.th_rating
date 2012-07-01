@@ -64,6 +64,7 @@ $TCA['tx_thrating_domain_model_stepconf'] = array(
 			),
 		),
 		'votes' => array(
+			'exclude' 		=> 1,
 			'label'   		=> 'Assigned votes',
 			'l10n_mode' 	=> 'exclude',
 			//'l10n_display'	=> 'hideDiff',
