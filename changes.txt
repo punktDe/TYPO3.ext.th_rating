@@ -1,3 +1,1 @@
-- added indexAction in flexform does some reorgs and display all objects
-- Voters are now handled even when they are hidden or deleted
-- some bugfixes
+- added cookie protection for anonymous rating

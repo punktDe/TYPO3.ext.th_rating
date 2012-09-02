@@ -55,6 +55,14 @@
 							</config>							
 						</TCEforms>
 					</settings.hideSummary>
+					<settings.cookieProtection>
+						<TCEforms>
+							<label>LLL:EXT:th_rating/Resources/Private/Language/locallang_ff.xml:general_cookieProtection</label>
+							<config>
+								<type>check</type>
+							</config>							
+						</TCEforms>
+					</settings.cookieProtection>
 				</el>
 			</ROOT>
 		</sDEF>

@@ -107,11 +107,12 @@ class Tx_ThRating_Service_ObjectFactoryService implements t3lib_Singleton {
 	/**
 	 * Returns a new or existing vote
 	 * 
+	 * @param									$prefixId
 	 * @param	array							$settings
  	 * @param	Tx_ThRating_Domain_Model_Rating	$rating
 	 * @return	Tx_ThRating_Domain_Model_Vote
 	 */
-	static function getVote( array $settings,	Tx_ThRating_Domain_Model_Rating	$rating ) {
+	static function getVote( $prefixId, array $settings,	Tx_ThRating_Domain_Model_Rating	$rating ) {
 		$voteRepository = t3lib_div::makeInstance('Tx_ThRating_Domain_Repository_VoteRepository');
 		$voteValidator = t3lib_div::makeInstance('Tx_ThRating_Domain_Validator_VoteValidator');
 
@@ -121,6 +122,10 @@ class Tx_ThRating_Service_ObjectFactoryService implements t3lib_Singleton {
 		if ( !empty($settings['mapAnonymous']) && !$frontendUserUid ) {
 			//set anonymous vote
 			$voter =  $accessControllService->getFrontendVoter($settings['mapAnonymous']);
+			$anonymousRating = json_decode($_COOKIE[$prefixId.'_AnonymousRating_'.$rating->getUid()], true);
+			if ( !empty($anonymousRating['voteUid']) ) {
+				$vote = $voteRepository->findByUid($anonymousRating['voteUid']);
+			}
 		} else {
 			//set FEUser
 			$voter =  $accessControllService->getFrontendVoter( $frontendUserUid );

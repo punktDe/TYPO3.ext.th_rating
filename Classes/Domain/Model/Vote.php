@@ -177,6 +177,23 @@ class Tx_ThRating_Domain_Model_Vote extends Tx_Extbase_DomainObject_AbstractEnti
 	}	
 
 	/**
+	 * Checks cookie if anonymous vote is already done
+	 * always FALSE if cookie checks is deactivated
+	 * 
+	 * @param	string	$prfixId	Extension prefix to identify cookie
+	 * @return 	booelan
+	 */
+	public function hasAnonymousVote($prefixId) {
+		if ( !empty($this->settings['cookieLifetime']) ) {
+			$anonymousRating = json_decode($_COOKIE[$prefixId.'_AnonymousRating_'.$this->getRating()->getUid()], true);
+			$retVal = !empty($anonymousRating['voteUid']);
+		} else {
+			$retVal = false;
+		}
+		return $retVal;
+	}	
+
+	/**
 	 * Method to use Object as plain string
 	 * 
 	 * @return string

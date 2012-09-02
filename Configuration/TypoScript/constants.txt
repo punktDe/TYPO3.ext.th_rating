@@ -2,6 +2,8 @@ plugin.tx_thrating {
 	config {
 		# cat=plugin.tx_thrating//a; type=int; label=Map anonymous votings to FEUser Uid
 		mapAnonymous = 0
+		# cat=plugin.tx_thrating//a; type=int; label=Lifetime of cookies for anonymous votes: Activate cookies using settings.cookieProtection = 1
+		cookieLifetime = 0
 		# cat=plugin.tx_thrating/enable/a; type=boolean; label=Hide summary block in output
 		hideSummary = 0
 		# cat=plugin.tx_thrating/enable/b; type=boolean; label=Info on not logged in user: make message visible (set to 1)
@@ -10,7 +12,7 @@ plugin.tx_thrating {
 	settings {
 		# cat=plugin.tx_thrating//a; type=int; label=New Records PID: Enter the storage PID for new records (default = 0 - uses STORAGE_PID of the page)
 		newRecordStoragePid = 0
-		# cat=plugin.tx_thrating//a; type=int; label=Search path for records (default = 0 - uses STORAGE_PID of the page)
+		# cat=plugin.tx_thrating//a; type=int; label=Search path for records (default = 0 - uses STORAGE_PID of the page): 
 		storagePid = 0
 		# cat=plugin.tx_thrating//b; type=int; label=FE Users and Groups [pid]: Enter the PID where website users and groups are stored
 		feUserStoragePid = 0

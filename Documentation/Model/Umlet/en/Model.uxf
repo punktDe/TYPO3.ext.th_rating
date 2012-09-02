@@ -4,8 +4,8 @@
   <element>
     <type>com.umlet.element.Class</type>
     <coordinates>
-      <x>470</x>
-      <y>240</y>
+      <x>610</x>
+      <y>370</y>
       <w>370</w>
       <h>250</h>
     </coordinates>
@@ -32,8 +32,8 @@
   <element>
     <type>com.umlet.element.Class</type>
     <coordinates>
-      <x>470</x>
-      <y>20</y>
+      <x>610</x>
+      <y>150</y>
       <w>370</w>
       <h>170</h>
     </coordinates>
@@ -53,8 +53,8 @@
   <element>
     <type>com.umlet.element.Class</type>
     <coordinates>
-      <x>0</x>
-      <y>20</y>
+      <x>140</x>
+      <y>150</y>
       <w>370</w>
       <h>220</h>
     </coordinates>
@@ -76,8 +76,8 @@
   <element>
     <type>com.umlet.element.Relation</type>
     <coordinates>
-      <x>340</x>
-      <y>60</y>
+      <x>480</x>
+      <y>190</y>
       <w>150</w>
       <h>80</h>
     </coordinates>
@@ -90,8 +90,8 @@ has&gt;</panel_attributes>
   <element>
     <type>com.umlet.element.Relation</type>
     <coordinates>
-      <x>340</x>
-      <y>110</y>
+      <x>480</x>
+      <y>240</y>
       <w>150</w>
       <h>220</h>
     </coordinates>
@@ -104,10 +104,10 @@ has&gt;</panel_attributes>
   <element>
     <type>com.umlet.element.Class</type>
     <coordinates>
-      <x>970</x>
-      <y>140</y>
+      <x>1110</x>
+      <y>270</y>
       <w>320</w>
-      <h>170</h>
+      <h>190</h>
     </coordinates>
     <panel_attributes>&lt;&lt;Tx_ThRating_Domain_Model_Vote&gt;&gt;
 --
@@ -119,6 +119,7 @@ has&gt;</panel_attributes>
 --
 #hasRated(): boolean
 #isAnonymous(): boolean
+#hasAnonymousVote(prefixId: string): boolean
 #__toString(): string
 
 </panel_attributes>
@@ -127,8 +128,8 @@ has&gt;</panel_attributes>
   <element>
     <type>com.umlet.element.Relation</type>
     <coordinates>
-      <x>810</x>
-      <y>200</y>
+      <x>950</x>
+      <y>330</y>
       <w>180</w>
       <h>160</h>
     </coordinates>
@@ -141,8 +142,8 @@ has&gt;</panel_attributes>
   <element>
     <type>com.umlet.element.Relation</type>
     <coordinates>
-      <x>810</x>
-      <y>120</y>
+      <x>950</x>
+      <y>250</y>
       <w>180</w>
       <h>110</h>
     </coordinates>
@@ -155,8 +156,8 @@ has&gt;</panel_attributes>
   <element>
     <type>com.umlet.element.Class</type>
     <coordinates>
-      <x>970</x>
-      <y>370</y>
+      <x>1110</x>
+      <y>500</y>
       <w>300</w>
       <h>40</h>
     </coordinates>
@@ -169,8 +170,8 @@ has&gt;</panel_attributes>
   <element>
     <type>com.umlet.element.Relation</type>
     <coordinates>
-      <x>1240</x>
-      <y>190</y>
+      <x>1380</x>
+      <y>320</y>
       <w>138</w>
       <h>220</h>
     </coordinates>
@@ -183,8 +184,8 @@ has&gt;</panel_attributes>
   <element>
     <type>com.umlet.element.Class</type>
     <coordinates>
-      <x>970</x>
-      <y>450</y>
+      <x>1110</x>
+      <y>580</y>
       <w>300</w>
       <h>110</h>
     </coordinates>
@@ -202,8 +203,8 @@ has&gt;</panel_attributes>
   <element>
     <type>com.umlet.element.Relation</type>
     <coordinates>
-      <x>1090</x>
-      <y>380</y>
+      <x>1230</x>
+      <y>510</y>
       <w>50</w>
       <h>90</h>
     </coordinates>

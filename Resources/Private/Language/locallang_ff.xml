@@ -14,6 +14,7 @@
 			<label index="general_actions_4">Index</label>
 			<label index="general_display">Ratinglink configuration</label>
 			<label index="general_hideSummary">Hide rating summary</label>
+			<label index="general_cookieProtection">Activate cookie protection for anonymous votes</label>
 			<label index="sheet_paths">Paths</label>
 			<label index="paths_templateRootPath">Template root path</label>
 			<label index="paths_partialRootPath">Partial root path</label>
@@ -25,6 +26,7 @@
 			<label index="general_actions_1">Ansicht</label>
 			<label index="general_display">Ratinglink Darstellung</label>
 			<label index="general_hideSummary">Verstecke Rating Zusammenfassung</label>
+			<label index="general_cookieProtection">Verwende cookies bei anonymen Bewertungen</label>
 			<label index="sheet_paths">Pfade</label>
 		</languageKey>
 	</data>

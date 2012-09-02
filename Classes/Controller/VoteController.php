@@ -2,7 +2,7 @@
 /***************************************************************
  *  Copyright notice
  *
- *  (c) 2010 Thomas Hucke <thucke@web.de>
+ *  (c) 2012 Thomas Hucke <thucke@web.de>
  *  All rights reserved
  *
  *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -42,7 +42,14 @@ class Tx_ThRating_Controller_VoteController extends Tx_Extbase_MVC_Controller_Ac
 	 * @var string
 	 */
 	protected $ratingName;
-	
+	/**
+	 * @var boolean
+	 */
+	protected $cookieProtection;
+	/**
+	 * @var int
+	 */
+	protected $cookieLifetime;
 
 	/**
 	 * @param Tx_ThRating_Service_ObjectFactoryService $objectFactoryService
@@ -142,10 +149,22 @@ class Tx_ThRating_Controller_VoteController extends Tx_Extbase_MVC_Controller_Ac
 
 		if ( $this->request->hasArgument('ajaxRef') ) {
 			//read unique AJAX identification on AJAX request
-			$this->ajaxSelections['ajaxRef'] = $this->request->getArgument('ajaxRef'); 
+			$this->ajaxSelections['ajaxRef'] = $this->request->getArgument('ajaxRef');
+			If ( strtolower($this->request->getArgument('cookieLifetime')) == 'off' ) {
+				$this->cookieProtection = false;
+			} else {
+				$this->cookieProtection = true;
+				$this->cookieLifetime = intval($this->request->getArgument('cookieLifetime'));
+			}
 		} else { 
 			//set unique AJAX identification
-			$this->ajaxSelections['ajaxRef'] = $this->prefixId.'_'.$this->getRandomId(); 
+			$this->ajaxSelections['ajaxRef'] = $this->prefixId.'_'.$this->getRandomId();
+			If ( empty($this->settings['cookieProtection']) ) {
+				$this->cookieProtection = false;
+			} else {
+				$this->cookieProtection = true;
+				$this->cookieLifetime = intval($this->settings['cookieLifetime']);
+			}
 		}
 	}
 
@@ -221,6 +240,13 @@ class Tx_ThRating_Controller_VoteController extends Tx_Extbase_MVC_Controller_Ac
 				$vote->getRating()->addVote($vote);
 				//persist newly added object to enable redirect to show action
 				//$this->persistenceManager->persistAll();
+				if ( $vote->isAnonymous() && !$vote->hasAnonymousVote($this->prefixId) && $this->cookieProtection ) {
+					$anonymousRating['ratingtime']=time();
+					$anonymousRating['voteUid']=$vote->getUid();
+					$lifeTime = time() + 60 * 60 * 24 * $this->cookieLifetime;
+					#set cookie to prevent multiple anonymous ratings
+					setcookie($this->prefixId.'_AnonymousRating_'.$vote->getRating()->getUid(), json_encode($anonymousRating), $lifeTime, '/', $_SERVER["HTTP_HOST"], 0,1); #HTTP_ONLY
+				}
 				$setResult = $this->setForeignRatingValues($vote->getRating());
 				If (!$setResult) {
 					$this->flashMessageContainer->add(Tx_Extbase_Utility_Localization::translate('error.vote.create.foreignUpdateFailed', 'ThRating'));
@@ -235,7 +261,8 @@ class Tx_ThRating_Controller_VoteController extends Tx_Extbase_MVC_Controller_Ac
 		}
 
 		$referrer = $this->request->getArgument('__referrer');
-		$this->forward($referrer['actionName'],$referrer['controllerName'],$referrer['extensionName'],$this->request->getArguments());
+		$newArguments = $this->request->getArguments();
+		$this->forward($referrer['actionName'],$referrer['controllerName'],$referrer['extensionName'],$newArguments );
 	}
 
 
@@ -305,7 +332,11 @@ class Tx_ThRating_Controller_VoteController extends Tx_Extbase_MVC_Controller_Ac
 			}
 			$this->view->assign('ratingName', $this->ratingName);
 			$this->view->assign('ratingClass', $ratingClass);
-			if ( !$this->vote->hasRated() || (!$this->accessControllService->isLoggedIn($this->vote->getVoter()) && $this->vote->isAnonymous()) ) {
+			if ( !$this->vote->hasRated() || 
+					(!$this->accessControllService->isLoggedIn($this->vote->getVoter()) && $this->vote->isAnonymous() && 
+						!($this->vote->hasAnonymousVote($this->prefixId) || ( $this->cookieProtection && $this->request->getArgument('cookieLifetime')))
+					) 
+				) {
 				//if user hasn´t voted yet then include ratinglinks
 				$this->view->assign('ajaxSelections', $this->ajaxSelections['steporder']);
 			}
@@ -330,7 +361,7 @@ class Tx_ThRating_Controller_VoteController extends Tx_Extbase_MVC_Controller_Ac
 			//first initialize parent objects for vote object
 			$ratingobject = Tx_ThRating_Service_ObjectFactoryService::getRatingobject( $this->settings );
 			$rating = Tx_ThRating_Service_ObjectFactoryService::getRating( $this->settings, $ratingobject );
-			$this->vote = Tx_ThRating_Service_ObjectFactoryService::getVote( $this->settings, $rating );
+			$this->vote = Tx_ThRating_Service_ObjectFactoryService::getVote( $this->prefixId, $this->settings, $rating );
 			$countSteps=$ratingobject->getStepconfs()->count();
 			If ( empty($countSteps)) {
 				$this->flashMessageContainer->add(Tx_Extbase_Utility_Localization::translate('error.ratingobject.noRatingsteps', 'ThRating', t3lib_FlashMessage::ERROR)); 
@@ -361,6 +392,7 @@ class Tx_ThRating_Controller_VoteController extends Tx_Extbase_MVC_Controller_Ac
 					'voter' 	=> $vote->getVoter()->getUid(),
 					'rating' 		=> $vote->getRating()->getUid(),
 					'ratingName'	=> $this->ratingName,
+					'cookieLifetime'	=> $this->cookieProtection ? $this->cookieLifetime : 'off',
 					'actionName'	=> strtolower($this->request->getControllerActionName()),
 					'ajaxRef' 		=> $this->ajaxSelections['ajaxRef'])));
 				$this->ajaxSelections['json'][$key] = $stepConf->getStepname();
@@ -387,9 +419,15 @@ class Tx_ThRating_Controller_VoteController extends Tx_Extbase_MVC_Controller_Ac
 			$this->view->assign('anonymousVotes', $currentrate['anonymousVotes']);
 			$this->view->assign('anonymousVoting', !empty($this->settings['mapAnonymous']) && !$this->accessControllService->getFrontendUserUid());
 			empty($currentrate['currentrate']) && $this->flashMessageContainer->add(Tx_Extbase_Utility_Localization::translate('error.vote.show.notRated', 'ThRating', t3lib_FlashMessage::ERROR));
-			if ( $this->voteValidator->isValid($this->vote) && !$this->vote->isAnonymous() && 
-					$this->vote->getVoter()->getUid() == $this->accessControllService->getFrontendUserUid()) {
-				$this->view->assign('voting', $this->vote);
+			if ( $this->voteValidator->isValid($this->vote) ) {
+				if ( ( !$this->vote->isAnonymous() && $this->vote->getVoter()->getUid() == $this->accessControllService->getFrontendUserUid()) ||
+						( $this->vote->isAnonymous() && 
+							( $this->vote->hasAnonymousVote($this->prefixId)  || ( $this->cookieProtection && $this->request->getArgument('cookieLifetime')))
+						)
+					)
+				{
+					$this->view->assign('voting', $this->vote);
+				}
 			}
 	}
 
