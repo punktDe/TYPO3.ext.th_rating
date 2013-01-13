@@ -20,7 +20,9 @@ class Tx_ThRating_ViewHelpers_RatingViewHelper extends Tx_Fluid_ViewHelpers_CObj
 			$this->simulateFrontendEnvironment();
 		}
 
-		$this->contentObject->start($data);
+		$configurationManager = t3lib_div::makeInstance('Tx_Extbase_Configuration_ConfigurationManager');
+		$cObj = $configurationManager->getContentObject();
+		$cObj->start($data);
 
 		$pathSegments = t3lib_div::trimExplode('.', $typoscriptObjectPath);
 		$lastSegment = array_pop($pathSegments);
@@ -50,7 +52,7 @@ class Tx_ThRating_ViewHelpers_RatingViewHelper extends Tx_Fluid_ViewHelpers_CObj
 		if ($display !== NULL) {
 			$setup[$lastSegment . '.']['settings.']['display'] = $display;
 		}		
-		$content = $this->contentObject->cObjGetSingle($setup[$lastSegment], $setup[$lastSegment . '.']);
+		$content = $cObj->cObjGetSingle($setup[$lastSegment], $setup[$lastSegment . '.']);
 
 		//t3lib_utility_Debug::debug($setup[$lastSegment . '.'],'Debug');
 		//t3lib_utility_Debug::debug($content,'content');
