@@ -60,7 +60,7 @@ $TCA['tx_thrating_domain_model_stepconf'] = array(
 				'type'		=> 'input',
 				'size'		=> '15',
 				'max'		=> '60',
-				'eval'		=> 'trim,alphanum_x',
+				'eval'		=> 'trim',
 			),
 		),
 		'votes' => array(

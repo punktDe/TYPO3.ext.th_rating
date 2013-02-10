@@ -1,6 +1,7 @@
 #########################################################################
 # Configure table mapping for voter objects
 -------------------------------------------------------------------------
+config.tx_extbase.features.rewrittenPropertyMapper = 1
 config.tx_extbase.persistence.classes {
 	Tx_Extbase_Domain_Model_FrontendUser.mapping {
 		subclasses {

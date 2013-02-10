@@ -72,7 +72,7 @@ class Tx_ThRating_Domain_Repository_RatingobjectRepository extends Tx_Extbase_Pe
 
 		$foundRow = $this->objectManager->create('Tx_ThRating_Domain_Model_Ratingobject');
 		$queryResult = $query->execute();
-		if ($queryResult->count() != 0) {
+		if (count($queryResult) != 0) {
 			$foundRow = $queryResult->getFirst();
 		} else {
 			if ($addIfNotFound) {
@@ -87,6 +87,7 @@ class Tx_ThRating_Domain_Repository_RatingobjectRepository extends Tx_Extbase_Pe
 		}
 		return $foundRow;
 	}
+
 	/**
 	 * Finds the specific ratingobject by giving table and fieldname
 	 *
@@ -98,7 +99,7 @@ class Tx_ThRating_Domain_Repository_RatingobjectRepository extends Tx_Extbase_Pe
 		if ($respectStoragePage) {
 			$query->getQuerySettings()->setRespectStoragePage(FALSE);
 		}
-		return $query->execute();;
+		return $query->execute();
 	}
 }
 ?>

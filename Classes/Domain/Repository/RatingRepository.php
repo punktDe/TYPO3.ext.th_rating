@@ -72,7 +72,7 @@ class Tx_ThRating_Domain_Repository_RatingRepository extends Tx_Extbase_Persiste
 
 		$foundRow = $this->objectManager->create('Tx_ThRating_Domain_Model_Rating');
 		$queryResult = $query->execute();
-		if ($queryResult->count() != 0) {
+		if (count($queryResult) != 0) {
 			$foundRow = $queryResult->getFirst();
 		} else {
 			if ($addIfNotFound) {

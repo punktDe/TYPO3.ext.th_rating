@@ -60,6 +60,12 @@ class Tx_ThRating_Domain_Model_Ratingobject extends Tx_Extbase_DomainObject_Abst
 	 * @cascade remove
 	 */
 	protected $stepconfs;
+	/**
+	 * @param Tx_ThRating_Domain_Repository_StepconfRepository $stepconfs
+	 */
+	public function injectStepconfRepository(Tx_ThRating_Domain_Repository_StepconfRepository $stepconfs) {
+		$this->stepconfs = $stepconfs;
+	}
 
 	/**
 	 * The ratings of this object
@@ -69,6 +75,12 @@ class Tx_ThRating_Domain_Model_Ratingobject extends Tx_Extbase_DomainObject_Abst
 	 * @cascade remove
 	 */
 	protected $ratings;
+	/**
+	 * @param Tx_ThRating_Domain_Repository_RatingRepository $ratings
+	 */
+	public function injectRatingRepository(Tx_ThRating_Domain_Repository_RatingRepository $ratings) {
+		$this->ratings = $ratings;
+	}
 	
 	/**
 	 * Constructs a new rating object
@@ -79,8 +91,6 @@ class Tx_ThRating_Domain_Model_Ratingobject extends Tx_Extbase_DomainObject_Abst
 	 * @return 	void
 	 */
 	public function __construct($ratetable = NULL, $ratefield = NULL) {
-		$this->stepconfs = new Tx_Extbase_Persistence_ObjectStorage();
-		$this->ratings = new Tx_Extbase_Persistence_ObjectStorage();
 		if ($ratetable) $this->setRatetable($ratetable);
 		if ($ratefield) $this->setRatefield($ratefield);
 	}

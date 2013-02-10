@@ -127,10 +127,12 @@ class Tx_ThRating_Service_ObjectFactoryService implements t3lib_Singleton {
 				$vote = $voteRepository->findByUid($anonymousRating['voteUid']);
 			}
 		} else {
-			//set FEUser
-			$voter =  $accessControllService->getFrontendVoter( $frontendUserUid );
-			if ($voter instanceof Tx_ThRating_Domain_Model_Voter) {
-				$vote = $voteRepository->findMatchingRatingAndVoter($rating->getUid(),$voter->getUid());
+			if ( $frontendUserUid ) {
+				//set FEUser if one is logged on
+				$voter =  $accessControllService->getFrontendVoter( $frontendUserUid );
+				if ($voter instanceof Tx_ThRating_Domain_Model_Voter) {
+					$vote = $voteRepository->findMatchingRatingAndVoter($rating->getUid(),$voter->getUid());
+				}
 			}
 		}
 		

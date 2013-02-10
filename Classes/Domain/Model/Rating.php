@@ -58,6 +58,12 @@ class Tx_ThRating_Domain_Model_Rating extends Tx_Extbase_DomainObject_AbstractEn
 	 * @cascade remove
 	 */
 	protected $votes;
+	/**
+	 * @param Tx_ThRating_Domain_Repository_VoteRepository $votes
+	 */
+	public function injectVoteRepository(Tx_ThRating_Domain_Repository_VoteRepository $votes) {
+		$this->votes = $votes;
+	}
 
 	/**
 	 * The current calculated rates
@@ -86,7 +92,6 @@ class Tx_ThRating_Domain_Model_Rating extends Tx_Extbase_DomainObject_AbstractEn
 	 * @return void
 	 */
 	public function __construct( Tx_ThRating_Domain_Model_Ratingobject $ratingobject = NULL, $ratedobjectuid=NULL ) {
-		$this->votes = new Tx_Extbase_Persistence_ObjectStorage();
 		if ($ratingobject) $this->setRatingobject( $ratingobject );
 		if ($ratedobjectuid) $this->setRatedobjectuid( $ratedobjectuid );
 		$this->initializeObject();

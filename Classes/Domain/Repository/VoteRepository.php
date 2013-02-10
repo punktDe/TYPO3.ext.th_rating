@@ -77,7 +77,7 @@ class Tx_ThRating_Domain_Repository_VoteRepository extends Tx_Extbase_Persistenc
 				$query->equals('vote', $stepconf->getUid())
 			)
 		);
-		return $query->execute()->count();
+		return count($query->execute());
 	}
 	
 	/**
@@ -98,7 +98,7 @@ class Tx_ThRating_Domain_Repository_VoteRepository extends Tx_Extbase_Persistenc
 					$query->equals('voter', $anonymousVoter)
 				)
 			);
-			return $query->execute()->count();
+			return count($query->execute());
 		}
 		return 0;
 	}

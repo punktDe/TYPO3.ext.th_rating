@@ -76,6 +76,21 @@ class Tx_ThRating_Domain_Model_Stepconf extends Tx_Extbase_DomainObject_Abstract
 	 * @cascade remove
 	 */
 	protected $votes;
+	/**
+	 * @param Tx_ThRating_Domain_Repository_VoteRepository $votes
+	 */
+	public function injectVoteRepository(Tx_ThRating_Domain_Repository_VoteRepository $votes) {
+		$this->votes = $votes;
+	}
+
+
+	/**
+	 * Localization entry
+	 * workaround to help avoiding bug in Typo 4.7 handling localized objects
+	 *
+	 * @var int 
+	 */
+	protected $l18nParent;
 
 
 	/**
@@ -83,7 +98,6 @@ class Tx_ThRating_Domain_Model_Stepconf extends Tx_Extbase_DomainObject_Abstract
 	 * @return void
 	 */
 	public function __construct( Tx_ThRating_Domain_Model_Ratingobject $ratingobject = NULL, $steporder=NULL ) {
-		$this->votes = new Tx_Extbase_Persistence_ObjectStorage();
 		if ($ratingobject) $this->setRatingobject( $ratingobject );
 		if ($steporder) $this->setSteporder( $steporder );
 	}
@@ -175,6 +189,25 @@ class Tx_ThRating_Domain_Model_Stepconf extends Tx_Extbase_DomainObject_Abstract
 		return $value;
 	}
 	
+	/**
+	 * Gets the stepconfig order
+	 * 
+	 * @return int stepconfig position
+	 */
+	public function getL18nParent() {
+		return $this->l18nParent;
+	}
+
+	/**
+	 * Sets the stepconfig value
+	 * 
+	 * @param int $l18n_parent
+	 * @return void
+	 */
+	public function setL18nParent($l18nParent) {
+		$this->l18nParent = $l18nParent;
+	}
+
 	/**
 	 * Returns all votes in this rating
 	 *
