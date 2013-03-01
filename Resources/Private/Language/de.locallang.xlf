@@ -1,0 +1,83 @@
+<?xml version='1.0' encoding='utf-8'?>
+<xliff version="1.0">
+	<file source-language="en" datatype="plaintext" original="messages" date="2013-03-01T17:33:10Z" product-name="th_rating">
+		<header/>
+		<body>
+			<trans-unit id="flash.vote.general.invalidStoragePid" xml:space="preserve" approved="yes">
+				<source>Invalid storage page</source>
+			<target state="translated">Falsche storage page konfiguriert</target></trans-unit>
+			<trans-unit id="error.validator.ratingobject_table_extbase" xml:space="preserve" approved="yes">
+				<source>Missing table name in ratingobject.</source>
+			<target state="translated">Fehlender Tabellenname ín Ratingobject</target></trans-unit>
+			<trans-unit id="error.validator.ratingobject_field_extbase" xml:space="preserve" approved="yes">
+				<source>Missing field name in ratingobject.</source>
+			<target state="translated">Fehlender Feldbezeichner in Ratingobject</target></trans-unit>
+			<trans-unit id="error.validator.stepconf.ratingobject" xml:space="preserve" approved="yes">
+				<source>Missing ratingobject in stepconf.</source>
+			<target state="translated">Fehlerndes Ratingobject in Stepconf</target></trans-unit>
+			<trans-unit id="error.validator.stepconf.steps" xml:space="preserve" approved="yes">
+				<source>Missing steps in stepconf..</source>
+			<target state="translated">Fehlende Stufen in Stepconf</target></trans-unit>
+			<trans-unit id="error.validator.rating.ratedobjectuid" xml:space="preserve" approved="yes">
+				<source>Missing UID in rating.</source>
+			<target state="translated">Fehlende UID in Rating</target></trans-unit>
+			<trans-unit id="error.validator.rating.ratingobject" xml:space="preserve" approved="yes">
+				<source>False ratingobject in rating</source>
+			<target state="translated">Falsches Ratingobject in Rating</target></trans-unit>
+			<trans-unit id="error.validator.vote.vote" xml:space="preserve" approved="yes">
+				<source>Missing vote.</source>
+			<target state="translated">Keine Bewertung</target></trans-unit>
+			<trans-unit id="error.validator.vote.voter" xml:space="preserve" approved="yes">
+				<source>False voter reference in vote</source>
+			<target state="translated">Falsche Bewerterreferenz in Vote</target></trans-unit>
+			<trans-unit id="error.validator.vote.stepconf" xml:space="preserve" approved="yes">
+				<source>False voting reference in vote</source>
+			<target state="translated">Falsche Bewertungsreferenz in Vote</target></trans-unit>
+			<trans-unit id="flash.ratingobject.noRatingsteps" xml:space="preserve" approved="yes">
+				<source>No ratingsteps configured!</source>
+			<target state="translated">Ratingsteps fehlen!</target></trans-unit>
+			<trans-unit id="flash.vote.noFEuser" xml:space="preserve" approved="yes">
+				<source>FE user cannot be identified!</source>
+			<target state="translated">Benutzer nicht identifizierbar!</target></trans-unit>
+			<trans-unit id="flash.vote.renderCSS.defaultImage" xml:space="preserve" approved="yes">
+				<source>Issue found with configuration for rating display - using default image.</source>
+			<target state="translated">Fehler in Konfiguration für die Ratinganzeige gefunden - verwende Standardbild</target></trans-unit>
+			<trans-unit id="flash.vote.show.notRated" xml:space="preserve" approved="yes">
+				<source>Not already rated</source>
+			<target state="translated">Noch unbewertet</target></trans-unit>
+			<trans-unit id="flash.vote.ratinglinks.wrongDisplayConfig" xml:space="preserve" approved="yes">
+				<source>Check TSConfig setting for display name.</source>
+			<target state="translated">Prüfe TSConfig Einstellungen für "display name"</target></trans-unit>
+			<trans-unit id="flash.vote.create.noPermission" xml:space="preserve" approved="yes">
+				<source>No permission for this action.</source>
+			<target state="translated">Sie haben keine Berechtigung die Aktion auszuführen.</target></trans-unit>
+			<trans-unit id="flash.heading.error" xml:space="preserve" approved="yes">
+				<source>Error !!!!</source>
+			<target state="translated">Fehler !!!!</target></trans-unit>
+			<trans-unit id="flash.heading.warning" xml:space="preserve" approved="yes">
+				<source>Warning!</source>
+			<target state="translated">Achtung!</target></trans-unit>
+			<trans-unit id="flash.heading.info" xml:space="preserve" approved="yes">
+				<source>Information</source>
+			<target state="translated">Information</target></trans-unit>
+			<trans-unit id="flash.heading.notice" xml:space="preserve" approved="yes">
+				<source>Notification</source>
+			<target state="translated">Bitte beachten</target></trans-unit>
+			<trans-unit id="flash.heading.ok" xml:space="preserve" approved="yes">
+				<source>Success</source>
+			<target state="translated">Verarbeitung erfolgreich</target></trans-unit>
+			<trans-unit id="flash.vote.create.alreadyRated" xml:space="preserve" approved="yes">
+				<source>Already rated</source>
+			<target state="translated">Sie haben bereits diese Bewertung durchgefuehrt.</target></trans-unit>
+			<trans-unit id="flash.vote.create.newCreated" xml:space="preserve" approved="yes">
+				<source>Your new vote was created.</source>
+			<target state="translated">Die Stimme wurde gezählt.</target></trans-unit>
+			<trans-unit id="flash.vote.create.foreignUpdateFailed" xml:space="preserve" approved="yes">
+				<source>Update of foreign field has failed.</source>
+			<target state="translated">Update der Fremdtabelle fehlgeschlagen</target></trans-unit>
+			<trans-unit id="no_rating_done" xml:space="preserve" approved="yes">
+				<source>Update der Fremdtabelle fehlgeschlagen</source>
+			<target state="translated">Update der Fremdtabelle fehlgeschlagen</target></trans-unit>
+		</body>
+	</file>
+</xliff>

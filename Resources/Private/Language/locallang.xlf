@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<xliff version="1.0">
+	<file source-language="en" datatype="plaintext" original="messages" date="2013-03-01T17:33:10Z" product-name="th_rating">
+		<header/>
+		<body>
+			<trans-unit id="flash.vote.general.invalidStoragePid" xml:space="preserve">
+				<source>Invalid storage page</source>
+			</trans-unit>
+			<trans-unit id="error.validator.ratingobject_table_extbase" xml:space="preserve">
+				<source>Missing table name in ratingobject.</source>
+			</trans-unit>
+			<trans-unit id="error.validator.ratingobject_field_extbase" xml:space="preserve">
+				<source>Missing field name in ratingobject.</source>
+			</trans-unit>
+			<trans-unit id="error.validator.stepconf.ratingobject" xml:space="preserve">
+				<source>Missing ratingobject in stepconf.</source>
+			</trans-unit>
+			<trans-unit id="error.validator.stepconf.steps" xml:space="preserve">
+				<source>Missing steps in stepconf..</source>
+			</trans-unit>
+			<trans-unit id="error.validator.rating.ratedobjectuid" xml:space="preserve">
+				<source>Missing UID in rating.</source>
+			</trans-unit>
+			<trans-unit id="error.validator.rating.ratingobject" xml:space="preserve">
+				<source>False ratingobject in rating</source>
+			</trans-unit>
+			<trans-unit id="error.validator.vote.vote" xml:space="preserve">
+				<source>Missing vote.</source>
+			</trans-unit>
+			<trans-unit id="error.validator.vote.voter" xml:space="preserve">
+				<source>False voter reference in vote</source>
+			</trans-unit>
+			<trans-unit id="error.validator.vote.stepconf" xml:space="preserve">
+				<source>False voting reference in vote</source>
+			</trans-unit>
+			<trans-unit id="flash.ratingobject.noRatingsteps" xml:space="preserve">
+				<source>No ratingsteps configured!</source>
+			</trans-unit>
+			<trans-unit id="flash.vote.noFEuser" xml:space="preserve">
+				<source>FE user cannot be identified!</source>
+			</trans-unit>
+			<trans-unit id="flash.vote.renderCSS.defaultImage" xml:space="preserve">
+				<source>Issue found with configuration for rating display - using default image.</source>
+			</trans-unit>
+			<trans-unit id="flash.vote.show.notRated" xml:space="preserve">
+				<source>Not already rated</source>
+			</trans-unit>
+			<trans-unit id="flash.vote.ratinglinks.wrongDisplayConfig" xml:space="preserve">
+				<source>Check TSConfig setting for display name.</source>
+			</trans-unit>
+			<trans-unit id="flash.vote.create.noPermission" xml:space="preserve">
+				<source>No permission for this action.</source>
+			</trans-unit>
+			<trans-unit id="flash.heading.error" xml:space="preserve">
+				<source>Error !!!!</source>
+			</trans-unit>
+			<trans-unit id="flash.heading.warning" xml:space="preserve">
+				<source>Warning!</source>
+			</trans-unit>
+			<trans-unit id="flash.heading.info" xml:space="preserve">
+				<source>Information</source>
+			</trans-unit>
+			<trans-unit id="flash.heading.notice" xml:space="preserve">
+				<source>Notification</source>
+			</trans-unit>
+			<trans-unit id="flash.heading.ok" xml:space="preserve">
+				<source>Success</source>
+			</trans-unit>
+			<trans-unit id="flash.vote.create.alreadyRated" xml:space="preserve">
+				<source>Already rated</source>
+			</trans-unit>
+			<trans-unit id="flash.vote.create.newCreated" xml:space="preserve">
+				<source>Your new vote was created.</source>
+			</trans-unit>
+			<trans-unit id="flash.vote.create.foreignUpdateFailed" xml:space="preserve">
+				<source>Update of foreign field has failed.</source>
+			</trans-unit>
+			<trans-unit id="no_rating_done" xml:space="preserve">
+				<source>Update der Fremdtabelle fehlgeschlagen</source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>
