@@ -49,7 +49,7 @@ class Tx_ThRating_Domain_Validator_StepconfValidator extends Tx_Extbase_Validati
 		//at least a steporder value must be set
 		$steporder = $stepconf->getSteporder();
 		if (empty($steporder)) {
-			$this->addError(Tx_Extbase_Utility_Localization::translate('error.validator.stepconf.steporder', 'ThRating'), 1284700903);
+			$this->addError(Tx_Extbase_Utility_Localization::translate('error.validator.stepconf.steps', 'ThRating'), 1284700903);
 			return false;
 		}
 		return true;

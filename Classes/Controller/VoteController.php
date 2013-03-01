@@ -50,6 +50,10 @@ class Tx_ThRating_Controller_VoteController extends Tx_Extbase_MVC_Controller_Ac
 	 * @var int
 	 */
 	protected $cookieLifetime;
+	/**
+	 * @var Tx_Extbase_SignalSlot_Dispatcher
+	 */
+	protected $signalSlotDispatcher;
 
 	/**
 	 * @param Tx_ThRating_Service_ObjectFactoryService $objectFactoryService
@@ -57,17 +61,6 @@ class Tx_ThRating_Controller_VoteController extends Tx_Extbase_MVC_Controller_Ac
 	public function injectObjectFactoryService(Tx_ThRating_Service_ObjectFactoryService $objectFactoryService) {
 		//... to make static functions of this singleton avaiable
 	}
-	
-	/**
-	 * @var Tx_Extbase_Persistence_Manager
-	 */
-	//protected $persistenceManager;
-	/**
-	 * @param Tx_Extbase_Persistence_Manager $persistenceManager
-	 */
-	/**public function injectPersistenceManager(Tx_Extbase_Persistence_Manager $persistenceManager) {
-		$this->persistenceManager = $persistenceManager;
-	}*/
 	
 	/**
 	 * @var Tx_ThRating_Service_AccessControlService
@@ -146,6 +139,7 @@ class Tx_ThRating_Controller_VoteController extends Tx_Extbase_MVC_Controller_Ac
 	 */
 	public function initializeAction() {
 		$this->prefixId = strtolower('tx_' . $this->request->getControllerExtensionName(). '_' . $this->request->getPluginName());
+		$this->signalSlotDispatcher = $this->objectManager->get('Tx_Extbase_SignalSlot_Dispatcher');
 		// checks if t3jquery is loaded
 		if (t3lib_extMgm::isLoaded('t3jquery')) { require_once(t3lib_extMgm::extPath('t3jquery').'class.tx_t3jquery.php'); }
 		// if t3jquery is loaded and the custom Library had been created
@@ -228,10 +222,14 @@ class Tx_ThRating_Controller_VoteController extends Tx_Extbase_MVC_Controller_Ac
 				$this->view->assign('vote', $this->vote);
 				$this->fillSummaryView();
 			} else {
-				$this->flashMessageContainer->add(Tx_Extbase_Utility_Localization::translate('error.vote.create.noPermission', 'ThRating', t3lib_FlashMessage::ERROR));
+				$this->flashMessageContainer->add(	Tx_Extbase_Utility_Localization::translate('flash.vote.create.noPermission', 'ThRating'),
+													Tx_Extbase_Utility_Localization::translate('flash.heading.error', 'ThRating'),
+													t3lib_FlashMessage::ERROR);
 			}
 		} else {
-			$this->flashMessageContainer->add(Tx_Extbase_Utility_Localization::translate('error.vote.show.notRated', 'ThRating', t3lib_FlashMessage::NOTICE));
+			$this->flashMessageContainer->add(	Tx_Extbase_Utility_Localization::translate('flash.vote.show.notRated', 'ThRating'), 
+												Tx_Extbase_Utility_Localization::translate('flash.heading.notice', 'ThRating'),
+												t3lib_FlashMessage::NOTICE);
 		}
 	}
 
@@ -264,20 +262,31 @@ class Tx_ThRating_Controller_VoteController extends Tx_Extbase_MVC_Controller_Ac
 				}
 				$setResult = $this->setForeignRatingValues($vote->getRating());
 				If (!$setResult) {
-					$this->flashMessageContainer->add(Tx_Extbase_Utility_Localization::translate('error.vote.create.foreignUpdateFailed', 'ThRating'));
+					$this->flashMessageContainer->add(	Tx_Extbase_Utility_Localization::translate('flash.vote.create.foreignUpdateFailed', 'ThRating'), 
+														Tx_Extbase_Utility_Localization::translate('flash.heading.warning', 'ThRating'),
+														t3lib_Flashmessage::WARNING);
 				}
-				$this->flashMessageContainer->add(Tx_Extbase_Utility_Localization::translate('error.vote.create.newCreated', 'ThRating'));
+				$this->flashMessageContainer->add(	Tx_Extbase_Utility_Localization::translate('flash.vote.create.newCreated', 'ThRating'), 
+													Tx_Extbase_Utility_Localization::translate('flash.heading.ok', 'ThRating'),
+													t3lib_Flashmessage::OK);
 			} else {
 				$vote = $matchVote;
-				$this->flashMessageContainer->add(Tx_Extbase_Utility_Localization::translate('error.vote.create.alreadyRated', 'ThRating', t3lib_FlashMessage::NOTICE));
+				$this->flashMessageContainer->add(	Tx_Extbase_Utility_Localization::translate('flash.vote.create.alreadyRated', 'ThRating'), 
+													Tx_Extbase_Utility_Localization::translate('flash.heading.notice', 'ThRating'),
+													t3lib_FlashMessage::NOTICE);
 			}
 		} else {
-			$this->flashMessageContainer->add(Tx_Extbase_Utility_Localization::translate('error.vote.create.noPermission', 'ThRating', t3lib_FlashMessage::ERROR));
+			$this->flashMessageContainer->add(	Tx_Extbase_Utility_Localization::translate('flash.vote.create.noPermission', 'ThRating'), 
+												Tx_Extbase_Utility_Localization::translate('flash.heading.error', 'ThRating'),
+												t3lib_FlashMessage::ERROR);
 		}
 
 		$referrer = $this->request->getInternalArgument('__referrer');
 		$newArguments = $this->request->getArguments();
-	
+		
+		//Send signal to connected slots
+		$this->signalSlotDispatcher->dispatch(__CLASS__, 'afterCreateAction', array($vote));
+
 		$this->forward($referrer['@action'],$referrer['@controller'],$referrer['@extension'],$newArguments );
 	}
 
@@ -360,10 +369,20 @@ class Tx_ThRating_Controller_VoteController extends Tx_Extbase_MVC_Controller_Ac
 			}
 			$this->fillSummaryView();
 		} else {
-			$this->flashMessageContainer->add(Tx_Extbase_Utility_Localization::translate('error.vote.ratinglinks.wrongDisplayConfig', 'ThRating', t3lib_FlashMessage::ERROR));
+			$this->flashMessageContainer->add(	Tx_Extbase_Utility_Localization::translate('flash.vote.ratinglinks.wrongDisplayConfig', 'ThRating'), 
+												Tx_Extbase_Utility_Localization::translate('flash.heading.error', 'ThRating'),
+												t3lib_FlashMessage::ERROR);
 		}
+		$this->signalSlotDispatcher->dispatch(__CLASS__, 'afterRatinglinkAction', array($this->vote, $this->view));
+		//TODO: expected for Typo3 6.x
+		//t3lib_SignalSlot_Dispatcher::getInstance()->dispatch(__CLASS__, 'afterRatinglinkAction', array( 'ratingname'=>$this->ratingname ));
 	}
 
+	public function afterRatinglinkActionHandler($vote, $view) {
+		Tx_Extbase_Utility_Debugger::var_dump(func_num_args(),'func_num_args()');	
+		Tx_Extbase_Utility_Debugger::var_dump(func_get_args(),' func_get_args()');	
+		Tx_Extbase_Utility_Debugger::var_dump($view,'afterRatinglinkActionHandler_data');
+	}
 
 	/**
 	 * Check preconditions for rating
@@ -383,12 +402,16 @@ class Tx_ThRating_Controller_VoteController extends Tx_Extbase_MVC_Controller_Ac
 
 			$countSteps=count( $ratingobject->getStepconfs() );
 			If ( empty($countSteps)) {
-				$this->flashMessageContainer->add(Tx_Extbase_Utility_Localization::translate('error.ratingobject.noRatingsteps', 'ThRating', t3lib_FlashMessage::ERROR)); 
+				$this->flashMessageContainer->add(	Tx_Extbase_Utility_Localization::translate('flash.ratingobject.noRatingsteps', 'ThRating'), 
+													Tx_Extbase_Utility_Localization::translate('flash.heading.error', 'ThRating'),
+													t3lib_FlashMessage::ERROR); 
 			}
 
 			if (!$this->vote->getVoter() instanceof Tx_ThRating_Domain_Model_Voter) {
 				If ( !empty($this->settings['showNoFEUser']) ) {
-					$this->flashMessageContainer->add(Tx_Extbase_Utility_Localization::translate('error.vote.noFEuser', 'ThRating', t3lib_FlashMessage::ERROR)); 
+					$this->flashMessageContainer->add(	Tx_Extbase_Utility_Localization::translate('flash.vote.noFEuser', 'ThRating'), 
+														Tx_Extbase_Utility_Localization::translate('flash.heading.notice', 'ThRating'),
+														t3lib_FlashMessage::NOTICE); 
 				}
 			}
 		}
@@ -430,7 +453,7 @@ class Tx_ThRating_Controller_VoteController extends Tx_Extbase_MVC_Controller_Ac
 	 * @return array
 	 */
 	protected function getLocalizedStepconfs(Tx_ThRating_Domain_Model_Ratingobject $ratingobject) {
-		If ( t3lib_div::int_from_ver(TYPO3_version) < 6000000 ) {
+		If ( t3lib_utility_VersionNumber::convertVersionNumberToInteger(TYPO3_version) < 6000000 ) {
 			$localizedStepconfs = $this->stepconfRepository->findLocalizedByRatingobject(intval($ratingobject->getUid()));
 		} else {
 			$localizedStepconfs = $ratingobject->getStepconfs();
@@ -455,7 +478,9 @@ class Tx_ThRating_Controller_VoteController extends Tx_Extbase_MVC_Controller_Ac
 			$this->view->assign('stepCount', count($currentrate['weightedVotes']));
 			$this->view->assign('anonymousVotes', $currentrate['anonymousVotes']);
 			$this->view->assign('anonymousVoting', !empty($this->settings['mapAnonymous']) && !$this->accessControllService->getFrontendUserUid());
-			empty($currentrate['currentrate']) && $this->flashMessageContainer->add(Tx_Extbase_Utility_Localization::translate('error.vote.show.notRated', 'ThRating', t3lib_FlashMessage::ERROR));
+			empty($currentrate['currentrate']) && $this->flashMessageContainer->add(Tx_Extbase_Utility_Localization::translate('flash.vote.show.notRated', 'ThRating'), 
+																					Tx_Extbase_Utility_Localization::translate('flash.heading.notice', 'ThRating'),
+																					t3lib_FlashMessage::NOTICE);
 			if ( $this->voteValidator->isValid($this->vote) ) {
 				if ( ( !$this->vote->isAnonymous() && $this->vote->getVoter()->getUid() == $this->accessControllService->getFrontendUserUid()) ||
 						( $this->vote->isAnonymous() && 
@@ -510,7 +535,9 @@ class Tx_ThRating_Controller_VoteController extends Tx_Extbase_MVC_Controller_Ac
 		}
 
 		if (empty($storagePids[0])) {
-			$this->flashMessageContainer->add(Tx_Extbase_Utility_Localization::translate('error.vote.general.invalidStoragePid', 'ThRating', t3lib_FlashMessage::ERROR));
+			$this->flashMessageContainer->add(	Tx_Extbase_Utility_Localization::translate('flash.vote.general.invalidStoragePid', 'ThRating'), 
+												Tx_Extbase_Utility_Localization::translate('flash.heading.error', 'ThRating'),
+												t3lib_FlashMessage::ERROR);
 		} 
 		$frameworkConfiguration['persistence']['storagePid'] = implode(',',$storagePids);
 		$this->configurationManager->setConfiguration($frameworkConfiguration);
@@ -568,7 +595,9 @@ class Tx_ThRating_Controller_VoteController extends Tx_Extbase_MVC_Controller_Ac
 					$defaultRatingName = $this->settings['ratingConfigurations']['default'];
 					$ratingConfig = $this->settings['ratingConfigurations'][$defaultRatingName];
 					$filename = PATH_site.'/'.$ratingConfig['imagefile'];
-					$this->flashMessageContainer->add(Tx_Extbase_Utility_Localization::translate('error.vote.renderCSS.defaultImage', 'ThRating', t3lib_FlashMessage::ERROR));
+					$this->flashMessageContainer->add(	Tx_Extbase_Utility_Localization::translate('flash.vote.renderCSS.defaultImage', 'ThRating'), 
+														Tx_Extbase_Utility_Localization::translate('flash.heading.warning', 'ThRating'),
+														t3lib_FlashMessage::WARNING);
 				}
 				$filenameUri = $basePath.'/'.$ratingConfig['imagefile'];		//prepend host basepath if no URL is given
 

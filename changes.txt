@@ -1,6 +1,3 @@
-- first version that support Typo3 4.7
-- new propertymapper has been activated
-- actions.js has been modified - beware of that who modified this file
-- use injections in domain objects
-- workaround for wrong l18n handling in Typo3 4.7 for stepconfs
-- allow spaces in stepnames
+- converted language files from XML to XLIFF
+- added some Signal/Slot-Handlers
+- some deprecation fixes
