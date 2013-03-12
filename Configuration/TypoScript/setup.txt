@@ -28,9 +28,11 @@ plugin.tx_thrating {
 	settings {
 		hideSummary = {$plugin.tx_thrating.config.hideSummary}
 		showNoFEUser = {$plugin.tx_thrating.config.showNoFEUser}
+		showNotRated = {$plugin.tx_thrating.config.showNotRated}
 		mapAnonymous = {$plugin.tx_thrating.config.mapAnonymous}
 		cookieLifetime = {$plugin.tx_thrating.config.cookieLifetime}
 		cookieProtection = 0
+		ratingContext = defaultContext
 		defaultObject {
 			ratetable = tt_content
 			ratefield = uid

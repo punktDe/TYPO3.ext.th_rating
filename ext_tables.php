@@ -15,7 +15,7 @@ t3lib_extMgm::addStaticFile($_EXTKEY, 'Configuration/TypoScript', 'Rating AX');
 t3lib_extMgm::allowTableOnStandardPages('tx_thrating_domain_model_ratingobject');
 $TCA['tx_thrating_domain_model_ratingobject'] = array (
 	'ctrl' => array (
-		'title'				=> 'RatingObjects',
+		'title'				=> 'LLL:EXT:'.$_EXTKEY.'/Resources/Private/Language/locallang_tca.xlf:model.ratingobject.title',
 		'label'				=> 'uid',
 		'label_alt'			=> 'ratetable,ratefield',
  		'label_userFunc'	=> 'user_BEfunc->getRatingObjectRecordTitle',
@@ -34,7 +34,7 @@ $TCA['tx_thrating_domain_model_ratingobject'] = array (
 //t3lib_extMgm::allowTableOnStandardPages('tx_thrating_domain_model_stepconf');
 $TCA['tx_thrating_domain_model_stepconf'] = array (
 	'ctrl' => array (
-		'title'						=> 'Ratingstep configuration',
+		'title'						=> 'LLL:EXT:'.$_EXTKEY.'/Resources/Private/Language/locallang_tca.xlf:model.stepconf.title',
 		'label'						=> 'uid',
 		'label_alt' 				=> 'ratingobject,steporder,sys_language_uid',
  		'label_userFunc' 			=> 'user_BEfunc->getStepconfRecordTitle',
@@ -59,7 +59,7 @@ $TCA['tx_thrating_domain_model_stepconf'] = array (
 //t3lib_extMgm::allowTableOnStandardPages('tx_thrating_domain_model_rating');
 $TCA['tx_thrating_domain_model_rating'] = array (
 	'ctrl' => array (
-		'title'				=> 'Rating',
+		'title'				=> 'LLL:EXT:'.$_EXTKEY.'/Resources/Private/Language/locallang_tca.xlf:model.rating.title',
 		'label'				=> 'uid',
 		'label_alt'			=> 'ratingobject,ratedobjectuid,votes',
  		'label_userFunc'	=> 'user_BEfunc->getRatingRecordTitle',
@@ -81,7 +81,7 @@ $TCA['tx_thrating_domain_model_rating'] = array (
 //t3lib_extMgm::allowTableOnStandardPages('tx_thrating_domain_model_vote');
 $TCA['tx_thrating_domain_model_vote'] = array (
 	'ctrl' => array (
-		'title'				=> 'Votings',
+		'title'				=> 'LLL:EXT:'.$_EXTKEY.'/Resources/Private/Language/locallang_tca.xlf:model.vote.title',
 		'label'				=> 'uid',
 		'label_alt'			=> 'rating,fe_user,vote',
  		'label_userFunc'	=> 'user_BEfunc->getVoteRecordTitle',

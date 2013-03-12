@@ -1,59 +1,46 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml version='1.0' encoding='utf-8'?>
 <xliff version="1.0">
-	<file source-language="en" target-language="de" datatype="plaintext" original="messages" date="2013-03-01T17:36:13Z" product-name="th_rating">
+	<file source-language="en" datatype="plaintext" original="messages" date="2013-03-01T17:36:13Z" product-name="th_rating">
 		<header/>
 		<body>
 			<trans-unit id="sheet_general" xml:space="preserve" approved="yes">
 				<source>General</source>
-				<target>Basis</target>
-			</trans-unit>
+			<target state="translated">Basis</target></trans-unit>
 			<trans-unit id="general_actions" xml:space="preserve" approved="yes">
 				<source>Plugin action</source>
-				<target>Aktion des Plugins</target>
-			</trans-unit>
+			<target state="translated">Aktion des Plugins</target></trans-unit>
 			<trans-unit id="general_actions_1" xml:space="preserve" approved="yes">
 				<source>Display</source>
-				<target>Ansicht</target>
-			</trans-unit>
-			<trans-unit id="general_actions_2" xml:space="preserve" approved="yes">
+			<target state="translated">Ansicht</target></trans-unit>
+			<trans-unit id="general_actions_2" xml:space="preserve">
 				<source>Ratinglinks</source>
-				<target></target>
 			</trans-unit>
-			<trans-unit id="general_actions_3" xml:space="preserve" approved="yes">
+			<trans-unit id="general_actions_3" xml:space="preserve">
 				<source>Voteform</source>
-				<target></target>
 			</trans-unit>
-			<trans-unit id="general_actions_4" xml:space="preserve" approved="yes">
+			<trans-unit id="general_actions_4" xml:space="preserve">
 				<source>Index</source>
-				<target></target>
 			</trans-unit>
 			<trans-unit id="general_display" xml:space="preserve" approved="yes">
 				<source>Ratinglink configuration</source>
-				<target>Ratinglink Darstellung</target>
-			</trans-unit>
+			<target state="translated">Ratinglink Darstellung</target></trans-unit>
 			<trans-unit id="general_hideSummary" xml:space="preserve" approved="yes">
 				<source>Hide rating summary</source>
-				<target>Verstecke Rating Zusammenfassung</target>
-			</trans-unit>
+			<target state="translated">Verstecke Rating Zusammenfassung</target></trans-unit>
 			<trans-unit id="general_cookieProtection" xml:space="preserve" approved="yes">
 				<source>Activate cookie protection for anonymous votes</source>
-				<target>Verwende cookies bei anonymen Bewertungen</target>
-			</trans-unit>
+			<target state="translated">Verwende cookies bei anonymen Bewertungen</target></trans-unit>
 			<trans-unit id="sheet_paths" xml:space="preserve" approved="yes">
 				<source>Paths</source>
-				<target>Pfade</target>
-			</trans-unit>
-			<trans-unit id="paths_templateRootPath" xml:space="preserve" approved="yes">
+			<target state="translated">Pfade</target></trans-unit>
+			<trans-unit id="paths_templateRootPath" xml:space="preserve">
 				<source>Template root path</source>
-				<target></target>
 			</trans-unit>
-			<trans-unit id="paths_partialRootPath" xml:space="preserve" approved="yes">
+			<trans-unit id="paths_partialRootPath" xml:space="preserve">
 				<source>Partial root path</source>
-				<target></target>
 			</trans-unit>
-			<trans-unit id="paths_layoutRootPath" xml:space="preserve" approved="yes">
+			<trans-unit id="paths_layoutRootPath" xml:space="preserve">
 				<source>Layout root path</source>
-				<target></target>
 			</trans-unit>
 		</body>
 	</file>

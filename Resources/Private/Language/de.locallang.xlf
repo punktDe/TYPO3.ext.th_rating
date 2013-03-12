@@ -50,7 +50,7 @@
 			<target state="translated">Prüfe TSConfig Einstellungen für "display name"</target></trans-unit>
 			<trans-unit id="flash.vote.create.noPermission" xml:space="preserve" approved="yes">
 				<source>No permission for this action.</source>
-			<target state="translated">Sie haben keine Berechtigung die Aktion auszuführen.</target></trans-unit>
+			<target state="translated">Du hast keine Berechtigung um die Aktion auszuführen.</target></trans-unit>
 			<trans-unit id="flash.heading.error" xml:space="preserve" approved="yes">
 				<source>Error !!!!</source>
 			<target state="translated">Fehler !!!!</target></trans-unit>
@@ -62,13 +62,13 @@
 			<target state="translated">Information</target></trans-unit>
 			<trans-unit id="flash.heading.notice" xml:space="preserve" approved="yes">
 				<source>Notification</source>
-			<target state="translated">Bitte beachten</target></trans-unit>
+			<target state="translated">Hinweis</target></trans-unit>
 			<trans-unit id="flash.heading.ok" xml:space="preserve" approved="yes">
 				<source>Success</source>
 			<target state="translated">Verarbeitung erfolgreich</target></trans-unit>
 			<trans-unit id="flash.vote.create.alreadyRated" xml:space="preserve" approved="yes">
 				<source>Already rated</source>
-			<target state="translated">Sie haben bereits diese Bewertung durchgefuehrt.</target></trans-unit>
+			<target state="translated">Du hast bereits eine Bewertung vorgenommen.</target></trans-unit>
 			<trans-unit id="flash.vote.create.newCreated" xml:space="preserve" approved="yes">
 				<source>Your new vote was created.</source>
 			<target state="translated">Die Stimme wurde gezählt.</target></trans-unit>
@@ -78,6 +78,44 @@
 			<trans-unit id="no_rating_done" xml:space="preserve" approved="yes">
 				<source>Update der Fremdtabelle fehlgeschlagen</source>
 			<target state="translated">Update der Fremdtabelle fehlgeschlagen</target></trans-unit>
+			<trans-unit id="fluid.template.ratinglinks.currentRating" xml:space="preserve" approved="yes">
+				<note>Forwarded arguments: 1:currentRates, 2:stepCount</note>
+				<target>Aktuelle Bewertung %1.1f von %2$d</target><source>Current rating is %1.1f out of %2$d</source>
+			<note>Forwarded arguments: 1:currentRates, 2:stepCount</note></trans-unit>
+			<trans-unit id="fluid.layout.default.currentRating" xml:space="preserve" approved="yes">
+				<note>Forwarded arguments: 1:currentRates, 2:number of rating.votes</note>
+				<target>Bewertung: %1.1f. %2$d Bewertung(en).</target><source>Rating: %1.1f. %2$d vote(s).</source>
+			<note>Forwarded arguments: 1:currentRates, 2:number of rating.votes
+Forwarded arguments: 1:currentRates, 2:number of rating.votes
+Forwarded arguments: 1:currentRates, 2:rating.votes</note></trans-unit>
+			<trans-unit id="fluid.layout.default.anonymousVotes" xml:space="preserve" approved="yes">
+				<note>Forwarded arguments: 1:anonymousVotes</note>
+				<target state="translated">%1$d anonyme Bewertungen</target><source>%1$d anonymous votes</source>
+			</trans-unit>
+			<trans-unit id="fluid.layout.default.noRatingDone" xml:space="preserve" approved="yes">
+				<note>Forwarded arguments: None</note>
+				<target state="translated">Noch keine Bewertung erfolgt.</target><source>No rating done at all.</source>
+			</trans-unit>
+			<trans-unit id="fluid.layout.default.ownVoteing" xml:space="preserve" approved="yes">
+				<note>Forwarded arguments: 1:voting, 2:voting.vote.steporder, 3:stepCount</note>
+				<target state="translated">Deine Bewertung war '%1$s' (%2$d of %3$d)</target><source>Your vote was '%1$s' (%2$d of %3$d)</source>
+			</trans-unit>
+			<trans-unit id="fluid.layout.default.anonymousVoting" xml:space="preserve" approved="yes">
+				<note>Forwarded arguments: None; This entry needs "htmlEscape='false' when read by fluid</note>
+				<target>Du arbeitest aktuell als anonymer Benutzer.&lt;br/&gt;Melde Dich an für personalisierte Bewertungen&lt;br/&gt;</target><source><![CDATA[Your are an anonymous user.<br/>You may log on to do personalized votings<br/>]]></source>
+			<note>Forwarded arguments: None; This entry needs "htmlEscape='false' when read by fluid</note></trans-unit>
+			<trans-unit id="fluid.layout.default.logonForRatings" xml:space="preserve" approved="yes">
+				<note>Forwarded arguments: None</note>
+				<target>Melde Dich bitte an, um zu bewerten</target><source>Please log on to do ratings</source>
+			<note>Forwarded arguments: None</note></trans-unit>
+			<trans-unit id="fluid.layout.default.noRatingSteps" xml:space="preserve" approved="yes">
+				<note>Forwarded arguments: None</note>
+				<target>Keine Bewertungsschritte konfiguriert.</target><source>No ratingsteps configured.</source>
+			<note>Forwarded arguments: None</note></trans-unit>
+			<trans-unit id="fluid.layout.default.clickRatingBar" xml:space="preserve" approved="yes">
+				<note>Forwarded arguments: None</note>
+				<target state="translated">Klicke in die Bewertungsleiste</target><source>Click the rating bar to rate this item</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

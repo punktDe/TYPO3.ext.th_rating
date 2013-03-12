@@ -6,7 +6,9 @@
 	<div name='tx-thrating-ratinglinks'>
 		<ul class='thRating thRating-{ratingClass} thRating-RObj{ratingobject.uid}-{ratingName}'>
 			<f:if condition="{calculatedRate}"><f:then>
-			<li class='current-rating {barimage}' style="{calculatedRate}" title='Current rating is {currentRates} out of {stepCount}' >Current rating is {currentRates} out of {stepCount}</li>
+			<li class='current-rating {barimage}' style="{calculatedRate}" title="<f:translate key='fluid.template.ratinglinks.currentRating' default='fluid.template.ratinglinks.currentRating' arguments='{1:currentRates, 2:stepCount}'/>">
+				<f:translate key='fluid.template.ratinglinks.currentRating' default='fluid.template.ratinglinks.currentRating' arguments='{1:currentRates, 2:stepCount}'/>
+			</li>
 			</f:then></f:if>
 			<!-- Only generate links if a  FE user is logged on -->
 			<f:if condition="{ajaxSelections}"><f:then>
@@ -18,3 +20,18 @@
 	</div>
 </f:then></f:if>
 </f:section>
+<!--
+******************************************************************************************
+* Forwarded variables
+* --------------------
+* ==> all variables used in defaultLayout
+* {barimage}		-	ratingbar / noratingbar
+* {calculatedRate}	-	style definition for current rating in percent
+* {ratingName}		-	Name of the ratinglink
+* {ratingClass}		-	tilt / normal
+* {ajaxSelections}	-	associative array of possible ratingsteps consisting of
+*						[order of ratingstep]
+*							['step'] 		- Domain object: stepconf
+*							['ajaxvalue']	- JSON encoded value to handle AJAX request
+******************************************************************************************
+-->

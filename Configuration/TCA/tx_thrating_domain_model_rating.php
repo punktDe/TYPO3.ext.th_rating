@@ -15,14 +15,14 @@ $TCA['tx_thrating_domain_model_rating'] = array(
 		),
 		'hidden' => array(
 			'exclude' => 1,
-			'label'   => 'LLL:EXT:Resources/Private/Language/locallang.xml:TCA.hidden',
+			'label'   => 'LLL:EXT:lang/locallang_general.xml:LGL.hidden',
 			'config'  => array(
 				'type' => 'check'
 			)
 		),
 		'ratingobject' => Array (		
 			'exclude' => 1,		
-			'label'   => 'Rating Object',
+			'label'   => 'LLL:EXT:'.$_EXTKEY.'/Resources/Private/Language/locallang_tca.xlf:model.rating.ratingobject',
 			'config' => Array (
 				'type' => 'select',
 				'foreign_table' => 'tx_thrating_domain_model_ratingobject',
@@ -32,7 +32,7 @@ $TCA['tx_thrating_domain_model_rating'] = array(
 			)
 		),		
 		'ratedobjectuid' => Array (
-			'label' => 'Rated Object Uid',
+			'label'   => 'LLL:EXT:'.$_EXTKEY.'/Resources/Private/Language/locallang_tca.xlf:model.rating.ratedobjectuid',
 			'config' => Array (
 				'type' => 'input',
 				'size' => '8',
@@ -43,7 +43,7 @@ $TCA['tx_thrating_domain_model_rating'] = array(
 		),
 		'votes' => array(
 			'exclude' => 1,
-			'label'   => 'Votes',
+			'label'   => 'LLL:EXT:'.$_EXTKEY.'/Resources/Private/Language/locallang_tca.xlf:model.rating.votes',
 			'config' => array(
 				'type' => 'inline',
 				'foreign_table' => 'tx_thrating_domain_model_vote',
@@ -58,14 +58,14 @@ $TCA['tx_thrating_domain_model_rating'] = array(
 			),
 		),
 		'currentrates' => Array (
-			'label' => 'Calculated values',
+			'label'   => 'LLL:EXT:'.$_EXTKEY.'/Resources/Private/Language/locallang_tca.xlf:model.rating.currentrates',
 			'config' => Array (
 				'type'		=> '',
 				'size'		=> '30',
 			)
 		),		
 		'uid' => array(
-			'label'   => 'Rating list',
+			'label'   => 'LLL:EXT:'.$_EXTKEY.'/Resources/Private/Language/locallang_tca.xlf:model.rating.uid',
 		),
 		),
 	'types' => array(

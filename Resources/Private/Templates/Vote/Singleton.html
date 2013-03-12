@@ -6,9 +6,23 @@
 		<f:form.hidden property="rating"></f:form.hidden>
 		<f:form.hidden name="ratingName" value="{ratingName}"></f:form.hidden>
 		<f:form.hidden name="cookieLifetime" value="{cookieLifetime}"></f:form.hidden>
+		<f:form.hidden name="hideSummary" value="{hideSummary}"></f:form.hidden>
 		<f:form.hidden name="ajaxRef" value="{ajaxRef}"></f:form.hidden>
 	</f:form>
 	<div class='tx-thrating-flash-message'>
 		<f:flashMessages renderMode="div" />
 	</div>
 </div>
+<f:comment>
+<!--
+******************************************************************************************
+* Forwarded variables
+* --------------------
+* ==> all variables used in defaultLayout
+*
+* This content is only a placeholder to pass AJAX requests to the server.
+* The generated form field will be filled dynamically by javascript depending on the
+* JSON value in {ajaxSelections}[ratingstep]['ajaxvalue'].
+******************************************************************************************
+-->
+</f:comment>

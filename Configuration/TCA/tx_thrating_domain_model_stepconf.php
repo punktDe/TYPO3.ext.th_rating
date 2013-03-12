@@ -21,15 +21,15 @@ $TCA['tx_thrating_domain_model_stepconf'] = array(
 				'default' => 0,
 			),
 		),
-		'ratingobject' => Array (		
-			'exclude' => 1,		
-			'label'   => 'Rating Object',
-			'config' => Array (
-				'type' => 'passthrough',
+		'ratingobject' 	=> Array (		
+			'exclude'	=> 1,		
+			'label'  	=> 'LLL:EXT:'.$_EXTKEY.'/Resources/Private/Language/locallang_tca.xlf:model.stepconf.ratingobject',
+			'config' 	=> Array (
+				'type'		=> 'passthrough',
 			),
 		),		
 		'steporder' => Array (
-			'label'			=> 'Ratingstep order',
+			'label'   		=> 'LLL:EXT:'.$_EXTKEY.'/Resources/Private/Language/locallang_tca.xlf:model.stepconf.steporder',
 			'l10n_display'	=> 'defaultAsReadonly',
 			//'l10n_cat'		=> 'media',
 			'config'=> Array (
@@ -42,7 +42,7 @@ $TCA['tx_thrating_domain_model_stepconf'] = array(
 			),
 		),
 		'stepweight' => Array (
-			'label' 		=> 'Ratingstep weight',
+			'label'   		=> 'LLL:EXT:'.$_EXTKEY.'/Resources/Private/Language/locallang_tca.xlf:model.stepconf.stepweight',
 			'l10n_display'	=> 'defaultAsReadonly',
 			//'l10n_cat'		=> 'media',
 			'config' 		=> Array (
@@ -53,7 +53,7 @@ $TCA['tx_thrating_domain_model_stepconf'] = array(
 			),
 		),
 		'stepname' => Array (
-			'label' 		=> 'Ratingstep name',
+			'label'  		=> 'LLL:EXT:'.$_EXTKEY.'/Resources/Private/Language/locallang_tca.xlf:model.stepconf.stepname',
 			'l10n_mode'		=> 'prefixLangTitle ',
 			'l10n_display'	=> 'hideDiff ',
 			'config' => Array (
@@ -65,7 +65,7 @@ $TCA['tx_thrating_domain_model_stepconf'] = array(
 		),
 		'votes' => array(
 			'exclude' 		=> 1,
-			'label'   		=> 'Assigned votes',
+			'label'   		=> 'LLL:EXT:'.$_EXTKEY.'/Resources/Private/Language/locallang_tca.xlf:model.stepconf.votes',
 			'l10n_mode' 	=> 'exclude',
 			//'l10n_display'	=> 'hideDiff',
 			'config' => array(
@@ -83,7 +83,7 @@ $TCA['tx_thrating_domain_model_stepconf'] = array(
 			),
 		),
 		'uid' => array(
-			'label'   => 'Ratingstep configuration list',
+			'label'   => 'LLL:EXT:'.$_EXTKEY.'/Resources/Private/Language/locallang_tca.xlf:model.stepconf.uid',
 			'config' => array(
 				'type' => 'passthrough',
 			),

@@ -80,12 +80,39 @@ background-position: center bottom;
 .tx-thrating-flash-message{
 	position:absolute;
 	display:none;
-	padding:0px;
-	top:2px;
-	left:2px;
-	background-color:aqua;
+	padding:3px;
+	top:1.5em;
+	left:1.5em;
+	background-color: #a7a7a7;
 	border:1px solid black;
 	min-width:100px;
+}
+.tx-thrating-flash-message .message-error .message-header{
+	background-color: #f87575;
+    border: 1px dotted grey;
+	padding:1px;
+	font-weight:bold;
+}
+.tx-thrating-flash-message .message-warning .message-header{
+	background-color: #ffff00;
+    border: 1px dotted grey;
+	padding:1px;
+	font-weight:bold;
+}
+.tx-thrating-flash-message .message-notice .message-header{
+	background-color: #62aeff;
+    border: 1px dotted blue;
+	padding:1px;
+	font-weight:bold;
+}
+.tx-thrating-flash-message .message-ok .message-header{
+	background-color: #1bee1b;
+    border: 1px dotted grey;
+	padding:1px;
+	font-weight:bold;
+}
+.tx-thrating-flash-message .message-body{
+	padding-top:3px;
 }
 .tx-thrating-flash-message li{
 	display:inline;

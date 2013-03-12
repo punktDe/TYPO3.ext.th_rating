@@ -1,5 +1,8 @@
-<div class='tx-thrating-pi1-content' id='tx-thrating-pi1-{ajaxRef}'>
+<div class="tx-thrating-pi1-content {ratingContext}" id='tx-thrating-pi1-{ajaxRef}'>
 	<div class='tx-thrating-content'>
+	<f:if condition="{preContent}"><f:then>
+		<div class='tx-thrating-preContent'><f:format.raw>{preContent}</f:format.raw></div>
+	</f:then></f:if>
 	<f:if condition="{stepCount} > 0">
 	  <f:then>
 		<f:render section="content" />
@@ -7,38 +10,56 @@
 		</f:then><f:else>
 		<div class='tx-thrating-summary'>
 			<f:if condition="{currentRates}"><f:then>
-				Rating: <f:format.number decimals="1" decimalSeparator="," thousandsSeparator=".">{currentRates}</f:format.number> of {stepCount}. <f:count>{rating.votes}</f:count> vote(s).
+				<f:translate key='fluid.layout.default.currentRating' default='fluid.layout.default.currentRating' arguments="{1:currentRates, 2:'{f:count(subject:\"{rating.votes}\")}'}"/>
 				<f:if condition="{anonymousVotes}"><f:then>
-				<br/>{anonymousVotes} anonymous votes
+				<br/><f:translate key='fluid.layout.default.anonymousVotes' default='fluid.layout.default.anonymousVotes' arguments='{1:anonymousVotes}'/>
 				</f:then></f:if>
 			</f:then><f:else>
-				No rating done at all.
+				<f:translate key='fluid.layout.default.noRatingDone' default='fluid.layout.default.noRatingDone'/>
 			</f:else></f:if>
 			<br/>
 			<f:if condition="{voting}"><f:then>
-				Your vote was '{voting}' ({voting.vote.steporder} of {stepCount})
+				<f:translate key='fluid.layout.default.ownVoteing' default='fluid.layout.default.ownVoteing' arguments='{1:voting, 2:voting.vote.steporder, 3:stepCount}'/>
 			</f:then><f:else>
 				<f:if condition="{anonymousVoting}"><f:then>
-					Your are an anonymous user.<br/>
-					You may log on to do personalized votings<br/>
+					<f:translate key='fluid.layout.default.anonymousVoting' default='fluid.layout.default.anonymousVoting' htmlEscape="false" />
 				</f:then></f:if>
-				<!-- Check if a  FE user is logged on -->
+				<f:comment>Check if a  FE user is logged on</f:comment>
 				<f:if condition="{voter}"><f:then>
 					<f:if condition="{ratingName}"><f:then>
-						Click the rating bar to rate this item
+						<f:comment>This is a special entry for the ratinglink action</f:comment>
+						<f:translate key='fluid.layout.default.clickRatingBar' default='fluid.layout.default.clickRatingBar'/>
 					</f:then></f:if>
 				</f:then><f:else>
-					Please log on to do ratings
+					<f:translate key='fluid.layout.default.logonForRatings' default='fluid.layout.default.logonForRatings'/>
 				</f:else></f:if>	
 			</f:else></f:if>	
 		</div>
 		</f:else></f:if>	
 	</f:then><f:else>
-		No ratingsteps configured.
+		<f:translate key='fluid.layout.default.noRatingSteps' default='fluid.layout.default.noRatingSteps'/>
 	</f:else></f:if>
-	</div>
-	<div class='tx-thrating-flash-message'>
-		<!--f:translate key="label_recent_posts">Below are the most recent posts:</f:translate-->
-		<f:flashMessages renderMode="div" />
-	</div>
+	<f:if condition="{preContent}"><f:then>
+		<div class='tx-thrating-postContent'><f:format.raw>{postContent}</f:format.raw></div>
+	</f:then></f:if>
 </div>
+<div class='tx-thrating-flash-message'>
+	<f:flashMessages renderMode="div" />
+</div>
+<f:comment><!--
+Rating: <f:format.number decimals="1" decimalSeparator="," thousandsSeparator=".">{currentRates}</f:format.number> of {stepCount}. <f:count>{rating.votes}</f:count> vote(s).
+*************************************************************************************************
+* Forwarded variables
+* --------------------
+* {settings}		-	complete extension configuration array
+* {ajaxRef}			-	Name of the ratinglink
+* {ratingobject}	- 	Domain object: ratingabject
+* {rating}			- 	Domain object: rating
+* {voter}			-	Domain object: voter (anonymous voter if enabled an nobody is logged on)
+* {currentRates}	-	calculated current rating
+* {stepCount}		-	overall number of ratingsteps
+* {anonymousVotes}	- 	number of anonymous votes being done on this rating
+* {anonymousVoting}	-	true/false if anonymous voting is enabled
+* {voting}			-	the users original vote (stepconf) domain object if one exists
+*************************************************************************************************
+--></f:comment>

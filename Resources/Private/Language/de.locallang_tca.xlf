@@ -1,0 +1,80 @@
+<?xml version='1.0' encoding='utf-8'?>
+<xliff version="1.0">
+	<file source-language="en" datatype="plaintext" original="messages" date="2013-03-01T17:33:10Z" product-name="th_rating">
+		<header/>
+		<body>
+			<trans-unit id="model.rating.ratingobject" xml:space="preserve" approved="yes">
+				<source>Ratingobject</source>
+			<target state="translated">Bewertungsobjekt</target></trans-unit>
+			<trans-unit id="model.rating.ratedobjectuid" xml:space="preserve" approved="yes">
+				<source>Rated Object Uid</source>
+			<target state="translated">UID des bewerteten Objekts</target></trans-unit>
+			<trans-unit id="model.rating.votes" xml:space="preserve" approved="yes">
+				<source>Votes</source>
+			<target state="translated">Bewertungen</target></trans-unit>
+			<trans-unit id="model.rating.currentrates" xml:space="preserve" approved="yes">
+				<source>Calculated values</source>
+			<target state="translated">Berechnete Bewertung</target></trans-unit>
+			<trans-unit id="model.rating.uid" xml:space="preserve" approved="yes">
+				<source>Rating list</source>
+			<target state="translated">UID der Bewertung</target></trans-unit>
+			<trans-unit id="model.rating.title" xml:space="preserve" approved="yes">
+				<source>Rating</source>
+			<target state="translated">Rating</target></trans-unit>
+			<trans-unit id="model.ratingobject.ratetable" xml:space="preserve" approved="yes">
+				<source>Rating Object Tablename</source>
+			<target state="translated">Tabellenname des Bewertungsobjekts</target></trans-unit>
+			<trans-unit id="model.ratingobject.ratefield" xml:space="preserve" approved="yes">
+				<source>Rating Object Fieldname</source>
+			<target state="translated">Feldname des Bewertungsobjekts</target></trans-unit>
+			<trans-unit id="model.ratingobject.ratingobject" xml:space="preserve" approved="yes">
+				<source>Rating object list</source>
+			<target state="translated">Bewertungsobjektliste</target></trans-unit>
+			<trans-unit id="model.ratingobject.uid" xml:space="preserve" approved="yes">
+				<source>Ratingstep configurations</source>
+			<target state="translated">UID des Bewertungsobjekts</target></trans-unit>
+			<trans-unit id="model.ratingobject.title" xml:space="preserve" approved="yes">
+				<source>RatingObjects</source>
+			<target state="translated">Bewertungsobjekt</target></trans-unit>
+			<trans-unit id="model.ratingobject.ratings" xml:space="preserve" approved="yes">
+				<source>Ratings</source>
+			<target state="translated">Bewertungen</target></trans-unit>
+			<trans-unit id="model.stepconf.ratingobject" xml:space="preserve" approved="yes">
+				<source>Rating Object</source>
+			<target state="translated">Bewertungsobjekt</target></trans-unit>
+			<trans-unit id="model.stepconf.steporder" xml:space="preserve" approved="yes">
+				<source>Ratingstep order</source>
+			<target state="translated">Bewertung Reihenfolge</target></trans-unit>
+			<trans-unit id="model.stepconf.stepweight" xml:space="preserve" approved="yes">
+				<source>Ratingstep weight</source>
+			<target state="translated">Bewertung Gewichtung</target></trans-unit>
+			<trans-unit id="model.stepconf.stepname" xml:space="preserve" approved="yes">
+				<source>Ratingstep name</source>
+			<target state="translated">Bewertungsname</target></trans-unit>
+			<trans-unit id="model.stepconf.votes" xml:space="preserve" approved="yes">
+				<source>Assigned votes</source>
+			<target state="translated">Bewertungen</target></trans-unit>
+			<trans-unit id="model.stepconf.uid" xml:space="preserve" approved="yes">
+				<source>Ratingstep configuration list</source>
+			<target state="translated">UID des Bewertungsschritts</target></trans-unit>
+			<trans-unit id="model.stepconf.title" xml:space="preserve" approved="yes">
+				<source>Ratingstep configuration</source>
+			<target state="translated">Bewertungskonfiguration</target></trans-unit>
+			<trans-unit id="model.vote.rating" xml:space="preserve" approved="yes">
+				<source>Rating</source>
+			<target state="translated">Bewertetes Objekt</target></trans-unit>
+			<trans-unit id="model.vote.voter" xml:space="preserve" approved="yes">
+				<source>FE User</source>
+			<target state="translated">bewertende Person</target></trans-unit>
+			<trans-unit id="model.vote.vote" xml:space="preserve" approved="yes">
+				<source>Vote</source>
+			<target state="translated">Bewertung</target></trans-unit>
+			<trans-unit id="model.vote.uid" xml:space="preserve" approved="yes">
+				<source>Vote list</source>
+			<target state="translated">UID der Bewertung</target></trans-unit>
+			<trans-unit id="model.vote.title" xml:space="preserve" approved="yes">
+				<source>Votings</source>
+			<target state="translated">Bewertungen</target></trans-unit>
+		</body>
+	</file>
+</xliff>
