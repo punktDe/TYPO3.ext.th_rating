@@ -1,4 +1,7 @@
 <div class="tx-thrating-pi1-content {ratingContext}" id='tx-thrating-pi1-{ajaxRef}'>
+<f:if condition="{staticPreContent}"><f:then>
+	<div class='tx-thrating-staticPreContent'><f:format.raw>{staticPreContent}</f:format.raw></div>
+</f:then></f:if>
 	<div class='tx-thrating-content'>
 	<f:if condition="{preContent}"><f:then>
 		<div class='tx-thrating-preContent'><f:format.raw>{preContent}</f:format.raw></div>
@@ -39,27 +42,34 @@
 	</f:then><f:else>
 		<f:translate key='fluid.layout.default.noRatingSteps' default='fluid.layout.default.noRatingSteps'/>
 	</f:else></f:if>
-	<f:if condition="{preContent}"><f:then>
+	<f:if condition="{postContent}"><f:then>
 		<div class='tx-thrating-postContent'><f:format.raw>{postContent}</f:format.raw></div>
 	</f:then></f:if>
-</div>
-<div class='tx-thrating-flash-message'>
-	<f:flashMessages renderMode="div" />
-</div>
+	</div>
+<f:if condition="{staticPostContent}"><f:then>
+	<div class='tx-thrating-staticPostContent'><f:format.raw>{staticPostContent}</f:format.raw></div>
+</f:then></f:if>
+	<div class='tx-thrating-flash-message'>
+		<f:flashMessages renderMode="div" />
+	</div>
 <f:comment><!--
 Rating: <f:format.number decimals="1" decimalSeparator="," thousandsSeparator=".">{currentRates}</f:format.number> of {stepCount}. <f:count>{rating.votes}</f:count> vote(s).
 *************************************************************************************************
 * Forwarded variables
 * --------------------
-* {settings}		-	complete extension configuration array
-* {ajaxRef}			-	Name of the ratinglink
-* {ratingobject}	- 	Domain object: ratingabject
-* {rating}			- 	Domain object: rating
-* {voter}			-	Domain object: voter (anonymous voter if enabled an nobody is logged on)
-* {currentRates}	-	calculated current rating
-* {stepCount}		-	overall number of ratingsteps
-* {anonymousVotes}	- 	number of anonymous votes being done on this rating
-* {anonymousVoting}	-	true/false if anonymous voting is enabled
-* {voting}			-	the users original vote (stepconf) domain object if one exists
+* {settings}			-	complete extension configuration array
+* {ajaxRef}				-	Name of the ratinglink
+* {ratingobject}		- 	Domain object: ratingabject
+* {rating}				- 	Domain object: rating
+* {voter}				-	Domain object: voter (anonymous voter if enabled an nobody is logged on)
+* {currentRates}		-	calculated current rating
+* {stepCount}			-	overall number of ratingsteps
+* {anonymousVotes}		- 	number of anonymous votes being done on this rating
+* {anonymousVoting}		-	true/false if anonymous voting is enabled
+* {voting}				-	the users original vote (stepconf) domain object if one exists
+* {staticPreContent}	- 	HTML formatted content that will be includes IN FRONT OF extension content (NOT changed by AJAX)
+* {staticPostContent}	- 	HTML formatted content that will be includes AFTER extension content (NOT changed by AJAX)
+* {preContent}			- 	HTML formatted content that will be includes IN FRONT OF extension content (changed by AJAX)
+* {postContent}			- 	HTML formatted content that will be includes AFTER extension content (changed by AJAX)
 *************************************************************************************************
 --></f:comment>

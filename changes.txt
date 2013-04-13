@@ -1,9 +1,4 @@
-- NEW: SignalSlots 'afterRatinglinkAction' and 'afterCreateAction'
-- NEW: Add own content before or after rating using SignalSlots
-- NEW: NEW: implemented full support for localization via language files
-- New configuration option "showNotRated" to suppress not rated message
-- New setting "ratingContext" to support context dependent formattings
-- set cookie option just as in t3lib_userAuth
-- removed undocumented setting 'valueOnly' - please use slothandler instead
-- some visual modifications
-- some deprecation fixes
+- successfully tested with Typo3 6.0.x
+- bugfix in defaultLayout if postContent is added
+- added {staticPreContent} and {staticPostContent} in SignalSlotHandler
+- merged all language files (FlexForm, TCA) to locallang.xlf

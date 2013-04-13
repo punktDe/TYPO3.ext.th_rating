@@ -1,4 +1,9 @@
 #########################################################################
+# Static extension configuration										#
+# Must be loaded on top of all templates that AJAX will work properly   #
+#########################################################################
+
+#########################################################################
 # Configure table mapping for voter objects
 -------------------------------------------------------------------------
 config.tx_extbase.features.rewrittenPropertyMapper = 1

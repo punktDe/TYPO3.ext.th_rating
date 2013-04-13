@@ -406,7 +406,7 @@ class Tx_ThRating_Controller_VoteController extends Tx_Extbase_MVC_Controller_Ac
 	 */
 	protected function initSignalSlotDispatcher( $slotName ) {
 		if ( $this->request->hasArgument('signalSlotHandlerContent') ) {
-			//set orginal handlerContent if action has been forwarded
+			#set orginal handlerContent if action has been forwarded
 			$this->signalSlotHandlerContent = $this->request->getArgument('signalSlotHandlerContent');
 		} else {
 			$signalSlotMessage = array();
@@ -421,13 +421,18 @@ class Tx_ThRating_Controller_VoteController extends Tx_Extbase_MVC_Controller_Ac
 				$signalSlotMessage['anonymousVote'] = (bool) $this->vote->isAnonymous();
 			}
 			
-			//clear signalSlotHandlerArray for sure
+			#clear signalSlotHandlerArray for sure
 			$this->signalSlotHandlerContent = array();
 
 			$this->signalSlotDispatcher->dispatch(__CLASS__, $slotName, array( $signalSlotMessage, &$this->signalSlotHandlerContent ));
 			//TODO: expected syntax for Typo3 6.x
 			//t3lib_SignalSlot_Dispatcher::getInstance()->dispatch(__CLASS__, 'afterRatinglinkAction', array( 'ratingname'=>$this->ratingname ));
+			
 		}
+		$this->view->assign('staticPreContent',$this->signalSlotHandlerContent['staticPreContent']);
+		$this->view->assign('staticPostContent',$this->signalSlotHandlerContent['staticPostContent']);
+		unset($this->signalSlotHandlerContent['staticPreContent']);
+		unset($this->signalSlotHandlerContent['staticPostContent']);
 		$this->view->assign('preContent',$this->signalSlotHandlerContent['preContent']);
 		$this->view->assign('postContent',$this->signalSlotHandlerContent['postContent']);
 	}

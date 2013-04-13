@@ -22,7 +22,7 @@ $TCA['tx_thrating_domain_model_vote'] = array(
 		),
 		'rating' => Array (		
 			'exclude' 	=> 1,		
-			'label'		=> 'LLL:EXT:'.$_EXTKEY.'/Resources/Private/Language/locallang_tca.xlf:model.vote.rating',
+			'label'		=> 'LLL:EXT:'.$_EXTKEY.'/Resources/Private/Language/locallang.xlf:tca.model.vote.rating',
 			'config' 	=> Array (
 				'type' 			=> 'select',
 				'foreign_table' => 'tx_thrating_domain_model_rating',
@@ -33,7 +33,7 @@ $TCA['tx_thrating_domain_model_vote'] = array(
 		),		
 		'voter' => Array (
 			'exclude' => 1,		
-			'label'		=> 'LLL:EXT:'.$_EXTKEY.'/Resources/Private/Language/locallang_tca.xlf:model.vote.voter',
+			'label'		=> 'LLL:EXT:'.$_EXTKEY.'/Resources/Private/Language/locallang.xlf:tca.model.vote.voter',
 			'config' => Array (
 				'type' => 'select',
 				'foreign_table' => 'fe_users',
@@ -70,7 +70,7 @@ $TCA['tx_thrating_domain_model_vote'] = array(
 		),
 		//TODO	Prio 3: only provide valid references from foreign table
 		'vote' => Array (
-			'label'		=> 'LLL:EXT:'.$_EXTKEY.'/Resources/Private/Language/locallang_tca.xlf:model.vote.vote',
+			'label'		=> 'LLL:EXT:'.$_EXTKEY.'/Resources/Private/Language/locallang.xlf:tca.model.vote.vote',
 			'config' => Array (
 				'type' => 'select',
 				'foreign_table' => 'tx_thrating_domain_model_stepconf',
@@ -80,7 +80,7 @@ $TCA['tx_thrating_domain_model_vote'] = array(
 			)
 		),
 		'uid' => array(
-			'label'		=> 'LLL:EXT:'.$_EXTKEY.'/Resources/Private/Language/locallang_tca.xlf:model.vote.uid',
+			'label'		=> 'LLL:EXT:'.$_EXTKEY.'/Resources/Private/Language/locallang.xlf:tca.model.vote.uid',
 		),
 		),
 	'types' => array(

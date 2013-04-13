@@ -23,13 +23,13 @@ $TCA['tx_thrating_domain_model_stepconf'] = array(
 		),
 		'ratingobject' 	=> Array (		
 			'exclude'	=> 1,		
-			'label'  	=> 'LLL:EXT:'.$_EXTKEY.'/Resources/Private/Language/locallang_tca.xlf:model.stepconf.ratingobject',
+			'label'  	=> 'LLL:EXT:'.$_EXTKEY.'/Resources/Private/Language/locallang.xlf:tca.model.stepconf.ratingobject',
 			'config' 	=> Array (
 				'type'		=> 'passthrough',
 			),
 		),		
 		'steporder' => Array (
-			'label'   		=> 'LLL:EXT:'.$_EXTKEY.'/Resources/Private/Language/locallang_tca.xlf:model.stepconf.steporder',
+			'label'   		=> 'LLL:EXT:'.$_EXTKEY.'/Resources/Private/Language/locallang.xlf:tca.model.stepconf.steporder',
 			'l10n_display'	=> 'defaultAsReadonly',
 			//'l10n_cat'		=> 'media',
 			'config'=> Array (
@@ -42,7 +42,7 @@ $TCA['tx_thrating_domain_model_stepconf'] = array(
 			),
 		),
 		'stepweight' => Array (
-			'label'   		=> 'LLL:EXT:'.$_EXTKEY.'/Resources/Private/Language/locallang_tca.xlf:model.stepconf.stepweight',
+			'label'   		=> 'LLL:EXT:'.$_EXTKEY.'/Resources/Private/Language/locallang.xlf:tca.model.stepconf.stepweight',
 			'l10n_display'	=> 'defaultAsReadonly',
 			//'l10n_cat'		=> 'media',
 			'config' 		=> Array (
@@ -53,7 +53,7 @@ $TCA['tx_thrating_domain_model_stepconf'] = array(
 			),
 		),
 		'stepname' => Array (
-			'label'  		=> 'LLL:EXT:'.$_EXTKEY.'/Resources/Private/Language/locallang_tca.xlf:model.stepconf.stepname',
+			'label'  		=> 'LLL:EXT:'.$_EXTKEY.'/Resources/Private/Language/locallang.xlf:tca.model.stepconf.stepname',
 			'l10n_mode'		=> 'prefixLangTitle ',
 			'l10n_display'	=> 'hideDiff ',
 			'config' => Array (
@@ -65,7 +65,7 @@ $TCA['tx_thrating_domain_model_stepconf'] = array(
 		),
 		'votes' => array(
 			'exclude' 		=> 1,
-			'label'   		=> 'LLL:EXT:'.$_EXTKEY.'/Resources/Private/Language/locallang_tca.xlf:model.stepconf.votes',
+			'label'   		=> 'LLL:EXT:'.$_EXTKEY.'/Resources/Private/Language/locallang.xlf:tca.model.stepconf.votes',
 			'l10n_mode' 	=> 'exclude',
 			//'l10n_display'	=> 'hideDiff',
 			'config' => array(
@@ -83,7 +83,7 @@ $TCA['tx_thrating_domain_model_stepconf'] = array(
 			),
 		),
 		'uid' => array(
-			'label'   => 'LLL:EXT:'.$_EXTKEY.'/Resources/Private/Language/locallang_tca.xlf:model.stepconf.uid',
+			'label'   => 'LLL:EXT:'.$_EXTKEY.'/Resources/Private/Language/locallang.xlf:tca.model.stepconf.uid',
 			'config' => array(
 				'type' => 'passthrough',
 			),
