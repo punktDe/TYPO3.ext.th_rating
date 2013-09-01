@@ -78,9 +78,52 @@ class Tx_ThRating_Service_ObjectFactoryService implements t3lib_Singleton {
 			}
 			$settings = self::completeConfigurationSettings( $settings );		
 			$ratingobject = $ratingobjectRepository->findMatchingTableAndField(	$settings['ratetable'], $settings['ratefield'], Tx_ThRating_Domain_Repository_RatingobjectRepository::addIfNotFound);
+			Tx_ThRating_Utility_ExtensionManagementUtility::persistObjectIfDirty($ratingobject);
 		}
 		return $ratingobject;
 	}			
+
+	/**
+	 * Returns a new or existing ratingobject
+	 * 
+	 * @param	array	$stepconfArray
+	 * @return	Tx_ThRating_Domain_Model_Ratingobject
+	 */
+	static function createStepconf( array $stepconfArray ) {
+		$stepconf = t3lib_div::makeInstance('Tx_ThRating_Domain_Model_Stepconf');
+		$stepconf->setRatingobject($stepconfArray['ratingobject']);
+		$stepconf->setSteporder($stepconfArray['steporder']);
+		$stepconf->setStepweight($stepconfArray['stepweight']);
+		$stepconf->setStepname($stepconfArray['stepname']);
+		$stepconf->set_languageUid($stepconfArray['_languageUid']);
+		return $stepconf;
+	}			
+
+	/**
+	 * Implemente a static version of the objectmanager get method
+	 * 
+	 * @param	string	$newObject	Object class name to get
+	 * @return	mixed
+	 */
+	static function getObject( $newObject ) {
+		// get an ObjectManager first
+		$objectManager = t3lib_div::makeInstance('Tx_Extbase_Object_ObjectManager');
+		return $objectManager->get($newObject);
+	}
+
+
+	/**
+	 * Implemente a static version of the objectmanager get method
+	 * 
+	 * @param	string	$newObject	Object class name to get
+	 * @return	mixed
+	 */
+	static function createObject( $newObject ) {
+		// get an ObjectManager first
+		$objectManager = t3lib_div::makeInstance('Tx_Extbase_Object_ObjectManager');
+		return $objectManager->create($newObject);
+	}
+
 
 	/**
 	 * Returns a new or existing rating

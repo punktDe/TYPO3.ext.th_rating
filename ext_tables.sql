@@ -18,7 +18,7 @@ CREATE TABLE tx_thrating_domain_model_ratingobject (
 
 	PRIMARY KEY (uid),
 	KEY parent (pid),
-	INDEX objcheck (ratetable,ratefield,pid)
+	INDEX objcheck (ratetable)
 );
 
 
@@ -42,11 +42,11 @@ CREATE TABLE tx_thrating_domain_model_stepconf (
 	hidden tinyint(4) unsigned DEFAULT '0' NOT NULL,
 	sys_language_uid int(11) DEFAULT '0' NOT NULL,
 	l18n_parent int(11) DEFAULT '0' NOT NULL,
-#l18n_diffsource mediumblob NOT NULL,	//deactivated due to bug #19920 
+	l18n_diffsource mediumblob NOT NULL,	//former deactivated due to bug #19920 
 
 	PRIMARY KEY (uid),
 	KEY parent (pid),
-	INDEX configcheck (ratingobject,steporder,pid)
+	INDEX configcheck (ratingobject,steporder)
 );
 
 
@@ -70,7 +70,7 @@ CREATE TABLE tx_thrating_domain_model_rating (
 
 	PRIMARY KEY (uid),
 	KEY parent (pid),
-	INDEX ratingcheck (ratingobject,ratedobjectuid,pid)
+	INDEX ratingcheck (ratingobject,ratedobjectuid)
 );
 
 #
@@ -92,5 +92,5 @@ CREATE TABLE tx_thrating_domain_model_vote (
 
 	PRIMARY KEY (uid),
 	KEY parent (pid),
-	INDEX votecheck (rating,voter,pid)
+	INDEX votecheck (rating,voter)
 );

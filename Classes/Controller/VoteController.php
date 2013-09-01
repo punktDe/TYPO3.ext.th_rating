@@ -193,10 +193,33 @@ class Tx_ThRating_Controller_VoteController extends Tx_Extbase_MVC_Controller_Ac
 		//update foreign table for each rating
 		foreach ( $this->ratingobjectRepository->findAll() as $ratingobject ) {
 			foreach ( $ratingobject->getRatings() as $rating ) {
-						$setResult = $this->setForeignRatingValues($rating);
+				$setResult = $this->setForeignRatingValues($rating);
 			}
 		}
 		$this->view->assign('ratingobjects', $this->ratingobjectRepository->findAll() );
+		
+		//initialize ratingobject and autocreate four ratingsteps
+		$ratingobject = Tx_ThRating_Utility_ExtensionManagementUtility::makeRatable('TestTabelle', 'TestField', 4);
+		
+		//fetch website uid for static_language UID 30 (English)
+		$languageEntry = Tx_ThRating_Service_ObjectFactoryService::getObject('Tx_ThRating_Domain_Repository_SyslangRepository')->findByStaticLangIsocode(30)->getFirst();
+		If ( is_object($languageEntry) ) {
+			$languageUid = $languageEntry->getUid();
+		} else {
+			$languageUid = 0;
+		}
+		
+		//autocreate localized stepconf entries 
+		for ( $i=1; $i<=4; $i++) {
+			$defaultLanguageStepconf = $this->stepconfRepository->findDefaultStepconf($ratingobject, $i);
+			$newStepconf = $this->objectManager->create('Tx_ThRating_Domain_Model_Stepconf');
+			$newStepconf->setRatingobject($ratingobject);
+			$newStepconf->setSteporder($i);
+			$newStepconf->setStepweight($defaultLanguageStepconf->getStepweight());
+			$newStepconf->setStepname('Updated by IndexAction '.$i);
+			$newStepconf->set_languageUid($languageUid);
+			Tx_ThRating_Utility_ExtensionManagementUtility::updateStepconf($newStepconf);
+		}
 	}
 
 
@@ -205,7 +228,6 @@ class Tx_ThRating_Controller_VoteController extends Tx_Extbase_MVC_Controller_Ac
 	 */
 	public function singletonAction( ) {
 		$this->renderCSS();
-		//$this->flashMessageContainer->flush();
 	}
 
 
@@ -444,7 +466,7 @@ class Tx_ThRating_Controller_VoteController extends Tx_Extbase_MVC_Controller_Ac
 	 * @ignorevalidation $vote
 	 * @return void
 	 */
-	protected function initVoting(	Tx_ThRating_Domain_Model_Vote 			$vote = null ) {
+	protected function initVoting(	Tx_ThRating_Domain_Model_Vote $vote = null ) {
 		if ( $this->voteValidator->isValid($vote) ) {
 			$this->vote = $vote;
 		} else {
@@ -652,7 +674,6 @@ class Tx_ThRating_Controller_VoteController extends Tx_Extbase_MVC_Controller_Ac
 
 				$filename = PATH_site.'/'.$ratingConfig['imagefile'];
 				if ( empty($ratingConfig['imagefile']) || !file_exists($filename) ) {
-					Tx_Extbase_Utility_Debugger::var_dump($ratingConfig,'ratingConfig');
 					$defaultRatingName = $this->settings['ratingConfigurations']['default'];
 					$ratingConfig = $this->settings['ratingConfigurations'][$defaultRatingName];
 					$filename = PATH_site.'/'.$ratingConfig['imagefile'];

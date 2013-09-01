@@ -5,7 +5,7 @@
 
 #########################################################################
 # Configure table mapping for voter objects
--------------------------------------------------------------------------
+#########################################################################
 config.tx_extbase.features.rewrittenPropertyMapper = 1
 config.tx_extbase.persistence.classes {
 	Tx_Extbase_Domain_Model_FrontendUser.mapping {
@@ -15,6 +15,10 @@ config.tx_extbase.persistence.classes {
 	}
 	Tx_ThRating_Domain_Model_Voter.mapping {
 		tableName = fe_users
+		recordType >
+	}
+	Tx_ThRating_Domain_Model_Syslang.mapping {
+		tableName = sys_language
 		recordType >
 	}
 }

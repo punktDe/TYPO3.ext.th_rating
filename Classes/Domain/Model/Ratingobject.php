@@ -60,12 +60,6 @@ class Tx_ThRating_Domain_Model_Ratingobject extends Tx_Extbase_DomainObject_Abst
 	 * @cascade remove
 	 */
 	protected $stepconfs;
-	/**
-	 * @param Tx_ThRating_Domain_Repository_StepconfRepository $stepconfs
-	 */
-	public function injectStepconfRepository(Tx_ThRating_Domain_Repository_StepconfRepository $stepconfs) {
-		$this->stepconfs = $stepconfs;
-	}
 
 	/**
 	 * The ratings of this object
@@ -75,13 +69,19 @@ class Tx_ThRating_Domain_Model_Ratingobject extends Tx_Extbase_DomainObject_Abst
 	 * @cascade remove
 	 */
 	protected $ratings;
-	/**
-	 * @param Tx_ThRating_Domain_Repository_RatingRepository $ratings
-	 */
-	public function injectRatingRepository(Tx_ThRating_Domain_Repository_RatingRepository $ratings) {
-		$this->ratings = $ratings;
-	}
 	
+	/**
+	 * @var Tx_ThRating_Domain_Repository_StepconfRepository	$stepconfRepository
+	 */
+	protected $stepconfRepository;
+	/**
+	 * @param Tx_ThRating_Domain_Repository_StepconfRepository $stepconfRepository
+	 * @return void
+	 */
+	public function injectStepconfRepository(Tx_ThRating_Domain_Repository_StepconfRepository $stepconfRepository) {
+		$this->stepconfRepository = $stepconfRepository;
+	}
+
 	/**
 	 * Constructs a new rating object
 	 * @param	string	$ratetable The rating objects table name
@@ -93,9 +93,22 @@ class Tx_ThRating_Domain_Model_Ratingobject extends Tx_Extbase_DomainObject_Abst
 	public function __construct($ratetable = NULL, $ratefield = NULL) {
 		if ($ratetable) $this->setRatetable($ratetable);
 		if ($ratefield) $this->setRatefield($ratefield);
-	}
+		$this->initializeObject();
+}
 	
-	
+	/**
+	 * Initializes a new ratingobject
+	 * @return void
+	 */
+	 public function initializeObject() {
+		parent::initializeObject();
+		// get an ObjectManager first
+		$objectManager = t3lib_div::makeInstance('Tx_Extbase_Object_ObjectManager');
+		// get persistence manager
+		$this->ratings = $objectManager->get('Tx_Extbase_Persistence_ObjectStorage');
+		$this->stepconfs = $objectManager->get('Tx_Extbase_Persistence_ObjectStorage');
+	 }
+
 	/**
 	 * Sets the rating table name
 	 * 
@@ -161,6 +174,22 @@ class Tx_ThRating_Domain_Model_Ratingobject extends Tx_Extbase_DomainObject_Abst
 	 */
 	public function removeAllRatings() {
 		$this->ratings = new Tx_Extbase_Persistence_ObjectStorage();
+	}
+
+	/**
+	 * Adds a stepconf to this object
+	 *
+	 * @param Tx_ThRating_Domain_Model_Stepconf $stepconf
+	 * @return void
+	 */
+	public function addStepconf(Tx_ThRating_Domain_Model_Stepconf $stepconf) {
+		If (!$this->stepconfRepository->existStepconf($stepconf)) {
+			$defaultLanguageObject = $this->stepconfRepository->findDefaultStepconf($stepconf->getRatingobject(), $stepconf->getSteporder());
+			if ( is_object($defaultLanguageUid) ) {
+				$stepconf->setL18nParent($defaultLanguageObject->getUid());
+			}
+			$this->stepconfs->attach( $stepconf );
+		}
 	}
 
 	/**

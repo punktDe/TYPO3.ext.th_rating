@@ -35,12 +35,14 @@
       <x>610</x>
       <y>150</y>
       <w>370</w>
-      <h>170</h>
+      <h>200</h>
     </coordinates>
     <panel_attributes>&lt;&lt;Tx_ThRating_Domain_Model_Stepconf&gt;&gt;
 --
 -uid: 		Int(11)
 -pid: 		Int(11)
+-sys_language_uid:  Int(11)
+-l18n_parent:  Int(11)
 -ratingobject: Tx_ThRating_Domain_Model_Ratingobject
 -steporder:	Int(11)
 -stepweight: Int(11)
@@ -210,5 +212,52 @@ has&gt;</panel_attributes>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-</panel_attributes>
     <additional_attributes>30;70;30;30</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>1110</x>
+      <y>100</y>
+      <w>320</w>
+      <h>120</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;Tx_ThRating_Domain_Model_Syslang&gt;&gt;
+--
+-uid: 				Int(11)
+-pid: 				Int(11)
+-static_lang_isocode: Int(11)
+-flag: Varchar(20)
+-title: Varchar(80)
+
+
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>950</x>
+      <y>100</y>
+      <w>180</w>
+      <h>130</h>
+    </coordinates>
+    <panel_attributes>lt=-
+m1=1..n
+m2=1
+has&gt;</panel_attributes>
+    <additional_attributes>30;110;90;110;90;30;160;30</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>820</x>
+      <y>180</y>
+      <w>110</w>
+      <h>70</h>
+    </coordinates>
+    <panel_attributes>lt=-
+m1=1
+m2=1</panel_attributes>
+    <additional_attributes>30;50;90;50;90;30;30;30</additional_attributes>
   </element>
 </diagram>

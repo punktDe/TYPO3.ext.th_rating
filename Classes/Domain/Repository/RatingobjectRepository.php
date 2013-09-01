@@ -34,23 +34,6 @@ class Tx_ThRating_Domain_Repository_RatingobjectRepository extends Tx_Extbase_Pe
 	 */
 	const addIfNotFound = true;
 
-	/**
-	 * @var Tx_Extbase_Persistence_Manager
-	 */
-	protected $persistenceManager;
-
-	/**
-	 * Initialze this repository
-	 */
-	public function initializeObject() {
-		$this->persistenceManager = $this->objectManager->get('Tx_Extbase_Persistence_Manager');
-		/*
-		$configurationManager = $this->objectManager->get('Tx_Extbase_Configuration_ConfigurationManager');
-		$settings = $configurationManager->getConfiguration('Settings', 'thRating', 'pi1');
-		$this->defaultQuerySettings = $this->objectManager->create('Tx_Extbase_Persistence_Typo3QuerySettings');
-		$this->defaultQuerySettings->setStoragePageIds(split($settings['respectStoragePage'],','));
-		$this->defaultQuerySettings->setRespectStoragePage(True);*/
-	}
 	
 	/**
 	 * Finds the specific ratingobject by giving table and fieldname
@@ -79,7 +62,9 @@ class Tx_ThRating_Domain_Repository_RatingobjectRepository extends Tx_Extbase_Pe
 				$foundRow->setRatetable($ratetable);
 				$foundRow->setRatefield($ratefield);
 				$validator = $this->objectManager->create('Tx_ThRating_Domain_Validator_RatingobjectValidator');
-				$validator->isValid($foundRow) && $this->add($foundRow);
+				if ($validator->isValid($foundRow)) {
+					$this->add($foundRow);
+				}
 				$this->persistenceManager->persistAll();
 			} else {
 				unset($foundRow);

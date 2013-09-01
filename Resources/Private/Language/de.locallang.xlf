@@ -127,8 +127,20 @@
 				<source>Missing ratingobject in stepconf.</source>
 			<target state="translated">Fehlerndes Ratingobject in Stepconf</target></trans-unit>
 			<trans-unit id="error.validator.stepconf.steps" xml:space="preserve" approved="yes">
-				<source>Missing steps in stepconf..</source>
+				<source>Missing steps in stepconf.</source>
 			<target state="translated">Fehlende Stufen in Stepconf</target></trans-unit>
+			<trans-unit id="error.validator.stepconf.invalidSteporderNumber" xml:space="preserve" approved="yes">
+				<source>Invalid number in steporder. Must be of positive integer.</source>
+			<target state="translated">Nummer bei Steporder muss positive Ganzzahl sein.</target></trans-unit>
+			<trans-unit id="error.validator.stepconf.defaultLang" xml:space="preserve" approved="yes">
+				<source>Stepconf entry for default language missing</source>
+			<target state="translated">Stepconf für Standardsprache fehlt</target></trans-unit>
+			<trans-unit id="error.validator.stepconf.maxSteporder" xml:space="preserve" approved="yes">
+				<source>Steporder too high. Maximum steporder number + 1 is allowed.</source>
+			<target state="translated">Nummer bei Steporder zu groß. Maximal höchste Steporder + 1 erlaubt.</target></trans-unit>
+			<trans-unit id="error.validator.stepconf.sysLang" xml:space="preserve" approved="yes">
+				<source>Language code doesn't exist in website config</source>
+			<target state="translated">Sprache existiert nicht in Konfiguration der Website</target></trans-unit>
 			<trans-unit id="error.validator.rating.ratedobjectuid" xml:space="preserve" approved="yes">
 				<source>Missing UID in rating.</source>
 			<target state="translated">Fehlende UID in Rating</target></trans-unit>
@@ -197,6 +209,7 @@
 				<note>Forwarded arguments: 1:currentRates, 2:number of rating.votes</note>
 				<target>Bewertung: %1.1f. %2$d Bewertung(en).</target><source>Rating: %1.1f. %2$d vote(s).</source>
 			<note>Forwarded arguments: 1:currentRates, 2:number of rating.votes
+Forwarded arguments: 1:currentRates, 2:number of rating.votes
 Forwarded arguments: 1:currentRates, 2:number of rating.votes
 Forwarded arguments: 1:currentRates, 2:number of rating.votes
 Forwarded arguments: 1:currentRates, 2:rating.votes</note></trans-unit>

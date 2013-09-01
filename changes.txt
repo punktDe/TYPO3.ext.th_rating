@@ -1,4 +1,9 @@
-- successfully tested with Typo3 6.0.x
-- bugfix in defaultLayout if postContent is added
-- added {staticPreContent} and {staticPostContent} in SignalSlotHandler
-- merged all language files (FlexForm, TCA) to locallang.xlf
+- removed dependency on T3Jquery - loading jQuery directly from Google instead
+- new class Tx_ThRating_Utility_ExtensionManagementUtility provides static funtions
+  -+ makeRatable( $tablename, $fieldname, $stepcount ): auto generate default ratingobject and ratingsteps for default language
+  -+ updateStepconf( Tx_ThRating_Domain_Model_Stepconf $stepconf ): change configuration of stepconf or add a localized one
+- some SQL index optimizations
+- extended Tx_ThRating_Domain_Validator_StepconfValidator with check for defaultLanguage
+- added Tx_ThRating_Domain_Model_Syslang to access system table sys_language
+- new dependency to extension static_info_tables
+- Fix: removed - from ext_typoscript_setup.txt to avoid warnings

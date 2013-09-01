@@ -115,11 +115,11 @@ $TCA['tx_thrating_domain_model_stepconf'] = array(
 				'foreign_table_where' => 'AND tx_thrating_domain_model_stepconf.uid=###REC_FIELD_l18n_parent### AND tx_thrating_domain_model_stepconf.sys_language_uid IN (-1,0)',
 			),
 		),
-		/*'l18n_diffsource' => array (
+		'l18n_diffsource' => array (
 			'config' => array (
 				'type' => 'passthrough'
 			),
-		),*/			//deactivated due to bug #19920 
+		),
 	),
 	'types' => array(
 		'0' => Array('showitem' => '--div--;Display,sys_language_uid,stepname,--div--;Rating,steporder, stepweight,votes,--div--;General,hidden'),

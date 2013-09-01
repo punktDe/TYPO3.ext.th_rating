@@ -58,12 +58,6 @@ class Tx_ThRating_Domain_Model_Rating extends Tx_Extbase_DomainObject_AbstractEn
 	 * @cascade remove
 	 */
 	protected $votes;
-	/**
-	 * @param Tx_ThRating_Domain_Repository_VoteRepository $votes
-	 */
-	public function injectVoteRepository(Tx_ThRating_Domain_Repository_VoteRepository $votes) {
-		$this->votes = $votes;
-	}
 
 	/**
 	 * The current calculated rates
@@ -103,7 +97,13 @@ class Tx_ThRating_Domain_Model_Rating extends Tx_Extbase_DomainObject_AbstractEn
 	 * @return void
 	 */
 	 public function initializeObject() {
-		$configurationManager = t3lib_div::makeInstance( 'Tx_Extbase_Configuration_ConfigurationManager');
+		parent::initializeObject();
+		// get an ObjectManager first
+		$objectManager = t3lib_div::makeInstance('Tx_Extbase_Object_ObjectManager');
+		// get persistence manager
+		$this->votes = $objectManager->get('Tx_Extbase_Persistence_ObjectStorage');
+		$configurationManager = $objectManager->get('Tx_Extbase_Configuration_ConfigurationManager');
+		
 		$this->settings = $configurationManager->getConfiguration('Settings', 'thRating', 'pi1');
 	 }
 	 

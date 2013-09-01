@@ -127,7 +127,19 @@
 				<source>Missing ratingobject in stepconf.</source>
 			</trans-unit>
 			<trans-unit id="error.validator.stepconf.steps" xml:space="preserve">
-				<source>Missing steps in stepconf..</source>
+				<source>Missing steps in stepconf.</source>
+			</trans-unit>
+			<trans-unit id="error.validator.stepconf.invalidSteporderNumber" xml:space="preserve">
+				<source>Invalid number in steporder. Must be of positive integer.</source>
+			</trans-unit>
+			<trans-unit id="error.validator.stepconf.defaultLang" xml:space="preserve">
+				<source>Stepconf entry for default language missing</source>
+			</trans-unit>
+			<trans-unit id="error.validator.stepconf.maxSteporder" xml:space="preserve">
+				<source>Steporder too high. Maximum steporder number + 1 is allowed.</source>
+			</trans-unit>
+			<trans-unit id="error.validator.stepconf.sysLang" xml:space="preserve">
+				<source>Language code doesn't exist in website config</source>
 			</trans-unit>
 			<trans-unit id="error.validator.rating.ratedobjectuid" xml:space="preserve">
 				<source>Missing UID in rating.</source>

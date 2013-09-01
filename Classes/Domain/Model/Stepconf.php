@@ -76,13 +76,15 @@ class Tx_ThRating_Domain_Model_Stepconf extends Tx_Extbase_DomainObject_Abstract
 	 * @cascade remove
 	 */
 	protected $votes;
-	/**
-	 * @param Tx_ThRating_Domain_Repository_VoteRepository $votes
-	 */
-	public function injectVoteRepository(Tx_ThRating_Domain_Repository_VoteRepository $votes) {
-		$this->votes = $votes;
-	}
 
+	
+	/**
+	 * Uid set by extbase
+	 * Used to replace existing entries
+	 *
+	 * @var int 
+	 */
+	protected $uid;
 
 	/**
 	 * Localization entry
@@ -92,6 +94,13 @@ class Tx_ThRating_Domain_Model_Stepconf extends Tx_Extbase_DomainObject_Abstract
 	 */
 	protected $l18nParent;
 
+	/**
+	 * _languageUid
+	 * @var int
+	 * @validate NotEmpty
+	 */
+	protected $_languageUid;
+ 
 
 	/**
 	 * Constructs a new stepconfig object
@@ -100,7 +109,20 @@ class Tx_ThRating_Domain_Model_Stepconf extends Tx_Extbase_DomainObject_Abstract
 	public function __construct( Tx_ThRating_Domain_Model_Ratingobject $ratingobject = NULL, $steporder=NULL ) {
 		if ($ratingobject) $this->setRatingobject( $ratingobject );
 		if ($steporder) $this->setSteporder( $steporder );
-	}
+		$this->initializeObject();
+}
+	
+	/**
+	 * Initializes a new stepconf object
+	 * @return void
+	 */
+	 public function initializeObject() {
+		parent::initializeObject();
+		// get an ObjectManager first
+		$objectManager = t3lib_div::makeInstance('Tx_Extbase_Object_ObjectManager');
+		// get persistence manager
+		$this->votes = $objectManager->get('Tx_Extbase_Persistence_ObjectStorage');
+	 }
 	
 	
 	/**
@@ -190,22 +212,40 @@ class Tx_ThRating_Domain_Model_Stepconf extends Tx_Extbase_DomainObject_Abstract
 	}
 	
 	/**
-	 * Gets the stepconfig order
-	 * 
-	 * @return int stepconfig position
+	 * @param int $l18n_parent
+	 * @return void
+	 */
+	public function setUid($uid) {
+		$this->uid = $uid;
+	}
+
+	/**
+	 * @return int
 	 */
 	public function getL18nParent() {
 		return $this->l18nParent;
 	}
-
 	/**
-	 * Sets the stepconfig value
-	 * 
 	 * @param int $l18n_parent
 	 * @return void
 	 */
 	public function setL18nParent($l18nParent) {
 		$this->l18nParent = $l18nParent;
+	}
+
+	/**
+	 * @param int $_languageUid
+	 * @return void
+	 */	
+	public function set_languageUid($_languageUid) {
+		$this->_languageUid = $_languageUid;
+	}
+ 
+	/**
+	 * @return int
+	 */
+	public function get_languageUid() {
+		return $this->_languageUid;
 	}
 
 	/**
