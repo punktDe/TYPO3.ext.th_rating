@@ -144,43 +144,24 @@ class Tx_ThRating_Controller_VoteController extends Tx_Extbase_MVC_Controller_Ac
 	public function initializeAction() {
 		$this->prefixId = strtolower('tx_' . $this->request->getControllerExtensionName(). '_' . $this->request->getPluginName());
 		$this->signalSlotDispatcher = $this->objectManager->get('Tx_Extbase_SignalSlot_Dispatcher');
-		
-		// checks if t3jquery is loaded
-		if (t3lib_extMgm::isLoaded('t3jquery')) { require_once(t3lib_extMgm::extPath('t3jquery').'class.tx_t3jquery.php'); }
-		// if t3jquery is loaded and the custom Library had been created
-		// Integration of t3jquery moved to TS-Configuration
-		/*if (T3JQUERY === true) {
-			tx_t3jquery::addJqJS();
-		} else {
-			// if none of the previous is true, you need to include your own library
-		}*/
-		
+				
 		//Set default storage pids to SITEROOT
 		$this->setStoragePids();
 
 		//$this->defaultQuerySettings = $this->objectManager->create('Tx_Extbase_Persistence_Typo3QuerySettings');
 		//Tx_Extbase_Utility_Debugger::var_dump($this->settings,'settings');
 
+		$frameworkConfiguration = $this->configurationManager->getConfiguration(Tx_Extbase_Configuration_ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
 		if ( $this->request->hasArgument('ajaxRef') ) {
 			//read unique AJAX identification on AJAX request
 			$this->ajaxSelections['ajaxRef'] = $this->request->getArgument('ajaxRef');
-			$this->settings['hideSummary'] = $this->request->getArgument('hideSummary');
-			If ( strtolower($this->request->getArgument('cookieLifetime')) == 'off' ) {
-				$this->cookieProtection = false;
-			} else {
-				$this->cookieProtection = true;
-				$this->cookieLifetime = intval($this->request->getArgument('cookieLifetime'));
-			}
+			$this->settings = json_decode($this->request->getArgument('settings'), TRUE);
+			$frameworkConfiguration['settings'] = $this->settings;
 		} else { 
 			//set unique AJAX identification
 			$this->ajaxSelections['ajaxRef'] = $this->prefixId.'_'.$this->getRandomId();
-			If ( empty($this->settings['cookieProtection']) ) {
-				$this->cookieProtection = false;
-			} else {
-				$this->cookieProtection = true;
-				$this->cookieLifetime = intval($this->settings['cookieLifetime']);
-			}
 		}
+		$this->setFrameworkConfiguration($frameworkConfiguration);
 	}
 
 
@@ -252,7 +233,7 @@ class Tx_ThRating_Controller_VoteController extends Tx_Extbase_MVC_Controller_Ac
 													t3lib_FlashMessage::ERROR);
 			}
 		} else {
-			if ($this->settings["showNotRated"]) {
+			if ($this->settings['showNotRated']) {
 				$this->flashMessageContainer->add(	Tx_Extbase_Utility_Localization::translate('flash.vote.show.notRated', 'ThRating'), 
 													Tx_Extbase_Utility_Localization::translate('flash.heading.notice', 'ThRating'),
 													t3lib_FlashMessage::NOTICE);
@@ -270,22 +251,20 @@ class Tx_ThRating_Controller_VoteController extends Tx_Extbase_MVC_Controller_Ac
 	 */
 	//http://localhost:8503/index.php?id=71&tx_thrating_pi1[controller]=Vote&tx_thrating_pi1[action]=create&tx_thrating_pi1[vote][rating]=1&tx_thrating_pi1[vote][voter]=1&tx_thrating_pi1[vote][vote]=1
 	public function createAction(Tx_ThRating_Domain_Model_Vote $vote) {
-		if ($this->accessControllService->isLoggedIn($vote->getVoter())  || $vote->isAnonymous() ) {
+		if ($this->accessControllService->isLoggedIn($vote->getVoter()) || $vote->isAnonymous() ) {
 			//if not anonymous check if vote is already done
 			if ( !$vote->isAnonymous() ) {
-				$matchVote = $this->voteRepository->findMatchingRatingAndVoter($vote->getRating(),$vote->getVoter());
+				$matchVote = $this->voteRepository->findMatchingRatingAndVoter($vote->getRating(), $vote->getVoter());
 			}
 			//add new or anonymous vote
 			if ( !$this->voteValidator->isValid($matchVote) || $vote->isAnonymous() ) {
 				$vote->getRating()->addVote($vote);
-				//persist newly added object to enable redirect to show action
-				//$this->persistenceManager->persistAll();
 				if ( $vote->isAnonymous() && !$vote->hasAnonymousVote($this->prefixId) && $this->cookieProtection ) {
 					$anonymousRating['ratingtime']=time();
 					$anonymousRating['voteUid']=$vote->getUid();
 					$lifeTime = time() + 60 * 60 * 24 * $this->cookieLifetime;
-					#set cookie to prevent multiple anonymous ratings
-					Tx_ThRating_Service_CookieService::setVoteCookie($this->prefixId.'_AnonymousRating_'.$vote->getRating()->getUid(),json_encode($anonymousRating),$lifeTime );
+					//set cookie to prevent multiple anonymous ratings
+					Tx_ThRating_Service_CookieService::setVoteCookie($this->prefixId.'_AnonymousRating_'.$vote->getRating()->getUid(), json_encode($anonymousRating), $lifeTime );
 				}
 				$setResult = $this->setForeignRatingValues($vote->getRating());
 				If (!$setResult) {
@@ -316,7 +295,7 @@ class Tx_ThRating_Controller_VoteController extends Tx_Extbase_MVC_Controller_Ac
 		$this->initSignalSlotDispatcher( 'afterCreateAction' );
 		$newArguments = t3lib_div::array_merge($newArguments, array('signalSlotHandlerContent' => $this->signalSlotHandlerContent));
 
-		$this->forward($referrer['@action'],$referrer['@controller'],$referrer['@extension'],$newArguments );
+		$this->forward($referrer['@action'], $referrer['@controller'], $referrer['@extension'], $newArguments );
 	}
 
 
@@ -351,45 +330,51 @@ class Tx_ThRating_Controller_VoteController extends Tx_Extbase_MVC_Controller_Ac
 	//http://localhost:8503/index.php?id=71&tx_thrating_pi1[controller]=Vote&tx_thrating_pi1[action]=ratinglinks
 	public function ratinglinksAction(	Tx_ThRating_Domain_Model_Vote	$vote = NULL) {
 		//set display configuration
-		if ( $this->request->hasArgument('ratingName') ) {
-			//get ratingname e.g. when redirected from create action
-			$this->ratingName = $this->request->getArgument('ratingName'); 
+		if ( !empty($this->settings['display']) ) {
+			$this->ratingName = $this->settings['display'];
 		} else {
 			//choose default ratingConfiguration if nothing is defined
-			if ( !empty($this->settings['display']) ) {
-				$this->ratingName = $this->settings['display'];
-			} else {
-				$this->ratingName = $this->settings['ratingConfigurations']['default'];
-			}
+			$this->ratingName = $this->settings['ratingConfigurations']['default'];
 		}
-		$this->initVoting( $vote );
 		$ratingConfiguration = $this->settings['ratingConfigurations'][$this->ratingName];
 
 		//first check if given ratingConfiguration exists
 		if ( isset($ratingConfiguration) ) {
+			$frameworkConfiguration = $this->configurationManager->getConfiguration(Tx_Extbase_Configuration_ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
+			//override extension settings with rating configuration settings
+			if ( is_array($ratingConfiguration['settings']) ) {
+				unset($ratingConfiguration['settings']['defaultObject']);
+				unset($ratingConfiguration['settings']['ratingConfigurations']);
+				$this->settings = t3lib_div::array_merge_recursive_overrule($this->settings, $ratingConfiguration['settings']);
+			}
+			//override fluid settings with rating fluid settings
+			if (is_array($ratingConfiguration['fluid'])) {
+				$this->settings['fluid'] = t3lib_div::array_merge_recursive_overrule($this->settings['fluid'], $ratingConfiguration['fluid']);
+			}
+			$frameworkConfiguration['settings'] = $this->settings;
+			$this->setFrameworkConfiguration($frameworkConfiguration);
 			$this->view->assign('barimage', 'noratingbar');
 			if ( $ratingConfiguration['tilt']) {
-				$calculatedRate = 'height:';
 				$ratingClass = 'tilt';
 				if ( $ratingConfiguration['barimage']) {
 					$this->view->assign('barimage', 'ratingbar');
 				}
 				
 			} else {
-				$calculatedRate = 'width:';
 				$ratingClass = 'normal';
 			}
 
+			$this->initVoting( $vote );
+			
 			if ( $this->ratingValidator->isValid($this->vote->getRating()) ) {
-				$calculatedRate .= $this->vote->getRating()->getCalculatedRate().'%';
+				$calculatedRate = $this->vote->getRating()->getCalculatedRate().'%';
 				$this->view->assign('calculatedRate', $calculatedRate);
 			}
 			$this->view->assign('ratingName', $this->ratingName);
 			$this->view->assign('ratingClass', $ratingClass);
 			//is_object($this->vote->getVoter()) && Tx_Extbase_Utility_Debugger::var_dump($this->vote->hasAnonymousVote($this->prefixId),'isAnonymous');
-			if ( !$this->vote->hasRated() || 
-					(!$this->accessControllService->isLoggedIn($this->vote->getVoter()) && $this->vote->isAnonymous() && 
-						!($this->vote->hasAnonymousVote($this->prefixId) || ( $this->cookieProtection && $this->request->getArgument('cookieLifetime')))
+			if ( 	(!$this->vote->hasRated() && !$this->vote->isAnonymous() && $this->accessControllService->isLoggedIn($this->vote->getVoter())) ||
+					(	($this->vote->isAnonymous() && !$this->accessControllService->isLoggedIn($this->vote->getVoter())) && ((!$this->vote->hasAnonymousVote($this->prefixId) && $this->cookieProtection && !$this->request->hasArgument('settings')) || !$this->cookieProtection)
 					) 
 				) {
 				//if user hasn´t voted yet then include ratinglinks
@@ -428,7 +413,7 @@ class Tx_ThRating_Controller_VoteController extends Tx_Extbase_MVC_Controller_Ac
 	 */
 	protected function initSignalSlotDispatcher( $slotName ) {
 		if ( $this->request->hasArgument('signalSlotHandlerContent') ) {
-			#set orginal handlerContent if action has been forwarded
+			//set orginal handlerContent if action has been forwarded
 			$this->signalSlotHandlerContent = $this->request->getArgument('signalSlotHandlerContent');
 		} else {
 			$signalSlotMessage = array();
@@ -443,7 +428,7 @@ class Tx_ThRating_Controller_VoteController extends Tx_Extbase_MVC_Controller_Ac
 				$signalSlotMessage['anonymousVote'] = (bool) $this->vote->isAnonymous();
 			}
 			
-			#clear signalSlotHandlerArray for sure
+			//clear signalSlotHandlerArray for sure
 			$this->signalSlotHandlerContent = array();
 
 			$this->signalSlotDispatcher->dispatch(__CLASS__, $slotName, array( $signalSlotMessage, &$this->signalSlotHandlerContent ));
@@ -451,12 +436,12 @@ class Tx_ThRating_Controller_VoteController extends Tx_Extbase_MVC_Controller_Ac
 			//t3lib_SignalSlot_Dispatcher::getInstance()->dispatch(__CLASS__, 'afterRatinglinkAction', array( 'ratingname'=>$this->ratingname ));
 			
 		}
-		$this->view->assign('staticPreContent',$this->signalSlotHandlerContent['staticPreContent']);
-		$this->view->assign('staticPostContent',$this->signalSlotHandlerContent['staticPostContent']);
+		$this->view->assign('staticPreContent', $this->signalSlotHandlerContent['staticPreContent']);
+		$this->view->assign('staticPostContent', $this->signalSlotHandlerContent['staticPostContent']);
 		unset($this->signalSlotHandlerContent['staticPreContent']);
 		unset($this->signalSlotHandlerContent['staticPostContent']);
-		$this->view->assign('preContent',$this->signalSlotHandlerContent['preContent']);
-		$this->view->assign('postContent',$this->signalSlotHandlerContent['postContent']);
+		$this->view->assign('preContent', $this->signalSlotHandlerContent['preContent']);
+		$this->view->assign('postContent', $this->signalSlotHandlerContent['postContent']);
 	}
 
 	/**
@@ -466,7 +451,7 @@ class Tx_ThRating_Controller_VoteController extends Tx_Extbase_MVC_Controller_Ac
 	 * @ignorevalidation $vote
 	 * @return void
 	 */
-	protected function initVoting(	Tx_ThRating_Domain_Model_Vote $vote = null ) {
+	protected function initVoting(	Tx_ThRating_Domain_Model_Vote $vote = NULL ) {
 		if ( $this->voteValidator->isValid($vote) ) {
 			$this->vote = $vote;
 		} else {
@@ -505,12 +490,11 @@ class Tx_ThRating_Controller_VoteController extends Tx_Extbase_MVC_Controller_Ac
 		if ($vote->getVoter() instanceof Tx_ThRating_Domain_Model_Voter) {
 			foreach ( $this->getLocalizedStepconfs($vote->getRating()->getRatingobject()) as $i => $stepConf ) {
 				$key = utf8_encode(json_encode( array(
-					'value' 	=> $stepConf->getUid(),
-					'voter' 	=> $vote->getVoter()->getUid(),
+					'value' 		=> $stepConf->getL18nParent() ? $stepConf->getUid() : $stepConf->getUid(),
+					'voter' 		=> $vote->getVoter()->getUid(),
 					'rating' 		=> $vote->getRating()->getUid(),
 					'ratingName'	=> $this->ratingName,
-					'cookieLifetime'	=> $this->cookieProtection ? $this->cookieLifetime : 'off',
-					'hideSummary'	=> $this->settings['hideSummary'] ? $this->settings['hideSummary'] : '0',
+					'settings'		=> json_encode($this->settings),
 					'actionName'	=> strtolower($this->request->getControllerActionName()),
 					'ajaxRef' 		=> $this->ajaxSelections['ajaxRef'])));
 				$this->ajaxSelections['json'][$key] = $stepConf->getStepname();
@@ -544,7 +528,7 @@ class Tx_ThRating_Controller_VoteController extends Tx_Extbase_MVC_Controller_Ac
 	 * @return void
 	 */
 	protected function fillSummaryView() {
-			$this->view->assign('ratingContext', $this->settings['ratingContext']);
+			$this->view->assign('settings', $this->settings);
 			$this->view->assign('ajaxRef', $this->ajaxSelections['ajaxRef']);
 			$this->view->assign('ratingobject', $this->vote->getRating()->getRatingobject());
 			$this->view->assign('rating', $this->vote->getRating());
@@ -555,19 +539,20 @@ class Tx_ThRating_Controller_VoteController extends Tx_Extbase_MVC_Controller_Ac
 			$this->view->assign('stepCount', count($currentrate['weightedVotes']));
 			$this->view->assign('anonymousVotes', $currentrate['anonymousVotes']);
 			$this->view->assign('anonymousVoting', !empty($this->settings['mapAnonymous']) && !$this->accessControllService->getFrontendUserUid());
-			if ( $this->settings["showNotRated"] && empty($currentrate['currentrate']) ) {
+			if ( $this->settings['showNotRated'] && empty($currentrate['currentrate']) ) {
 				$this->flashMessageContainer->add(	Tx_Extbase_Utility_Localization::translate('flash.vote.show.notRated', 'ThRating'), 
 													Tx_Extbase_Utility_Localization::translate('flash.heading.notice', 'ThRating'),
 													t3lib_FlashMessage::NOTICE);
 			}
 			if ( $this->voteValidator->isValid($this->vote) ) {
 				if ( ( !$this->vote->isAnonymous() && $this->vote->getVoter()->getUid() == $this->accessControllService->getFrontendUserUid()) ||
-						( $this->vote->isAnonymous() && 
-							( $this->vote->hasAnonymousVote($this->prefixId)  || ( $this->cookieProtection && $this->request->getArgument('cookieLifetime')))
+						( $this->vote->isAnonymous() &&
+							( $this->vote->hasAnonymousVote($this->prefixId) || $this->cookieProtection )
 						)
 					)
 				{
 					$this->view->assign('voting', $this->vote);
+					$this->view->assign('usersRate', $this->vote->getVote()->getSteporder()*100/count($currentrate['weightedVotes']).'%');
 				}
 			}
 	}
@@ -602,7 +587,7 @@ class Tx_ThRating_Controller_VoteController extends Tx_Extbase_MVC_Controller_Ac
 		$frameworkConfiguration = $this->configurationManager->getConfiguration(Tx_Extbase_Configuration_ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
 		//t3lib_utility_Debug::debug($frameworkConfiguration,'frameworkConfiguration');		
 		//$storagePids = explode(',',$frameworkConfiguration['persistence']['storagePid']);
-		$storagePids = Tx_Extbase_Utility_Arrays::integerExplode(',',$frameworkConfiguration['persistence']['storagePid'],true);
+		$storagePids = Tx_Extbase_Utility_Arrays::integerExplode(',', $frameworkConfiguration['persistence']['storagePid'], TRUE);
 		foreach ($storagePids as $i => $value) {
 			if ( !is_null($value) && (empty($value) || $value==$siteRoot) ) {
 				unset($storagePids[$i]);		//cleanup invalid values
@@ -610,7 +595,7 @@ class Tx_ThRating_Controller_VoteController extends Tx_Extbase_MVC_Controller_Ac
 		}
 		$storagePids = array_values($storagePids); 	//re-index array
 		if ( count($storagePids)<2 && !is_null($storagePid) && !(empty($storagePid) || $storagePid==$siteRoot) ) {
-			array_unshift($storagePids,$storagePid);	//append the page storagePid if it is assumed to be missed and is valid
+			array_unshift($storagePids, $storagePid);	//append the page storagePid if it is assumed to be missed and is valid
 		}
 
 		if (empty($storagePids[0])) {
@@ -618,8 +603,8 @@ class Tx_ThRating_Controller_VoteController extends Tx_Extbase_MVC_Controller_Ac
 												Tx_Extbase_Utility_Localization::translate('flash.heading.error', 'ThRating'),
 												t3lib_FlashMessage::ERROR);
 		} 
-		$frameworkConfiguration['persistence']['storagePid'] = implode(',',$storagePids);
-		$this->configurationManager->setConfiguration($frameworkConfiguration);
+		$frameworkConfiguration['persistence']['storagePid'] = implode(',', $storagePids);
+		$this->setFrameworkConfiguration($frameworkConfiguration);
 	}
 	
 	/**
@@ -630,9 +615,24 @@ class Tx_ThRating_Controller_VoteController extends Tx_Extbase_MVC_Controller_Ac
 	 */
 	protected function getRandomId () {
 		srand ( (double)microtime () * 1000000 );
-		return rand(1000000,9999999);
+		return rand(1000000, 9999999);
 	}
 
+	/**
+	 * Generates a random number
+	 * used as the unique iddentifier for AJAX objects
+	 *
+	 * @return int
+	 */
+	protected function setFrameworkConfiguration(array $frameworkConfiguration) {
+		$this->configurationManager->setConfiguration($frameworkConfiguration);
+		$this->cookieLifetime = abs(intval($this->settings['cookieLifetime']));
+		If ( empty($this->cookieLifetime) ) {
+			$this->cookieProtection = FALSE;
+		} else {
+			$this->cookieProtection = TRUE;
+		}
+	}
 
 
 	/**
@@ -653,7 +653,7 @@ class Tx_ThRating_Controller_VoteController extends Tx_Extbase_MVC_Controller_Ac
 		}
 		
 		//now walk through all ratingobjects to calculate stepwidths
-		$allRatingobjects = $this->ratingobjectRepository->findAll(true);
+		$allRatingobjects = $this->ratingobjectRepository->findAll(TRUE);
 		foreach ( $allRatingobjects as $ratingobject) {
 			$ratingobjectUid = $ratingobject->getUid();
 			$localizedStepconfs = $this->getLocalizedStepconfs($ratingobject);
@@ -669,7 +669,7 @@ class Tx_ThRating_Controller_VoteController extends Tx_Extbase_MVC_Controller_Ac
 				if ( $ratingName == 'default' ) {
 					continue;
 				}
-				$subURI = substr(PATH_site,strlen($_SERVER['DOCUMENT_ROOT'])+1);
+				$subURI = substr(PATH_site, strlen($_SERVER['DOCUMENT_ROOT'])+1);
 				$basePath = $GLOBALS['TSFE']->baseUrl ? $GLOBALS['TSFE']->baseUrl : 'http://'.$_SERVER['HTTP_HOST'].'/'.$subURI;
 
 				$filename = PATH_site.'/'.$ratingConfig['imagefile'];
@@ -742,16 +742,16 @@ class Tx_ThRating_Controller_VoteController extends Tx_Extbase_MVC_Controller_Ac
 		$table=$rating->getRatingobject()->getRatetable();
 		$lockedFieldnames = $this->getLockedfieldnames($table);
 		$rateField = $rating->getRatingobject()->getRatefield();
-		if ( !in_array($rateField,$lockedFieldnames )) {
+		if ( !in_array($rateField, $lockedFieldnames )) {
 			$rateTable = $rating->getRatingobject()->getRatetable();
 			$rateUid = $rating->getRatedobjectuid();
 			$currentRatesArray = $rating->getCurrentrates();
-			$currentRate = round($currentRatesArray["currentrate"],2);
-			#do update foreign table
-			$queryResult = $GLOBALS['TYPO3_DB']->exec_UPDATEquery ($rateTable,'uid = '.$rateUid,array($rateField => $currentRate)) ;
+			$currentRate = round($currentRatesArray["currentrate"], 2);
+			//do update foreign table
+			$queryResult = $GLOBALS['TYPO3_DB']->exec_UPDATEquery ($rateTable, 'uid = '.$rateUid, array($rateField => $currentRate));
 			return !empty($queryResult);
 		} else {
-			return true;
+			return TRUE;
 		}
 	}
 	
@@ -766,8 +766,8 @@ class Tx_ThRating_Controller_VoteController extends Tx_Extbase_MVC_Controller_Ac
 	protected function getLockedfieldnames( $table ) {
 		$GLOBALS['TSFE']->includeTCA();
 		t3lib_div::loadTCA($table);
-		$TCA = &$GLOBALS["TCA"][$table]['ctrl']; // Set private TCA var
-		$lockedFields = Tx_Extbase_Utility_Arrays::trimExplode(',',$TCA['label_alt'],true);
+		$TCA = &$GLOBALS['TCA'][$table]['ctrl']; // Set private TCA var
+		$lockedFields = Tx_Extbase_Utility_Arrays::trimExplode(',', $TCA['label_alt'], TRUE);
 		$lockedFields[] .= 'pid';
 		$lockedFields[] .= 'uid';
 		$lockedFields[] .= $TCA['label'];
@@ -814,7 +814,7 @@ class Tx_ThRating_Controller_VoteController extends Tx_Extbase_MVC_Controller_Ac
 	 * @param	array	$customContent 		array by reference to return pre and post content
 	 * @return	void
 	 */
-	public function afterafterCreateActionHandler($signalSlotMessage, $customContent) {
+	public function afterCreateActionHandler($signalSlotMessage, $customContent) {
 		//Tx_Extbase_Utility_Debugger::var_dump($signalSlotMessage,'signalSlotMessage');
 		$customContent['preContent']='<b>This ist my preContent after afterCreateActionHandler</b>';
 		$customContent['postContent']='<b>This ist my postContent after afterCreateActionHandler</b>';

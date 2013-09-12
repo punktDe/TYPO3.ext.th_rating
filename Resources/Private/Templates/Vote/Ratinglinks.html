@@ -1,25 +1,23 @@
-{namespace thr=Tx_ThRating_ViewHelpers}
-<f:layout name="defaultLayout" />
+<f:layout name="DefaultLayout" />
 
 <f:section name="content">
-<f:if condition="{ratingName}"><f:then>
-	<div name='tx-thrating-ratinglinks'>
-		<ul class='thRating thRating-{ratingClass} thRating-RObj{ratingobject.uid}-{ratingName}'>
-			<f:if condition="{calculatedRate}"><f:then>
-			<li class='current-rating {barimage}' style="{calculatedRate}" title="<f:translate key='fluid.template.ratinglinks.currentRating' default='fluid.template.ratinglinks.currentRating' arguments='{1:currentRates, 2:stepCount}'/>">
-				<f:translate key='fluid.template.ratinglinks.currentRating' default='fluid.template.ratinglinks.currentRating' arguments='{1:currentRates, 2:stepCount}'/>
-			</li>
-			</f:then></f:if>
-			<!-- Only generate links if a  FE user is logged on -->
-			<f:if condition="{ajaxSelections}"><f:then>
-				<f:for each="{ajaxSelections}" as="ajaxSelection">
-				<li><thr:ratinglink class="ajaxLink RObj{ratingobject.uid}-StpOdr{ajaxSelection.step.steporder}-ratingstep-{ratingClass} {barimage}" title='{ajaxSelection.step.stepname}' href='#' tabindex='-1' ><input type="hidden" name="ajaxSelect" value="{ajaxSelection.ajaxvalue}" />{ajaxSelection.step.steporder}</thr:ratinglink></li>
-				</f:for>
-			</f:then></f:if>
-		</ul>	
-	</div>
-</f:then></f:if>
+<f:comment><!-- switch according display mode --></f:comment>
+<f:if condition="{settings.fluid.templates.ratinglinks.likesMode}"><f:then>
+	<f:if condition="{voting}"><f:then>
+		<f:comment><!-- display if any vote has be done yet --></f:comment>
+		<f:render partial="usersRating" arguments="{voting:voting, ratingClass:ratingClass, ratingobject:ratingobject, ratingName:ratingName, stepCount:stepCount, usersRate:usersRate}"/>
+	</f:then><f:else>
+		<f:comment><!-- display normal ratinglinkblock --></f:comment>
+		<f:render partial="ratinglinkBlock" arguments="{voting:voting, ratingClass:ratingClass, ratingobject:ratingobject, ratingName:ratingName, calculatedRate:calculatedRate, currentRates:currentRates, stepCount:stepCount, barimage:barimage, ajaxSelections:ajaxSelections}"/>
+	</f:else></f:if>	
+</f:then><f:else>
+	<f:if condition="{ratingName}"><f:then>
+		<f:comment><!-- display normal ratinglinkblock --></f:comment>
+		<f:render partial="ratinglinkBlock" arguments="{voting:voting, ratingClass:ratingClass, ratingobject:ratingobject, ratingName:ratingName, calculatedRate:calculatedRate, currentRates:currentRates, stepCount:stepCount, barimage:barimage, ajaxSelections:ajaxSelections}"/>
+	</f:then></f:if>
+</f:else></f:if>
 </f:section>
+<f:comment>
 <!--
 ******************************************************************************************
 * Forwarded variables
@@ -35,3 +33,4 @@
 *							['ajaxvalue']	- JSON encoded value to handle AJAX request
 ******************************************************************************************
 -->
+</f:comment>

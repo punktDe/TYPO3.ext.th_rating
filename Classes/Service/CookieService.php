@@ -73,33 +73,36 @@ class Tx_ThRating_Service_CookieService implements t3lib_Singleton {
 	 * @return	void
 	 */
 	static function setVoteCookie($cookieName, $cookieValue, $cookieExpire=0 ) {
-		$settings = $GLOBALS['TYPO3_CONF_VARS']['SYS'];
+		// do not set session cookies
+		If ( !empty($cookieExpire) ) {
+			$settings = $GLOBALS['TYPO3_CONF_VARS']['SYS'];
 
-		// Get the domain to be used for the cookie (if any):
-		$cookieDomain = Tx_ThRating_Service_CookieService::getCookieDomain();
-		// If no cookie domain is set, use the base path:
-		$cookiePath = ($cookieDomain ? '/' : t3lib_div::getIndpEnv('TYPO3_SITE_PATH'));
-		// Use the secure option when the current request is served by a secure connection:
-		$cookieSecure = (bool) $settings['cookieSecure'] && t3lib_div::getIndpEnv('TYPO3_SSL');
-		// Deliver cookies only via HTTP and prevent possible XSS by JavaScript:
-		$cookieHttpOnly = (bool) $settings['cookieHttpOnly'];
+			// Get the domain to be used for the cookie (if any):
+			$cookieDomain = Tx_ThRating_Service_CookieService::getCookieDomain();
+			// If no cookie domain is set, use the base path:
+			$cookiePath = ($cookieDomain ? '/' : t3lib_div::getIndpEnv('TYPO3_SITE_PATH'));
+			// Use the secure option when the current request is served by a secure connection:
+			$cookieSecure = (bool) $settings['cookieSecure'] && t3lib_div::getIndpEnv('TYPO3_SSL');
+			// Deliver cookies only via HTTP and prevent possible XSS by JavaScript:
+			$cookieHttpOnly = (bool) $settings['cookieHttpOnly'];
 
-		// Do not set cookie if cookieSecure is set to "1" (force HTTPS) and no secure channel is used:
-		if ((int) $settings['cookieSecure'] !== 1 || t3lib_div::getIndpEnv('TYPO3_SSL')) {
-			setcookie(
-				$cookieName,
-				$cookieValue,
-				$cookieExpire,
-				$cookiePath,
-				$cookieDomain,
-				$cookieSecure,
-				$cookieHttpOnly
-			);
-		} else {
-			throw new t3lib_exception(
-				'Cookie was not set since HTTPS was forced in $TYPO3_CONF_VARS[SYS][cookieSecure].',
-				1254325546
-			);
+			// Do not set cookie if cookieSecure is set to "1" (force HTTPS) and no secure channel is used:
+			if ((int) $settings['cookieSecure'] !== 1 || t3lib_div::getIndpEnv('TYPO3_SSL')) {
+				setcookie(
+					$cookieName,
+					$cookieValue,
+					$cookieExpire,
+					$cookiePath,
+					$cookieDomain,
+					$cookieSecure,
+					$cookieHttpOnly
+				);
+			} else {
+				throw new t3lib_exception(
+					'Cookie was not set since HTTPS was forced in $TYPO3_CONF_VARS[SYS][cookieSecure].',
+					1254325546
+				);
+			}
 		}
 	}
 }

@@ -22,7 +22,7 @@ $TCA['tx_thrating_domain_model_ratingobject'] = array(
 		),
 		'ratetable' => array(
 			'exclude' => 0,
-			'label'   => 'LLL:EXT:'.$_EXTKEY.'/Resources/Private/Language/locallang.xlf:tca.model.ratingobject.ratetable',
+			'label'   => 'LLL:EXT:th_rating/Resources/Private/Language/locallang.xlf:tca.model.ratingobject.ratetable',
 			'config'  => array(
 				'type' => 'input',
 				'size' => 20,
@@ -32,7 +32,7 @@ $TCA['tx_thrating_domain_model_ratingobject'] = array(
 		),
 		'ratefield' => array(
 			'exclude' => 0,
-			'label'   => 'LLL:EXT:'.$_EXTKEY.'/Resources/Private/Language/locallang.xlf:tca.model.ratingobject.ratefield',
+			'label'   => 'LLL:EXT:th_rating/Resources/Private/Language/locallang.xlf:tca.model.ratingobject.ratefield',
 			'config'  => array(
 				'type' => 'input',
 				'size' => 20,
@@ -41,11 +41,11 @@ $TCA['tx_thrating_domain_model_ratingobject'] = array(
 					)
 		),
 		'uid' => array(
-			'label'   => 'LLL:EXT:'.$_EXTKEY.'/Resources/Private/Language/locallang.xlf:tca.model.ratingobject.ratingobject',
+			'label'   => 'LLL:EXT:th_rating/Resources/Private/Language/locallang.xlf:tca.model.ratingobject.ratingobject',
 		),
 		'stepconfs' => array(
 			'exclude' => 1,
-			'label'   => 'LLL:EXT:'.$_EXTKEY.'/Resources/Private/Language/locallang.xlf:tca.model.ratingobject.uid',
+			'label'   => 'LLL:EXT:th_rating/Resources/Private/Language/locallang.xlf:tca.model.ratingobject.uid',
 			'config' => array(
 				'type' => 'inline',
 				'foreign_table' => 'tx_thrating_domain_model_stepconf',
@@ -70,7 +70,7 @@ $TCA['tx_thrating_domain_model_ratingobject'] = array(
 		),
 		'ratings' => array(
 			'exclude' => 1,
-			'label'   => 'LLL:EXT:'.$_EXTKEY.'/Resources/Private/Language/locallang.xlf:tca.model.ratingobject.ratings',
+			'label'   => 'LLL:EXT:th_rating/Resources/Private/Language/locallang.xlf:tca.model.ratingobject.ratings',
 			'config' => array(
 				'type' => 'inline',
 				'foreign_table' => 'tx_thrating_domain_model_rating',

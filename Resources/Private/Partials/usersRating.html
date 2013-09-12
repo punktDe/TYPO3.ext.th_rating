@@ -1,0 +1,29 @@
+<f:comment><!-- display check --></f:comment>
+<f:if condition="{settings.fluid.partials.usersRating.showTextInfo}"><f:then>
+	<f:translate key='fluid.partial.usersRating.usersRate' default='fluid.partial.usersRating.usersRate' arguments='{1:voting, 2:voting.vote.steporder, 3:stepCount}'/>
+</f:then></f:if>
+<f:comment><!-- display check --></f:comment>
+<f:if condition="{settings.fluid.partials.usersRating.showGraphicInfo}"><f:then>
+	<div name='tx-thrating-ratinglinks'>
+		<ul class='thRating thRating-{ratingClass} thRating-RObj{ratingobject.uid}-{ratingName}'>			
+			<li class='current-rating' style="{f:if(condition: '{0: ratingClass} == {0: \'tilt\'}', then: 'height:{usersRate}', else: 'width:{usersRate}')}" title="<f:translate key='fluid.partial.usersRating.usersRate' default='fluid.partial.usersRating.usersRate' arguments='{1:voting, 2:voting.vote.steporder, 3:stepCount}'/>">
+				<f:translate key='fluid.partial.usersRating.usersRate' default='fluid.partial.usersRating.usersRate' arguments='{1:voting, 2:voting.vote.steporder, 3:stepCount}'/>
+			</li>
+		</ul>	
+	</div>
+</f:then></f:if>
+<f:comment>
+<!--
+******************************************************************************************
+* This partial displays the vote that the current user has placed
+******************************************************************************************
+* Needed variables
+* --------------------
+* {ratingClass}		-	tilt / normal
+* {ratingName}		-	Name of the ratinglink
+* {ratingobject}	- 	Domain object: ratingabject
+* {usersRate}		-	style definition for users rating in percent
+* {voting}			-	the users original vote (stepconf) domain object if one exists
+******************************************************************************************
+-->
+</f:comment>

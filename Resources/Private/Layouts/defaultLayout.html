@@ -1,4 +1,4 @@
-<div class="tx-thrating-pi1-content {ratingContext}" id='tx-thrating-pi1-{ajaxRef}'>
+<div class="tx-thrating-pi1-content {settings.ratingContext}" id='tx-thrating-pi1-{ajaxRef}'>
 <f:if condition="{staticPreContent}"><f:then>
 	<div class='tx-thrating-staticPreContent'><f:format.raw>{staticPreContent}</f:format.raw></div>
 </f:then></f:if>
@@ -8,37 +8,36 @@
 	</f:then></f:if>
 	<f:if condition="{stepCount} > 0">
 	  <f:then>
-		<f:render section="content" />
-		<f:if condition="{settings.hideSummary}"><f:then>
-		</f:then><f:else>
+		<f:comment><!-- display check regarding section 'content' of view action--></f:comment>
+		<f:if condition="{settings.fluid.layouts.default.showSectionContent}"><f:then>
+			<f:render section="content" />
+		</f:then></f:if>
+		<f:if condition="{settings.fluid.layouts.default.hideSummary}==0"><f:then>
 		<div class='tx-thrating-summary'>
-			<f:if condition="{currentRates}"><f:then>
-				<f:translate key='fluid.layout.default.currentRating' default='fluid.layout.default.currentRating' arguments="{1:currentRates, 2:'{f:count(subject:\"{rating.votes}\")}'}"/>
-				<f:if condition="{anonymousVotes}"><f:then>
-				<br/><f:translate key='fluid.layout.default.anonymousVotes' default='fluid.layout.default.anonymousVotes' arguments='{1:anonymousVotes}'/>
-				</f:then></f:if>
-			</f:then><f:else>
-				<f:translate key='fluid.layout.default.noRatingDone' default='fluid.layout.default.noRatingDone'/>
-			</f:else></f:if>
-			<br/>
-			<f:if condition="{voting}"><f:then>
-				<f:translate key='fluid.layout.default.ownVoteing' default='fluid.layout.default.ownVoteing' arguments='{1:voting, 2:voting.vote.steporder, 3:stepCount}'/>
-			</f:then><f:else>
-				<f:if condition="{anonymousVoting}"><f:then>
-					<f:translate key='fluid.layout.default.anonymousVoting' default='fluid.layout.default.anonymousVoting' htmlEscape="false" />
-				</f:then></f:if>
-				<f:comment>Check if a  FE user is logged on</f:comment>
-				<f:if condition="{voter}"><f:then>
-					<f:if condition="{ratingName}"><f:then>
-						<f:comment>This is a special entry for the ratinglink action</f:comment>
-						<f:translate key='fluid.layout.default.clickRatingBar' default='fluid.layout.default.clickRatingBar'/>
+			<f:comment><!-- display check regarding rating summary information --></f:comment>
+			<f:if condition="{settings.fluid.layouts.default.showCurrentRates}"><f:then>
+				<f:if condition="{currentRates}"><f:then>
+					<f:translate key='fluid.layout.default.currentRating' default='fluid.layout.default.currentRating' arguments="{1:currentRates, 2:'{f:count(subject:\"{rating.votes}\")}'}"/>
+					<f:if condition="{anonymousVotes}"><f:then>
+					<br/><f:translate key='fluid.layout.default.anonymousVotes' default='fluid.layout.default.anonymousVotes' arguments='{1:anonymousVotes}'/>
 					</f:then></f:if>
 				</f:then><f:else>
-					<f:translate key='fluid.layout.default.logonForRatings' default='fluid.layout.default.logonForRatings'/>
+					<f:translate key='fluid.layout.default.noRatingDone' default='fluid.layout.default.noRatingDone'/>
+				</f:else></f:if>
+				<br/>
+			</f:then></f:if>
+			<f:if condition="{settings.fluid.likesMode}"><f:then>
+				<f:comment>Display nothing if we are in likesMode - Users rating is already shown in content section</f:comment>
+			</f:then><f:else>
+				<f:if condition="{voting}"><f:then>
+					<f:comment><!-- display if any vote has be done yet --></f:comment>
+					<f:render partial="usersRating" arguments="{voting:voting, ratingClass:ratingClass, ratingobject:ratingobject, ratingName:ratingName, stepCount:stepCount, usersRate:usersRate}"/>
+				</f:then><f:else>
+					<f:render partial="infoBlock" arguments="{anonymousVoting:anonymousVoting, voter:voter, ratingName:ratingName}"/>
 				</f:else></f:if>	
-			</f:else></f:if>	
+			</f:else></f:if>
 		</div>
-		</f:else></f:if>	
+		</f:then></f:if>	
 	</f:then><f:else>
 		<f:translate key='fluid.layout.default.noRatingSteps' default='fluid.layout.default.noRatingSteps'/>
 	</f:else></f:if>
@@ -67,6 +66,7 @@ Rating: <f:format.number decimals="1" decimalSeparator="," thousandsSeparator=".
 * {anonymousVotes}		- 	number of anonymous votes being done on this rating
 * {anonymousVoting}		-	true/false if anonymous voting is enabled
 * {voting}				-	the users original vote (stepconf) domain object if one exists
+* {usersRate}			-	style definition for users rating in percent
 * {staticPreContent}	- 	HTML formatted content that will be includes IN FRONT OF extension content (NOT changed by AJAX)
 * {staticPostContent}	- 	HTML formatted content that will be includes AFTER extension content (NOT changed by AJAX)
 * {preContent}			- 	HTML formatted content that will be includes IN FRONT OF extension content (changed by AJAX)

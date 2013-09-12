@@ -48,8 +48,8 @@ class Tx_ThRating_Domain_Repository_StepconfRepository extends Tx_Extbase_Persis
 	public function findLocalizedByRatingobject($ratingobjectUid) {
 		$query = $this->createQuery();
 		$tableName = strtolower($query->getType());
-		$statement = 'SELECT * FROM '.$tableName.' WHERE ratingobject=? AND ';
-		$statement .= '(sys_language_uid IN (-1,0) AND uid not in (SELECT l18n_parent FROM '.$tableName.' WHERE ratingobject=? AND sys_language_uid=?)'; //default language if noch localized record exists
+		$statement = 'SELECT * FROM '.$tableName.' WHERE ratingobject=? '.tslib_cObj::enableFields('tx_thrating_domain_model_stepconf');
+		$statement .= ' AND (sys_language_uid IN (-1,0) AND uid not in (SELECT l18n_parent FROM '.$tableName.' WHERE ratingobject=? AND sys_language_uid=? '.tslib_cObj::enableFields('tx_thrating_domain_model_stepconf').')'; //default language if noch localized record exists
 		$statement .= ' OR sys_language_uid=?)'; //or localized record itself
 		$query->statement($statement, array($ratingobjectUid,$ratingobjectUid,$GLOBALS['TSFE']->sys_language_uid,$GLOBALS['TSFE']->sys_language_uid));
 		return $query->execute();

@@ -43,19 +43,19 @@ class Tx_ThRating_Domain_Validator_RatingValidator extends Tx_Extbase_Validation
 	public function isValid($rating) {
 		//a rating object must be given
 		if (!$rating instanceof Tx_ThRating_Domain_Model_Rating) {
-			return false;
+			return FALSE;
 		} 
 		$ratedobjectuid = $rating->getRatedobjectuid();
 		if (empty($ratedobjectuid)) {
 			$this->addError(Tx_Extbase_Utility_Localization::translate('error.validator.rating.ratedobjectuid', 'ThRating'), 1283536994);
-			return false;
+			return FALSE;
 		}
 		//t3lib_div::debug($rating->getRatingobject());
 		if (!$rating->getRatingobject() instanceof Tx_ThRating_Domain_Model_Ratingobject) {
 			$this->addError(Tx_Extbase_Utility_Localization::translate('error.validator.rating.ratingobject', 'ThRating'), 1283538549);
-			return false;
+			return FALSE;
 		}
-		return true;
+		return TRUE;
 	}
 }
 ?>

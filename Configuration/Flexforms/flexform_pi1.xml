@@ -57,9 +57,12 @@
 					</settings.hideSummary>
 					<settings.cookieProtection>
 						<TCEforms>
-							<label>LLL:EXT:th_rating/Resources/Private/Language/locallang.xlf:flexform.general_cookieProtection</label>
+							<label>LLL:EXT:th_rating/Resources/Private/Language/locallang.xlf:flexform.general_cookieLifetime</label>
 							<config>
-								<type>check</type>
+								<type>input</type>
+								<size>4</size>
+								<max>4</max>
+								<eval>trim,int,num,nospace</eval>
 							</config>							
 						</TCEforms>
 					</settings.cookieProtection>

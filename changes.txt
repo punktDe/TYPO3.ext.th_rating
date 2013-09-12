@@ -1,9 +1,7 @@
-- removed dependency on T3Jquery - loading jQuery directly from Google instead
-- new class Tx_ThRating_Utility_ExtensionManagementUtility provides static funtions
-  -+ makeRatable( $tablename, $fieldname, $stepcount ): auto generate default ratingobject and ratingsteps for default language
-  -+ updateStepconf( Tx_ThRating_Domain_Model_Stepconf $stepconf ): change configuration of stepconf or add a localized one
-- some SQL index optimizations
-- extended Tx_ThRating_Domain_Validator_StepconfValidator with check for defaultLanguage
-- added Tx_ThRating_Domain_Model_Syslang to access system table sys_language
-- new dependency to extension static_info_tables
-- Fix: removed - from ext_typoscript_setup.txt to avoid warnings
+* new feature supporting votings similar FB and G+
+* ratinglink action: reworked layout, template and partials
+* provide more flexibility in configuring graphical ratings (section: ratings)
+* now handling the whole extension setting array in AJAX requests
+* renamed defaultLayout.html to DefaultLayout.html
+* dropped setting cookieProtection
+* Bugfix: Corrections in locallang of TCA - labels in BE are shown again 

@@ -17,56 +17,43 @@ plugin.tx_thrating {
 			#1 = new
 		}
 	}
+	settings {
+		#select the ratingConfiguration you want
+		display = stars
+	}
+	
+	#use this section to configure your own ratingConfigurations
 	ratings {
-		#use this section to configure your own graphics
-		barrating {
+		exampleRatingConfig {
 			imagefile = typo3conf/ext/th_rating/Resources/Public/Css/rating_bar.png
 			barimage = 1
 			tilt = 0
-		}
-	}
-	settings {
-		hideSummary = {$plugin.tx_thrating.config.hideSummary}
-		showNoFEUser = {$plugin.tx_thrating.config.showNoFEUser}
-		showNotRated = {$plugin.tx_thrating.config.showNotRated}
-		mapAnonymous = {$plugin.tx_thrating.config.mapAnonymous}
-		cookieLifetime = {$plugin.tx_thrating.config.cookieLifetime}
-		cookieProtection = 0
-		ratingContext = defaultContext
-		defaultObject {
-			ratetable = tt_content
-			ratefield = uid
-			#this is similar to
-			#ratingobject = 1
-		}
-		
-		#ratedobjectuid = 0
-		display = stars
-		
-
-		#make configured ratings avaiable to the extension 
-		ratingConfigurations < plugin.tx_thrating.ratings
-		ratingConfigurations {
-			default = stars
-			stars {
-				imagefile = typo3conf/ext/th_rating/Resources/Public/Css/stars.gif
-				barimage = 0
-				tilt = 0
+			settings {
+				showNoFEUser = 1
+				showNotRated = 1
+				mapAnonymous = 0
+				cookieLifetime = 0
 			}
-			starsTilt {
-				imagefile = typo3conf/ext/th_rating/Resources/Public/Css/starsTilt.gif
-				barimage = 0
-				tilt = 1
-			}
-			facesbartilt {
-				imagefile = typo3conf/ext/th_rating/Resources/Public/Css/facesbarTilt.gif
-				barimage = 1
-				tilt = 1
-			}
-			barrating {
-				imagefile = typo3conf/ext/th_rating/Resources/Public/Css/rating_bar.png
-				barimage = 1
-				tilt = 0
+			fluid {
+				layouts {
+					default {
+						hideSummary = {$plugin.tx_thrating.config.hideSummary}
+						showCurrentRates = 1
+						showSectionContent = 1
+					}
+				}
+				templates {
+					ratinglinks.likesMode = 0
+				}
+				partials {
+					usersRating {
+						showTextInfo = 1
+						showGraphicInfo = 0
+					}
+					infoBlock {
+						showAnonymousVotes = 1
+					}
+				}
 			}
 		}
 	}
@@ -92,12 +79,104 @@ plugin.tx_thrating {
 }
 
 
-
-
 #########################################################################
 # Static extension configuration - do not override!!					#
 #########################################################################
+plugin.tx_thrating {
+	settings {
+		showNoFEUser = {$plugin.tx_thrating.config.showNoFEUser}
+		showNotRated = {$plugin.tx_thrating.config.showNotRated}
+		mapAnonymous = {$plugin.tx_thrating.config.mapAnonymous}
+		cookieLifetime = {$plugin.tx_thrating.config.cookieLifetime}
+		ratingContext = defaultContext
 
+		#this section would be overridden by a similar section within your ratingconfiguration
+		fluid {
+			layouts {
+				default {
+					hideSummary = {$plugin.tx_thrating.config.hideSummary}
+					showCurrentRates = 1
+					showSectionContent = 1
+				}
+			}
+			templates {
+				ratinglinks.likesMode = 0
+			}
+			partials {
+				usersRating {
+					showTextInfo = 1
+					showGraphicInfo = 0
+				}
+				infoBlock {
+					showAnonymousVotes = 1
+				}
+			}
+		}
+		defaultObject {
+			ratetable = tt_content
+			ratefield = uid
+			#this is similar to
+			#ratingobject = 1
+		}
+		#make configured ratings avaiable to the extension 
+		ratingConfigurations < plugin.tx_thrating.ratings
+		ratingConfigurations {
+			default = stars
+			stars {
+				imagefile = typo3conf/ext/th_rating/Resources/Public/Css/stars.gif
+				barimage = 0
+				tilt = 0
+			}
+			starsTilt {
+				imagefile = typo3conf/ext/th_rating/Resources/Public/Css/starsTilt.gif
+				barimage = 0
+				tilt = 1
+			}
+			facesbartilt {
+				imagefile = typo3conf/ext/th_rating/Resources/Public/Css/facesbarTilt.gif
+				barimage = 1
+				tilt = 1
+			}
+			barrating {
+				imagefile = typo3conf/ext/th_rating/Resources/Public/Css/rating_bar.png
+				barimage = 1
+				tilt = 0
+			}
+			smileyLikes {
+				imagefile = typo3conf/ext/th_rating/Resources/Public/Css/smiley.gif
+				barimage = 0
+				tilt = 0
+				settings {
+					showNoFEUser = 1
+					showNotRated = 0
+					#mapAnonymous = 0
+					cookieLifetime = 365
+				}
+				fluid {
+					layouts {
+						default {
+							hideSummary = 1
+							showCurrentRates = 0
+							showSectionContent = 1
+						}
+					}
+					templates {
+						ratinglinks.likesMode = 1
+					}
+					partials {
+						usersRating {
+							showTextInfo = 0
+							showGraphicInfo = 1
+						}
+						infoBlock {
+							showAnonymousVotes = 0
+						}
+					}
+				}
+			}
+		}
+	}
+}
 #########################################################################
 # Include all needed javascript and CSS styles
 #########################################################################
@@ -133,13 +212,6 @@ thrating_ajax {
 	10 =< tt_content.list.20.thrating_pi1
 }
 
-
-#########################################################################
-# Include jQuery once per page
-#########################################################################
-includeLibs.t3jquery = EXT:t3jquery/class.tx_t3jquery.php
-page.1288250056 = USER
-page.1288250056.userFunc = tx_t3jquery->addJS
 
 #########################################################################
 # Include FLUID form only once per page

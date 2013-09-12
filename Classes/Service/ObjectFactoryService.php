@@ -41,7 +41,7 @@ class Tx_ThRating_Service_ObjectFactoryService implements t3lib_Singleton {
 		$cObj = $configurationManager->getContentObject();
 		$currentRecord = array();
 		if ( isset($cObj->currentRecord) ) {
-			$currentRecord = explode(':',$cObj->currentRecord);	//build array [0=>cObj tablename, 1=> cObj uid] - initialize with content information (usage as normal content)
+			$currentRecord = explode(':', $cObj->currentRecord);	//build array [0=>cObj tablename, 1=> cObj uid] - initialize with content information (usage as normal content)
 		} else {
 			$currentRecord = array('pages',$GLOBALS['TSFE']->page['uid']);	//build array [0=>cObj tablename, 1=> cObj uid] - initialize with page info if used by typoscript
 		}
@@ -74,10 +74,10 @@ class Tx_ThRating_Service_ObjectFactoryService implements t3lib_Singleton {
 		} else {
 			if ( empty($settings['ratetable']) || empty($settings['ratefield']) ) {
 				//fallback to default configuration
-				$settings = array_merge($settings,$settings['defaultObject']);
+				$settings = array_merge($settings, $settings['defaultObject']);
 			}
 			$settings = self::completeConfigurationSettings( $settings );		
-			$ratingobject = $ratingobjectRepository->findMatchingTableAndField(	$settings['ratetable'], $settings['ratefield'], Tx_ThRating_Domain_Repository_RatingobjectRepository::addIfNotFound);
+			$ratingobject = $ratingobjectRepository->findMatchingTableAndField($settings['ratetable'], $settings['ratefield'], Tx_ThRating_Domain_Repository_RatingobjectRepository::addIfNotFound);
 			Tx_ThRating_Utility_ExtensionManagementUtility::persistObjectIfDirty($ratingobject);
 		}
 		return $ratingobject;
@@ -132,7 +132,7 @@ class Tx_ThRating_Service_ObjectFactoryService implements t3lib_Singleton {
  	 * @param	Tx_ThRating_Domain_Model_Ratingobject	$ratingobject
 	 * @return	Tx_ThRating_Domain_Model_Rating
 	 */
-	static function getRating( array $settings,	Tx_ThRating_Domain_Model_Ratingobject	$ratingobject = null ) {
+	static function getRating( array $settings,	Tx_ThRating_Domain_Model_Ratingobject	$ratingobject = NULL ) {
 		$settings = self::completeConfigurationSettings( $settings );		
 		$ratingobjectValidator = t3lib_div::makeInstance('Tx_ThRating_Domain_Validator_RatingobjectValidator');
 		$ratingRepository = t3lib_div::makeInstance('Tx_ThRating_Domain_Repository_RatingRepository');
@@ -142,7 +142,7 @@ class Tx_ThRating_Service_ObjectFactoryService implements t3lib_Singleton {
 			$rating = $ratingRepository->findByUid($settings['rating']);
 		} elseif ( $ratingobjectValidator->isValid($ratingobject) && $settings['ratedobjectuid'] ) {
 			//get rating according to given row
-			$rating = $ratingRepository->findMatchingObjectAndUid($ratingobject,$settings['ratedobjectuid'],Tx_ThRating_Domain_Repository_RatingRepository::addIfNotFound);
+			$rating = $ratingRepository->findMatchingObjectAndUid($ratingobject, $settings['ratedobjectuid'],Tx_ThRating_Domain_Repository_RatingRepository::addIfNotFound);
 		}
 		return $rating;
 	}			
@@ -165,7 +165,7 @@ class Tx_ThRating_Service_ObjectFactoryService implements t3lib_Singleton {
 		if ( !empty($settings['mapAnonymous']) && !$frontendUserUid ) {
 			//set anonymous vote
 			$voter =  $accessControllService->getFrontendVoter($settings['mapAnonymous']);
-			$anonymousRating = json_decode($_COOKIE[$prefixId.'_AnonymousRating_'.$rating->getUid()], true);
+			$anonymousRating = json_decode($_COOKIE[$prefixId.'_AnonymousRating_'.$rating->getUid()], TRUE);
 			if ( !empty($anonymousRating['voteUid']) ) {
 				$vote = $voteRepository->findByUid($anonymousRating['voteUid']);
 			}
@@ -174,7 +174,7 @@ class Tx_ThRating_Service_ObjectFactoryService implements t3lib_Singleton {
 				//set FEUser if one is logged on
 				$voter =  $accessControllService->getFrontendVoter( $frontendUserUid );
 				if ($voter instanceof Tx_ThRating_Domain_Model_Voter) {
-					$vote = $voteRepository->findMatchingRatingAndVoter($rating->getUid(),$voter->getUid());
+					$vote = $voteRepository->findMatchingRatingAndVoter($rating->getUid(), $voter->getUid());
 				}
 			}
 		}

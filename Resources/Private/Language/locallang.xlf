@@ -27,8 +27,8 @@
 			<trans-unit id="flexform.general_hideSummary" xml:space="preserve">
 				<source>Hide rating summary</source>
 			</trans-unit>
-			<trans-unit id="flexform.general_cookieProtection" xml:space="preserve">
-				<source>Activate cookie protection for anonymous votes</source>
+			<trans-unit id="flexform.general_cookieLifetime" xml:space="preserve">
+				<source>Enter value to activate cookie protection for anonymous votes</source>
 			</trans-unit>
 			<trans-unit id="flexform.sheet_paths" xml:space="preserve">
 				<source>Paths</source>
@@ -217,15 +217,15 @@
 				<note>Forwarded arguments: None</note>
 				<source>No rating done at all.</source>
 			</trans-unit>
-			<trans-unit id="fluid.layout.default.ownVoteing" xml:space="preserve" approved="yes">
+			<trans-unit id="fluid.partial.usersRating.usersRate" xml:space="preserve" approved="yes">
 				<note>Forwarded arguments: 1:voting, 2:voting.vote.steporder, 3:stepCount</note>
 				<source>Your vote was '%1$s' (%2$d of %3$d)</source>
 			</trans-unit>
-			<trans-unit id="fluid.layout.default.anonymousVoting" xml:space="preserve" approved="yes">
+			<trans-unit id="fluid.partial.infoBlock.anonymousVoting" xml:space="preserve" approved="yes">
 				<note>Forwarded arguments: None; This entry needs "htmlEscape='false' when read by fluid</note>
 				<source><![CDATA[Your are an anonymous user.<br/>You may log on to do personalized votings<br/>]]></source>
 			</trans-unit>
-			<trans-unit id="fluid.layout.default.logonForRatings" xml:space="preserve" approved="yes">
+			<trans-unit id="fluid.partial.infoBlock.logonForRatings" xml:space="preserve" approved="yes">
 				<note>Forwarded arguments: None</note>
 				<target></target><source>Please log on to do ratings</source>
 			</trans-unit>
@@ -233,7 +233,7 @@
 				<note>Forwarded arguments: None</note>
 				<source>No ratingsteps configured.</source>
 			</trans-unit>
-			<trans-unit id="fluid.layout.default.clickRatingBar" xml:space="preserve" approved="yes">
+			<trans-unit id="fluid.partial.infoBlock.clickRatingBar" xml:space="preserve" approved="yes">
 				<note>Forwarded arguments: None</note>
 				<source>Click the rating bar to rate this item</source>
 			</trans-unit>

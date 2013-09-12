@@ -43,24 +43,24 @@ class Tx_ThRating_Domain_Validator_VoteValidator extends Tx_Extbase_Validation_V
 	public function isValid($vote) {
 		//a vote object must be given
 		if (!$vote instanceof Tx_ThRating_Domain_Model_Vote) {
-			return false;
+			return FALSE;
 		} 
 		//a vote object must have a vote
 		if (!$vote->getVote() instanceof Tx_ThRating_Domain_Model_Stepconf) {
 			$this->addError(Tx_Extbase_Utility_Localization::translate('error.validator.vote.vote', 'ThRating'), 1283537235);
-			return false;
+			return FALSE;
 		}
 		//a vote must have a valid voter
 		if (!$vote->getVoter() instanceof Tx_ThRating_Domain_Model_Voter) {
 			$this->addError(Tx_Extbase_Utility_Localization::translate('error.validator.vote.voter', 'ThRating'), 1283540684);
-			return false;
+			return FALSE;
 		}
 		//check if the given vote is a valid step for this ratingobject
 		if (!$vote->getRating()->getRatingobject()->getStepconfs()->contains($vote->getVote())) {
 			$this->addError(Tx_Extbase_Utility_Localization::translate('error.validator.vote.stepconf', 'ThRating'), 1283612492);
-			return false;
+			return FALSE;
 		}
-		return true;
+		return TRUE;
 	}
 }
 ?>

@@ -43,8 +43,7 @@ class Tx_ThRating_Domain_Validator_StepconfValidator extends Tx_Extbase_Validati
      * @param Tx_ThRating_Domain_Repository_StepconfRepository $stepconfRepository
      * @return void
      */
-    public function injectStepconfRepository(Tx_ThRating_Domain_Repository_StepconfRepository $stepconfRepository)
-    {
+    public function injectStepconfRepository(Tx_ThRating_Domain_Repository_StepconfRepository $stepconfRepository) {
         $this->stepconfRepository = $stepconfRepository;
     }
 
@@ -53,34 +52,34 @@ class Tx_ThRating_Domain_Validator_StepconfValidator extends Tx_Extbase_Validati
 	 * If the given step is valid
 	 *
 	 * @param Tx_ThRating_Domain_Model_Stepconf $stepconf
-	 * @return boolean true
+	 * @return boolean
 	 */
 	public function isValid($stepconf) {
 		//a stepconf object must have a ratingobject
 		if (!$stepconf->getRatingobject() instanceof Tx_ThRating_Domain_Model_Ratingobject) {
 			$this->addError(Tx_Extbase_Utility_Localization::translate('error.validator.stepconf.ratingobject', 'ThRating'), 1284700846);
-			return false;
+			return FALSE;
 		}
 		//at least a steporder value must be set
 		$steporder = $stepconf->getSteporder();
 		if (empty($steporder)) {
 			$this->addError(Tx_Extbase_Utility_Localization::translate('error.validator.stepconf.steps', 'ThRating'), 1284700903);
-			return false;
+			return FALSE;
 		}
 
 		//steporder must be positive integer ( >0 )
 		If ( !is_int($stepconf->getSteporder()) or $stepconf->getSteporder()<1 ) {
 			$this->addError(Tx_Extbase_Utility_Localization::translate('error.validator.stepconf.invalidSteporderNumber', 'ThRating'), 1368123953);
-			return false;
+			return FALSE;
 		}
 
 		//now check if entry for default language exists
 		$langUid = $stepconf->get_languageUid();
 		if ( !empty($langUid) ) {
-			$defaultStepconf = $this->stepconfRepository->findDefaultStepconf($stepconf->getRatingobject(),$stepconf->getSteporder());
+			$defaultStepconf = $this->stepconfRepository->findDefaultStepconf($stepconf->getRatingobject(), $stepconf->getSteporder());
 			if ( !($defaultStepconf instanceof Tx_ThRating_Domain_Model_Stepconf and $this->isValid($defaultStepconf)) ) {
 				$this->addError(Tx_Extbase_Utility_Localization::translate('error.validator.stepconf.defaultLang', 'ThRating'), 1366473364);
-				return false;
+				return FALSE;
 			}
 		}		
 						
@@ -89,15 +88,15 @@ class Tx_ThRating_Domain_Validator_StepconfValidator extends Tx_Extbase_Validati
 		$maxSteporder = $maxSteporderStepconfobject[$maxSteporderStepconfobject->count()-1]->getSteporder();
 		If ( $stepconf->getSteporder() > $maxSteporder+1 ) {
 			$this->addError(Tx_Extbase_Utility_Localization::translate('error.validator.stepconf.maxSteporder', 'ThRating'), 1368123970);
-			return false;
+			return FALSE;
 		}
 
 		//finally check if given languagecode exists in website
 		If ( !$this->stepconfRepository->checkStepconfLanguage($stepconf) ) {
 			$this->addError(Tx_Extbase_Utility_Localization::translate('error.validator.stepconf.sysLang', 'ThRating'), 1367164936);
-			return false;
+			return FALSE;
 		}
-		return true;
+		return TRUE;
 	}
 }
 ?>

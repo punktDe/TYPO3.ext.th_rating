@@ -45,13 +45,13 @@ class Tx_ThRating_Domain_Validator_RatingobjectValidator extends Tx_Extbase_Vali
 		$ratefield = $ratingobject->getRatefield();
 		if (empty($ratetable)) {
 			$this->addError(Tx_Extbase_Utility_Localization::translate('error.validator.ratingobject_table_extbase', 'ThRating'), 1283528638);
-			return false;
+			return FALSE;
 		}
 		if (empty($ratefield)) {
 			$this->addError(Tx_Extbase_Utility_Localization::translate('error.validator.ratingobject_field_extbase', 'ThRating'), 1283536038);
-			return false;
+			return FALSE;
 		}
-		return true;
+		return TRUE;
 	}
 }
 ?>
