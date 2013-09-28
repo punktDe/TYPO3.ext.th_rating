@@ -1,0 +1,242 @@
+<?xml version='1.0' encoding='utf-8'?>
+<xliff version="1.0">
+	<file source-language="en" datatype="plaintext" original="messages" date="2013-03-01T17:33:10Z" product-name="th_rating">
+		<header/>
+		<body>
+			<trans-unit id="flexform.sheet_general" xml:space="preserve">
+				<source>General</source>
+			</trans-unit>
+			<trans-unit id="flexform.general_actions" xml:space="preserve">
+				<source>Plugin action</source>
+			</trans-unit>
+			<trans-unit id="flexform.general_actions_1" xml:space="preserve">
+				<source>Display</source>
+			</trans-unit>
+			<trans-unit id="flexform.general_actions_2" xml:space="preserve">
+				<source>Ratinglinks</source>
+			</trans-unit>
+			<trans-unit id="flexform.general_actions_3" xml:space="preserve">
+				<source>Voteform</source>
+			</trans-unit>
+			<trans-unit id="flexform.general_actions_4" xml:space="preserve">
+				<source>Index</source>
+			</trans-unit>
+			<trans-unit id="flexform.general_display" xml:space="preserve">
+				<source>Ratinglink configuration</source>
+			</trans-unit>
+			<trans-unit id="flexform.general_hideSummary" xml:space="preserve">
+				<source>Hide rating summary</source>
+			</trans-unit>
+			<trans-unit id="flexform.general_cookieLifetime" xml:space="preserve">
+				<source>Enter value to activate cookie protection for anonymous votes</source>
+			</trans-unit>
+			<trans-unit id="flexform.sheet_paths" xml:space="preserve">
+				<source>Paths</source>
+			</trans-unit>
+			<trans-unit id="flexform.paths_templateRootPath" xml:space="preserve">
+				<source>Template root path</source>
+			</trans-unit>
+			<trans-unit id="flexform.paths_partialRootPath" xml:space="preserve">
+				<source>Partial root path</source>
+			</trans-unit>
+			<trans-unit id="flexform.paths_layoutRootPath" xml:space="preserve">
+				<source>Layout root path</source>
+			</trans-unit>
+			<trans-unit id="tca.model.rating.ratingobject" xml:space="preserve">
+				<source>Ratingobject</source>
+			</trans-unit>
+			<trans-unit id="tca.model.rating.ratedobjectuid" xml:space="preserve">
+				<source>Rated Object Uid</source>
+			</trans-unit>
+			<trans-unit id="tca.model.rating.votes" xml:space="preserve">
+				<source>Votes</source>
+			</trans-unit>
+			<trans-unit id="tca.model.rating.currentrates" xml:space="preserve">
+				<source>Calculated values</source>
+			</trans-unit>
+			<trans-unit id="tca.model.rating.uid" xml:space="preserve">
+				<source>Rating list</source>
+			</trans-unit>
+			<trans-unit id="tca.model.rating.title" xml:space="preserve">
+				<source>Rating</source>
+			</trans-unit>
+			<trans-unit id="tca.model.ratingobject.ratetable" xml:space="preserve">
+				<source>Rating Object Tablename</source>
+			</trans-unit>
+			<trans-unit id="tca.model.ratingobject.ratefield" xml:space="preserve">
+				<source>Rating Object Fieldname</source>
+			</trans-unit>
+			<trans-unit id="tca.model.ratingobject.ratingobject" xml:space="preserve">
+				<source>Rating object list</source>
+			</trans-unit>
+			<trans-unit id="tca.model.ratingobject.uid" xml:space="preserve">
+				<source>Ratingstep configurations</source>
+			</trans-unit>
+			<trans-unit id="tca.model.ratingobject.title" xml:space="preserve">
+				<source>RatingObjects</source>
+			</trans-unit>
+			<trans-unit id="tca.model.ratingobject.ratings" xml:space="preserve">
+				<source>Ratings</source>
+			</trans-unit>
+			<trans-unit id="tca.model.stepconf.ratingobject" xml:space="preserve">
+				<source>Rating Object</source>
+			</trans-unit>
+			<trans-unit id="tca.model.stepconf.steporder" xml:space="preserve">
+				<source>Ratingstep order</source>
+			</trans-unit>
+			<trans-unit id="tca.model.stepconf.stepweight" xml:space="preserve">
+				<source>Ratingstep weight</source>
+			</trans-unit>
+			<trans-unit id="tca.model.stepconf.stepname" xml:space="preserve">
+				<source>Ratingstep name</source>
+			</trans-unit>
+			<trans-unit id="tca.model.stepconf.votes" xml:space="preserve">
+				<source>Assigned votes</source>
+			</trans-unit>
+			<trans-unit id="tca.model.stepconf.uid" xml:space="preserve">
+				<source>Ratingstep configuration list</source>
+			</trans-unit>
+			<trans-unit id="tca.model.stepconf.title" xml:space="preserve">
+				<source>Ratingstep configuration</source>
+			</trans-unit>
+			<trans-unit id="tca.model.vote.rating" xml:space="preserve">
+				<source>Rating</source>
+			</trans-unit>
+			<trans-unit id="tca.model.vote.voter" xml:space="preserve">
+				<source>FE User</source>
+			</trans-unit>
+			<trans-unit id="tca.model.vote.vote" xml:space="preserve">
+				<source>Vote</source>
+			</trans-unit>
+			<trans-unit id="tca.model.vote.uid" xml:space="preserve">
+				<source>Vote list</source>
+			</trans-unit>
+			<trans-unit id="tca.model.vote.title" xml:space="preserve">
+				<source>Votings</source>
+			</trans-unit>
+			<trans-unit id="flash.vote.general.invalidStoragePid" xml:space="preserve">
+				<source>Invalid storage page</source>
+			<target></target></trans-unit>
+			<trans-unit id="error.validator.ratingobject_table_extbase" xml:space="preserve">
+				<source>Missing table name in ratingobject.</source>
+			</trans-unit>
+			<trans-unit id="error.validator.ratingobject_field_extbase" xml:space="preserve">
+				<source>Missing field name in ratingobject.</source>
+			</trans-unit>
+			<trans-unit id="error.validator.stepconf.ratingobject" xml:space="preserve">
+				<source>Missing ratingobject in stepconf.</source>
+			</trans-unit>
+			<trans-unit id="error.validator.stepconf.steps" xml:space="preserve">
+				<source>Missing steps in stepconf.</source>
+			</trans-unit>
+			<trans-unit id="error.validator.stepconf.invalidSteporderNumber" xml:space="preserve">
+				<source>Invalid number in steporder. Must be of positive integer.</source>
+			</trans-unit>
+			<trans-unit id="error.validator.stepconf.defaultLang" xml:space="preserve">
+				<source>Stepconf entry for default language missing</source>
+			</trans-unit>
+			<trans-unit id="error.validator.stepconf.maxSteporder" xml:space="preserve">
+				<source>Steporder too high. Maximum steporder number + 1 is allowed.</source>
+			</trans-unit>
+			<trans-unit id="error.validator.stepconf.sysLang" xml:space="preserve">
+				<source>Language code doesn't exist in website config</source>
+			</trans-unit>
+			<trans-unit id="error.validator.rating.ratedobjectuid" xml:space="preserve">
+				<source>Missing UID in rating.</source>
+			</trans-unit>
+			<trans-unit id="error.validator.rating.ratingobject" xml:space="preserve">
+				<source>False ratingobject in rating</source>
+			</trans-unit>
+			<trans-unit id="error.validator.vote.vote" xml:space="preserve">
+				<source>Missing vote.</source>
+			</trans-unit>
+			<trans-unit id="error.validator.vote.voter" xml:space="preserve">
+				<source>False voter reference in vote</source>
+			</trans-unit>
+			<trans-unit id="error.validator.vote.stepconf" xml:space="preserve">
+				<source>False voting reference in vote</source>
+			</trans-unit>
+			<trans-unit id="flash.ratingobject.noRatingsteps" xml:space="preserve">
+				<source>No ratingsteps configured!</source>
+			</trans-unit>
+			<trans-unit id="flash.vote.noFEuser" xml:space="preserve">
+				<source>FE user cannot be identified!</source>
+			</trans-unit>
+			<trans-unit id="flash.vote.renderCSS.defaultImage" xml:space="preserve">
+				<source>Issue found with configuration for rating display - using default image.</source>
+			</trans-unit>
+			<trans-unit id="flash.vote.show.notRated" xml:space="preserve">
+				<source>Not already rated</source>
+			</trans-unit>
+			<trans-unit id="flash.vote.ratinglinks.wrongDisplayConfig" xml:space="preserve">
+				<source>Check TSConfig setting for display name.</source>
+			</trans-unit>
+			<trans-unit id="flash.vote.create.noPermission" xml:space="preserve">
+				<source>No permission for this action.</source>
+			</trans-unit>
+			<trans-unit id="flash.heading.error" xml:space="preserve">
+				<source>Error !!!!</source>
+			</trans-unit>
+			<trans-unit id="flash.heading.warning" xml:space="preserve">
+				<source>Warning!</source>
+			</trans-unit>
+			<trans-unit id="flash.heading.info" xml:space="preserve">
+				<source>Information</source>
+			</trans-unit>
+			<trans-unit id="flash.heading.notice" xml:space="preserve">
+				<source>Notification</source>
+			</trans-unit>
+			<trans-unit id="flash.heading.ok" xml:space="preserve">
+				<source>Success</source>
+			</trans-unit>
+			<trans-unit id="flash.vote.create.alreadyRated" xml:space="preserve">
+				<source>Already rated</source>
+			</trans-unit>
+			<trans-unit id="flash.vote.create.newCreated" xml:space="preserve">
+				<source>Your new vote was created.</source>
+			</trans-unit>
+			<trans-unit id="flash.vote.create.foreignUpdateFailed" xml:space="preserve">
+				<source>Update of foreign field has failed.</source>
+			</trans-unit>
+			<trans-unit id="no_rating_done" xml:space="preserve">
+				<source>Update der Fremdtabelle fehlgeschlagen</source>
+			</trans-unit>
+			<trans-unit id="fluid.template.ratinglinks.currentRating" xml:space="preserve" approved="yes">
+				<note>Forwarded arguments: 1:currentRates, 2:stepCount</note>
+				<source>Current rating is %1.1f out of %2$d</source>
+			</trans-unit>
+			<trans-unit id="fluid.layout.default.currentRating" xml:space="preserve" approved="yes">
+				<note>Forwarded arguments: 1:currentRates, 2:number of rating.votes</note>
+				<source>Rating: %1.1f. %2$d vote(s).</source>
+			</trans-unit>
+			<trans-unit id="fluid.layout.default.anonymousVotes" xml:space="preserve" approved="yes">
+				<note>Forwarded arguments: 1:anonymousVotes</note>
+				<source>%1$d anonymous votes</source>
+			</trans-unit>
+			<trans-unit id="fluid.layout.default.noRatingDone" xml:space="preserve" approved="yes">
+				<note>Forwarded arguments: None</note>
+				<source>No rating done at all.</source>
+			</trans-unit>
+			<trans-unit id="fluid.partial.usersRating.usersRate" xml:space="preserve" approved="yes">
+				<note>Forwarded arguments: 1:voting, 2:voting.vote.steporder, 3:stepCount</note>
+				<source>Your vote was '%1$s' (%2$d of %3$d)</source>
+			</trans-unit>
+			<trans-unit id="fluid.partial.infoBlock.anonymousVoting" xml:space="preserve" approved="yes">
+				<note>Forwarded arguments: None; This entry needs "htmlEscape='false' when read by fluid</note>
+				<source><![CDATA[Your are an anonymous user.<br/>You may log on to do personalized votings<br/>]]></source>
+			</trans-unit>
+			<trans-unit id="fluid.partial.infoBlock.logonForRatings" xml:space="preserve" approved="yes">
+				<note>Forwarded arguments: None</note>
+				<target></target><source>Please log on to do ratings</source>
+			</trans-unit>
+			<trans-unit id="fluid.layout.default.noRatingSteps" xml:space="preserve" approved="yes">
+				<note>Forwarded arguments: None</note>
+				<source>No ratingsteps configured.</source>
+			</trans-unit>
+			<trans-unit id="fluid.partial.infoBlock.clickRatingBar" xml:space="preserve" approved="yes">
+				<note>Forwarded arguments: None</note>
+				<source>Click the rating bar to rate this item</source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>

@@ -1,0 +1,125 @@
+<T3DataStructure>
+	<meta>
+		<langDisable>0</langDisable>
+	</meta>
+	<sheets>
+		<sDEF>
+			<ROOT>
+				<TCEforms>
+					<sheetTitle>LLL:EXT:th_rating/Resources/Private/Language/locallang.xlf:flexform.sheet_general</sheetTitle>
+				</TCEforms>
+				<type>array</type>
+				<el>
+					<switchableControllerActions>
+						<TCEforms>
+							<onChange>reload</onChange>
+							<label>LLL:EXT:th_rating/Resources/Private/Language/locallang.xlf:flexform.general_actions</label>
+							<config>
+								<type>select</type>
+								<items>
+									<numIndex index="0">
+										 <numIndex index="0">LLL:EXT:th_rating/Resources/Private/Language/locallang.xlf:flexform.general_actions_1</numIndex>
+										 <numIndex index="1">Vote->show</numIndex>
+									</numIndex>
+									<numIndex index="1">
+										<numIndex index="0">LLL:EXT:th_rating/Resources/Private/Language/locallang.xlf:flexform.general_actions_2</numIndex>
+										<numIndex index="1">Vote->ratinglinks</numIndex>
+									</numIndex>
+									<numIndex index="2">
+										 <numIndex index="0">LLL:EXT:th_rating/Resources/Private/Language/locallang.xlf:flexform.general_actions_3</numIndex>
+										 <numIndex index="1">Vote->new</numIndex>
+									</numIndex>
+									<numIndex index="3">
+										 <numIndex index="0">LLL:EXT:th_rating/Resources/Private/Language/locallang.xlf:flexform.general_actions_4</numIndex>
+										 <numIndex index="1">Vote->index</numIndex>
+									</numIndex>									
+								</items>
+						  </config>
+					</TCEforms>
+					</switchableControllerActions>
+					<settings.display>
+						<TCEforms>
+							<displayCond>FIELD:switchableControllerActions:=:Vote->ratinglinks</displayCond>
+							<label>LLL:EXT:th_rating/Resources/Private/Language/locallang.xlf:flexform.general_display</label>
+							<config>
+								<type>select</type>
+								<itemsProcFunc>user_BEfunc->dynFlexRatinglinkConfig</itemsProcFunc>
+							</config>							
+						</TCEforms>
+					</settings.display>
+					<settings.hideSummary>
+						<TCEforms>
+							<label>LLL:EXT:th_rating/Resources/Private/Language/locallang.xlf:flexform.general_hideSummary</label>
+							<config>
+								<type>check</type>
+							</config>							
+						</TCEforms>
+					</settings.hideSummary>
+					<settings.cookieProtection>
+						<TCEforms>
+							<label>LLL:EXT:th_rating/Resources/Private/Language/locallang.xlf:flexform.general_cookieLifetime</label>
+							<config>
+								<type>input</type>
+								<size>4</size>
+								<max>4</max>
+								<eval>trim,int,num,nospace</eval>
+							</config>							
+						</TCEforms>
+					</settings.cookieProtection>
+				</el>
+			</ROOT>
+		</sDEF>
+		<sPaths>
+			<ROOT>
+				<TCEforms>
+					<sheetTitle>LLL:EXT:th_rating/Resources/Private/Language/locallang.xlf:flexform.sheet_paths</sheetTitle>
+				</TCEforms>
+				<type>array</type>
+				<el>
+					<view.templateRootPath>
+						<TCEforms>
+							<exclude>1</exclude>
+							<label>LLL:EXT:th_rating/Resources/Private/Language/locallang.xlf:flexform.paths_templateRootPath</label>
+							<config>
+								<type>group</type>
+								<internal_type>folder</internal_type>
+								<max_size>1</max_size>
+								<maxitems>1</maxitems>
+								<size>1</size>
+								<selectedListStyle>width:180px</selectedListStyle>
+							</config>
+						</TCEforms>
+					</view.templateRootPath>
+					<view.partialRootPath>
+						<TCEforms>
+							<exclude>1</exclude>
+							<label>LLL:EXT:th_rating/Resources/Private/Language/locallang.xlf:flexform.paths_partialRootPath</label>
+							<config>
+								<type>group</type>
+								<internal_type>folder</internal_type>
+								<max_size>1</max_size>
+								<maxitems>1</maxitems>
+								<size>1</size>
+								<selectedListStyle>width:180px</selectedListStyle>
+							</config>
+						</TCEforms>
+					</view.partialRootPath>
+					<view.layoutRootPath>
+						<TCEforms>
+							<exclude>1</exclude>
+							<label>LLL:EXT:th_rating/Resources/Private/Language/locallang.xlf:flexform.paths_layoutRootPath</label>
+							<config>
+								<type>group</type>
+								<internal_type>folder</internal_type>
+								<max_size>1</max_size>
+								<maxitems>1</maxitems>
+								<size>1</size>
+								<selectedListStyle>width:180px</selectedListStyle>
+							</config>
+						</TCEforms>
+					</view.layoutRootPath>
+				</el>
+			</ROOT>
+		</sPaths>
+	</sheets>
+</T3DataStructure>

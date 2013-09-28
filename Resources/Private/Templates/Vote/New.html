@@ -1,0 +1,21 @@
+{namespace thr=Tx_ThRating_ViewHelpers}
+<f:layout name="DefaultLayout" />
+
+<f:section name="content">
+	<div class='tx-thrating-newVote'>
+		<thr:select class="ajaxLink" name="ajaxSelect" options="{ajaxSelections}" additionalOptions="{0 : '-- choose one --'}" >
+			<select><option>dummy</option></select>
+		</thr:select>
+	</div>
+</f:section>
+<!--
+******************************************************************************************
+* Forwarded variables
+* --------------------
+* ==> all variables used in defaultLayout
+* {ajaxSelections}	-	associative array of possible ratingsteps consisting of
+*						[order of ratingstep]
+*							['step'] 		- Domain object: stepconf
+*							['ajaxvalue']	- JSON encoded value to handle AJAX request
+******************************************************************************************
+-->

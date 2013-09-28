@@ -1,0 +1,2 @@
+* backport from version 0.8.4
+* new suggestion on extension xliff

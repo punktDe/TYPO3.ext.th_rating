@@ -1,0 +1,123 @@
+.loading { border:1px solid gray; }
+#formResult {height: 20px; }
+
+#tx-thrating-pi1-singleton{
+	display:none;
+}
+
+.thRating{
+position:relative;
+overflow:hidden;
+list-style:none;
+margin:0px;
+padding:0px;
+}
+
+.thrating-normal {
+background-position: left top;
+}
+
+.thRating-tilt{
+background-position: right bottom;
+}
+
+.thRating li{
+display: inline;
+margin:0px;
+}
+.thRating a,
+.thRating .current-rating{
+position:absolute;
+bottom:0;
+left:0;
+text-indent:-1000em;
+outline:0px;
+overflow:hidden;
+border: 0px;
+}
+.thRating-normal a:hover,
+.thRating-normal a:active,
+.thRating-normal a:focus{
+background-position: left bottom;
+}
+.thRating-normal .current-rating{
+z-index:1;
+background-position: left center;
+}
+
+.thRating-tilt a:hover,
+.thRating-tilt a:active,
+.thRating-tilt a:focus{
+background-position: left bottom;
+}
+
+/* necessary because of bug in IE
+	values below 28% are displayed shifted */
+.thRating-tilt a.noratingbar:hover,
+.thRating-tilt a.noratingbar:active,
+.thRating-tilt a.noratingbar:focus{
+background-position: left top;
+}
+.thRating-tilt li.noratingbar {
+background-position: center top !important;
+}
+
+.thRating-tilt .current-rating{
+z-index:1;
+background-position: center bottom;
+}
+
+.tx-thrating-pi1-content{
+	position:relative;
+	width:0px;
+}
+.tx-thrating-summary{
+	white-space:nowrap; 
+	font-size:0.6em; 
+	line-height:1.4em; 
+	margin-top:1em;
+}
+.tx-thrating-flash-message{
+	position:absolute;
+	display:none;
+	padding:3px;
+	top:1.5em;
+	left:1.5em;
+	background-color: #a7a7a7;
+	border:1px solid black;
+	min-width:100px;
+}
+.tx-thrating-flash-message .message-error .message-header{
+	background-color: #f87575;
+    border: 1px dotted grey;
+	padding:1px;
+	font-weight:bold;
+}
+.tx-thrating-flash-message .message-warning .message-header{
+	background-color: #ffff00;
+    border: 1px dotted grey;
+	padding:1px;
+	font-weight:bold;
+}
+.tx-thrating-flash-message .message-notice .message-header{
+	background-color: #62aeff;
+    border: 1px dotted blue;
+	padding:1px;
+	font-weight:bold;
+}
+.tx-thrating-flash-message .message-ok .message-header{
+	background-color: #1bee1b;
+    border: 1px dotted grey;
+	padding:1px;
+	font-weight:bold;
+}
+.tx-thrating-flash-message .message-body{
+	padding-top:3px;
+}
+.tx-thrating-flash-message li{
+	display:inline;
+}
+.tx-thrating-flash-message ul{
+	padding:0px;
+	margin:1px;
+}

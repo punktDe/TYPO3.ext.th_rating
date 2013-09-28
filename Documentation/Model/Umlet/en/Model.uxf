@@ -1,0 +1,263 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="11.1">
+  <zoom_level>10</zoom_level>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>610</x>
+      <y>370</y>
+      <w>370</w>
+      <h>250</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;Tx_ThRating_Domain_Model_Rating&gt;&gt;
+--
+-uid: 				Int(11)
+-pid: 				Int(11)
+-ratingobject: 		Tx_ThRating_Domain_Model_Ratingobject
+-ratedobjectuid:	Int(11)
+-votes:				Tx_ThRating_Domain_Model_Vote
+-currentrates:		varchar(255)
+--
+#addVote(vote: Tx_ThRating_Domain_Model_Vote)
+#removeVote(vote: Tx_ThRating_Domain_Model_Vote)
+#removeAllVotes()
+#checkCurrentrates()
+#addCurrentrate(vote: Tx_ThRating_Domain_Model_Vote)
+#getCurrentrates(): array
+#getCalculatedRate(): string
+
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>610</x>
+      <y>150</y>
+      <w>370</w>
+      <h>200</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;Tx_ThRating_Domain_Model_Stepconf&gt;&gt;
+--
+-uid: 		Int(11)
+-pid: 		Int(11)
+-sys_language_uid:  Int(11)
+-l18n_parent:  Int(11)
+-ratingobject: Tx_ThRating_Domain_Model_Ratingobject
+-steporder:	Int(11)
+-stepweight: Int(11)
+-stepname:	varchar(64)
+-votes:		Int(11)
+--
+#__toString():string</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>140</x>
+      <y>150</y>
+      <w>370</w>
+      <h>220</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;Tx_ThRating_Domain_Model_Ratingobject&gt;&gt;
+--
+-uid: 		Int(11)
+-pid: 		Int(11)
+-ratetable: varchar(64)
+-ratefield: varchar(64)
+-stepconfs:	Tx_ThRating_Domain_Model_Stepconf
+-ratings: 	Tx_ThRating_Domain_Model_Rating
+--
+#addRating(rating: tx_thrating_domain_model_rating)
+#removeRating(rating: tx_thrating_domain_model_rating)
+#removeAllRatings()
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>480</x>
+      <y>190</y>
+      <w>150</w>
+      <h>80</h>
+    </coordinates>
+    <panel_attributes>lt=-
+m1=1
+m2=0..n
+has&gt;</panel_attributes>
+    <additional_attributes>30;60;70;60;70;30;130;30</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>480</x>
+      <y>240</y>
+      <w>150</w>
+      <h>220</h>
+    </coordinates>
+    <panel_attributes>lt=-
+m1=1
+m2=0..n
+has&gt;</panel_attributes>
+    <additional_attributes>30;30;70;30;70;200;130;200</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>1110</x>
+      <y>270</y>
+      <w>320</w>
+      <h>190</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;Tx_ThRating_Domain_Model_Vote&gt;&gt;
+--
+-uid: 				Int(11)
+-pid: 				Int(11)
+-vote:				Tx_ThRating_Domain_Model_Stepconf
+-rating:	 		Tx_ThRating_Domain_Model_Rating
+-voter:				Tx_Extbase_Domain_Model_FrontendUser
+--
+#hasRated(): boolean
+#isAnonymous(): boolean
+#hasAnonymousVote(prefixId: string): boolean
+#__toString(): string
+
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>950</x>
+      <y>330</y>
+      <w>180</w>
+      <h>160</h>
+    </coordinates>
+    <panel_attributes>lt=-
+m1=0..n
+m2=1
+has&gt;</panel_attributes>
+    <additional_attributes>160;30;90;30;90;140;30;140</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>950</x>
+      <y>250</y>
+      <w>180</w>
+      <h>110</h>
+    </coordinates>
+    <panel_attributes>lt=-
+m1=0..n
+m2=1
+has&gt;</panel_attributes>
+    <additional_attributes>160;90;90;90;90;30;30;30</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>1110</x>
+      <y>500</y>
+      <w>300</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;Tx_ThRating_Domain_Model_Voter&gt;&gt;
+
+
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>1380</x>
+      <y>320</y>
+      <w>138</w>
+      <h>220</h>
+    </coordinates>
+    <panel_attributes>lt=-
+m1=0..n
+m2=1
+has&gt;</panel_attributes>
+    <additional_attributes>50;30;100;30;100;200;30;200</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>1110</x>
+      <y>580</y>
+      <w>300</w>
+      <h>110</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;Tx_Extbase_Domain_Model_FrontendUser&gt;&gt;
+--
+-uid: 				Int(11)
+-pid: 				Int(11)
+-username:	 		String
+--
+#isLoggedIn(): boolean
+
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>1230</x>
+      <y>510</y>
+      <w>50</w>
+      <h>90</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-</panel_attributes>
+    <additional_attributes>30;70;30;30</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>1110</x>
+      <y>100</y>
+      <w>320</w>
+      <h>120</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;Tx_ThRating_Domain_Model_Syslang&gt;&gt;
+--
+-uid: 				Int(11)
+-pid: 				Int(11)
+-static_lang_isocode: Int(11)
+-flag: Varchar(20)
+-title: Varchar(80)
+
+
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>950</x>
+      <y>100</y>
+      <w>180</w>
+      <h>130</h>
+    </coordinates>
+    <panel_attributes>lt=-
+m1=1..n
+m2=1
+has&gt;</panel_attributes>
+    <additional_attributes>30;110;90;110;90;30;160;30</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>820</x>
+      <y>180</y>
+      <w>110</w>
+      <h>70</h>
+    </coordinates>
+    <panel_attributes>lt=-
+m1=1
+m2=1</panel_attributes>
+    <additional_attributes>30;50;90;50;90;30;30;30</additional_attributes>
+  </element>
+</diagram>

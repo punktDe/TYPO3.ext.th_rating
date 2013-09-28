@@ -1,0 +1,30 @@
+<f:layout name="DefaultLayout" />
+
+<f:section name="content">
+<f:if condition="{settings.fluid.templates.ratinglinks.likesMode}"><f:then>
+	<f:if condition="{voting}"><f:then>
+		<f:render partial="usersRating" arguments="{voting:voting, ratingClass:ratingClass, ratingobject:ratingobject, ratingName:ratingName, stepCount:stepCount, usersRate:usersRate}"/>
+	</f:then><f:else>
+		<f:render partial="ratinglinkBlock" arguments="{voting:voting, ratingClass:ratingClass, ratingobject:ratingobject, ratingName:ratingName, calculatedRate:calculatedRate, currentRates:currentRates, stepCount:stepCount, barimage:barimage, ajaxSelections:ajaxSelections}"/>
+	</f:else></f:if>	
+</f:then><f:else>
+	<f:if condition="{ratingName}"><f:then>
+		<f:render partial="ratinglinkBlock" arguments="{voting:voting, ratingClass:ratingClass, ratingobject:ratingobject, ratingName:ratingName, calculatedRate:calculatedRate, currentRates:currentRates, stepCount:stepCount, barimage:barimage, ajaxSelections:ajaxSelections}"/>
+	</f:then></f:if>
+</f:else></f:if>
+</f:section>
+<!--
+******************************************************************************************
+* Forwarded variables
+* --------------------
+* ==> all variables used in defaultLayout
+* {barimage}		-	ratingbar / noratingbar
+* {calculatedRate}	-	style definition for current rating in percent
+* {ratingName}		-	Name of the ratinglink
+* {ratingClass}		-	tilt / normal
+* {ajaxSelections}	-	associative array of possible ratingsteps consisting of
+*						[order of ratingstep]
+*							['step'] 		- Domain object: stepconf
+*							['ajaxvalue']	- JSON encoded value to handle AJAX request
+******************************************************************************************
+-->

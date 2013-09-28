@@ -1,0 +1,35 @@
+{namespace thr=Tx_ThRating_ViewHelpers}
+<f:if condition="{ratingName}"><f:then>
+	<div name='tx-thrating-ratinglinks'>
+		<ul class='thRating thRating-{ratingClass} thRating-RObj{ratingobject.uid}-{ratingName}'>
+			<f:if condition="{calculatedRate}"><f:then>
+			<li class='current-rating {barimage}' style="{f:if(condition: '{0: ratingClass} == {0: \'tilt\'}', then: 'height:{calculatedRate}', else: 'width:{calculatedRate}')}" title="<f:translate key='fluid.template.ratinglinks.currentRating' default='fluid.template.ratinglinks.currentRating' arguments='{1:currentRates, 2:stepCount}'/>">
+				<f:translate key='fluid.template.ratinglinks.currentRating' default='fluid.template.ratinglinks.currentRating' arguments='{1:currentRates, 2:stepCount}'/>
+			</li>
+			</f:then></f:if>
+			<!-- Only generate links if a  FE user is logged on -->
+			<f:if condition="{ajaxSelections}"><f:then>
+				<f:for each="{ajaxSelections}" as="ajaxSelection">
+				<li><thr:ratinglink class="ajaxLink RObj{ratingobject.uid}-StpOdr{ajaxSelection.step.steporder}-ratingstep-{ratingClass} {barimage}" title='{ajaxSelection.step.stepname}' href='#' tabindex='-1' ><input type="hidden" name="ajaxSelect" value="{ajaxSelection.ajaxvalue}" />{ajaxSelection.step.steporder}</thr:ratinglink></li>
+				</f:for>
+			</f:then></f:if>
+		</ul>	
+	</div>
+</f:then></f:if>
+<!--
+******************************************************************************************
+* This partial displays the vote that the current user has placed
+******************************************************************************************
+* Needed variables
+* --------------------
+* {ratingClass}		-	tilt / normal
+* {ratingName}		-	Name of the ratinglink
+* {ratingobject}	- 	Domain object: ratingabject
+* {barimage}		-	ratingbar / noratingbar
+* {calculatedRate}	-	style definition for current rating in percent
+* {ajaxSelections}	-	associative array of possible ratingsteps consisting of
+*						[order of ratingstep]
+*							['step'] 		- Domain object: stepconf
+*							['ajaxvalue']	- JSON encoded value to handle AJAX request
+******************************************************************************************
+-->

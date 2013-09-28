@@ -1,0 +1,24 @@
+<div id="tx-thrating-pi1-singleton">
+	<input type="image" id="dummy4focus" style="position:fixed; left:-5000px; width:0; height:0; float:left" src='' readonly />
+	<f:form method="post" controller="Vote" action="create" name="vote" id="vote" object="{vote}" pageType="1349058974">
+		<f:form.hidden property="vote"></f:form.hidden>
+		<f:form.hidden property="voter"></f:form.hidden>
+		<f:form.hidden property="rating"></f:form.hidden>
+		<f:form.hidden name="settings" value="filled_by_JS"></f:form.hidden>
+		<f:form.hidden name="ajaxRef" value="filled_by_JS"></f:form.hidden>
+	</f:form>
+	<div class='tx-thrating-flash-message'>
+		<f:flashMessages renderMode="div" />
+	</div>
+</div>
+<!--
+******************************************************************************************
+* Forwarded variables
+* --------------------
+* ==> all variables used in defaultLayout
+*
+* This content is only a placeholder to pass AJAX requests to the server.
+* The generated form field will be filled dynamically by javascript depending on the
+* JSON value in {ajaxSelections}[ratingstep]['ajaxvalue'].
+******************************************************************************************
+-->
