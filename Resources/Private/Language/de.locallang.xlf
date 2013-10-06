@@ -3,6 +3,18 @@
 	<file source-language="en" datatype="plaintext" original="messages" date="2013-03-01T17:33:10Z" product-name="th_rating">
 		<header/>
 		<body>
+			<trans-unit id="stepnames.bad" xml:space="preserve" approved="yes">
+				<source>Bad</source>
+			<target state="translated">Schlecht</target></trans-unit>
+			<trans-unit id="stepnames.better" xml:space="preserve" approved="yes">
+				<source>Better</source>
+			<target state="translated">Besser</target></trans-unit>
+			<trans-unit id="stepnames.good" xml:space="preserve" approved="yes">
+				<source>Good</source>
+			<target state="translated">Gut</target></trans-unit>
+			<trans-unit id="stepnames.best" xml:space="preserve" approved="yes">
+				<source>Best</source>
+			<target state="translated">Beste</target></trans-unit>
 			<trans-unit id="flexform.sheet_general" xml:space="preserve" approved="yes">
 				<source>General</source>
 			<target state="translated">Basis</target></trans-unit>

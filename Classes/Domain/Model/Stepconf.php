@@ -207,7 +207,13 @@ class Tx_ThRating_Domain_Model_Stepconf extends Tx_Extbase_DomainObject_Abstract
 	 */
 	public function getStepname() {
 		$value = $this->stepname;
-		empty($value) && $value = strval($this->stepweight);
+		if ( strtoupper(substr($value, 0, 4)) == 'LLL:' ) {
+			$value = 'stepnames.'.substr($value, 4);
+			$value = Tx_Extbase_Utility_Localization::translate($value, 'ThRating');
+		}
+		if ( empty($value) ) {
+			$value = strval($this->steporder);
+		}
 		return $value;
 	}
 	
@@ -263,8 +269,7 @@ class Tx_ThRating_Domain_Model_Stepconf extends Tx_Extbase_DomainObject_Abstract
 	 * @return string
 	 */
 	public function __toString() {
-		$result = ($this->stepname ? $this->stepname : strval($this->steporder));
-		return ($result);
+		return ($this->getStepname());
 	}	
 }
 ?>

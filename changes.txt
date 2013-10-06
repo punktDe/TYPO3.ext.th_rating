@@ -1,7 +1,1 @@
-* new feature supporting votings similar FB and G+
-* ratinglink action: reworked layout, template and partials
-* provide more flexibility in configuring graphical ratings (section: ratings)
-* now handling the whole extension setting array in AJAX requests
-* renamed defaultLayout.html to DefaultLayout.html
-* dropped setting cookieProtection
-* Bugfix: Corrections in locallang of TCA - labels in BE are shown again 
+* stepnames handled by localization via XLF when starting with 'LLL:'
