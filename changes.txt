@@ -1,2 +1,2 @@
-* backport from version 0.8.4
-* new suggestion on extension xliff
+* stepnames handled by localization via XLF when starting with 'LLL:'
+* bugfix in fluid for likesMode

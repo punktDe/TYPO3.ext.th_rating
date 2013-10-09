@@ -147,7 +147,7 @@ plugin.tx_thrating {
 				barimage = 0
 				tilt = 0
 				settings {
-					showNoFEUser = 1
+					showNoFEUser = 0
 					showNotRated = 0
 					#mapAnonymous = 0
 					cookieLifetime = 365

@@ -18,7 +18,7 @@
 				</f:else></f:if>
 				<br/>
 			</f:then></f:if>
-			<f:if condition="{settings.fluid.likesMode}"><f:then>
+			<f:if condition="{settings.fluid.templates.ratinglinks.likesMode}"><f:then>
 			</f:then><f:else>
 				<f:if condition="{voting}"><f:then>
 					<f:render partial="usersRating" arguments="{voting:voting, ratingClass:ratingClass, ratingobject:ratingobject, ratingName:ratingName, stepCount:stepCount, usersRate:usersRate}"/>

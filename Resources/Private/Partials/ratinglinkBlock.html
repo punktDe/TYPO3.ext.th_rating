@@ -2,11 +2,15 @@
 <f:if condition="{ratingName}"><f:then>
 	<div name='tx-thrating-ratinglinks'>
 		<ul class='thRating thRating-{ratingClass} thRating-RObj{ratingobject.uid}-{ratingName}'>
+			<f:if condition="{settings.fluid.templates.ratinglinks.likesMode}">
+			<f:then><!-- display no current rating if in likesMode --></f:then>
+			<f:else>
 			<f:if condition="{calculatedRate}"><f:then>
 			<li class='current-rating {barimage}' style="{f:if(condition: '{0: ratingClass} == {0: \'tilt\'}', then: 'height:{calculatedRate}', else: 'width:{calculatedRate}')}" title="<f:translate key='fluid.template.ratinglinks.currentRating' default='fluid.template.ratinglinks.currentRating' arguments='{1:currentRates, 2:stepCount}'/>">
 				<f:translate key='fluid.template.ratinglinks.currentRating' default='fluid.template.ratinglinks.currentRating' arguments='{1:currentRates, 2:stepCount}'/>
 			</li>
 			</f:then></f:if>
+			</f:else></f:if>
 			<!-- Only generate links if a  FE user is logged on -->
 			<f:if condition="{ajaxSelections}"><f:then>
 				<f:for each="{ajaxSelections}" as="ajaxSelection">
