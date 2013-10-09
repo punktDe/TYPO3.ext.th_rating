@@ -1,1 +1,2 @@
 * stepnames handled by localization via XLF when starting with 'LLL:'
+* bugfix in fluid for likesMode
