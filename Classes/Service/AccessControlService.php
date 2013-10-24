@@ -80,7 +80,7 @@ class Tx_ThRating_Service_AccessControlService implements t3lib_Singleton {
 	public function getFrontendUser($voter = null) {
 		//set userobject
 		if (!$voter instanceof Tx_Extbase_Domain_Model_FrontendUser) {
-			$frontendUserRepository = t3lib_div::makeInstance('Tx_Extbase_Domain_Repository_FrontendUserRepository');
+			$frontendUserRepository = Tx_ThRating_Service_ObjectFactoryService::getObject('Tx_Extbase_Domain_Repository_FrontendUserRepository');
 			//TODO Errorhandling if no user is logged in
 			if (!is_integer(intval($voter)) || intval($voter) == 0) {
 				//get logged in fe-user
@@ -101,7 +101,7 @@ class Tx_ThRating_Service_AccessControlService implements t3lib_Singleton {
 	public function getFrontendVoter($voter = null) {
 		//set userobject
 		if (!$voter instanceof Tx_ThRating_Domain_Model_Voter) {
-			$frontendUserRepository = t3lib_div::makeInstance('Tx_ThRating_Domain_Repository_VoterRepository');
+			$frontendUserRepository = Tx_ThRating_Service_ObjectFactoryService::getObject('Tx_ThRating_Domain_Repository_VoterRepository');
 			//TODO Errorhandling if no user is logged in
 			if (!is_integer(intval($voter)) || intval($voter) == 0) {
 				//get logged in fe-user

@@ -37,7 +37,7 @@ class Tx_ThRating_Service_ObjectFactoryService implements t3lib_Singleton {
 	 * @return	array
 	 */
 	private function completeConfigurationSettings( array $settings ) {
-		$configurationManager = t3lib_div::makeInstance('Tx_Extbase_Configuration_ConfigurationManager');
+		$configurationManager = self::getObject('Tx_Extbase_Configuration_ConfigurationManager');
 		$cObj = $configurationManager->getContentObject();
 		$currentRecord = array();
 		if ( isset($cObj->currentRecord) ) {
@@ -55,7 +55,6 @@ class Tx_ThRating_Service_ObjectFactoryService implements t3lib_Singleton {
 		if (empty($settings['ratedobjectuid'])) {
 			$settings['ratedobjectuid'] = $currentRecord[1];
 		}
-		//t3lib_utility_Debug::debug($settings,'completeConfigurationSettings');		
 		return $settings;
 	}
 
@@ -66,7 +65,7 @@ class Tx_ThRating_Service_ObjectFactoryService implements t3lib_Singleton {
 	 * @return	Tx_ThRating_Domain_Model_Ratingobject
 	 */
 	static function getRatingobject( array $settings ) {
-		$ratingobjectRepository = t3lib_div::makeInstance('Tx_ThRating_Domain_Repository_RatingobjectRepository');
+		$ratingobjectRepository = self::getObject('Tx_ThRating_Domain_Repository_RatingobjectRepository');
 
 		//check whether a dedicated ratingobject is configured
 		if ( !empty($settings['ratingobject']) ) {
@@ -134,8 +133,8 @@ class Tx_ThRating_Service_ObjectFactoryService implements t3lib_Singleton {
 	 */
 	static function getRating( array $settings,	Tx_ThRating_Domain_Model_Ratingobject	$ratingobject = NULL ) {
 		$settings = self::completeConfigurationSettings( $settings );		
-		$ratingobjectValidator = t3lib_div::makeInstance('Tx_ThRating_Domain_Validator_RatingobjectValidator');
-		$ratingRepository = t3lib_div::makeInstance('Tx_ThRating_Domain_Repository_RatingRepository');
+		$ratingobjectValidator = self::getObject('Tx_ThRating_Domain_Validator_RatingobjectValidator');
+		$ratingRepository = self::getObject('Tx_ThRating_Domain_Repository_RatingRepository');
 
 		if ( !empty($settings['rating']) ) {
 			//fetch rating when it is configured
@@ -156,11 +155,11 @@ class Tx_ThRating_Service_ObjectFactoryService implements t3lib_Singleton {
 	 * @return	Tx_ThRating_Domain_Model_Vote
 	 */
 	static function getVote( $prefixId, array $settings,	Tx_ThRating_Domain_Model_Rating	$rating ) {
-		$voteRepository = t3lib_div::makeInstance('Tx_ThRating_Domain_Repository_VoteRepository');
-		$voteValidator = t3lib_div::makeInstance('Tx_ThRating_Domain_Validator_VoteValidator');
+		$voteRepository = self::getObject('Tx_ThRating_Domain_Repository_VoteRepository');
+		$voteValidator = self::getObject('Tx_ThRating_Domain_Validator_VoteValidator');
 
 		//first fetch real voter or anonymous
-		$accessControllService = t3lib_div::makeInstance( 'Tx_ThRating_Service_AccessControlService' );
+		$accessControllService = self::getObject('Tx_ThRating_Service_AccessControlService' );
 		$frontendUserUid = $accessControllService->getFrontendUserUid();
 		if ( !empty($settings['mapAnonymous']) && !$frontendUserUid ) {
 			//set anonymous vote
@@ -182,7 +181,7 @@ class Tx_ThRating_Service_ObjectFactoryService implements t3lib_Singleton {
 		//voting not found in database or anonymous vote? - create new one
 		if ( !$voteValidator->isValid($vote) ) {
 			$vote = t3lib_div::makeInstance('Tx_ThRating_Domain_Model_Vote');
-			$ratingValidator = t3lib_div::makeInstance('Tx_ThRating_Domain_Validator_RatingValidator');
+			$ratingValidator = self::getObject('Tx_ThRating_Domain_Validator_RatingValidator');
 			if ( $ratingValidator->isValid($rating) ) {
 				$vote->setRating($rating);
 			}

@@ -102,11 +102,6 @@ class Tx_ThRating_Domain_Model_Ratingobject extends Tx_Extbase_DomainObject_Abst
 	 */
 	 public function initializeObject() {
 		parent::initializeObject();
-		// get an ObjectManager first
-		$objectManager = t3lib_div::makeInstance('Tx_Extbase_Object_ObjectManager');
-		// get persistence manager
-		$this->ratings = $objectManager->get('Tx_Extbase_Persistence_ObjectStorage');
-		$this->stepconfs = $objectManager->get('Tx_Extbase_Persistence_ObjectStorage');
 	 }
 
 	/**

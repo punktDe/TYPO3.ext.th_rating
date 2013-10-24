@@ -20,8 +20,7 @@ class Tx_ThRating_ViewHelpers_RatingViewHelper extends Tx_Fluid_ViewHelpers_CObj
 			$this->simulateFrontendEnvironment();
 		}
 
-		$configurationManager = t3lib_div::makeInstance('Tx_Extbase_Configuration_ConfigurationManager');
-		$cObj = $configurationManager->getContentObject();
+		$cObj = Tx_ThRating_Service_ObjectFactoryService::getObject('Tx_Extbase_Configuration_ConfigurationManager')->getContentObject();
 		$cObj->start($data);
 
 		$pathSegments = t3lib_div::trimExplode('.', $typoscriptObjectPath);

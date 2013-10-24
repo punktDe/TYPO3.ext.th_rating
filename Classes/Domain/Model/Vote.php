@@ -85,8 +85,7 @@ class Tx_ThRating_Domain_Model_Vote extends Tx_Extbase_DomainObject_AbstractEnti
 	 */
 	 public function initializeObject() {
 		parent::initializeObject();
-		$configurationManager = t3lib_div::makeInstance( 'Tx_Extbase_Configuration_ConfigurationManager');
-		$this->settings = $configurationManager->getConfiguration('Settings', 'thRating', 'pi1');
+		$this->settings = Tx_ThRating_Service_ObjectFactoryService::getObject('Tx_Extbase_Configuration_ConfigurationManager')->getConfiguration('Settings', 'thRating', 'pi1');
 	 }
 	 
 

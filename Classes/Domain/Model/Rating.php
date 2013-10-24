@@ -98,13 +98,7 @@ class Tx_ThRating_Domain_Model_Rating extends Tx_Extbase_DomainObject_AbstractEn
 	 */
 	 public function initializeObject() {
 		parent::initializeObject();
-		// get an ObjectManager first
-		$objectManager = t3lib_div::makeInstance('Tx_Extbase_Object_ObjectManager');
-		// get persistence manager
-		$this->votes = $objectManager->get('Tx_Extbase_Persistence_ObjectStorage');
-		$configurationManager = $objectManager->get('Tx_Extbase_Configuration_ConfigurationManager');
-		
-		$this->settings = $configurationManager->getConfiguration('Settings', 'thRating', 'pi1');
+		$this->settings = Tx_ThRating_Service_ObjectFactoryService::getObject('Tx_Extbase_Configuration_ConfigurationManager')->getConfiguration('Settings', 'thRating', 'pi1');
 	 }
 	 
 	/**
@@ -158,8 +152,10 @@ class Tx_ThRating_Domain_Model_Rating extends Tx_Extbase_DomainObject_AbstractEn
 	public function addVote(Tx_ThRating_Domain_Model_Vote $vote) {
 		$this->votes->attach($vote);
 		$this->addCurrentrate($vote);
-		$persistenceManager = t3lib_div::makeInstance('Tx_Extbase_Persistence_Manager');
-		$persistenceManager->persistAll();
+		If ( t3lib_utility_VersionNumber::convertVersionNumberToInteger(TYPO3_version) >= 6001000 ) {
+			Tx_ThRating_Service_ObjectFactoryService::getObject('Tx_ThRating_Domain_Repository_RatingRepository')->update($this);
+		}
+		Tx_ThRating_Service_ObjectFactoryService::getObject('Tx_Extbase_Persistence_Manager')->persistAll();
 	}
 
 	/**
@@ -197,7 +193,7 @@ class Tx_ThRating_Domain_Model_Rating extends Tx_Extbase_DomainObject_AbstractEn
 	 * @return void
 	 */
 	public function checkCurrentrates() {
-		$voteRepository = t3lib_div::makeInstance('Tx_ThRating_Domain_Repository_VoteRepository');
+		$voteRepository = Tx_ThRating_Service_ObjectFactoryService::getObject('Tx_ThRating_Domain_Repository_VoteRepository');
 		foreach ( $this->getRatingobject()->getStepconfs() as $stepConf ) {
 			$stepOrder = $stepConf->getSteporder();
 			$voteCount = $voteRepository->countByMatchingRatingAndVote($this, $stepConf);
