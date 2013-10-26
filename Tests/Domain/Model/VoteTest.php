@@ -39,7 +39,7 @@ class VoteTest extends Tx_Extbase_BaseTestCase {
 	 * @test
 	 */
 	public function anInstanceOfTheVoteCanBeConstructed() {
-		$ratingobject = t3lib_div::makeInstance('Tx_ThRating_Domain_Model_Ratingobject','tt_news','uid');
+		$ratingobject = t3lib_div::makeInstance('Tx_ThRating_Domain_Model_Ratingobject', 'tt_news', 'uid');
 		$rating = t3lib_div::makeInstance('Tx_ThRating_Domain_Model_Rating',$ratingobject,3);
 		$step = t3lib_div::makeInstance('Tx_ThRating_Domain_Model_Stepconf',$ratingobject,1);
 		$feU = t3lib_div::makeInstance('Tx_Extbase_Domain_Repository_FrontendUserRepository');

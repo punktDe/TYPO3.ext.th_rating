@@ -39,7 +39,7 @@ class RatingTest extends Tx_Extbase_BaseTestCase {
 	 * @test
 	 */
 	public function anInstanceOfTheRatingCanBeConstructed() {
-		$ratingobject = t3lib_div::makeInstance('Tx_ThRating_Domain_Model_Ratingobject','tt_news','uid');
+		$ratingobject = t3lib_div::makeInstance('Tx_ThRating_Domain_Model_Ratingobject', 'tt_news', 'uid');
 		$rating = t3lib_div::makeInstance('Tx_ThRating_Domain_Model_Rating',$ratingobject,1);
 		$this->assertEquals($ratingobject,$rating->getRatingobject());
 		$this->assertEquals(1,$rating->getRatedobjectuid());
@@ -50,7 +50,7 @@ class RatingTest extends Tx_Extbase_BaseTestCase {
 	 * @test
 	 */
 	public function theVotesAreInitializedAsEmptyObjectStorage() {
-		$ratingobject = t3lib_div::makeInstance('Tx_ThRating_Domain_Model_Ratingobject','tt_news','uid');
+		$ratingobject = t3lib_div::makeInstance('Tx_ThRating_Domain_Model_Ratingobject', 'tt_news', 'uid');
 		$rating = t3lib_div::makeInstance('Tx_ThRating_Domain_Model_Rating',$ratingobject,1);
 		$this->assertEquals('Tx_Extbase_Persistence_ObjectStorage',get_class($rating->getVotes()));
 		$this->assertEquals(0,count($rating->getVotes()));
@@ -61,7 +61,7 @@ class RatingTest extends Tx_Extbase_BaseTestCase {
 	 * @test
 	 */
 	public function aVoteCanBeAdded() {
-		$ratingobject = t3lib_div::makeInstance('Tx_ThRating_Domain_Model_Ratingobject','tt_news','uid');
+		$ratingobject = t3lib_div::makeInstance('Tx_ThRating_Domain_Model_Ratingobject', 'tt_news', 'uid');
 		$rating = t3lib_div::makeInstance('Tx_ThRating_Domain_Model_Rating',$ratingobject,1);
 		//$vote = $this->getMock('Tx_ThRating_Domain_Model_Vote');
 		$vote = t3lib_div::makeInstance('Tx_ThRating_Domain_Model_Vote');
