@@ -18,12 +18,12 @@ CREATE TABLE tx_thrating_domain_model_ratingobject (
 
 	PRIMARY KEY (uid),
 	KEY parent (pid),
-	INDEX objcheck (ratetable)
+	INDEX tx_thrating_domain_model_ratingobject_i1 (ratetable,ratefield)
 );
 
 
 #
-# Table structure for table 'tx_thrating_domain_model_config'
+# Table structure for table 'tx_thrating_domain_model_stepconf'
 #
 CREATE TABLE tx_thrating_domain_model_stepconf (
 	uid int(11) unsigned DEFAULT '0' NOT NULL auto_increment,

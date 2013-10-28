@@ -1,2 +1,3 @@
-* stepnames handled by localization via XLF when starting with 'LLL:'
-* bugfix in fluid for likesMode
+* Bugfix #53152: Missing closing </div> in DefaultLayout.html (http://forge.typo3.org/issues/53152) 
+* Bugfix #53181: Current ratings are not displayed correctly in T3 6.1
+
