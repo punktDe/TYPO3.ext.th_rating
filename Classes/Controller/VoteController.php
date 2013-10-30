@@ -148,7 +148,6 @@ class Tx_ThRating_Controller_VoteController extends Tx_Extbase_MVC_Controller_Ac
 		//Set default storage pids to SITEROOT
 		$this->setStoragePids();
 
-		//$this->defaultQuerySettings = $this->objectManager->create('Tx_Extbase_Persistence_Typo3QuerySettings');
 		//Tx_Extbase_Utility_Debugger::var_dump($this->settings,'settings');
 
 		$frameworkConfiguration = $this->configurationManager->getConfiguration(Tx_Extbase_Configuration_ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
@@ -162,6 +161,7 @@ class Tx_ThRating_Controller_VoteController extends Tx_Extbase_MVC_Controller_Ac
 			$this->ajaxSelections['ajaxRef'] = $this->prefixId.'_'.$this->getRandomId();
 		}
 		$this->setFrameworkConfiguration($frameworkConfiguration);
+		$this->settings['ratingConfigurations'] = t3lib_div::array_merge_recursive_overrule($this->settings['ratingConfigurations'], $frameworkConfiguration['ratings']);
 	}
 
 
@@ -330,63 +330,64 @@ class Tx_ThRating_Controller_VoteController extends Tx_Extbase_MVC_Controller_Ac
 	//http://localhost:8503/index.php?id=71&tx_thrating_pi1[controller]=Vote&tx_thrating_pi1[action]=ratinglinks
 	public function ratinglinksAction(	Tx_ThRating_Domain_Model_Vote	$vote = NULL) {
 		//set display configuration
-		if ( !empty($this->settings['display']) ) {
-			$this->ratingName = $this->settings['display'];
+		if ( !empty($this->settings['display'] ) ) {
+			if ( isset($this->settings['ratingConfigurations'][$this->settings['display']]) ) {
+				$this->ratingName = $this->settings['display'];
+			} else {
+				//switch back to default if given display configuration does not exist
+				$this->ratingName = $this->settings['ratingConfigurations']['default'];
+				$this->flashMessageContainer->add(	Tx_Extbase_Utility_Localization::translate('flash.vote.ratinglinks.wrongDisplayConfig', 'ThRating'), 
+													Tx_Extbase_Utility_Localization::translate('flash.heading.error', 'ThRating'),
+													t3lib_FlashMessage::ERROR);		
+			}
 		} else {
 			//choose default ratingConfiguration if nothing is defined
 			$this->ratingName = $this->settings['ratingConfigurations']['default'];
 		}
 		$ratingConfiguration = $this->settings['ratingConfigurations'][$this->ratingName];
-
-		//first check if given ratingConfiguration exists
-		if ( isset($ratingConfiguration) ) {
-			$frameworkConfiguration = $this->configurationManager->getConfiguration(Tx_Extbase_Configuration_ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
-			//override extension settings with rating configuration settings
-			if ( is_array($ratingConfiguration['settings']) ) {
-				unset($ratingConfiguration['settings']['defaultObject']);
-				unset($ratingConfiguration['settings']['ratingConfigurations']);
-				$this->settings = t3lib_div::array_merge_recursive_overrule($this->settings, $ratingConfiguration['settings']);
-			}
-			//override fluid settings with rating fluid settings
-			if (is_array($ratingConfiguration['fluid'])) {
-				$this->settings['fluid'] = t3lib_div::array_merge_recursive_overrule($this->settings['fluid'], $ratingConfiguration['fluid']);
-			}
-			$frameworkConfiguration['settings'] = $this->settings;
-			$this->setFrameworkConfiguration($frameworkConfiguration);
-			$this->view->assign('barimage', 'noratingbar');
-			if ( $ratingConfiguration['tilt']) {
-				$ratingClass = 'tilt';
-				if ( $ratingConfiguration['barimage']) {
-					$this->view->assign('barimage', 'ratingbar');
-				}
-				
-			} else {
-				$ratingClass = 'normal';
-			}
-
-			$this->initVoting( $vote );
-			
-			if ( $this->ratingValidator->isValid($this->vote->getRating()) ) {
-				$calculatedRate = $this->vote->getRating()->getCalculatedRate().'%';
-				$this->view->assign('calculatedRate', $calculatedRate);
-			}
-			$this->view->assign('ratingName', $this->ratingName);
-			$this->view->assign('ratingClass', $ratingClass);
-			//is_object($this->vote->getVoter()) && Tx_Extbase_Utility_Debugger::var_dump($this->vote->hasAnonymousVote($this->prefixId),'isAnonymous');
-			if ( 	(!$this->vote->hasRated() && !$this->vote->isAnonymous() && $this->accessControllService->isLoggedIn($this->vote->getVoter())) ||
-					(	($this->vote->isAnonymous() && !$this->accessControllService->isLoggedIn($this->vote->getVoter())) && ((!$this->vote->hasAnonymousVote($this->prefixId) && $this->cookieProtection && !$this->request->hasArgument('settings')) || !$this->cookieProtection)
-					) 
-				) {
-				//if user hasn´t voted yet then include ratinglinks
-				$this->view->assign('ajaxSelections', $this->ajaxSelections['steporder']);
-			}
-			$this->fillSummaryView();
-		} else {
-			$this->flashMessageContainer->add(	Tx_Extbase_Utility_Localization::translate('flash.vote.ratinglinks.wrongDisplayConfig', 'ThRating'), 
-												Tx_Extbase_Utility_Localization::translate('flash.heading.error', 'ThRating'),
-												t3lib_FlashMessage::ERROR);
-		}
 		
+		//override extension settings with rating configuration settings
+		if ( is_array($ratingConfiguration['settings']) ) {
+			unset($ratingConfiguration['settings']['defaultObject']);
+			unset($ratingConfiguration['settings']['ratingConfigurations']);
+			$this->settings = t3lib_div::array_merge_recursive_overrule($this->settings, $ratingConfiguration['settings']);
+		}
+		//override fluid settings with rating fluid settings
+		if (is_array($ratingConfiguration['fluid'])) {
+			$this->settings['fluid'] = t3lib_div::array_merge_recursive_overrule($this->settings['fluid'], $ratingConfiguration['fluid']);
+		}
+		$frameworkConfiguration = $this->configurationManager->getConfiguration(Tx_Extbase_Configuration_ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
+		$frameworkConfiguration['settings'] = $this->settings;
+		$this->setFrameworkConfiguration($frameworkConfiguration);
+		$this->view->assign('barimage', 'noratingbar');
+		if ( $ratingConfiguration['tilt']) {
+			$ratingClass = 'tilt';
+			if ( $ratingConfiguration['barimage']) {
+				$this->view->assign('barimage', 'ratingbar');
+			}
+			
+		} else {
+			$ratingClass = 'normal';
+		}
+
+		$this->initVoting( $vote );
+		
+		if ( $this->ratingValidator->isValid($this->vote->getRating()) ) {
+			$calculatedRate = $this->vote->getRating()->getCalculatedRate().'%';
+			$this->view->assign('calculatedRate', $calculatedRate);
+		}
+		$this->view->assign('ratingName', $this->ratingName);
+		$this->view->assign('ratingClass', $ratingClass);
+		//is_object($this->vote->getVoter()) && Tx_Extbase_Utility_Debugger::var_dump($this->vote->hasAnonymousVote($this->prefixId),'isAnonymous');
+		if ( 	(!$this->vote->hasRated() && !$this->vote->isAnonymous() && $this->accessControllService->isLoggedIn($this->vote->getVoter())) ||
+				(	($this->vote->isAnonymous() && !$this->accessControllService->isLoggedIn($this->vote->getVoter())) && 
+					((!$this->vote->hasAnonymousVote($this->prefixId) && $this->cookieProtection && !$this->request->hasArgument('settings')) || !$this->cookieProtection)
+				) 
+			) {
+			//if user hasn´t voted yet then include ratinglinks
+			$this->view->assign('ajaxSelections', $this->ajaxSelections['steporder']);
+		}
+		$this->fillSummaryView();
 		$this->initSignalSlotDispatcher( 'afterRatinglinkAction' );
 	}
 
@@ -585,8 +586,7 @@ class Tx_ThRating_Controller_VoteController extends Tx_Extbase_MVC_Controller_Ac
 		$siteRoot = $siteRootPids['_SITEROOT'];
 		$storagePid = $siteRootPids['_STORAGE_PID'];
 		$frameworkConfiguration = $this->configurationManager->getConfiguration(Tx_Extbase_Configuration_ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
-		//t3lib_utility_Debug::debug($frameworkConfiguration,'frameworkConfiguration');		
-		//$storagePids = explode(',',$frameworkConfiguration['persistence']['storagePid']);
+		//t3lib_utility_Debug::debug($frameworkConfiguration,'frameworkConfiguration');
 		$storagePids = Tx_Extbase_Utility_Arrays::integerExplode(',', $frameworkConfiguration['persistence']['storagePid'], TRUE);
 		foreach ($storagePids as $i => $value) {
 			if ( !is_null($value) && (empty($value) || $value==$siteRoot) ) {
