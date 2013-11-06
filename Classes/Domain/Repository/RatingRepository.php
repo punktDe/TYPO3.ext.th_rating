@@ -32,7 +32,7 @@ class Tx_ThRating_Domain_Repository_RatingRepository extends Tx_Extbase_Persiste
 	 * Defines name for function parameter
 	 *
 	 */
-	const addIfNotFound = true;
+	const addIfNotFound = TRUE;
 
 	/**
 	 * Finds the specific rating by giving the object and row uid
@@ -44,7 +44,7 @@ class Tx_ThRating_Domain_Repository_RatingRepository extends Tx_Extbase_Persiste
 	 * @validate	$ratedobjectuid NumberRange(startRange = 1)
 	 * @return Tx_ThRating_Domain_Model_Rating 		The rating
 	 */
-	public function findMatchingObjectAndUid($ratingobject, $ratedobjectuid, $addIfNotFound = false ) {
+	public function findMatchingObjectAndUid($ratingobject, $ratedobjectuid, $addIfNotFound = FALSE ) {
 		$query = $this->createQuery();
 		$query	->matching(
 						$query->logicalAnd(
@@ -63,7 +63,7 @@ class Tx_ThRating_Domain_Repository_RatingRepository extends Tx_Extbase_Persiste
 				$foundRow->setRatedobjectuid($ratedobjectuid);	
 				$validator = $this->objectManager->create('Tx_ThRating_Domain_Validator_RatingValidator');
 				$validator->isValid($foundRow) && $this->add($foundRow);
-				$this->persistenceManager->persistAll();
+				Tx_ThRating_Utility_ExtensionManagementUtility::persistRepository('Tx_ThRating_Domain_Repository_RatingRepository', $foundRow);	
 				$foundRow = $this->findMatchingObjectAndUid($ratingobject, $ratedobjectuid);
 			} else {
 				unset($foundRow);

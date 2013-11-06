@@ -21,7 +21,7 @@
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
-include_once( PATH_typo3conf . '/ext/th_rating/Resources/Public/Classes/BE.userFunc.php');
+include_once( PATH_typo3conf . '/ext/th_rating/Resources/Private/PHP/BE.userFunc.php');
 
 /**
  * Factory for model objects
@@ -34,14 +34,34 @@ class Tx_ThRating_Utility_ExtensionManagementUtility implements t3lib_Singleton 
 	/**
 	 * Set a new properties for a stepconf
 	 * 
+	 * @param	string	$repository
 	 * @param	Tx_Extbase_DomainObject_AbstractEntity	$objectToPersist
 	 * @return	void
-	 */
-	public function persistObjectIfDirty( Tx_Extbase_DomainObject_AbstractEntity $objectToPersist ) {
+	 *
+	public function persistObjectIfDirty( $repository, Tx_Extbase_DomainObject_AbstractEntity $objectToPersist ) {
 		If ( $objectToPersist->_isDirty() ) {
-			Tx_ThRating_Service_ObjectFactoryService::getObject('Tx_Extbase_Persistence_ManagerInterface')->persistAll();
-			user_BEfunc::clearCachePostProc(NULL,NULL,NULL);  //Delete the file 'typo3temp/thratingDyn.css'
+			self::persistRepository($repository, $objectToPersist);
 		}
+	}*/
+
+	/**
+	 * Update and persist attached objects to the repository
+	 *
+	 * @param	string	$repository
+	 * @param	Tx_Extbase_DomainObject_AbstractEntity	$objectToPersist
+	 * @return void
+	 */
+	public function persistRepository( $repository, Tx_Extbase_DomainObject_AbstractEntity $objectToPersist ) {
+		If ( t3lib_utility_VersionNumber::convertVersionNumberToInteger(TYPO3_version) >= 6001000 ) {
+			$objectUid=$objectToPersist->getUid();
+			If (empty($objectUid)) {
+				Tx_ThRating_Service_ObjectFactoryService::getObject($repository)->add($objectToPersist);
+			} else {
+				Tx_ThRating_Service_ObjectFactoryService::getObject($repository)->update($objectToPersist);
+			}
+		}
+		Tx_ThRating_Service_ObjectFactoryService::getObject('Tx_Extbase_Persistence_Manager')->persistAll();
+		user_BEfunc::clearCachePostProc(NULL, NULL, NULL);  //Delete the file 'typo3temp/thratingDyn.css'
 	}
 
 
@@ -55,54 +75,51 @@ class Tx_ThRating_Utility_ExtensionManagementUtility implements t3lib_Singleton 
 	 */
 	static function makeRatable( $tablename, $fieldname, $stepcount ) {
 		$ratingobject = Tx_ThRating_Service_ObjectFactoryService::getRatingobject( array('ratetable'=>$tablename, 'ratefield'=>$fieldname) );
-
-		//create a new default stepconf for each step
+		
+		//create a new default stepconf having stepweight 1 for each step
 		for ( $i=1; $i<=$stepcount; $i++) {
 			$stepconfArray = array(
 				'ratingobject' 	=> $ratingobject,
 				'steporder'		=> $i,
-				'stepweight'	=> 1,
-				'stepname'		=> 'Auto generated step '.$i,
-				'_languageUid'	=> 0 );
+				'stepweight'	=> 1 );
 			$stepconf = Tx_ThRating_Service_ObjectFactoryService::createStepconf($stepconfArray);
 			$ratingobject->addStepconf($stepconf);
 		}
-		self::persistObjectIfDirty($ratingobject);
+		//self::persistRepository('Tx_ThRating_Domain_Repository_RatingobjectRepository', $ratingobject);	
 		return $ratingobject;
 	}			
 
-	
 	/**
-	 * Set new properties for a stepconf
+	 * Prepares an object for ratings
 	 * 
 	 * @param	Tx_ThRating_Domain_Model_Stepconf	$stepconf
+	 * @param	string	$stepname
+	 * @param	int		$languageIso2Code
+	 * @param	bool	$allStepconfs	Take stepname for all steps and add steporder number at the end
 	 * @return	void
 	 */
-	static function updateStepconf( Tx_ThRating_Domain_Model_Stepconf $stepconf ) {
-		If ( Tx_ThRating_Service_ObjectFactoryService::createObject('Tx_ThRating_Domain_Validator_StepconfValidator')->isValid( $stepconf ) ) {
-			//first check if a stepconf for default language exists
-			$stepconfRepository = Tx_ThRating_Service_ObjectFactoryService::getObject('Tx_ThRating_Domain_Repository_StepconfRepository');
-			$defaultLanguageStepconf = $stepconfRepository->findDefaultStepconf($stepconf->getRatingobject(), $stepconf->getSteporder());
-			$stepconfLanguage = $stepconf->get_languageUid();
-			If ( $defaultLanguageStepconf instanceOf Tx_ThRating_Domain_Model_Stepconf && !empty($stepconfLanguage) ) {
-				//connect stepconf to defaults language parent entry
-				$stepconf->setL18nParent($defaultLanguageStepconf->getUid());
-			} else {
-				//set entry to language default
-				$stepconf->setL18nParent(0);
+	static function setStepname( Tx_ThRating_Domain_Model_Stepconf $stepconf, $stepname, $languageIso2Code=0, $allStepconfs=FALSE ) {
+		if ( !$allStepconfs ) {
+			//only add the one specific stepname
+			$stepnameArray = array(
+				'stepname'	=> $stepname,
+				'languageIso2Code'	=> $languageIso2Code );
+			$stepname = Tx_ThRating_Service_ObjectFactoryService::createStepname($stepnameArray);
+			$stepConf->addStepname($stepname);
+			//self::persistRepository('Tx_ThRating_Domain_Repository_StepconfRepository', $stepConf);	
+		} else {
+			$ratingobject = $stepconf->getRatingobject();
+			//add stepnames to every stepconf
+			foreach ( $ratingobject->getStepconfs() as $i => $loopStepConf ) {
+				$stepnameArray = array(
+					'stepname'	=> $stepname.$loopStepConf->getSteporder(),
+					'languageIso2Code'	=> $languageIso2Code );
+				$stepnameObject = Tx_ThRating_Service_ObjectFactoryService::createStepname($stepnameArray);
+				$loopStepConf->addStepname($stepnameObject);
 			}
-			
-			//second check if there is an existing localized stepconf entry
-			$oldStepconfObject = $stepconfRepository->findStepconfObject($stepconf);
-			If ( $oldStepconfObject ) {
-				$stepconf->setUid($oldStepconfObject->getUid());
-				$stepconfRepository->replace($oldStepconfObject, $stepconf);
-			} else {
-				//add new stepconf entry
-				$stepconf->getRatingobject()->addStepconf($stepconf);			
-			}
-			self::persistObjectIfDirty($stepconf);
+			//self::persistRepository('Tx_ThRating_Domain_Repository_RatingobjectRepository', $ratingobject);	
 		}
-	}
+		return;
+	}			
 }
 ?>

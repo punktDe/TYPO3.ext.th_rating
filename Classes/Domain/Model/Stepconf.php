@@ -33,7 +33,6 @@
  */
 class Tx_ThRating_Domain_Model_Stepconf extends Tx_Extbase_DomainObject_AbstractEntity {
 
-	//TODO Extend model with calculated ratings (number of votes, calculated rating)
 	
 	/**
 	 * @var Tx_ThRating_Domain_Model_Ratingobject	The ratingobject this rating belongs to
@@ -62,7 +61,10 @@ class Tx_ThRating_Domain_Model_Stepconf extends Tx_Extbase_DomainObject_Abstract
 	/**
 	 * The value of this config entry
 	 *
-	 * @var string Name or description to display
+	 * @var Tx_Extbase_Persistence_ObjectStorage<Tx_ThRating_Domain_Model_Stepname>
+	 * @validate Tx_ThRating_Domain_Validator_StepnameValidator
+	 * @lazy
+	 * @cascade remove
 	 */
 	protected $stepname;
 	
@@ -86,21 +88,18 @@ class Tx_ThRating_Domain_Model_Stepconf extends Tx_Extbase_DomainObject_Abstract
 	 */
 	protected $uid;
 
-	/**
-	 * Localization entry
-	 * workaround to help avoiding bug in Typo 4.7 handling localized objects
-	 *
-	 * @var int 
-	 */
-	protected $l18nParent;
 
 	/**
-	 * _languageUid
-	 * @var int
-	 * @validate NotEmpty
+	 * @var Tx_ThRating_Domain_Repository_StepnameRepository	$stepnameRepository
 	 */
-	protected $_languageUid;
- 
+	protected $stepnameRepository;
+	/**
+	 * @param Tx_ThRating_Domain_Repository_StepnameRepository $stepnameRepository
+	 * @return void
+	 */
+	public function injectStepnameRepository(Tx_ThRating_Domain_Repository_StepnameRepository $stepnameRepository) {
+		$this->stepnameRepository = $stepnameRepository;
+	}
 
 	/**
 	 * Constructs a new stepconfig object
@@ -116,9 +115,22 @@ class Tx_ThRating_Domain_Model_Stepconf extends Tx_Extbase_DomainObject_Abstract
 	 * Initializes a new stepconf object
 	 * @return void
 	 */
-	 public function initializeObject() {
+	public function initializeObject() {
 		parent::initializeObject();
-	 }
+
+		//Initialize stepname storage if stepconf is new
+		if (!is_object($this->stepname)) {
+			$this->stepname=Tx_ThRating_Service_ObjectFactoryService::getObject('Tx_Extbase_Persistence_ObjectStorage');
+		}
+		//Initialize vote storage if rating is new
+		if (!is_object($this->votes)) {
+			$this->votes=Tx_ThRating_Service_ObjectFactoryService::getObject('Tx_Extbase_Persistence_ObjectStorage');
+		}
+		//Initialize repository if injection did not occur on newly generated stepconf object
+		if (!$this->stepnameRepository instanceOf Tx_ThRating_Domain_Repository_StepnameRepository) {
+			$this->stepnameRepository = Tx_ThRating_Service_ObjectFactoryService::getObject('Tx_ThRating_Domain_Repository_StepnameRepository');
+		}
+	}
 	
 	
 	/**
@@ -186,31 +198,37 @@ class Tx_ThRating_Domain_Model_Stepconf extends Tx_Extbase_DomainObject_Abstract
 
 
 	/**
-	 * Sets the stepconfig name
-	 * 
-	 * @param string $stepname
+	 * Adds a localized stepname to this stepconf
+	 *
+	 * @param Tx_ThRating_Domain_Model_Stepname $stepname
 	 * @return void
 	 */
-	public function setStepname($stepname) {
-		$this->stepname = $stepname;
+	public function addStepname(Tx_ThRating_Domain_Model_Stepname $stepname) {
+		$stepname->setStepconf($this);
+		If (!$this->stepnameRepository->existStepname($stepname)) {
+			$defaultLanguageObject = $this->stepnameRepository->findDefaultStepname($stepname);
+			if ( is_object($defaultLanguageObject) ) {
+				//handle localization if an entry for the default language exists
+				$stepname->setL18nParent($defaultLanguageObject->getUid());
+			}
+			$this->stepname->attach($stepname);
+			Tx_ThRating_Utility_ExtensionManagementUtility::persistRepository('Tx_ThRating_Domain_Repository_StepnameRepository', $stepname);
+			Tx_ThRating_Utility_ExtensionManagementUtility::persistRepository('Tx_ThRating_Domain_Repository_StepconfRepository', $this);
+		}
 	}
-	
+
 	/**
-	 * Gets the stepconfig name
-	 * If not set stepweight is copied
+	 * Returns the localized stepname of this stepconf
 	 * 
-	 * @return string Stepconfig name
+	 * @return Tx_Extbase_Persistence_ObjectStorage<Tx_ThRating_Domain_Model_Stepname>
 	 */
 	public function getStepname() {
-		$value = $this->stepname;
-		if ( strtoupper(substr($value, 0, 4)) == 'LLL:' ) {
-			$value = 'stepnames.'.substr($value, 4);
-			$value = Tx_Extbase_Utility_Localization::translate($value, 'ThRating');
+		if ( $this->stepname->count() == 0 ) {
+			$stepname = strval($this->getSteporder());
+		} else {
+			$stepname = $this->stepname->current()->getStepname();
 		}
-		if ( empty($value) ) {
-			$value = strval($this->steporder);
-		}
-		return $value;
+		return $stepname;
 	}
 	
 	/**
@@ -219,35 +237,6 @@ class Tx_ThRating_Domain_Model_Stepconf extends Tx_Extbase_DomainObject_Abstract
 	 */
 	public function setUid($uid) {
 		$this->uid = $uid;
-	}
-
-	/**
-	 * @return int
-	 */
-	public function getL18nParent() {
-		return $this->l18nParent;
-	}
-	/**
-	 * @param int $l18n_parent
-	 * @return void
-	 */
-	public function setL18nParent($l18nParent) {
-		$this->l18nParent = $l18nParent;
-	}
-
-	/**
-	 * @param int $_languageUid
-	 * @return void
-	 */	
-	public function set_languageUid($_languageUid) {
-		$this->_languageUid = $_languageUid;
-	}
- 
-	/**
-	 * @return int
-	 */
-	public function get_languageUid() {
-		return $this->_languageUid;
 	}
 
 	/**

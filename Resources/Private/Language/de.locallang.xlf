@@ -100,8 +100,8 @@
 				<source>Ratingstep weight</source>
 			<target state="translated">Bewertung Gewichtung</target></trans-unit>
 			<trans-unit id="tca.model.stepconf.stepname" xml:space="preserve" approved="yes">
-				<source>Ratingstep name</source>
-			<target state="translated">Bewertungsname</target></trans-unit>
+				<source>Ratingstep names</source>
+			<target state="translated">Ratingstep Bezeichnungen</target></trans-unit>
 			<trans-unit id="tca.model.stepconf.votes" xml:space="preserve" approved="yes">
 				<source>Assigned votes</source>
 			<target state="translated">Bewertungen</target></trans-unit>
@@ -111,6 +111,18 @@
 			<trans-unit id="tca.model.stepconf.title" xml:space="preserve" approved="yes">
 				<source>Ratingstep configuration</source>
 			<target state="translated">Bewertungskonfiguration</target></trans-unit>
+			<trans-unit id="tca.model.stepname.title" xml:space="preserve" approved="yes">
+				<source>Ratingstep name</source>
+			<target state="translated">Ratingstep Bezeichnung</target></trans-unit>
+			<trans-unit id="tca.model.stepname.stepconf" xml:space="preserve">
+				<source>Ratingstep configuration</source>
+			</trans-unit>
+			<trans-unit id="tca.model.stepname.stepname" xml:space="preserve" approved="yes">
+				<source>Ratingstep name</source>
+			<target state="translated">Ratingstep Bezeichnung</target></trans-unit>
+			<trans-unit id="tca.model.stepname.uid" xml:space="preserve">
+				<source>Ratingstep name list</source>
+			</trans-unit>
 			<trans-unit id="tca.model.vote.rating" xml:space="preserve" approved="yes">
 				<source>Rating</source>
 			<target state="translated">Bewertetes Objekt</target></trans-unit>
@@ -144,15 +156,9 @@
 			<trans-unit id="error.validator.stepconf.invalidSteporderNumber" xml:space="preserve" approved="yes">
 				<source>Invalid number in steporder. Must be of positive integer.</source>
 			<target state="translated">Nummer bei Steporder muss positive Ganzzahl sein.</target></trans-unit>
-			<trans-unit id="error.validator.stepconf.defaultLang" xml:space="preserve" approved="yes">
-				<source>Stepconf entry for default language missing</source>
-			<target state="translated">Stepconf für Standardsprache fehlt</target></trans-unit>
 			<trans-unit id="error.validator.stepconf.maxSteporder" xml:space="preserve" approved="yes">
 				<source>Steporder too high. Maximum steporder number + 1 is allowed.</source>
 			<target state="translated">Nummer bei Steporder zu groß. Maximal höchste Steporder + 1 erlaubt.</target></trans-unit>
-			<trans-unit id="error.validator.stepconf.sysLang" xml:space="preserve" approved="yes">
-				<source>Language code doesn't exist in website config</source>
-			<target state="translated">Sprache existiert nicht in Konfiguration der Website</target></trans-unit>
 			<trans-unit id="error.validator.rating.ratedobjectuid" xml:space="preserve" approved="yes">
 				<source>Missing UID in rating.</source>
 			<target state="translated">Fehlende UID in Rating</target></trans-unit>
@@ -168,6 +174,15 @@
 			<trans-unit id="error.validator.vote.stepconf" xml:space="preserve" approved="yes">
 				<source>False voting reference in vote</source>
 			<target state="translated">Falsche Bewertungsreferenz in Vote</target></trans-unit>
+			<trans-unit id="error.validator.stepname.stepconf" xml:space="preserve" approved="yes">
+				<source>False stepconf reference in stepname</source>
+			<target state="translated">Falsche Referenz auf Bewertungsschritt</target></trans-unit>
+			<trans-unit id="error.validator.stepname.sysLang" xml:space="preserve" approved="yes">
+				<source>Language does not exist in website configuration</source>
+			<target state="translated">Sprache existiert nicht in Konfiguration der Website</target></trans-unit>
+			<trans-unit id="error.validator.stepname.defaultLang" xml:space="preserve" approved="yes">
+				<source>Missing entry for default language</source>
+			<target state="translated">Fehlende Referenz mit Standardsprache</target></trans-unit>
 			<trans-unit id="flash.ratingobject.noRatingsteps" xml:space="preserve" approved="yes">
 				<source>No ratingsteps configured!</source>
 			<target state="translated">Ratingsteps fehlen!</target></trans-unit>

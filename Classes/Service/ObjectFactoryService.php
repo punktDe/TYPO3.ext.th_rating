@@ -77,7 +77,7 @@ class Tx_ThRating_Service_ObjectFactoryService implements t3lib_Singleton {
 			}
 			$settings = self::completeConfigurationSettings( $settings );		
 			$ratingobject = $ratingobjectRepository->findMatchingTableAndField($settings['ratetable'], $settings['ratefield'], Tx_ThRating_Domain_Repository_RatingobjectRepository::addIfNotFound);
-			Tx_ThRating_Utility_ExtensionManagementUtility::persistObjectIfDirty($ratingobject);
+			//Tx_ThRating_Utility_ExtensionManagementUtility::persistObjectIfDirty('Tx_ThRating_Domain_Repository_RatingobjectRepository', $ratingobject);
 		}
 		return $ratingobject;
 	}			
@@ -86,16 +86,40 @@ class Tx_ThRating_Service_ObjectFactoryService implements t3lib_Singleton {
 	 * Returns a new or existing ratingobject
 	 * 
 	 * @param	array	$stepconfArray
-	 * @return	Tx_ThRating_Domain_Model_Ratingobject
+	 * @return	Tx_ThRating_Domain_Model_Stepconf
 	 */
 	static function createStepconf( array $stepconfArray ) {
 		$stepconf = t3lib_div::makeInstance('Tx_ThRating_Domain_Model_Stepconf');
-		$stepconf->setRatingobject($stepconfArray['ratingobject']);
-		$stepconf->setSteporder($stepconfArray['steporder']);
-		$stepconf->setStepweight($stepconfArray['stepweight']);
-		$stepconf->setStepname($stepconfArray['stepname']);
-		$stepconf->set_languageUid($stepconfArray['_languageUid']);
+		$stepconf->setRatingobject( $stepconfArray['ratingobject'] );
+		$stepconf->setSteporder( $stepconfArray['steporder'] );
+		$stepconf->setStepweight( $stepconfArray['stepweight'] );
 		return $stepconf;
+	}			
+
+	/**
+	 * Returns a new or existing ratingobject
+	 * 
+	 * @param	array	$stepconfArray
+	 * @return	Tx_ThRating_Domain_Model_Stepconf
+	 */
+	static function createStepname ( array $stepnameArray ) {
+		$stepname = t3lib_div::makeInstance('Tx_ThRating_Domain_Model_Stepname');
+		$stepname->setStepname( $stepnameArray['stepname'] );
+		
+		if ( !empty($stepnameArray['languageIso2Code']) ) {
+			//check if additional language flag exists in current website
+			$syslangRepository = self::getObject('Tx_ThRating_Domain_Repository_SyslangRepository');
+			$languageObject = $syslangRepository->findByStaticLangIsocode($stepnameArray['languageIso2Code']);
+			if ( $languageObject->count() > 0 ) {
+				$stepname->set_languageUid( $languageObject->getFirst()->getUid() );
+			} else {
+				//treat as default language on invalid flag
+				$stepname->set_languageUid( 0 );
+			}
+		} else {
+			$stepname->set_languageUid( 0 );
+		}
+		return $stepname;
 	}			
 
 	/**

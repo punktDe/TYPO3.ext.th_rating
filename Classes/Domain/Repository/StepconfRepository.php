@@ -40,64 +40,17 @@ class Tx_ThRating_Domain_Repository_StepconfRepository extends Tx_Extbase_Persis
 	}
 
 	/**
-	 * Finds the localized ratingstep entry by giving ratingobjectUid
-	 *
-	 * @param int	$ratingobjectUid 					The uid of the ratingobject
-	 * @return 		Tx_ThRating_Domain_Model_Stepconf	All related stepconfs in correct localization
-	 */
-	public function findLocalizedByRatingobject($ratingobjectUid) {
-		$query = $this->createQuery();
-		$tableName = strtolower($query->getType());
-		$statement = 'SELECT * FROM '.$tableName.' WHERE ratingobject=? '.tslib_cObj::enableFields('tx_thrating_domain_model_stepconf');
-		$statement .= ' AND (sys_language_uid IN (-1,0) AND uid not in (SELECT l18n_parent FROM '.$tableName.' WHERE ratingobject=? AND sys_language_uid=? '.tslib_cObj::enableFields('tx_thrating_domain_model_stepconf').')'; //default language if noch localized record exists
-		$statement .= ' OR sys_language_uid=?)'; //or localized record itself
-		$query->statement($statement, array($ratingobjectUid,$ratingobjectUid,$GLOBALS['TSFE']->sys_language_uid,$GLOBALS['TSFE']->sys_language_uid));
-		return $query->execute();
-	}
-
-	
-	/**
-	 * Finds the default language stepconf by giving ratingobject and steporder
-	 *
-	 * @param 	Tx_ThRating_Domain_Model_Ratingobject	$ratingobject	The parent ratingobject
-	 * @param 	int										$steporder	 	The concerned steporder number
-	 * @return	Tx_ThRating_Domain_Model_Stepconf						The stepconf
-	 */
-	public function findDefaultStepconf($ratingobject, $steporder) {
-		$query = $this->createQuery();
-		$query	->getQuerySettings()->setRespectSysLanguage(FALSE);
-		$query	->matching(
-						$query->logicalAnd(
-							$query->equals('ratingobject', $ratingobject->getUid()),
-							$query->equals('steporder', $steporder),
-							$query->in('sys_language_uid', array(0,-1))
-						)
-					)
-				->setLimit(1);
-		$queryResult = $query->execute();
-		if (count($queryResult) != 0) {
-			$foundRow = $queryResult->getFirst();
-		} else {
-			unset($foundRow);
-		}
-		return $foundRow;
-	}	
-
-
-	/**
 	 * Finds the given stepconf object in the repository
 	 *
-	 * @param 	Tx_ThRating_Domain_Model_Stepconf	$stepconf 	The uid of the ratingobject
+	 * @param 	Tx_ThRating_Domain_Model_Stepconf	$stepconf 	The ratingobject to look for
 	 * @return	Tx_ThRating_Domain_Model_Stepconf
 	 */
-	public function findStepconfObject($stepconf) {
+	public function findStepconfObject(Tx_ThRating_Domain_Model_Stepconf $stepconf) {
 		$query = $this->createQuery();
-		$query	->getQuerySettings()->setRespectSysLanguage(FALSE);
 		$query	->matching(
 						$query->logicalAnd(
 							$query->equals('ratingobject', $stepconf->getRatingobject()->getUid()),
-							$query->equals('steporder', $stepconf->getSteporder()),
-							$query->equals('sys_language_uid', $stepconf->get_languageUid())
+							$query->equals('steporder', $stepconf->getSteporder())
 						)
 					)
 				->setLimit(1);
@@ -111,37 +64,12 @@ class Tx_ThRating_Domain_Repository_StepconfRepository extends Tx_Extbase_Persis
 	}
 
 	/**
-	 * Checks if stepconf got a valid language code
-	 *
-	 * @param 	Tx_ThRating_Domain_Model_Stepconf	$stepconf 	The stepconf object
-	 * @return	bool
-	 */
-	public function checkStepconfLanguage($stepconf) {
-		$stepconfLang = $stepconf->get_languageUid();
-		If ( $stepconfLang > 0 ) {
-			//check if given language exist
-			$queryResult = Tx_ThRating_Service_ObjectFactoryService::getObject('Tx_ThRating_Domain_Repository_SyslangRepository')->findByUid($stepconfLang);
-			if (!empty($queryResult)) {
-				//language code found -> OK
-				return TRUE;
-			} else {
-				//invalid language code -> NOK
-				return FALSE;
-			}
-		} else {
-			//default language is always OK
-			return TRUE;
-		}
-	}
-	
-
-	/**
-	 * Finds the localized ratingstep entry by giving ratingobjectUid
+	 * Finds the ratingstep entry by giving ratingobjectUid
 	 *
 	 * @param 	Tx_ThRating_Domain_Model_Stepconf	$stepconf 	The uid of the ratingobject
-	 * @return	bool											TRUE if stepconf having same steporder and _languageUid exists
+	 * @return	bool											TRUE if stepconf object exists in repository
 	 */
-	public function existStepconf($stepconf) {
+	public function existStepconf(Tx_ThRating_Domain_Model_Stepconf $stepconf) {
 		$lookForStepconf = $this->findStepconfObject($stepconf);
 		if ( $lookForStepconf instanceOf Tx_ThRating_Domain_Model_Stepconf ) {
 			return TRUE;

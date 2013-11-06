@@ -32,7 +32,7 @@ class Tx_ThRating_Domain_Repository_RatingobjectRepository extends Tx_Extbase_Pe
 	 * Defines name for function parameter
 	 *
 	 */
-	const addIfNotFound = true;
+	const addIfNotFound = TRUE;
 
 	
 	/**
@@ -43,7 +43,7 @@ class Tx_ThRating_Domain_Repository_RatingobjectRepository extends Tx_Extbase_Pe
 	 * @param bool 	$addIfNotFound Set to true if new objects should instantly be added
 	 * @return Tx_ThRating_Domain_Model_Ratingobject The ratingobject
 	 */
-	public function findMatchingTableAndField($ratetable, $ratefield, $addIfNotFound = false ) {
+	public function findMatchingTableAndField($ratetable, $ratefield, $addIfNotFound = FALSE ) {
 		$query = $this->createQuery();
 		$query	->matching(
 						$query->logicalAnd(
@@ -65,7 +65,7 @@ class Tx_ThRating_Domain_Repository_RatingobjectRepository extends Tx_Extbase_Pe
 				if ($validator->isValid($foundRow)) {
 					$this->add($foundRow);
 				}
-				$this->persistenceManager->persistAll();
+				Tx_ThRating_Utility_ExtensionManagementUtility::persistRepository('Tx_ThRating_Domain_Repository_RatingobjectRepository', $foundRow);
 			} else {
 				unset($foundRow);
 			}
@@ -79,7 +79,7 @@ class Tx_ThRating_Domain_Repository_RatingobjectRepository extends Tx_Extbase_Pe
 	 * @param bool 	$respectStoragePage Set to true if storagepage should be ignored
 	 * @return Tx_ThRating_Domain_Model_Ratingobject All ratingobjects of the site
 	 */
-	public function findAll($respectStoragePage = false ) {
+	public function findAll($respectStoragePage = FALSE ) {
 		$query = $this->createQuery();
 		if ($respectStoragePage) {
 			$query->getQuerySettings()->setRespectStoragePage(FALSE);

@@ -3,6 +3,13 @@
 class Tx_ThRating_ViewHelpers_RatinglinkViewHelper extends Tx_Fluid_Core_ViewHelper_AbstractTagBasedViewHelper {
 
 	/**
+	 * Renders the ratinglink object
+	 *
+	 * @return string the content of the rendered TypoScript object
+	 * @author Thomas Hucke <thucke@web.de>
+	 */
+
+	 /**
 	 * @var string
 	 */
 	protected $tagName = 'a';
@@ -19,7 +26,6 @@ class Tx_ThRating_ViewHelpers_RatinglinkViewHelper extends Tx_Fluid_Core_ViewHel
 	 * @api
 	 */
 	public function render() {
-		//<input type="hidden" name="ajaxSelect" value="{ajaxSelection}">		
 		$this->tag->setContent($this->renderChildren());
 		$content .= $this->tag->render();
 		return $content;

@@ -99,6 +99,12 @@ class Tx_ThRating_Domain_Model_Rating extends Tx_Extbase_DomainObject_AbstractEn
 	 public function initializeObject() {
 		parent::initializeObject();
 		$this->settings = Tx_ThRating_Service_ObjectFactoryService::getObject('Tx_Extbase_Configuration_ConfigurationManager')->getConfiguration('Settings', 'thRating', 'pi1');
+
+		//Initialize vote storage if rating is new
+		if (!is_object($this->votes)) {
+			$this->votes=Tx_ThRating_Service_ObjectFactoryService::getObject('Tx_Extbase_Persistence_ObjectStorage');
+		}
+
 	 }
 	 
 	/**
@@ -152,10 +158,7 @@ class Tx_ThRating_Domain_Model_Rating extends Tx_Extbase_DomainObject_AbstractEn
 	public function addVote(Tx_ThRating_Domain_Model_Vote $vote) {
 		$this->votes->attach($vote);
 		$this->addCurrentrate($vote);
-		If ( t3lib_utility_VersionNumber::convertVersionNumberToInteger(TYPO3_version) >= 6001000 ) {
-			Tx_ThRating_Service_ObjectFactoryService::getObject('Tx_ThRating_Domain_Repository_RatingRepository')->update($this);
-		}
-		Tx_ThRating_Service_ObjectFactoryService::getObject('Tx_Extbase_Persistence_Manager')->persistAll();
+		Tx_ThRating_Utility_ExtensionManagementUtility::persistRepository('Tx_ThRating_Domain_Repository_VoteRepository', $vote);
 	}
 
 	/**
@@ -238,10 +241,10 @@ class Tx_ThRating_Domain_Model_Rating extends Tx_Extbase_DomainObject_AbstractEn
 	 * @return array
 	 */
 	public function getCurrentrates() {
-		$currentratesDecoded = json_decode($this->currentrates, true);
+		$currentratesDecoded = json_decode($this->currentrates, TRUE);
 		if (empty($currentratesDecoded['numAllVotes'])) {
 			$this->checkCurrentrates();
-			$currentratesDecoded = json_decode($this->currentrates, true);
+			$currentratesDecoded = json_decode($this->currentrates, TRUE);
 		}
 		$weightedVotes = $currentratesDecoded['weightedVotes'];
 		$sumWeightedVotes = $currentratesDecoded['sumWeightedVotes'];

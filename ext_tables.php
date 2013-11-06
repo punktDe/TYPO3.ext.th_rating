@@ -2,7 +2,7 @@
 
 if (!defined ('TYPO3_MODE')) die ('Access denied.');
 
-include_once(t3lib_extMgm::extPath($_EXTKEY) . 'Resources/Public/Classes/BE.userFunc.php');
+include_once(t3lib_extMgm::extPath($_EXTKEY) . 'Resources/Private/PHP/BE.userFunc.php');
 
 Tx_Extbase_Utility_Extension::registerPlugin(
 	$_EXTKEY,	// The extension name (in UpperCamelCase) or the extension key (in lower_underscore)
@@ -36,8 +36,30 @@ $TCA['tx_thrating_domain_model_stepconf'] = array (
 	'ctrl' => array (
 		'title'						=> 'LLL:EXT:'.$_EXTKEY.'/Resources/Private/Language/locallang.xlf:tca.model.stepconf.title',
 		'label'						=> 'uid',
-		'label_alt' 				=> 'ratingobject,steporder,sys_language_uid',
+		'label_alt' 				=> 'ratingobject,steporder',
  		'label_userFunc' 			=> 'user_BEfunc->getStepconfRecordTitle',
+		'type'						=> '1',
+		'tstamp'					=> 'tstamp',
+		'crdate'					=> 'crdate',
+		'cruser_id'					=> 'cruser_id',
+		'delete'					=> 'deleted',
+		'adminOnly'					=> FALSE,
+		'hideTable'					=> FALSE,
+		'editlock'					=> 'steporder,stepweight',
+		'dividers2tabs'				=> TRUE,
+		'enablecolumns'				=> array( 'disabled'	=> 'hidden' ),
+		'dynamicConfigFile'	=> t3lib_extMgm::extPath($_EXTKEY) . 'Configuration/TCA/tx_thrating_domain_model_stepconf.php',
+		'iconfile'			=> t3lib_extMgm::extRelPath($_EXTKEY) . 'Resources/Public/Icons/tx_thrating_domain_model_stepconf.gif',
+	)
+);
+
+//t3lib_extMgm::allowTableOnStandardPages('tx_thrating_domain_model_stepname');
+$TCA['tx_thrating_domain_model_stepname'] = array (
+	'ctrl' => array (
+		'title'						=> 'LLL:EXT:'.$_EXTKEY.'/Resources/Private/Language/locallang.xlf:tca.model.stepname.title',
+		'label'						=> 'uid',
+		'label_alt' 				=> 'stepconf,sys_language_uid',
+ 		'label_userFunc' 			=> 'user_BEfunc->getStepnameRecordTitle',
 		'type'						=> '1',
 		'tstamp'					=> 'tstamp',
 		'crdate'					=> 'crdate',
@@ -48,11 +70,11 @@ $TCA['tx_thrating_domain_model_stepconf'] = array (
 		'delete'					=> 'deleted',
 		'adminOnly'					=> FALSE,
 		'hideTable'					=> FALSE,
-		'editlock'					=> 'sys_language_uid,steporder,stepweight',
+		'editlock'					=> 'sys_language_uid,stepconf',
 		'dividers2tabs'				=> TRUE,
 		'enablecolumns'				=> array( 'disabled'	=> 'hidden' ),
-		'dynamicConfigFile'	=> t3lib_extMgm::extPath($_EXTKEY) . 'Configuration/TCA/tx_thrating_domain_model_stepconf.php',
-		'iconfile'			=> t3lib_extMgm::extRelPath($_EXTKEY) . 'Resources/Public/Icons/tx_thrating_domain_model_stepconf.gif',
+		'dynamicConfigFile'	=> t3lib_extMgm::extPath($_EXTKEY) . 'Configuration/TCA/tx_thrating_domain_model_stepname.php',
+		'iconfile'			=> t3lib_extMgm::extRelPath($_EXTKEY) . 'Resources/Public/Icons/tx_thrating_domain_model_stepname.gif',
 	)
 );
 

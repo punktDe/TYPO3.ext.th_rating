@@ -100,7 +100,7 @@
 				<source>Ratingstep weight</source>
 			</trans-unit>
 			<trans-unit id="tca.model.stepconf.stepname" xml:space="preserve">
-				<source>Ratingstep name</source>
+				<source>Ratingstep names</source>
 			</trans-unit>
 			<trans-unit id="tca.model.stepconf.votes" xml:space="preserve">
 				<source>Assigned votes</source>
@@ -110,6 +110,18 @@
 			</trans-unit>
 			<trans-unit id="tca.model.stepconf.title" xml:space="preserve">
 				<source>Ratingstep configuration</source>
+			</trans-unit>
+			<trans-unit id="tca.model.stepname.title" xml:space="preserve">
+				<source>Ratingstep name</source>
+			</trans-unit>
+			<trans-unit id="tca.model.stepname.stepconf" xml:space="preserve">
+				<source>Ratingstep configuration</source>
+			</trans-unit>
+			<trans-unit id="tca.model.stepname.stepname" xml:space="preserve">
+				<source>Ratingstep name</source>
+			</trans-unit>
+			<trans-unit id="tca.model.stepname.uid" xml:space="preserve">
+				<source>Ratingstep name list</source>
 			</trans-unit>
 			<trans-unit id="tca.model.vote.rating" xml:space="preserve">
 				<source>Rating</source>
@@ -144,14 +156,8 @@
 			<trans-unit id="error.validator.stepconf.invalidSteporderNumber" xml:space="preserve">
 				<source>Invalid number in steporder. Must be of positive integer.</source>
 			</trans-unit>
-			<trans-unit id="error.validator.stepconf.defaultLang" xml:space="preserve">
-				<source>Stepconf entry for default language missing</source>
-			</trans-unit>
 			<trans-unit id="error.validator.stepconf.maxSteporder" xml:space="preserve">
 				<source>Steporder too high. Maximum steporder number + 1 is allowed.</source>
-			</trans-unit>
-			<trans-unit id="error.validator.stepconf.sysLang" xml:space="preserve">
-				<source>Language code doesn't exist in website config</source>
 			</trans-unit>
 			<trans-unit id="error.validator.rating.ratedobjectuid" xml:space="preserve">
 				<source>Missing UID in rating.</source>
@@ -167,6 +173,15 @@
 			</trans-unit>
 			<trans-unit id="error.validator.vote.stepconf" xml:space="preserve">
 				<source>False voting reference in vote</source>
+			</trans-unit>
+			<trans-unit id="error.validator.stepname.stepconf" xml:space="preserve">
+				<source>False stepconf reference in stepname</source>
+			</trans-unit>
+			<trans-unit id="error.validator.stepname.sysLang" xml:space="preserve">
+				<source>Language does not exist in website configuration</source>
+			</trans-unit>
+			<trans-unit id="error.validator.stepname.defaultLang" xml:space="preserve">
+				<source>Missing entry for default language</source>
 			</trans-unit>
 			<trans-unit id="flash.ratingobject.noRatingsteps" xml:space="preserve">
 				<source>No ratingsteps configured!</source>

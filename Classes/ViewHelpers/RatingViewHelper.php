@@ -53,9 +53,6 @@ class Tx_ThRating_ViewHelpers_RatingViewHelper extends Tx_Fluid_ViewHelpers_CObj
 		}		
 		$content = $cObj->cObjGetSingle($setup[$lastSegment], $setup[$lastSegment . '.']);
 
-		//t3lib_utility_Debug::debug($setup[$lastSegment . '.'],'Debug');
-		//t3lib_utility_Debug::debug($content,'content');
-
 		if (TYPO3_MODE === 'BE') {
 			$this->resetFrontendEnvironment();
 		}

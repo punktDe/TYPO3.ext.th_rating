@@ -40,7 +40,7 @@ class user_BEfunc {
     }
 
 	/**
-	 * Returns the record title for the rating in BE
+	 * Returns the record title for the step configuration in BE
 	 *
 	 * @return byRef $params
 	 */
@@ -48,7 +48,16 @@ class user_BEfunc {
         $params['title'] = 'Ratingobject['.$params['row']['ratingobject'].'] - Step ['.$params['row']['steporder'].']';
     }
 
-	 /**
+	/**
+	 * Returns the record title for the step configuration name in BE
+	 *
+	 * @return byRef $params
+	 */
+    public function getStepnameRecordTitle($params, $pObj) {
+        $params['title'] = 'Stepconf['.$params['row']['stepconf'].'] - SysLang ['.$params['row']['sys_language_uid'].']';
+    }
+
+	/**
 	 * Returns the record title for the rating in BE
 	 *
 	 * @return byRef $params

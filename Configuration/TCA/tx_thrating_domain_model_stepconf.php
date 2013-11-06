@@ -37,7 +37,7 @@ $TCA['tx_thrating_domain_model_stepconf'] = array(
 				'size'		=> '8',
 				'max'		=> '12',
 				'eval'		=> 'tx_thrating_unlinkDynCss_eval,int,required',
-				'default'	=> 0,
+				'default'	=> '1',
 				'range'		=> array('lower' => 1)
 			),
 		),
@@ -46,21 +46,36 @@ $TCA['tx_thrating_domain_model_stepconf'] = array(
 			'l10n_display'	=> 'defaultAsReadonly',
 			//'l10n_cat'		=> 'media',
 			'config' 		=> Array (
-				'type'	=> 'input',
-				'size'	=> '8',
-				'max'	=> '12',
-				'eval'	=> 'tx_thrating_unlinkDynCss_eval,int',
+				'type'		=> 'input',
+				'size'		=> '8',
+				'max'		=> '12',
+				'eval'		=> 'tx_thrating_unlinkDynCss_eval,int',
+				'default'	=> '1',
 			),
 		),
 		'stepname' => Array (
+			'exclude' => 1,
 			'label'  		=> 'LLL:EXT:th_rating/Resources/Private/Language/locallang.xlf:tca.model.stepconf.stepname',
-			'l10n_mode'		=> 'prefixLangTitle ',
-			'l10n_display'	=> 'hideDiff ',
-			'config' => Array (
-				'type'		=> 'input',
-				'size'		=> '15',
-				'max'		=> '60',
-				'eval'		=> 'trim',
+			'config' => array(
+				'type' => 'inline',
+				'foreign_table' => 'tx_thrating_domain_model_stepname',
+				'foreign_field' => 'stepconf',
+				'foreign_default_sortby' => 'sys_language_uid',
+				'maxitems'      => 999999,
+				'appearance' => array(
+					'levelLinksPosition' 	=> 'bottom',
+					'collapseAll' 			=> TRUE,
+					'expandSingle' 			=> TRUE,
+					'newRecordLinkAddTitle' => TRUE,
+					//'newRecordLinkPosition' => 'both',
+					//'showSynchronizationLink' => TRUE,
+					//'showAllLocalizationLink' => TRUE,
+					//'showPossibleLocalizationRecords' => 1,
+					//'showRemovedLocalizationRecords' => 1,
+				),
+				'behaviour' => array(
+					'localizationMode' => 'select',
+				),
 			),
 		),
 		'votes' => array(
@@ -78,7 +93,7 @@ $TCA['tx_thrating_domain_model_stepconf'] = array(
 					'levelLinksPosition'	=> 'bottom',
 					'collapseAll' 			=> 1,
 					'expandSingle' 			=> 1,
-					'newRecordLinkAddTitle' => true,
+					'newRecordLinkAddTitle' => TRUE,
 				),
 			),
 		),
@@ -88,41 +103,9 @@ $TCA['tx_thrating_domain_model_stepconf'] = array(
 				'type' => 'passthrough',
 			),
 		),
-		'sys_language_uid' => array (
-			'exclude' => 1,
-			'label'  => 'LLL:EXT:lang/locallang_general.xml:LGL.language',
-			'config' => array (
-				'readOnly'				=> true,
-				'type'                	=> 'select',
-				'foreign_table'       	=> 'sys_language',
-				'foreign_table_where' 	=> 'ORDER BY sys_language.title',
-				'items' => array(
-					array('LLL:EXT:lang/locallang_general.xml:LGL.allLanguages', -1),
-					array('LLL:EXT:lang/locallang_general.xml:LGL.default_value', 0)
-				),
-			),
-		),
-		'l18n_parent' => array (
-			'displayCond' => 'FIELD:sys_language_uid:>:0',
-			'exclude'     => 1,
-			'label'       => 'LLL:EXT:lang/locallang_general.xml:LGL.l18n_parent',
-			'config'      => array (
-				'type'  => 'select',
-				'items' => array (
-					array('', 0),
-				),
-				'foreign_table'       => 'tx_thrating_domain_model_stepconf',
-				'foreign_table_where' => 'AND tx_thrating_domain_model_stepconf.uid=###REC_FIELD_l18n_parent### AND tx_thrating_domain_model_stepconf.sys_language_uid IN (-1,0)',
-			),
-		),
-		'l18n_diffsource' => array (
-			'config' => array (
-				'type' => 'passthrough'
-			),
-		),
 	),
 	'types' => array(
-		'0' => Array('showitem' => '--div--;Display,sys_language_uid,stepname,--div--;Rating,steporder, stepweight,votes,--div--;General,hidden'),
+		'0' => Array('showitem' => 'hidden, steporder, stepweight, stepname, votes'),
 	),
 	'palettes' => array(
 		'1' => array('showitem' => ''),

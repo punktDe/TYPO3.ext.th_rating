@@ -1,3 +1,5 @@
-* Bugfix #53152: Missing closing </div> in DefaultLayout.html (http://forge.typo3.org/issues/53152) 
-* Bugfix #53181: Current ratings are not displayed correctly in T3 6.1
-
+* stepnames handled by localization via XLF when starting with 'LLL:'
+* removed static function Tx_ThRating_Utility_ExtensionManagementUtility::updateStepconf
+* Suggestion #53211 - user defined display configurations should be added via TS
+* Bug #53212 - Error on non existing display configuration
+* Bug #53237 - DblClick counts two votes

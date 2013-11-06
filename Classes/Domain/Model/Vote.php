@@ -199,7 +199,7 @@ class Tx_ThRating_Domain_Model_Vote extends Tx_Extbase_DomainObject_AbstractEnti
 	 * @return string
 	 */
 	public function __toString() {
-		return (strval($this->vote));
+		return strval($this->getVote());
 	}	
 }
 ?>

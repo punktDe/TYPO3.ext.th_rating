@@ -29,11 +29,33 @@ CREATE TABLE tx_thrating_domain_model_stepconf (
 	uid int(11) unsigned DEFAULT '0' NOT NULL auto_increment,
 	pid int(11) DEFAULT '0' NOT NULL,
 
-	ratingobject 	int(11) DEFAULT '0' NOT NULL,
-	steporder 		int(11) DEFAULT '0' NOT NULL,
-	stepweight 		int(11) DEFAULT '1' NOT NULL,
-	stepname  		varchar(64) DEFAULT '0' NOT NULL,
-	votes  			int(11) DEFAULT '0' NOT NULL,
+	ratingobject int(11) DEFAULT '0' NOT NULL,
+	steporder int(11) DEFAULT '1' NOT NULL,
+	stepweight int(11) DEFAULT '1' NOT NULL,
+	stepname int(11) DEFAULT '0' NOT NULL,
+	votes int(11) DEFAULT '0' NOT NULL,
+
+	tstamp int(11) unsigned DEFAULT '0' NOT NULL,
+	crdate int(11) unsigned DEFAULT '0' NOT NULL,
+	cruser_id int(11) DEFAULT '0' NOT NULL,
+	deleted tinyint(4) unsigned DEFAULT '0' NOT NULL,
+	hidden tinyint(4) DEFAULT '0' NOT NULL,
+
+	PRIMARY KEY (uid),
+	KEY parent (pid),
+	INDEX tx_thrating_domain_model_stepconf_i1 (ratingobject,steporder)
+);
+
+
+#
+# Table structure for table 'tx_thrating_domain_model_stepname'
+#
+CREATE TABLE tx_thrating_domain_model_stepname (
+	uid int(11) unsigned DEFAULT '0' NOT NULL auto_increment,
+	pid int(11) DEFAULT '0' NOT NULL,
+
+	stepconf int(11) DEFAULT '0' NOT NULL,
+	stepname varchar(64) DEFAULT '' NOT NULL,
 
 	tstamp int(11) unsigned DEFAULT '0' NOT NULL,
 	crdate int(11) unsigned DEFAULT '0' NOT NULL,
@@ -46,7 +68,6 @@ CREATE TABLE tx_thrating_domain_model_stepconf (
 
 	PRIMARY KEY (uid),
 	KEY parent (pid),
-	INDEX configcheck (ratingobject,steporder)
 );
 
 
@@ -70,7 +91,7 @@ CREATE TABLE tx_thrating_domain_model_rating (
 
 	PRIMARY KEY (uid),
 	KEY parent (pid),
-	INDEX ratingcheck (ratingobject,ratedobjectuid)
+	INDEX tx_thrating_domain_model_rating_i1 (ratingobject,ratedobjectuid)
 );
 
 #
@@ -92,5 +113,5 @@ CREATE TABLE tx_thrating_domain_model_vote (
 
 	PRIMARY KEY (uid),
 	KEY parent (pid),
-	INDEX votecheck (rating,voter)
+	INDEX tx_thrating_domain_model_vote_i1 (rating,voter)
 );

@@ -102,6 +102,17 @@ class Tx_ThRating_Domain_Model_Ratingobject extends Tx_Extbase_DomainObject_Abst
 	 */
 	 public function initializeObject() {
 		parent::initializeObject();
+
+		//Initialize rating storage if ratingobject is new
+		if (!is_object($this->ratings)) {
+			$this->ratings=Tx_ThRating_Service_ObjectFactoryService::getObject('Tx_Extbase_Persistence_ObjectStorage');
+		}
+		//Initialize stepconf storage if ratingobject is new
+		if (!is_object($this->stepconfs)) {
+			$this->stepconfs=Tx_ThRating_Service_ObjectFactoryService::getObject('Tx_Extbase_Persistence_ObjectStorage');
+		}
+
+		
 	 }
 
 	/**
@@ -150,6 +161,7 @@ class Tx_ThRating_Domain_Model_Ratingobject extends Tx_Extbase_DomainObject_Abst
 	 */
 	public function addRating(Tx_ThRating_Domain_Model_Rating $rating) {
 		$this->ratings->attach($rating);
+		Tx_ThRating_Utility_ExtensionManagementUtility::persistRepository('Tx_ThRating_Domain_Repository_RatingRepository', $rating);
 	}
 
 	/**
@@ -179,11 +191,8 @@ class Tx_ThRating_Domain_Model_Ratingobject extends Tx_Extbase_DomainObject_Abst
 	 */
 	public function addStepconf(Tx_ThRating_Domain_Model_Stepconf $stepconf) {
 		If (!$this->stepconfRepository->existStepconf($stepconf)) {
-			$defaultLanguageObject = $this->stepconfRepository->findDefaultStepconf($stepconf->getRatingobject(), $stepconf->getSteporder());
-			if ( is_object($defaultLanguageUid) ) {
-				$stepconf->setL18nParent($defaultLanguageObject->getUid());
-			}
 			$this->stepconfs->attach( $stepconf );
+			Tx_ThRating_Utility_ExtensionManagementUtility::persistRepository('Tx_ThRating_Domain_Repository_StepconfRepository', $stepconf);
 		}
 	}
 

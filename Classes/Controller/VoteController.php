@@ -180,28 +180,14 @@ class Tx_ThRating_Controller_VoteController extends Tx_Extbase_MVC_Controller_Ac
 		$this->view->assign('ratingobjects', $this->ratingobjectRepository->findAll() );
 		
 		//initialize ratingobject and autocreate four ratingsteps
-		$ratingobject = Tx_ThRating_Utility_ExtensionManagementUtility::makeRatable('TestTabelle', 'TestField', 4);
-		
-		//fetch website uid for static_language UID 30 (English)
-		$languageEntry = Tx_ThRating_Service_ObjectFactoryService::getObject('Tx_ThRating_Domain_Repository_SyslangRepository')->findByStaticLangIsocode(30)->getFirst();
-		If ( is_object($languageEntry) ) {
-			$languageUid = $languageEntry->getUid();
-		} else {
-			$languageUid = 0;
-		}
-		
-		//autocreate localized stepconf entries 
-		for ( $i=1; $i<=4; $i++) {
-			$defaultLanguageStepconf = $this->stepconfRepository->findDefaultStepconf($ratingobject, $i);
-			$newStepconf = $this->objectManager->create('Tx_ThRating_Domain_Model_Stepconf');
-			$newStepconf->setRatingobject($ratingobject);
-			$newStepconf->setSteporder($i);
-			$newStepconf->setStepweight($defaultLanguageStepconf->getStepweight());
-			$newStepconf->setStepname('Updated by IndexAction '.$i);
-			$newStepconf->set_languageUid($languageUid);
-			Tx_ThRating_Utility_ExtensionManagementUtility::updateStepconf($newStepconf);
-		}
+		$ratingobject = Tx_ThRating_Utility_ExtensionManagementUtility::makeRatable('TestTable', 'TestField', 4);
+
+		//add descriptions in default language to each stepconf
+		Tx_ThRating_Utility_ExtensionManagementUtility::setStepname($ratingobject->getStepconfs()->current(), 'Automatic generated entry ', 0, TRUE);		
+		//add descriptions in german language to each stepconf
+		Tx_ThRating_Utility_ExtensionManagementUtility::setStepname($ratingobject->getStepconfs()->current(), 'Automatischer Eintrag ', 43, TRUE);		
 	}
+
 
 
 	/**
@@ -220,12 +206,11 @@ class Tx_ThRating_Controller_VoteController extends Tx_Extbase_MVC_Controller_Ac
 	 */
 	public function showAction(	Tx_ThRating_Domain_Model_Vote	$vote = NULL ) {
 		//is_object($vote) && Tx_Extbase_Utility_Debugger::var_dump($vote->getUid(),'showAction');
-		//Tx_Extbase_Utility_Debugger::var_dump(($vote->getVoter(),'vote_getVoter');
+		//Tx_Extbase_Utility_Debugger::var_dump($vote->getVoter(),'vote_getVoter');
 		$this->initVoting( $vote );  //just to set all properties
 
 		if ($this->voteValidator->isValid($this->vote)) {
 			if ($this->accessControllService->isLoggedIn($this->vote->getVoter())) {
-				//TODO: remove $this->view->assign('vote', $this->vote);
 				$this->fillSummaryView();
 			} else {
 				$this->flashMessageContainer->add(	Tx_Extbase_Utility_Localization::translate('flash.vote.create.noPermission', 'ThRating'),
@@ -345,7 +330,7 @@ class Tx_ThRating_Controller_VoteController extends Tx_Extbase_MVC_Controller_Ac
 			$this->ratingName = $this->settings['ratingConfigurations']['default'];
 		}
 		$ratingConfiguration = $this->settings['ratingConfigurations'][$this->ratingName];
-		
+
 		//override extension settings with rating configuration settings
 		if ( is_array($ratingConfiguration['settings']) ) {
 			unset($ratingConfiguration['settings']['defaultObject']);
@@ -365,7 +350,6 @@ class Tx_ThRating_Controller_VoteController extends Tx_Extbase_MVC_Controller_Ac
 			if ( $ratingConfiguration['barimage']) {
 				$this->view->assign('barimage', 'ratingbar');
 			}
-			
 		} else {
 			$ratingClass = 'normal';
 		}
@@ -380,8 +364,8 @@ class Tx_ThRating_Controller_VoteController extends Tx_Extbase_MVC_Controller_Ac
 		$this->view->assign('ratingClass', $ratingClass);
 		//is_object($this->vote->getVoter()) && Tx_Extbase_Utility_Debugger::var_dump($this->vote->hasAnonymousVote($this->prefixId),'isAnonymous');
 		if ( 	(!$this->vote->hasRated() && !$this->vote->isAnonymous() && $this->accessControllService->isLoggedIn($this->vote->getVoter())) ||
-				(	($this->vote->isAnonymous() && !$this->accessControllService->isLoggedIn($this->vote->getVoter())) && 
-					((!$this->vote->hasAnonymousVote($this->prefixId) && $this->cookieProtection && !$this->request->hasArgument('settings')) || !$this->cookieProtection)
+				(	($this->vote->isAnonymous() && !$this->accessControllService->isLoggedIn($this->vote->getVoter())) &&
+				((!$this->vote->hasAnonymousVote($this->prefixId) && $this->cookieProtection && !$this->request->hasArgument('settings')) || !$this->cookieProtection)
 				) 
 			) {
 			//if user hasn´t voted yet then include ratinglinks
@@ -489,9 +473,9 @@ class Tx_ThRating_Controller_VoteController extends Tx_Extbase_MVC_Controller_Ac
 	 */
 	protected function setAjaxSelections(Tx_ThRating_Domain_Model_Vote $vote) {
 		if ($vote->getVoter() instanceof Tx_ThRating_Domain_Model_Voter) {
-			foreach ( $this->getLocalizedStepconfs($vote->getRating()->getRatingobject()) as $i => $stepConf ) {
+			foreach ( $vote->getRating()->getRatingobject()->getStepconfs() as $i => $stepConf ) {
 				$key = utf8_encode(json_encode( array(
-					'value' 		=> $stepConf->getL18nParent() ? $stepConf->getUid() : $stepConf->getUid(),
+					'value' 		=> $stepConf->getUid(),
 					'voter' 		=> $vote->getVoter()->getUid(),
 					'rating' 		=> $vote->getRating()->getUid(),
 					'ratingName'	=> $this->ratingName,
@@ -505,24 +489,7 @@ class Tx_ThRating_Controller_VoteController extends Tx_Extbase_MVC_Controller_Ac
 		}
 	}
 
-	
-	/**
-	 * Find all localized stepconf records of a given ratingobject
-	 * Due to a bug in l18n-handling in Typo3 4.7 this was necessary
-	 * @param Tx_ThRating_Domain_Model_Ratingobject $ratingobject the ratingobject this selection is for
-	 *
-	 * @return array
-	 */
-	protected function getLocalizedStepconfs(Tx_ThRating_Domain_Model_Ratingobject $ratingobject) {
-		If ( t3lib_utility_VersionNumber::convertVersionNumberToInteger(TYPO3_version) < 6000000 ) {
-			$localizedStepconfs = $this->stepconfRepository->findLocalizedByRatingobject(intval($ratingobject->getUid()));
-		} else {
-			$localizedStepconfs = $ratingobject->getStepconfs();
-		}
-		return $localizedStepconfs;
-	}
-	
-	
+
 	/**
 	 * Fill all variables for FLUID
 	 *
@@ -656,9 +623,9 @@ class Tx_ThRating_Controller_VoteController extends Tx_Extbase_MVC_Controller_Ac
 		$allRatingobjects = $this->ratingobjectRepository->findAll(TRUE);
 		foreach ( $allRatingobjects as $ratingobject) {
 			$ratingobjectUid = $ratingobject->getUid();
-			$localizedStepconfs = $this->getLocalizedStepconfs($ratingobject);
-			$stepcount = count($localizedStepconfs);
-			$stepconfs = $localizedStepconfs->toArray();
+			$stepconfObjects = $ratingobject->getStepconfs();
+			$stepcount = count($stepconfObjects);
+			$stepconfs = $stepconfObjects->toArray();
 			foreach ( $stepconfs as $stepconf ) {	//stepconfs are already sorted by steporder
 				$stepWeights[] = $stepconf->getStepweight();
 				$sumStepWeights += $stepconf->getStepweight();

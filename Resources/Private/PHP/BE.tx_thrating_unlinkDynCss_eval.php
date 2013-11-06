@@ -24,7 +24,7 @@
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
-include_once( PATH_typo3conf . '/ext/th_rating/Resources/Public/Classes/BE.userFunc.php');
+include_once( PATH_typo3conf . '/ext/th_rating/Resources/Private/PHP/BE.userFunc.php');
 
 class tx_thrating_unlinkDynCss_eval {
 	/**

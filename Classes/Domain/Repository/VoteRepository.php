@@ -32,7 +32,7 @@ class Tx_ThRating_Domain_Repository_VoteRepository extends Tx_Extbase_Persistenc
 	 * Defines name for function parameter
 	 *
 	 */
-	const addIfNotFound = true;
+	const addIfNotFound = TRUE;
 
 	/**
 	 * Initialze this repository

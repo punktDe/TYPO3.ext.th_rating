@@ -27,7 +27,7 @@ $TCA['tx_thrating_domain_model_ratingobject'] = array(
 				'type' => 'input',
 				'size' => 20,
 				'eval' => 'trim,required',
-				'max'  => 60
+				'max'  => 64
 			)
 		),
 		'ratefield' => array(
@@ -37,34 +37,31 @@ $TCA['tx_thrating_domain_model_ratingobject'] = array(
 				'type' => 'input',
 				'size' => 20,
 				'eval' => 'trim,required',
-				'max'  => 60
+				'max'  => 64
 					)
 		),
 		'uid' => array(
-			'label'   => 'LLL:EXT:th_rating/Resources/Private/Language/locallang.xlf:tca.model.ratingobject.ratingobject',
+			'label'   => 'LLL:EXT:th_rating/Resources/Private/Language/locallang.xlf:tca.model.ratingobject.uid',
 		),
 		'stepconfs' => array(
 			'exclude' => 1,
-			'label'   => 'LLL:EXT:th_rating/Resources/Private/Language/locallang.xlf:tca.model.ratingobject.uid',
+			'label'   => 'LLL:EXT:th_rating/Resources/Private/Language/locallang.xlf:tca.model.ratingobject.stepconfs',
 			'config' => array(
 				'type' => 'inline',
 				'foreign_table' => 'tx_thrating_domain_model_stepconf',
 				'foreign_field' => 'ratingobject',
-				'foreign_default_sortby' => 'steporder,sys_language_uid',
+				'foreign_default_sortby' => 'steporder',
 				'maxitems'      => 999999,
 				'appearance' => array(
 					'levelLinksPosition' 	=> 'bottom',
-					'collapseAll' 			=> true,
-					'expandSingle' 			=> true,
-					'newRecordLinkAddTitle' => true,
+					'collapseAll' 			=> TRUE,
+					'expandSingle' 			=> TRUE,
+					'newRecordLinkAddTitle' => TRUE,
 					//'newRecordLinkPosition' => 'both',
-					//'showSynchronizationLink' => true,
-					//'showAllLocalizationLink' => true,
+					//'showSynchronizationLink' => TRUE,
+					//'showAllLocalizationLink' => TRUE,
 					//'showPossibleLocalizationRecords' => 1,
 					//'showRemovedLocalizationRecords' => 1,
-				),
-				'behaviour' => array(
-					'localizationMode' => 'select',
 				),
 			),
 		),
