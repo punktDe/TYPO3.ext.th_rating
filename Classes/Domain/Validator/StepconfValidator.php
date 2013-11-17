@@ -46,7 +46,18 @@ class Tx_ThRating_Domain_Validator_StepconfValidator extends Tx_Extbase_Validati
     public function injectStepconfRepository(Tx_ThRating_Domain_Repository_StepconfRepository $stepconfRepository) {
         $this->stepconfRepository = $stepconfRepository;
     }
+	/**
+     * @var Tx_ThRating_Domain_Repository_StepnameRepository
+     */
+    protected $stepnameRepository;
 
+    /**
+     * @param Tx_ThRating_Domain_Repository_StepnameRepository $stepnameRepository
+     * @return void
+     */
+    public function injectStepnameRepository(Tx_ThRating_Domain_Repository_StepnameRepository $stepnameRepository) {
+        $this->stepnameRepository = $stepnameRepository;
+    }
 	
 	/**
 	 * If the given step is valid
@@ -79,6 +90,30 @@ class Tx_ThRating_Domain_Validator_StepconfValidator extends Tx_Extbase_Validati
 		If ( $stepconf->getSteporder() > $maxSteporder+1 ) {
 			$this->addError(Tx_Extbase_Utility_Localization::translate('error.validator.stepconf.maxSteporder', 'ThRating'), 1368123970);
 			return FALSE;
+		}
+		
+		//check if a stepname is given that at least the default language exists
+		$stepname = $stepconf->getStepname();
+		If (is_object($stepname)) {
+			$countNames = $stepname->count();
+		}
+		If ($countNames!=0) {
+			$firstStepname = $stepname->current();
+			$defaultName = $this->stepnameRepository->findDefaultStepname($firstStepname);
+			If (empty($defaultName)) {
+				$this->addError(Tx_Extbase_Utility_Localization::translate('error.validator.stepconf.defaultStepname', 'ThRating', array($firstStepname->getStepconf()->getUid())), 1384374165);
+				return FALSE;
+			}
+			//Finally check on language constistency
+			$checkConsistency = $this->stepnameRepository->checkConsistency($firstStepname);
+			If ($checkConsistency['doubleLang']) {
+				$this->addError(Tx_Extbase_Utility_Localization::translate('error.validator.stepconf.doubleLangEntry', 'ThRating', array($firstStepname->getStepconf()->getUid())), 1384374589);
+				return FALSE;
+			}		
+			If ($checkConsistency['existLang']) {
+				$this->addError(Tx_Extbase_Utility_Localization::translate('error.validator.stepconf.notExistingLanguage', 'ThRating', array($firstStepname->getUid())), 1384374589);
+				return FALSE;
+			}		
 		}
 		return TRUE;
 	}

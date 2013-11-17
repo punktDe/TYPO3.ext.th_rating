@@ -226,7 +226,7 @@ class Tx_ThRating_Domain_Model_Stepconf extends Tx_Extbase_DomainObject_Abstract
 		if ( $this->stepname->count() == 0 ) {
 			$stepname = strval($this->getSteporder());
 		} else {
-			$stepname = $this->stepname->current()->getStepname();
+			$stepname = clone $this->stepname;
 		}
 		return $stepname;
 	}

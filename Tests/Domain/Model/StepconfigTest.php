@@ -40,8 +40,8 @@ class StepconfigTest extends Tx_Extbase_BaseTestCase {
 	 */
 	public function anInstanceOfTheStepconfigurationCanBeConstructed() {
 		$ratingobject = t3lib_div::makeInstance('Tx_ThRating_Domain_Model_Ratingobject', 'tt_news', 'uid');
-		$stepconf = t3lib_div::makeInstance('Tx_ThRating_Domain_Model_Stepconf',$ratingobject,1);
-		$this->assertEquals($ratingobject,$stepconf->getRatingobject());
+		$stepconf = t3lib_div::makeInstance('Tx_ThRating_Domain_Model_Stepconf', $ratingobject, 1);
+		$this->assertEquals($ratingobject, $stepconf->getRatingobject());
 		$this->assertEquals(1,$stepconf->getSteporder());
 	}
 		

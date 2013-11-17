@@ -159,6 +159,15 @@
 			<trans-unit id="error.validator.stepconf.maxSteporder" xml:space="preserve">
 				<source>Steporder too high. Maximum steporder number + 1 is allowed.</source>
 			</trans-unit>
+			<trans-unit id="error.validator.stepconf.defaultStepname" xml:space="preserve">
+				<source>Missing stepname entry for default language in stepconf %s.</source>
+			</trans-unit>
+			<trans-unit id="error.validator.stepconf.doubleLangEntry" xml:space="preserve">
+				<source>Multiple stepnames for one language in stepconf %s.</source>
+			</trans-unit>
+			<trans-unit id="error.validator.stepconf.notExistingLanguage" xml:space="preserve">
+				<source>Stepname %s one language does not exist in this website.</source>
+			</trans-unit>
 			<trans-unit id="error.validator.rating.ratedobjectuid" xml:space="preserve">
 				<source>Missing UID in rating.</source>
 			</trans-unit>
@@ -204,6 +213,9 @@
 			<trans-unit id="flash.heading.error" xml:space="preserve">
 				<source>Error !!!!</source>
 			</trans-unit>
+			<trans-unit id="flash.singleton.error" xml:space="preserve">
+				<source>Error in configuration of extension 'Rating AX'</source>
+			</trans-unit>
 			<trans-unit id="flash.heading.warning" xml:space="preserve">
 				<source>Warning!</source>
 			</trans-unit>
@@ -215,6 +227,9 @@
 			</trans-unit>
 			<trans-unit id="flash.heading.ok" xml:space="preserve">
 				<source>Success</source>
+			</trans-unit>
+			<trans-unit id="flash.renderCSS.noStepconf" xml:space="preserve">
+				<source>Stepconf missing in ratingobject configuration of UID %1$s - check PID %2$s.</source>
 			</trans-unit>
 			<trans-unit id="flash.vote.create.alreadyRated" xml:space="preserve">
 				<source>Already rated</source>

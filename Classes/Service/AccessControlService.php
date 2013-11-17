@@ -77,7 +77,7 @@ class Tx_ThRating_Service_AccessControlService implements t3lib_Singleton {
 	 * @param	mixed									$voter 
 	 * @return	Tx_Extbase_Domain_Model_FrontendUser 
 	 */
-	public function getFrontendUser($voter = null) {
+	public function getFrontendUser($voter = NULL) {
 		//set userobject
 		if (!$voter instanceof Tx_Extbase_Domain_Model_FrontendUser) {
 			$frontendUserRepository = Tx_ThRating_Service_ObjectFactoryService::getObject('Tx_Extbase_Domain_Repository_FrontendUserRepository');
@@ -98,7 +98,7 @@ class Tx_ThRating_Service_AccessControlService implements t3lib_Singleton {
 	 * @param	mixed							$voter 
 	 * @return	Tx_ThRating_Domain_Model_Voter 
 	 */
-	public function getFrontendVoter($voter = null) {
+	public function getFrontendVoter($voter = NULL) {
 		//set userobject
 		if (!$voter instanceof Tx_ThRating_Domain_Model_Voter) {
 			$frontendUserRepository = Tx_ThRating_Service_ObjectFactoryService::getObject('Tx_ThRating_Domain_Repository_VoterRepository');

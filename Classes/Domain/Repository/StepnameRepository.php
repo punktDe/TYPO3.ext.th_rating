@@ -115,6 +115,45 @@ class Tx_ThRating_Domain_Repository_StepnameRepository extends Tx_Extbase_Persis
 	}
 
 	/**
+	 * Check on double language entries
+	 *
+	 * @param 	Tx_ThRating_Domain_Model_Stepname	$stepname 	The ratingname to look for
+	 * @return	array	return values FALSE says OK
+	 */
+	public function checkConsistency(Tx_ThRating_Domain_Model_Stepname $stepname) {
+		$query = $this->createQuery();
+		$query	->getQuerySettings()->setRespectSysLanguage(FALSE);
+		$query	->matching(
+						$query->logicalAnd(
+							$query->equals('stepconf', $stepname->getStepconf()->getUid())
+						)
+					);
+		$queryResult = $query->execute()->toArray();
+		if ( count($queryResult) > 1 ) {
+			$allWebsiteLanguages = Tx_ThRating_Service_ObjectFactoryService::getObject('Tx_ThRating_Domain_Repository_SyslangRepository')->findAll()->toArray();
+			foreach( $allWebsiteLanguages as $key => $language ) {
+				$websiteLanguagesArray[]=$language->getUid();
+			}
+			foreach( $queryResult as $key => $value ) {
+				$languageUid=$value->get_languageUid();
+				$languageCounter[$languageUid]++;
+				If ($languageCounter[$languageUid] > 1) {
+					$checkConsistency['doubleLang'] = TRUE;
+				}
+
+				//check if language flag exists in current website
+				If ($languageUid > 0) {
+					if ( !array_search($languageUid,$websiteLanguagesArray) ) {
+						$checkConsistency['existLang'] = TRUE;
+					}
+				}
+			}
+			unset($languageCounter);
+		}
+		return $checkConsistency;
+	}
+
+	/**
 	 * Finds the localized ratingstep entry by giving ratingobjectUid
 	 *
 	 * @param 	Tx_ThRating_Domain_Model_Stepname	$stepconf 	The ratingname to look for
@@ -127,5 +166,17 @@ class Tx_ThRating_Domain_Repository_StepnameRepository extends Tx_Extbase_Persis
 		} 
 		return FALSE;
 	}
+
+	/**
+	 * Set default query settings to find ALL records
+	 *
+	 * @return	void
+	 */
+	public function clearQuerySettings() {
+		$this->defaultQuerySettings = $this->objectManager->create('Tx_Extbase_Persistence_Typo3QuerySettings');
+		$this->defaultQuerySettings->setRespectEnableFields(FALSE);
+		$this->defaultQuerySettings->setRespectSysLanguage(FALSE);
+	}
+	
 }
 ?>

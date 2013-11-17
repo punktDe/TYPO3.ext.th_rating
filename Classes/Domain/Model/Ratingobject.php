@@ -100,7 +100,7 @@ class Tx_ThRating_Domain_Model_Ratingobject extends Tx_Extbase_DomainObject_Abst
 	 * Initializes a new ratingobject
 	 * @return void
 	 */
-	 public function initializeObject() {
+	public function initializeObject() {
 		parent::initializeObject();
 
 		//Initialize rating storage if ratingobject is new
@@ -111,9 +111,7 @@ class Tx_ThRating_Domain_Model_Ratingobject extends Tx_Extbase_DomainObject_Abst
 		if (!is_object($this->stepconfs)) {
 			$this->stepconfs=Tx_ThRating_Service_ObjectFactoryService::getObject('Tx_Extbase_Persistence_ObjectStorage');
 		}
-
-		
-	 }
+	}
 
 	/**
 	 * Sets the rating table name

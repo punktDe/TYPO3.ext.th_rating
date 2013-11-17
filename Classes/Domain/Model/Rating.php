@@ -222,7 +222,7 @@ class Tx_ThRating_Domain_Model_Rating extends Tx_Extbase_DomainObject_AbstractEn
 		if ( empty($this->currentrates) ) {
 			$this->checkCurrentrates(); //initialize entry
 		}
-		$currentratesDecoded = json_decode($this->currentrates, true);
+		$currentratesDecoded = json_decode($this->currentrates, TRUE);
 		$currentratesDecoded['numAllVotes']++;
 		if ( $voting->isAnonymous() ) {
 			$currentratesDecoded['anonymousVotes']++;

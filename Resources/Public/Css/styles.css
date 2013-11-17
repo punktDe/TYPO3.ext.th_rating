@@ -2,7 +2,27 @@
 #formResult {height: 20px; }
 
 #tx-thrating-pi1-singleton{
-	display:none;
+	visibility:hidden;
+}
+.tx-thrating-singleton-message {
+	visibility:visible;
+	position:fixed;
+	width:40%;
+	z-index:100;
+	top:100px;
+	left:10em;
+	background-color: #a7a7a7;
+	border:0px solid black;
+}
+.tx-thrating-singleton-message .message-header{
+	padding:3px;
+	background-color: #f87575;
+    border: 1px dotted grey;
+	padding:1px;
+	font-weight:bold;
+}
+.tx-thrating-singleton-message .message-body{
+	padding:3px;
 }
 
 .thRating{
@@ -14,15 +34,15 @@ padding:0px;
 }
 
 .thrating-normal {
-background-position: left top;
+background-position:left top;
 }
 
 .thRating-tilt{
-background-position: right bottom;
+background-position:right bottom;
 }
 
 .thRating li{
-display: inline;
+display:inline;
 margin:0px;
 }
 .thRating a,

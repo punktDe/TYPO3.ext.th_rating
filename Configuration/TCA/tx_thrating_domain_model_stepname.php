@@ -35,7 +35,7 @@ $TCA['tx_thrating_domain_model_stepname'] = array(
 				'type'		=> 'input',
 				'size'		=> '15',
 				'max'		=> '64',
-				'eval'		=> 'trim',
+				'eval'		=> 'tx_thrating_unlinkDynCss_eval,trim',
 			),
 		),
 		'uid' => array(
@@ -48,7 +48,7 @@ $TCA['tx_thrating_domain_model_stepname'] = array(
 			'exclude' => 1,
 			'label'  => 'LLL:EXT:lang/locallang_general.xml:LGL.language',
 			'config' => array (
-				'readOnly'				=> TRUE,
+				'readOnly'				=> FALSE,
 				'type'                	=> 'select',
 				'foreign_table'       	=> 'sys_language',
 				'foreign_table_where' 	=> 'ORDER BY sys_language.title',

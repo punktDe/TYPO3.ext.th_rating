@@ -607,6 +607,7 @@ class Tx_ThRating_Controller_VoteController extends Tx_Extbase_MVC_Controller_Ac
 	 * Only called by singeltonAction to render styles once per page.
 	 * The file 'typo3temp/thratingDyn.css' will be created if it doesn´t exist
 	 * 
+	 * @throws RuntimeException
 	 * @return void
 	 */
 	protected function renderCSS() {
@@ -625,10 +626,27 @@ class Tx_ThRating_Controller_VoteController extends Tx_Extbase_MVC_Controller_Ac
 			$ratingobjectUid = $ratingobject->getUid();
 			$stepconfObjects = $ratingobject->getStepconfs();
 			$stepcount = count($stepconfObjects);
+			If (!$stepcount) {
+				$this->flashMessageContainer->add(	Tx_Extbase_Utility_Localization::translate('flash.renderCSS.noStepconf', 'ThRating', array(1=>$ratingobject->getUid(), 2=>$ratingobject->getPid())).' (1384705470)',
+													Tx_Extbase_Utility_Localization::translate('flash.singleton.error', 'ThRating'),
+													t3lib_FlashMessage::ERROR);
+				return;
+			}
+			$stepconfValidator = Tx_ThRating_Service_ObjectFactoryService::getObject( 'Tx_ThRating_Domain_Validator_StepconfValidator' );
 			$stepconfs = $stepconfObjects->toArray();
 			foreach ( $stepconfs as $stepconf ) {	//stepconfs are already sorted by steporder
-				$stepWeights[] = $stepconf->getStepweight();
-				$sumStepWeights += $stepconf->getStepweight();
+				//just do checks here that all steps are OK
+				if ($stepconfValidator->isValid($stepconf)) {
+					$stepWeights[] = $stepconf->getStepweight();
+					$sumStepWeights += $stepconf->getStepweight();
+				} else {
+					foreach ($stepconfValidator->getErrors() as $errorMessage) {
+						$this->flashMessageContainer->add(	$errorMessage->getMessage().' ('.$errorMessage->getCode().')',
+															Tx_Extbase_Utility_Localization::translate('flash.singleton.error', 'ThRating'),
+															t3lib_FlashMessage::ERROR);
+					}
+					return;
+				}
 			}
 
 			//generate CSS for all ratings out of TSConfig
@@ -713,7 +731,7 @@ class Tx_ThRating_Controller_VoteController extends Tx_Extbase_MVC_Controller_Ac
 			$rateTable = $rating->getRatingobject()->getRatetable();
 			$rateUid = $rating->getRatedobjectuid();
 			$currentRatesArray = $rating->getCurrentrates();
-			$currentRate = round($currentRatesArray["currentrate"], 2);
+			$currentRate = round($currentRatesArray['currentrate'], 2);
 			//do update foreign table
 			$queryResult = $GLOBALS['TYPO3_DB']->exec_UPDATEquery ($rateTable, 'uid = '.$rateUid, array($rateField => $currentRate));
 			return !empty($queryResult);

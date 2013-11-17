@@ -28,7 +28,7 @@ class Tx_ThRating_ViewHelpers_RatingViewHelper extends Tx_Fluid_ViewHelpers_CObj
 		$setup = $this->typoScriptSetup;
 		foreach ($pathSegments as $segment) {
 			if (!array_key_exists($segment . '.', $setup)) {
-				throw new Tx_Fluid_Core_ViewHelper_Exception('TypoScript object path "' . htmlspecialchars($typoscriptObjectPath) . '" does not exist' , 1253191023);
+				throw new Tx_Fluid_Core_ViewHelper_Exception('TypoScript object path "' . htmlspecialchars($typoscriptObjectPath) . '" does not exist', 1253191023);
 			}
 			$setup = $setup[$segment . '.'];
 		}
@@ -46,7 +46,7 @@ class Tx_ThRating_ViewHelpers_RatingViewHelper extends Tx_Fluid_ViewHelpers_CObj
 		if ($ratedobjectuid !== NULL) {
 			$setup[$lastSegment . '.']['settings.']['ratedobjectuid'] = $ratedobjectuid;
 		} else {
-				throw new Tx_Fluid_Core_ViewHelper_Exception('ratedobjectuid not set' , 1304624408);
+				throw new Tx_Fluid_Core_ViewHelper_Exception('ratedobjectuid not set', 1304624408);
 		}
 		if ($display !== NULL) {
 			$setup[$lastSegment . '.']['settings.']['display'] = $display;

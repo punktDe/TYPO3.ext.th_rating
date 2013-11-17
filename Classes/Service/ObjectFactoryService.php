@@ -165,7 +165,7 @@ class Tx_ThRating_Service_ObjectFactoryService implements t3lib_Singleton {
 			$rating = $ratingRepository->findByUid($settings['rating']);
 		} elseif ( $ratingobjectValidator->isValid($ratingobject) && $settings['ratedobjectuid'] ) {
 			//get rating according to given row
-			$rating = $ratingRepository->findMatchingObjectAndUid($ratingobject, $settings['ratedobjectuid'],Tx_ThRating_Domain_Repository_RatingRepository::addIfNotFound);
+			$rating = $ratingRepository->findMatchingObjectAndUid($ratingobject, $settings['ratedobjectuid'], Tx_ThRating_Domain_Repository_RatingRepository::addIfNotFound);
 		}
 		return $rating;
 	}			
