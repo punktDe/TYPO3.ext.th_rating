@@ -1,1 +1,3 @@
 * added several consistency checks in singleton action
+* removed german translation since ext is handled by Pootle server
+* bugfixes

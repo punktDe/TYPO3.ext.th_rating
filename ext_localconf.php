@@ -1,8 +1,8 @@
 <?php
 if (!defined ('TYPO3_MODE')) 	die ('Access denied.');
 
-require_once( t3lib_extMgm::extPath($_EXTKEY) . 'Classes/Utility/ExtensionManagementUtility.php');
-require_once( t3lib_extMgm::extPath($_EXTKEY) . 'Classes/Utility/TCALabelUserFunc.php');
+//require_once( t3lib_extMgm::extPath($_EXTKEY) . 'Classes/Utility/ExtensionManagementUtility.php');
+require_once( t3lib_extMgm::extPath($_EXTKEY) . 'Classes/Utility/TCALabelUserFuncUtility.php');
 
 /**
  * Configure the Plugin to call the 
@@ -23,7 +23,7 @@ Tx_Extbase_Utility_Extension::configurePlugin(
 // here we register "tx_thrating_unlinkDynCss_eval" to remove the dynamic CSS file when values are modified in the BE
 $TYPO3_CONF_VARS['SC_OPTIONS']['tce']['formevals']['tx_thrating_unlinkDynCss_eval'] = 'EXT:th_rating/Classes/Utility/BE.tx_thrating_unlinkDynCss_eval.php';
 //add hook to remove the dynamic CSS file when cache is cleared
-$TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['clearCachePostProc'][]='EXT:th_rating/Classes/Utility/TCALabelUserFunc.php:&Tx_ThRating_Utility_TCALabelUserFunc->clearCachePostProc';
+$TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['clearCachePostProc'][]='EXT:th_rating/Classes/Utility/TCALabelUserFuncUtility.php:&Tx_ThRating_Utility_TCALabelUserFuncUtility->clearCachePostProc';
 
 // Example for using signals of this extension:
 //$signalSlotDispatcher = t3lib_div::makeInstance('Tx_Extbase_SignalSlot_Dispatcher');

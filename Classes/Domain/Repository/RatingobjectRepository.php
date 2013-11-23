@@ -34,7 +34,6 @@ class Tx_ThRating_Domain_Repository_RatingobjectRepository extends Tx_Extbase_Pe
 	 */
 	const addIfNotFound = TRUE;
 
-	
 	/**
 	 * Finds the specific ratingobject by giving table and fieldname
 	 *

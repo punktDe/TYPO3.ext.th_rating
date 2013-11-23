@@ -93,8 +93,8 @@ class Tx_ThRating_Domain_Validator_StepconfValidator extends Tx_Extbase_Validati
 		}
 		
 		//check if a stepname is given that at least the default language exists
-		$stepname = $stepconf->getStepname();
-		If (is_object($stepname)) {
+		$stepname = $stepconf->getAllStepnames();
+		If ($stepname instanceOf Tx_Extbase_Persistence_ObjectStorage) {
 			$countNames = $stepname->count();
 		}
 		If ($countNames!=0) {

@@ -28,7 +28,7 @@
  * @version $Id:$
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License, version 2
  */
-class Tx_ThRating_Utility_TCALabelUserFunc {
+class Tx_ThRating_Utility_TCALabelUserFuncUtility {
 
 	/**
 	 * Returns the record title for the rating object in BE
@@ -61,9 +61,9 @@ class Tx_ThRating_Utility_TCALabelUserFunc {
 		if (is_object($stepnameObject)) {
 			$stepnameLang = $stepnameObject->get_languageUid();
 			If (empty($stepnameLang)) {
-				$syslang = 'Default';
+				$syslang = Tx_Extbase_Utility_Localization::translate('tca.BE.default', 'ThRating');;
 			} elseif ($stepnameLang == -1) {
-				$syslang = 'All';
+				$syslang = Tx_Extbase_Utility_Localization::translate('tca.BE.all', 'ThRating');
 			} else {
 				//look for language name
 				$syslangRepository = Tx_ThRating_Service_ObjectFactoryService::getObject('Tx_ThRating_Domain_Repository_StepnameRepository');
@@ -71,7 +71,7 @@ class Tx_ThRating_Utility_TCALabelUserFunc {
 				If ($syslangObject instanceOf Tx_ThRating_Domain_Model_Syslang) {
 					$syslang=$syslangObject->getTitle();
 				} else {
-					$syslang='UNKNOWN';
+					$syslang = Tx_Extbase_Utility_Localization::translate('tca.BE.unknown', 'ThRating');
 				}
 			}
 		} else {
@@ -79,14 +79,16 @@ class Tx_ThRating_Utility_TCALabelUserFunc {
 		}
 		$stepconfRepository = Tx_ThRating_Service_ObjectFactoryService::getObject('Tx_ThRating_Domain_Repository_StepconfRepository');
         $stepconfObject = $stepconfRepository->findByUid(intval($params['row']['stepconf']));
+		$ratetable = Tx_Extbase_Utility_Localization::translate('tca.BE.new', 'ThRating');
+		$ratefield = Tx_Extbase_Utility_Localization::translate('tca.BE.new', 'ThRating');
+		$steporder = Tx_Extbase_Utility_Localization::translate('tca.BE.new', 'ThRating');
 		if ($stepconfObject instanceOf Tx_ThRating_Domain_Model_Stepconf) {
-			$ratetable = $stepconfObject->getRatingobject()->getRatetable();
-			$ratefield = $stepconfObject->getRatingobject()->getRatefield();
-			$steporder = $stepconfObject->getSteporder();
-		} else {
-			$ratetable = 'new';
-			$ratefield = 'new';
-			$steporder = 'new';
+			$ratingObject = $stepconfObject->getRatingobject();
+			if ($ratingObject instanceOf Tx_ThRating_Domain_Model_Ratingobject) {
+				$ratetable = $ratingObject->getRatetable();
+				$ratefield = $ratingObject->getRatefield();
+				$steporder = $stepconfObject->getSteporder();
+			}
 		}
         $params['title'] = $ratetable.'['.$ratefield.']/Step '.$steporder.'/'.$syslang;
     }

@@ -2,8 +2,6 @@
 
 if (!defined ('TYPO3_MODE')) die ('Access denied.');
 
-//include_once( t3lib_extMgm::extPath($_EXTKEY) . 'Classes/Utility/TCALabelUserFunc.php');
-
 Tx_Extbase_Utility_Extension::registerPlugin(
 	$_EXTKEY,	// The extension name (in UpperCamelCase) or the extension key (in lower_underscore)
 	'Pi1',		// A unique name of the plugin in UpperCamelCase
@@ -18,7 +16,7 @@ $TCA['tx_thrating_domain_model_ratingobject'] = array (
 		'title'				=> 'LLL:EXT:'.$_EXTKEY.'/Resources/Private/Language/locallang.xlf:tca.model.ratingobject.title',
 		'label'				=> 'uid',
 		'label_alt'			=> 'ratetable,ratefield',
- 		'label_userFunc'	=> 'Tx_ThRating_Utility_TCALabelUserFunc->getRatingObjectRecordTitle',
+ 		'label_userFunc'	=> 'Tx_ThRating_Utility_TCALabelUserFuncUtility->getRatingObjectRecordTitle',
 		'tstamp'			=> 'tstamp',
 		'crdate'			=> 'crdate',
 		'cruser_id'			=> 'cruser_id',
@@ -37,7 +35,7 @@ $TCA['tx_thrating_domain_model_stepconf'] = array (
 		'title'						=> 'LLL:EXT:'.$_EXTKEY.'/Resources/Private/Language/locallang.xlf:tca.model.stepconf.title',
 		'label'						=> 'uid',
 		'label_alt' 				=> 'ratingobject,steporder',
- 		'label_userFunc' 			=> 'Tx_ThRating_Utility_TCALabelUserFunc->getStepconfRecordTitle',
+ 		'label_userFunc' 			=> 'Tx_ThRating_Utility_TCALabelUserFuncUtility->getStepconfRecordTitle',
 		'type'						=> '1',
 		'tstamp'					=> 'tstamp',
 		'crdate'					=> 'crdate',
@@ -59,7 +57,7 @@ $TCA['tx_thrating_domain_model_stepname'] = array (
 		'title'						=> 'LLL:EXT:'.$_EXTKEY.'/Resources/Private/Language/locallang.xlf:tca.model.stepname.title',
 		'label'						=> 'uid',
 		'label_alt' 				=> 'stepconf,sys_language_uid',
- 		'label_userFunc' 			=> 'Tx_ThRating_Utility_TCALabelUserFunc->getStepnameRecordTitle',
+ 		'label_userFunc' 			=> 'Tx_ThRating_Utility_TCALabelUserFuncUtility->getStepnameRecordTitle',
 		'type'						=> '1',
 		'tstamp'					=> 'tstamp',
 		'crdate'					=> 'crdate',
@@ -84,7 +82,7 @@ $TCA['tx_thrating_domain_model_rating'] = array (
 		'title'				=> 'LLL:EXT:'.$_EXTKEY.'/Resources/Private/Language/locallang.xlf:tca.model.rating.title',
 		'label'				=> 'uid',
 		'label_alt'			=> 'ratingobject,ratedobjectuid,votes',
- 		'label_userFunc'	=> 'Tx_ThRating_Utility_TCALabelUserFunc->getRatingRecordTitle',
+ 		'label_userFunc'	=> 'Tx_ThRating_Utility_TCALabelUserFuncUtility->getRatingRecordTitle',
 		'tstamp'			=> 'tstamp',
 		'crdate'			=> 'crdate',
 		'cruser_id'			=> 'cruser_id',
@@ -106,7 +104,7 @@ $TCA['tx_thrating_domain_model_vote'] = array (
 		'title'				=> 'LLL:EXT:'.$_EXTKEY.'/Resources/Private/Language/locallang.xlf:tca.model.vote.title',
 		'label'				=> 'uid',
 		'label_alt'			=> 'rating,fe_user,vote',
- 		'label_userFunc'	=> 'Tx_ThRating_Utility_TCALabelUserFunc->getVoteRecordTitle',
+ 		'label_userFunc'	=> 'Tx_ThRating_Utility_TCALabelUserFuncUtility->getVoteRecordTitle',
 		'tstamp'			=> 'tstamp',
 		'crdate'			=> 'crdate',
 		'cruser_id'			=> 'cruser_id',

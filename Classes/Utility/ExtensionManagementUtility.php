@@ -21,7 +21,7 @@
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
-t3lib_div::requireOnce( t3lib_extMgm::extPath($_EXTKEY) . 'Classes/Utility/TCALabelUserFunc.php');
+//t3lib_div::requireOnce( t3lib_extMgm::extPath($_EXTKEY) . 'Classes/Utility/TCALabelUserFuncUtility.php');
 
 /**
  * Factory for model objects
@@ -30,6 +30,13 @@ t3lib_div::requireOnce( t3lib_extMgm::extPath($_EXTKEY) . 'Classes/Utility/TCALa
  * @license http://opensource.org/licenses/gpl-license.php GNU protected License, version 2
  */
 class Tx_ThRating_Utility_ExtensionManagementUtility implements t3lib_Singleton {
+
+	/**
+	 * @param Tx_ThRating_Utility_TCALabelUserFuncUtility $tcaLabelUserFuncUtility
+	 */
+	public function injectTCALabelUserFuncUtility(Tx_ThRating_Utility_TCALabelUserFuncUtility $tcaLabelUserFuncUtility) {
+		//... to make static functions of this singleton avaiable
+	}
 
 	/**
 	 * Set a new properties for a stepconf
@@ -61,7 +68,7 @@ class Tx_ThRating_Utility_ExtensionManagementUtility implements t3lib_Singleton 
 			}
 		}
 		Tx_ThRating_Service_ObjectFactoryService::getObject('Tx_Extbase_Persistence_Manager')->persistAll();
-		Tx_ThRating_Utility_TCALabelUserFunc::clearCachePostProc(NULL, NULL, NULL);  //Delete the file 'typo3temp/thratingDyn.css'
+		Tx_ThRating_Utility_TCALabelUserFuncUtility::clearCachePostProc(NULL, NULL, NULL);  //Delete the file 'typo3temp/thratingDyn.css'
 	}
 
 

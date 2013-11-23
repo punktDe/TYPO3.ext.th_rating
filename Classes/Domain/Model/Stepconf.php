@@ -220,17 +220,26 @@ class Tx_ThRating_Domain_Model_Stepconf extends Tx_Extbase_DomainObject_Abstract
 	/**
 	 * Returns the localized stepname of this stepconf
 	 * 
-	 * @return Tx_Extbase_Persistence_ObjectStorage<Tx_ThRating_Domain_Model_Stepname>
+	 * @return string
 	 */
 	public function getStepname() {
 		if ( $this->stepname->count() == 0 ) {
-			$stepname = strval($this->getSteporder());
+			$stepname = $this->getSteporder();
 		} else {
-			$stepname = clone $this->stepname;
+			$stepname = $this->stepname->current();
 		}
-		return $stepname;
+		return strval($stepname);
 	}
 	
+	/**
+	 * Returns the localized stepname of this stepconf
+	 * 
+	 * @return Tx_ThRating_Domain_Model_Stepname
+	 */
+	public function getAllStepnames() {
+		return clone $this->stepname;
+	}
+
 	/**
 	 * @param int $l18n_parent
 	 * @return void

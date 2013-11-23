@@ -54,6 +54,18 @@
 			<trans-unit id="flexform.paths_layoutRootPath" xml:space="preserve">
 				<source>Layout root path</source>
 			</trans-unit>
+			<trans-unit id="tca.BE.new" xml:space="preserve">
+				<source>New</source>
+			</trans-unit>
+			<trans-unit id="tca.BE.unknown" xml:space="preserve">
+				<source>Unknown</source>
+			</trans-unit>
+			<trans-unit id="tca.BE.all" xml:space="preserve">
+				<source>All</source>
+			</trans-unit>
+			<trans-unit id="tca.BE.default" xml:space="preserve">
+				<source>Default</source>
+			</trans-unit>
 			<trans-unit id="tca.model.rating.ratingobject" xml:space="preserve">
 				<source>Ratingobject</source>
 			</trans-unit>

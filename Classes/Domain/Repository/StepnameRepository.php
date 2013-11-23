@@ -121,21 +121,30 @@ class Tx_ThRating_Domain_Repository_StepnameRepository extends Tx_Extbase_Persis
 	 * @return	array	return values FALSE says OK
 	 */
 	public function checkConsistency(Tx_ThRating_Domain_Model_Stepname $stepname) {
+		//TODO - remove workaround when bug #47192 is solved
+		/* Bug #47192 - setRespectSysLanguage(FALSE) doesn't prevent language overlay when fetching localized objects
+		 * Here we need all active stepname entries for a specific stepconf to check if
+		 * - one language is configured multiple times
+		 * - a language entriy does not exist in this website
+		 * One the bug has been fixed or a new option implemented in extbase we could switch back to
+		 * normal query
+		 ********************************************************************************************************
 		$query = $this->createQuery();
 		$query	->getQuerySettings()->setRespectSysLanguage(FALSE);
+		$query	->getQuerySettings()->setReturnRawQueryResult(TRUE);
 		$query	->matching(
-						$query->logicalAnd(
-							$query->equals('stepconf', $stepname->getStepconf()->getUid())
-						)
+						$query->equals('stepconf', $stepname->getStepconf()->getUid())
 					);
-		$queryResult = $query->execute()->toArray();
+		$queryResult = $query->execute()->toArray();*/
+		$where = 'stepconf='.$stepname->getStepconf()->getUid() . tslib_cObj::enableFields('tx_thrating_domain_model_stepname');
+		$queryResult = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('*', 'tx_thrating_domain_model_stepname', $where);
 		if ( count($queryResult) > 1 ) {
 			$allWebsiteLanguages = Tx_ThRating_Service_ObjectFactoryService::getObject('Tx_ThRating_Domain_Repository_SyslangRepository')->findAll()->toArray();
 			foreach( $allWebsiteLanguages as $key => $language ) {
 				$websiteLanguagesArray[]=$language->getUid();
 			}
 			foreach( $queryResult as $key => $value ) {
-				$languageUid=$value->get_languageUid();
+				$languageUid=$value['sys_language_uid'];
 				$languageCounter[$languageUid]++;
 				If ($languageCounter[$languageUid] > 1) {
 					$checkConsistency['doubleLang'] = TRUE;
@@ -143,7 +152,7 @@ class Tx_ThRating_Domain_Repository_StepnameRepository extends Tx_Extbase_Persis
 
 				//check if language flag exists in current website
 				If ($languageUid > 0) {
-					if ( !array_search($languageUid,$websiteLanguagesArray) ) {
+					if ( array_search($languageUid,$websiteLanguagesArray) === FALSE ) {
 						$checkConsistency['existLang'] = TRUE;
 					}
 				}
