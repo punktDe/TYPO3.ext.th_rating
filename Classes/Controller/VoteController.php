@@ -473,6 +473,12 @@ class Tx_ThRating_Controller_VoteController extends Tx_Extbase_MVC_Controller_Ac
 	 */
 	protected function setAjaxSelections(Tx_ThRating_Domain_Model_Vote $vote) {
 		if ($vote->getVoter() instanceof Tx_ThRating_Domain_Model_Voter) {
+			//cleanup settings to reduce data size in POST form
+			$tmpDisplayConfig = $this->settings['ratingConfigurations'][$this->settings['display']];
+			unset($this->settings['defaultObject']);
+			unset($this->settings['ratingConfigurations']);
+			$this->settings['ratingConfigurations'][$this->settings['display']] = $tmpDisplayConfig;
+			
 			foreach ( $vote->getRating()->getRatingobject()->getStepconfs() as $i => $stepConf ) {
 				$key = utf8_encode(json_encode( array(
 					'value' 		=> $stepConf->getUid(),
@@ -679,16 +685,16 @@ class Tx_ThRating_Controller_VoteController extends Tx_Extbase_MVC_Controller_Ac
 						$height = $height * $sumStepWeights;
 					}
 					$cssFile .= $mainId.' { width:'.$width.'px; height:'.$height.'px; }'.CHR(10);
-					$cssFile .= $mainId.', '.$mainId.' a:hover, '.$mainId.' a:active, '.$mainId.' a:focus, '.$mainId.' .current-rating {	background:url('.$filenameUri.') 0 0 repeat-y;	}'.CHR(10);
-					$cssFile .= $mainId.' a, '.$mainId.' .current-rating {	width:'.$width.'px; }'.CHR(10);
+					$cssFile .= $mainId.', '.$mainId.' li:hover, '.$mainId.' li:active, '.$mainId.' li:focus, '.$mainId.' .current-rating {	background:url('.$filenameUri.') 0 0 repeat-y;	}'.CHR(10);
+					$cssFile .= $mainId.' li, '.$mainId.' .current-rating {	width:'.$width.'px; }'.CHR(10);
 				} else {
 					$height = round($height / 3);
 					if ( !$ratingConfig['barimage'] ) {
 						$width = $width * $sumStepWeights;
 					}
 					$cssFile .= $mainId.' { width:'.$width.'px; height:'.$height.'px; }'.CHR(10);
-					$cssFile .= $mainId.', '.$mainId.' a:hover, '.$mainId.' a:active, '.$mainId.' a:focus, '.$mainId.' .current-rating {	background:url('.$filenameUri.') 0 0 repeat-x;	}'.CHR(10);
-					$cssFile .= $mainId.' a, '.$mainId.' .current-rating {	height:'.$height.'px; line-height:'.$height.'px; }'.CHR(10);
+					$cssFile .= $mainId.', '.$mainId.' li:hover, '.$mainId.' li:active, '.$mainId.' li:focus, '.$mainId.' .current-rating {	background:url('.$filenameUri.') 0 0 repeat-x;	}'.CHR(10);
+					$cssFile .= $mainId.' li, '.$mainId.' .current-rating {	height:'.$height.'px; line-height:'.$height.'px; }'.CHR(10);
 				}
 			}
 				
@@ -698,8 +704,8 @@ class Tx_ThRating_Controller_VoteController extends Tx_Extbase_MVC_Controller_Ac
 				$sumWeights +=  $stepWeight;
 				$zIndex = $stepcount-$i+2;
 				$stepPart =  round($sumWeights * 100 / $sumStepWeights);
-				$cssFile .= 'a.RObj'.$ratingobjectUid.'-StpOdr'.$i.'-ratingstep-normal { width:'.$stepPart.'%; z-index:'.$zIndex.'; }'.CHR(10);
-				$cssFile .= 'a.RObj'.$ratingobjectUid.'-StpOdr'.$i.'-ratingstep-tilt { height:'.$stepPart.'%; z-index:'.$zIndex.'; }'.CHR(10);
+				$cssFile .= 'li.RObj'.$ratingobjectUid.'-StpOdr'.$i.'-ratingstep-normal { width:'.$stepPart.'%; z-index:'.$zIndex.'; }'.CHR(10);
+				$cssFile .= 'li.RObj'.$ratingobjectUid.'-StpOdr'.$i.'-ratingstep-tilt { height:'.$stepPart.'%; z-index:'.$zIndex.'; }'.CHR(10);
 				$i++;
 			}
 			//reset variables for next iteration

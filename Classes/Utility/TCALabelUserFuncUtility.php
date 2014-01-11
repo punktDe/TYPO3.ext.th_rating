@@ -35,7 +35,7 @@ class Tx_ThRating_Utility_TCALabelUserFuncUtility {
 	 *
 	 * @return byRef $params
 	 */
-	public function getRatingObjectRecordTitle($params, $pObj) {
+	public function getRatingObjectRecordTitle(&$params, &$pObj) {
         $params['title'] = '#'.$params['row']['uid'].': '.$params['row']['ratetable'].' ['.$params['row']['ratefield'].']';
     }
 
@@ -44,7 +44,7 @@ class Tx_ThRating_Utility_TCALabelUserFuncUtility {
 	 *
 	 * @return byRef $params
 	 */
-    public function getStepconfRecordTitle($params, $pObj) {
+    public function getStepconfRecordTitle(&$params, &$pObj) {
         $params['title'] = '#'.$params['row']['uid']. ': Steporder ['.$params['row']['steporder'].']';
     }
 
@@ -53,7 +53,7 @@ class Tx_ThRating_Utility_TCALabelUserFuncUtility {
 	 *
 	 * @return byRef $params
 	 */
-    public function getStepnameRecordTitle($params, $pObj) {
+    public function getStepnameRecordTitle(&$params, &$pObj) {
 		//look into repository to find clear text object attributes
 		$stepnameRepository = Tx_ThRating_Service_ObjectFactoryService::getObject('Tx_ThRating_Domain_Repository_StepnameRepository');
         $stepnameRepository->clearQuerySettings();	//disable syslanguage and enableFields
@@ -98,7 +98,7 @@ class Tx_ThRating_Utility_TCALabelUserFuncUtility {
 	 *
 	 * @return byRef $params
 	 */
-    public function getRatingRecordTitle($params, $pObj) {
+    public function getRatingRecordTitle(&$params, &$pObj) {
         $params['title'] = '#'.$params['row']['uid']. ': RowUid ['.$params['row']['ratedobjectuid'].']';
     }
 
@@ -107,7 +107,7 @@ class Tx_ThRating_Utility_TCALabelUserFuncUtility {
 	 *
 	 * @return byRef $params
 	 */
-    public function getVoteRecordTitle($params, $pObj) {
+    public function getVoteRecordTitle(&$params, &$pObj) {
         $params['title'] = 'Voteuser Uid ['.$params['row']['voter'].']';
     }
     

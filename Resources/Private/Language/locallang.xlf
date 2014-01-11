@@ -187,7 +187,7 @@
 				<source>False ratingobject in rating</source>
 			</trans-unit>
 			<trans-unit id="error.validator.vote.vote" xml:space="preserve">
-				<source>Missing vote.</source>
+				<source>Missing vote</source>
 			</trans-unit>
 			<trans-unit id="error.validator.vote.voter" xml:space="preserve">
 				<source>False voter reference in vote</source>
@@ -217,7 +217,7 @@
 				<source>Not already rated</source>
 			</trans-unit>
 			<trans-unit id="flash.vote.ratinglinks.wrongDisplayConfig" xml:space="preserve">
-				<source>Check TSConfig setting for display name.</source>
+				<source>Check TSConfig setting for 'display name'.</source>
 			</trans-unit>
 			<trans-unit id="flash.vote.create.noPermission" xml:space="preserve">
 				<source>No permission for this action.</source>
@@ -244,16 +244,13 @@
 				<source>Stepconf missing in ratingobject configuration of UID %1$s - check PID %2$s.</source>
 			</trans-unit>
 			<trans-unit id="flash.vote.create.alreadyRated" xml:space="preserve">
-				<source>Already rated</source>
+				<source>Already rated.</source>
 			</trans-unit>
 			<trans-unit id="flash.vote.create.newCreated" xml:space="preserve">
 				<source>Your new vote was created.</source>
 			</trans-unit>
 			<trans-unit id="flash.vote.create.foreignUpdateFailed" xml:space="preserve">
 				<source>Update of foreign field has failed.</source>
-			</trans-unit>
-			<trans-unit id="no_rating_done" xml:space="preserve">
-				<source>Update der Fremdtabelle fehlgeschlagen</source>
 			</trans-unit>
 			<trans-unit id="fluid.template.ratinglinks.currentRating" xml:space="preserve" approved="yes">
 				<note>Forwarded arguments: 1:currentRates, 2:stepCount</note>

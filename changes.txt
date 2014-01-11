@@ -1,3 +1,6 @@
-* added several consistency checks in singleton action
-* removed german translation since ext is handled by Pootle server
-* bugfixes
+* tested with TYPO3 6.2 LTS (beta3)
+* added some attribute for screenreaders (WAI-ARIA compliant)
+* reduced size of data posted in AJAX request
+* changed ratinglinks to LI elements
+* removed ratinglink viewhelper
+* TCA correction in tx_thrating_domain_model_rating.php

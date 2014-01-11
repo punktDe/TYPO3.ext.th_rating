@@ -2,7 +2,7 @@
 <f:if condition="{staticPreContent}"><f:then>
 	<div class='tx-thrating-staticPreContent'><f:format.raw>{staticPreContent}</f:format.raw></div>
 </f:then></f:if>
-	<div class='tx-thrating-content'>
+	<div class='tx-thrating-content' aria-life="polite" aria-atomic="false" aria-relevant="text">
 	<f:if condition="{preContent}"><f:then>
 		<div class='tx-thrating-preContent'><f:format.raw>{preContent}</f:format.raw></div>
 	</f:then></f:if>
@@ -48,7 +48,7 @@
 <f:if condition="{staticPostContent}"><f:then>
 	<div class='tx-thrating-staticPostContent'><f:format.raw>{staticPostContent}</f:format.raw></div>
 </f:then></f:if>
-	<div class='tx-thrating-flash-message'>
+	<div class='tx-thrating-flash-message' aria-life="assertive" aria-atomic="false" aria-relevant="text">
 		<f:flashMessages renderMode="div" />
 	</div>
 </div>
