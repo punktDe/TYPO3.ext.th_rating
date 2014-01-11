@@ -60,7 +60,7 @@ $TCA['tx_thrating_domain_model_rating'] = array(
 		'currentrates' => Array (
 			'label'   => 'LLL:EXT:th_rating/Resources/Private/Language/locallang.xlf:tca.model.rating.currentrates',
 			'config' => Array (
-				'type'		=> '',
+				'type'		=> 'none',
 				'size'		=> '30',
 			)
 		),		
