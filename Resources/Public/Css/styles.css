@@ -45,7 +45,7 @@ background-position:right bottom;
 display:inline;
 margin:0px;
 }
-.thRating li,
+.thRating span,
 .thRating .current-rating{
 position:absolute;
 bottom:0;
@@ -55,9 +55,9 @@ outline:0px;
 overflow:hidden;
 border: 0px;
 }
-.thRating-normal li:hover,
-.thRating-normal li:active,
-.thRating-normal li:focus{
+.thRating-normal span:hover,
+.thRating-normal span:active,
+.thRating-normal span:focus{
 background-position: left bottom;
 }
 .thRating-normal .current-rating{
@@ -65,17 +65,11 @@ z-index:1;
 background-position: left center;
 }
 
-.thRating-normal li:hover,
-.thRating-normal li:active,
-.thRating-normal li:focus{
-background-position: left bottom;
-}
-
 /* necessary because of bug in IE
 	values below 28% are displayed shifted */
-.thRating-tilt li.noratingbar:hover,
-.thRating-tilt li.noratingbar:active,
-.thRating-tilt li.noratingbar:focus{
+.thRating-tilt span.noratingbar:hover,
+.thRating-tilt span.noratingbar:active,
+.thRating-tilt span.noratingbar:focus{
 background-position: left top;
 }
 .thRating-tilt li.noratingbar {

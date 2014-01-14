@@ -13,7 +13,7 @@
 			<f:comment><!-- Only generate links if a  FE user is logged on --></f:comment>
 			<f:if condition="{ajaxSelections}"><f:then>
 				<f:for each="{ajaxSelections}" as="ajaxSelection">
-				<li class="ajaxLink RObj{ratingobject.uid}-StpOdr{ajaxSelection.step.steporder}-ratingstep-{ratingClass} {barimage}" title='{ajaxSelection.step.stepname}' tabindex='-1' ><input type="hidden" name="ajaxSelect" value="{ajaxSelection.ajaxvalue}" />{ajaxSelection.step.steporder}</li>
+				<li><span class="ajaxLink RObj{ratingobject.uid}-StpOdr{ajaxSelection.step.steporder}-ratingstep-{ratingClass} {barimage}" title='{ajaxSelection.step.stepname}' tabindex='-1' ><input type="hidden" name="ajaxSelect" value="{ajaxSelection.ajaxvalue}" />{ajaxSelection.step.steporder}</span></li>
 				</f:for>
 			</f:then></f:if>
 		</ul>	
