@@ -35,6 +35,11 @@ class Tx_ThRating_Domain_Repository_StepconfRepository extends Tx_Extbase_Persis
 	 * Initialze this repository
 	 */
 	public function initializeObject() {
+		//disable RespectStoragePage as pid is always bound to parent objects pid
+		$defaultQuerySettings = $this->objectManager->get('Tx_Extbase_Persistence_Typo3QuerySettings');
+		$defaultQuerySettings->setRespectStoragePage(FALSE);
+		$this->setDefaultQuerySettings($defaultQuerySettings);
+		
 		$configurationManager = $this->objectManager->get('Tx_Extbase_Configuration_ConfigurationManager');
 		$settings = $configurationManager->getConfiguration('Settings', 'thRating', 'pi1');
 	}
