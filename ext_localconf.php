@@ -1,9 +1,6 @@
 <?php
 if (!defined ('TYPO3_MODE')) 	die ('Access denied.');
 
-//require_once( t3lib_extMgm::extPath($_EXTKEY) . 'Classes/Utility/ExtensionManagementUtility.php');
-require_once( t3lib_extMgm::extPath($_EXTKEY) . 'Classes/Utility/TCALabelUserFuncUtility.php');
-
 /**
  * Configure the Plugin to call the 
  * right combination of Controller and Action according to
