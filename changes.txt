@@ -1,6 +1,2 @@
-* tested with TYPO3 6.2 LTS (beta3)
-* added some attribute for screenreaders (WAI-ARIA compliant)
-* reduced size of data posted in AJAX request
-* changed ratinglinks to LI elements
-* removed ratinglink viewhelper
-* TCA correction in tx_thrating_domain_model_rating.php
+- Bug #54936: Storage page restriction prevents generation of CSS file
+- Bug #54994: Hover effect stays after doing votings since 0.9.0
