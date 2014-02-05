@@ -1,5 +1,5 @@
 <f:if condition="{ratingName}"><f:then>
-	<div name='tx-thrating-ratinglinks'>
+	<div class='tx-thrating-ratinglinks'>
 		<ul class='thRating thRating-{ratingClass} thRating-RObj{ratingobject.uid}-{ratingName}'>
 			<f:if condition="{settings.fluid.templates.ratinglinks.likesMode}">
 			<f:then><f:comment><!-- display no current rating if in likesMode --></f:comment></f:then>
@@ -16,7 +16,10 @@
 				<li><span class="ajaxLink RObj{ratingobject.uid}-StpOdr{ajaxSelection.step.steporder}-ratingstep-{ratingClass} {barimage}" title='{ajaxSelection.step.stepname}' tabindex='-1' ><input type="hidden" name="ajaxSelect" value="{ajaxSelection.ajaxvalue}" />{ajaxSelection.step.steporder}</span></li>
 				</f:for>
 			</f:then></f:if>
-		</ul>	
+		</ul>
+        <f:if condition="{settings.fluid.templates.ratinglinks.tooltips}"><f:then>
+        <div class='stepnameTooltip' aria-life="polite" aria-atomic="false" aria-relevant="text">&nbsp;</div>
+        </f:then></f:if>
 	</div>
 </f:then></f:if>
 <f:comment>

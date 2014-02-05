@@ -47,15 +47,15 @@
 							</config>							
 						</TCEforms>
 					</settings.display>
-					<settings.hideSummary>
+					<settings.showNotRated>
 						<TCEforms>
-							<label>LLL:EXT:th_rating/Resources/Private/Language/locallang.xlf:flexform.general_hideSummary</label>
+							<label>LLL:EXT:th_rating/Resources/Private/Language/locallang.xlf:flexform.general_showNotRated</label>
 							<config>
 								<type>check</type>
 							</config>							
 						</TCEforms>
-					</settings.hideSummary>
-					<settings.cookieProtection>
+					</settings.showNotRated>
+					<settings.cookieLifetime>
 						<TCEforms>
 							<label>LLL:EXT:th_rating/Resources/Private/Language/locallang.xlf:flexform.general_cookieLifetime</label>
 							<config>
@@ -65,10 +65,125 @@
 								<eval>trim,int,num,nospace</eval>
 							</config>							
 						</TCEforms>
-					</settings.cookieProtection>
+					</settings.cookieLifetime>
 				</el>
 			</ROOT>
 		</sDEF>
+        <sFluidLayoutConfig>
+			<ROOT>
+				<TCEforms>
+					<sheetTitle>LLL:EXT:th_rating/Resources/Private/Language/locallang.xlf:flexform.fluid.layoutConfig</sheetTitle>
+				</TCEforms>
+				<type>array</type>
+				<el>
+					<settings.fluid.layouts.default.showSectionContent>
+						<TCEforms>
+							<label>LLL:EXT:th_rating/Resources/Private/Language/locallang.xlf:flexform.fluid.layoutConfig_showSectionContent</label>
+							<config>
+								<type>check</type>
+							</config>							
+						</TCEforms>
+					</settings.fluid.layouts.default.showSectionContent>
+					<settings.fluid.layouts.default.showSummary>
+						<TCEforms>
+							<onChange>reload</onChange>
+							<label>LLL:EXT:th_rating/Resources/Private/Language/locallang.xlf:flexform.fluid.layoutConfig_showSummary</label>
+							<config>
+								<type>check</type>
+								<default>true</default>
+							</config>							
+						</TCEforms>
+					</settings.fluid.layouts.default.showSummary>
+					<settings.fluid.layouts.default.showCurrentRates>
+						<TCEforms>
+							<displayCond>FIELD:settings.fluid.layouts.default.showSummary:REQ:true</displayCond>
+							<label>LLL:EXT:th_rating/Resources/Private/Language/locallang.xlf:flexform.fluid.layoutConfig_showCurrentRates</label>
+							<config>
+								<type>check</type>
+							</config>							
+						</TCEforms>
+					</settings.fluid.layouts.default.showCurrentRates>
+					<settings.fluid.partials.infoBlock.showAnonymousVotes>
+						<TCEforms>
+							<displayCond>FIELD:settings.fluid.layouts.default.showSummary:REQ:true</displayCond>
+							<label>LLL:EXT:th_rating/Resources/Private/Language/locallang.xlf:flexform.fluid.partialInfoBlockConfig_showAnonymousVotes</label>
+							<config>
+								<type>check</type>
+								<default>true</default>
+							</config>							
+						</TCEforms>
+					</settings.fluid.partials.infoBlock.showAnonymousVotes>
+					<settings.fluid.partials.usersRating.showTextInfo>
+						<TCEforms>
+							<displayCond>FIELD:settings.fluid.layouts.default.showSummary:REQ:true</displayCond>
+							<label>LLL:EXT:th_rating/Resources/Private/Language/locallang.xlf:flexform.fluid.partialUsersRatingConfig_showTextInfo</label>
+							<config>
+								<type>check</type>
+								<default>true</default>
+							</config>							
+						</TCEforms>
+					</settings.fluid.partials.usersRating.showTextInfo>
+					<settings.fluid.partials.usersRating.showGraphicInfo>
+						<TCEforms>
+							<displayCond>FIELD:settings.fluid.layouts.default.showSummary:REQ:true</displayCond>
+							<label>LLL:EXT:th_rating/Resources/Private/Language/locallang.xlf:flexform.fluid.partialUsersRatingConfig_showGraphicInfo</label>
+							<config>
+								<type>check</type>
+							</config>							
+						</TCEforms>
+					</settings.fluid.partials.usersRating.showGraphicInfo>
+				</el>
+			</ROOT>
+        </sFluidLayoutConfig>
+        <sFluidRatinglinksConfig>
+			<ROOT>
+				<TCEforms>
+					<sheetTitle>LLL:EXT:th_rating/Resources/Private/Language/locallang.xlf:flexform.fluid.ratinglinksConfig</sheetTitle>
+                    <displayCond>FIELD:sDEF.switchableControllerActions:=:Vote->ratinglinks</displayCond>
+				</TCEforms>
+				<type>array</type>
+				<el>
+					<settings.fluid.templates.ratinglinks.tooltips>
+						<TCEforms>
+							<label>LLL:EXT:th_rating/Resources/Private/Language/locallang.xlf:flexform.fluid.ratinglinksConfig_tooltips</label>
+							<config>
+								<type>check</type>
+								<default>true</default>
+							</config>							
+						</TCEforms>
+					</settings.fluid.templates.ratinglinks.tooltips>
+					<settings.fluid.templates.ratinglinks.likesMode>
+						<TCEforms>
+							<onChange>reload</onChange>
+							<label>LLL:EXT:th_rating/Resources/Private/Language/locallang.xlf:flexform.fluid.ratinglinksConfig_likesMode</label>
+							<config>
+								<type>check</type>
+							</config>							
+						</TCEforms>
+					</settings.fluid.templates.ratinglinks.likesMode>
+					<settings.fluid.partials.usersRating.showTextInfo>
+						<TCEforms>
+							<displayCond>FIELD:settings.fluid.templates.ratinglinks.likesMode:REQ:true</displayCond>
+							<label>LLL:EXT:th_rating/Resources/Private/Language/locallang.xlf:flexform.fluid.partialUsersRatingConfig_showTextInfo</label>
+							<config>
+								<type>check</type>
+								<default>false</default>
+							</config>							
+						</TCEforms>
+					</settings.fluid.partials.usersRating.showTextInfo>
+					<settings.fluid.partials.usersRating.showGraphicInfo>
+						<TCEforms>
+							<displayCond>FIELD:settings.fluid.templates.ratinglinks.likesMode:REQ:true</displayCond>
+							<label>LLL:EXT:th_rating/Resources/Private/Language/locallang.xlf:flexform.fluid.partialUsersRatingConfig_showGraphicInfo</label>
+							<config>
+								<type>check</type>
+								<default>true</default>
+							</config>							
+						</TCEforms>
+					</settings.fluid.partials.usersRating.showGraphicInfo>
+				</el>
+			</ROOT>
+        </sFluidRatinglinksConfig>
 		<sPaths>
 			<ROOT>
 				<TCEforms>

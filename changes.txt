@@ -1,2 +1,6 @@
-- Bug #54936: Storage page restriction prevents generation of CSS file
-- Bug #54994: Hover effect stays after doing votings since 0.9.0
+- Added configuration option for html tooltips on ratinglinks
+- Added some CSS3 effects (round borders, shadow)
+- Several minor bugfixes
+- Major redesgin in constants and flexform
+- removed showNotRated, cookieLifetime and hideSummary from constants
+- renamed hideSummary to showSummary and switched meaning

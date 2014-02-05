@@ -36,11 +36,41 @@
 			<trans-unit id="flexform.general_display" xml:space="preserve">
 				<source>Ratinglink configuration</source>
 			</trans-unit>
-			<trans-unit id="flexform.general_hideSummary" xml:space="preserve">
-				<source>Hide rating summary</source>
+			<trans-unit id="flexform.general_showNotRated" xml:space="preserve">
+				<source>Show info if no rating has be done yet</source>
 			</trans-unit>
 			<trans-unit id="flexform.general_cookieLifetime" xml:space="preserve">
 				<source>Enter value to activate cookie protection for anonymous votes</source>
+			</trans-unit>
+			<trans-unit id="flexform.fluid.ratinglinksConfig" xml:space="preserve">
+				<source>Ratinglink Views</source>
+			</trans-unit>
+			<trans-unit id="flexform.fluid.layoutConfig" xml:space="preserve">
+				<source>General display</source>
+			</trans-unit>
+			<trans-unit id="flexform.fluid.layoutConfig_showSummary" xml:space="preserve">
+				<source>Show overall rating summary</source>
+			</trans-unit>
+			<trans-unit id="flexform.fluid.layoutConfig_showCurrentRates" xml:space="preserve">
+				<source>Show users given rating</source>
+			</trans-unit>
+			<trans-unit id="flexform.fluid.layoutConfig_showSectionContent" xml:space="preserve">
+				<source>Display action module content section</source>
+			</trans-unit>
+			<trans-unit id="flexform.fluid.partialInfoBlockConfig_showAnonymousVotes" xml:space="preserve">
+				<source>Display given anonymous votings</source>
+			</trans-unit>
+			<trans-unit id="flexform.fluid.partialUsersRatingConfig_showTextInfo" xml:space="preserve">
+				<source>Display given users voting (text)</source>
+			</trans-unit>
+			<trans-unit id="flexform.fluid.partialUsersRatingConfig_showGraphicInfo" xml:space="preserve">
+				<source>Display given users voting (graphic)</source>
+			</trans-unit>
+			<trans-unit id="flexform.fluid.ratinglinksConfig_tooltips" xml:space="preserve">
+				<source>Show HTML generated tooltips on ratinglinks</source>
+			</trans-unit>
+			<trans-unit id="flexform.fluid.ratinglinksConfig_likesMode" xml:space="preserve">
+				<source>likesMode activated</source>
 			</trans-unit>
 			<trans-unit id="flexform.sheet_paths" xml:space="preserve">
 				<source>Paths</source>
@@ -94,7 +124,7 @@
 				<source>Rating object list</source>
 			</trans-unit>
 			<trans-unit id="tca.model.ratingobject.uid" xml:space="preserve">
-				<source>Ratingstep configurations</source>
+				<source>Ratingobject configurations</source>
 			</trans-unit>
 			<trans-unit id="tca.model.ratingobject.title" xml:space="preserve">
 				<source>RatingObjects</source>

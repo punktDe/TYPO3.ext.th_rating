@@ -12,7 +12,7 @@
 		<f:if condition="{settings.fluid.layouts.default.showSectionContent}"><f:then>
 			<f:render section="content" />
 		</f:then></f:if>
-		<f:if condition="{settings.fluid.layouts.default.hideSummary}==0"><f:then>
+		<f:if condition="{settings.fluid.layouts.default.showSummary}"><f:then>
 		<div class='tx-thrating-summary'>
 			<f:comment><!-- display check regarding rating summary information --></f:comment>
 			<f:if condition="{settings.fluid.layouts.default.showCurrentRates}"><f:then>

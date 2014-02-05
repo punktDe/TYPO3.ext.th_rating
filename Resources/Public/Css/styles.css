@@ -1,6 +1,4 @@
-.loading { border:1px solid gray; }
 #formResult {height: 20px; }
-
 #tx-thrating-pi1-singleton{
 	visibility:hidden;
 }
@@ -24,45 +22,62 @@
 .tx-thrating-singleton-message .message-body{
 	padding:3px;
 }
-
-.thRating{
-position:relative;
-overflow:hidden;
-list-style:none;
-margin:0px;
-padding:0px;
+div.tx-thrating-ratinglinks > div{
+    float:left;
+    display:inline-block;
 }
-
+div.tx-thrating-ratinglinks > div.stepnameTooltip{
+    display:none;
+    visibility:hidden;
+}
+div.tx-thrating-ratinglinks > div.stepnameTooltipOn {
+    visibility:visible;
+    display:block;
+    position:absolute;
+    top:-2em;
+    left:1em;
+    min-width:3em;
+    border:1px solid #505050;
+    border-radius:0.7em;
+    -webkit-border-radius:0.7em;
+    -moz-border-radius:0.7em;
+    background-color:#ffff99;
+    color:#000;
+    text-align: center;
+    padding:2px 0.8em 2px 0.8em;
+    font-size: 0.8em;
+    box-shadow: 6px 6px 4px #6B6A6A;
+}
+div.tx-thrating-ratinglinks ul{
+    position:relative;
+    list-style:none;
+    margin:0px;
+    padding:0px;
+}
 .thrating-normal {
-background-position:left top;
+    background-position:left top;
 }
-
 .thRating-tilt{
-background-position:right bottom;
-}
-
-.thRating li{
-display:inline;
-margin:0px;
+    background-position:right bottom;
 }
 .thRating span,
 .thRating .current-rating{
-position:absolute;
-bottom:0;
-left:0;
-text-indent:-1000em;
-outline:0px;
-overflow:hidden;
-border: 0px;
+    position:absolute;
+    bottom:0;
+    left:0;
+    text-indent:-1000em;
+    outline:0px;
+    overflow:hidden;
+    border: 0px;
 }
 .thRating-normal span:hover,
 .thRating-normal span:active,
 .thRating-normal span:focus{
-background-position: left bottom;
+    background-position: left bottom;
 }
 .thRating-normal .current-rating{
-z-index:1;
-background-position: left center;
+    z-index:1;
+    background-position: left center;
 }
 
 /* necessary because of bug in IE
@@ -70,15 +85,15 @@ background-position: left center;
 .thRating-tilt span.noratingbar:hover,
 .thRating-tilt span.noratingbar:active,
 .thRating-tilt span.noratingbar:focus{
-background-position: left top;
+    background-position: left top;
 }
 .thRating-tilt li.noratingbar {
-background-position: center top !important;
+    background-position: center top !important;
 }
 
 .thRating-tilt .current-rating{
-z-index:1;
-background-position: center bottom;
+    z-index:1;
+    background-position: center bottom;
 }
 
 .tx-thrating-pi1-content{
@@ -90,6 +105,7 @@ background-position: center bottom;
 	font-size:0.6em; 
 	line-height:1.4em; 
 	margin-top:1em;
+    clear:left;
 }
 .tx-thrating-flash-message{
 	position:absolute;
@@ -98,8 +114,32 @@ background-position: center bottom;
 	top:1.5em;
 	left:1.5em;
 	background-color: #a7a7a7;
-	border:1px solid black;
-	min-width:100px;
+	border:1px solid #505050;
+	min-width:10em;
+	max-width:30em;
+    overflow:hidden;
+    z-index:100;
+    border-radius:0.5em;
+    -webkit-border-radius:0.5em;
+    -moz-border-radius:0.5em;
+    box-shadow: 6px 6px 4px #6B6A6A;
+}
+.tx-thrating-flash-message .message-header{
+    border: 1px dotted grey;
+	padding:1px;
+	font-weight:bold;
+    -webkit-border-top-left-radius:0.4em;
+    -webkit-border-top-right-radius:0.4em;
+    -moz-border-radius-topleft:0.4em;
+    -moz-border-radius-topright:0.4em;
+    border-top-left-radius:0.4em;
+    border-top-right-radius:0.4em;
+    -webkit-border-bottom-right-radius: 0.2em;
+    -webkit-border-bottom-left-radius: 0.2em;
+    -moz-border-radius-bottomright: 0.2em;
+    -moz-border-radius-bottomleft: 0.2em;
+    border-bottom-right-radius: 0.2em;
+    border-bottom-left-radius: 0.2em;
 }
 .tx-thrating-flash-message .message-error .message-header{
 	background-color: #f87575;

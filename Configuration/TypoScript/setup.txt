@@ -37,13 +37,16 @@ plugin.tx_thrating {
 			fluid {
 				layouts {
 					default {
-						hideSummary = {$plugin.tx_thrating.config.hideSummary}
+						showSummary = 1
 						showCurrentRates = 1
 						showSectionContent = 1
 					}
 				}
 				templates {
-					ratinglinks.likesMode = 0
+					ratinglinks {
+                        likesMode = 0
+						tooltips = 1
+                    }
 				}
 				partials {
 					usersRating {
@@ -70,6 +73,7 @@ plugin.tx_thrating {
 		partialRootPath = {$plugin.tx_thrating.view.partialRootPath}
 		layoutRootPath = {$plugin.tx_thrating.view.layoutRootPath}
 	}
+	
 	# This is an example how to modify the translation
 	_LOCAL_LANG {
 		default {
@@ -85,23 +89,24 @@ plugin.tx_thrating {
 plugin.tx_thrating {
 	settings {
 		showNoFEUser = {$plugin.tx_thrating.config.showNoFEUser}
-		showNotRated = {$plugin.tx_thrating.config.showNotRated}
 		mapAnonymous = {$plugin.tx_thrating.config.mapAnonymous}
-		cookieLifetime = {$plugin.tx_thrating.config.cookieLifetime}
 		ratingContext = defaultContext
 
 		#this section would be overridden by a similar section within your ratingconfiguration
 		fluid {
 			layouts {
 				default {
-					hideSummary = {$plugin.tx_thrating.config.hideSummary}
+					showSummary = 0
 					showCurrentRates = 1
 					showSectionContent = 1
 				}
 			}
-			templates {
-				ratinglinks.likesMode = 0
-			}
+            templates {
+                ratinglinks {
+                    likesMode = 0
+					tooltips = 0
+                }
+            }
 			partials {
 				usersRating {
 					showTextInfo = 1
@@ -155,13 +160,14 @@ plugin.tx_thrating {
 				fluid {
 					layouts {
 						default {
-							hideSummary = 1
+							showSummary = 0
 							showCurrentRates = 0
 							showSectionContent = 1
 						}
 					}
 					templates {
 						ratinglinks.likesMode = 1
+						ratinglinks.tooltips = 0
 					}
 					partials {
 						usersRating {
