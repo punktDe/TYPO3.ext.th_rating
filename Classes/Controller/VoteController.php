@@ -633,8 +633,9 @@ class Tx_ThRating_Controller_VoteController extends Tx_Extbase_MVC_Controller_Ac
 			$stepconfObjects = $ratingobject->getStepconfs();
 			$stepcount = count($stepconfObjects);
 			If (!$stepcount) {
-				$this->flashMessageContainer->add(	Tx_Extbase_Utility_Localization::translate('flash.renderCSS.noStepconf', 'ThRating', array(1=>$ratingobject->getUid(), 2=>$ratingobject->getPid())).' (1384705470)',
-													Tx_Extbase_Utility_Localization::translate('flash.singleton.error', 'ThRating'),
+				$this->flashMessageContainer->add(	Tx_Extbase_Utility_Localization::translate('flash.renderCSS.noStepconf', 'ThRating', 
+													array(1=>$ratingobject->getUid(), 2=>$ratingobject->getPid())).' (1384705470)',
+															Tx_Extbase_Utility_Localization::translate('flash.singleton.error', 'ThRating'),
 													t3lib_FlashMessage::ERROR);
 				return;
 			}

@@ -142,9 +142,13 @@ class Tx_ThRating_Service_ObjectFactoryService implements t3lib_Singleton {
 	 * @return	mixed
 	 */
 	static function createObject( $newObject ) {
-		// get an ObjectManager first
-		$objectManager = t3lib_div::makeInstance('Tx_Extbase_Object_ObjectManager');
-		return $objectManager->create($newObject);
+		If ( t3lib_utility_VersionNumber::convertVersionNumberToInteger(TYPO3_version) >= 6001000 ) {
+			return self::getObject($newObject);
+		} else {
+			// get an ObjectManager first
+			$objectManager = t3lib_div::makeInstance('Tx_Extbase_Object_ObjectManager');
+			return $objectManager->create($newObject);
+		}
 	}
 
 
@@ -155,7 +159,7 @@ class Tx_ThRating_Service_ObjectFactoryService implements t3lib_Singleton {
  	 * @param	Tx_ThRating_Domain_Model_Ratingobject	$ratingobject
 	 * @return	Tx_ThRating_Domain_Model_Rating
 	 */
-	static function getRating( array $settings,	Tx_ThRating_Domain_Model_Ratingobject	$ratingobject = NULL ) {
+	static function getRating( array $settings,	Tx_ThRating_Domain_Model_Ratingobject $ratingobject = NULL ) {
 		$settings = self::completeConfigurationSettings( $settings );		
 		$ratingobjectValidator = self::getObject('Tx_ThRating_Domain_Validator_RatingobjectValidator');
 		$ratingRepository = self::getObject('Tx_ThRating_Domain_Repository_RatingRepository');
@@ -178,7 +182,7 @@ class Tx_ThRating_Service_ObjectFactoryService implements t3lib_Singleton {
  	 * @param	Tx_ThRating_Domain_Model_Rating	$rating
 	 * @return	Tx_ThRating_Domain_Model_Vote
 	 */
-	static function getVote( $prefixId, array $settings,	Tx_ThRating_Domain_Model_Rating	$rating ) {
+	static function getVote( $prefixId, array $settings, Tx_ThRating_Domain_Model_Rating $rating ) {
 		$voteRepository = self::getObject('Tx_ThRating_Domain_Repository_VoteRepository');
 		$voteValidator = self::getObject('Tx_ThRating_Domain_Validator_VoteValidator');
 

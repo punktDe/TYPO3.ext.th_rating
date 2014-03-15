@@ -241,14 +241,6 @@ class Tx_ThRating_Domain_Model_Stepconf extends Tx_Extbase_DomainObject_Abstract
 	}
 
 	/**
-	 * @param int $l18n_parent
-	 * @return void
-	 */
-	public function setUid($uid) {
-		$this->uid = $uid;
-	}
-
-	/**
 	 * Returns all votes in this rating
 	 *
 	 * @return Tx_Extbase_Persistence_ObjectStorage<Tx_ThRating_Domain_Model_Vote>

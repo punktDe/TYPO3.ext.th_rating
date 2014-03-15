@@ -32,7 +32,7 @@
  * @scope 		alpha
  * @entity
  */
-class RatingTest extends Tx_Extbase_BaseTestCase {
+class RatingTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
 
 	/**
 	 * Checks construction of a new rating object

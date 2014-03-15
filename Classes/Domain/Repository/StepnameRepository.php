@@ -152,7 +152,7 @@ class Tx_ThRating_Domain_Repository_StepnameRepository extends Tx_Extbase_Persis
 
 				//check if language flag exists in current website
 				If ($languageUid > 0) {
-					if ( array_search($languageUid,$websiteLanguagesArray) === FALSE ) {
+					if ( array_search($languageUid, $websiteLanguagesArray) === FALSE ) {
 						$checkConsistency['existLang'] = TRUE;
 					}
 				}
@@ -183,8 +183,12 @@ class Tx_ThRating_Domain_Repository_StepnameRepository extends Tx_Extbase_Persis
 	 */
 	public function clearQuerySettings() {
 		$this->defaultQuerySettings = $this->objectManager->create('Tx_Extbase_Persistence_Typo3QuerySettings');
-		$this->defaultQuerySettings->setRespectEnableFields(FALSE);
 		$this->defaultQuerySettings->setRespectSysLanguage(FALSE);
+		If ( t3lib_utility_VersionNumber::convertVersionNumberToInteger(TYPO3_version) >= 6000000 ) {
+			$this->defaultQuerySettings->setIgnoreEnableFields(TRUE);
+		} else {
+			$this->defaultQuerySettings->setRespectEnableFields(FALSE);
+		}
 	}
 	
 }

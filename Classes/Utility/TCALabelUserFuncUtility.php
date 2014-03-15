@@ -61,7 +61,7 @@ class Tx_ThRating_Utility_TCALabelUserFuncUtility {
 		if (is_object($stepnameObject)) {
 			$stepnameLang = $stepnameObject->get_languageUid();
 			If (empty($stepnameLang)) {
-				$syslang = Tx_Extbase_Utility_Localization::translate('tca.BE.default', 'ThRating');;
+				$syslang = Tx_Extbase_Utility_Localization::translate('tca.BE.default', 'ThRating');
 			} elseif ($stepnameLang == -1) {
 				$syslang = Tx_Extbase_Utility_Localization::translate('tca.BE.all', 'ThRating');
 			} else {

@@ -35,9 +35,12 @@ class Tx_ThRating_Domain_Repository_VoterRepository extends Tx_Extbase_Domain_Re
 		$configurationManager = $this->objectManager->get('Tx_Extbase_Configuration_ConfigurationManager');
 		$settings = $configurationManager->getConfiguration('Settings', 'thRating', 'pi1');
 		//Even hidden or deleted FE Users  should be found
-		$this->defaultQuerySettings = $this->objectManager->create('Tx_Extbase_Persistence_Typo3QuerySettings');
-		$this->defaultQuerySettings->setRespectEnableFields(FALSE);
-		//$this->defaultQuerySettings->setRespectStoragePage(FALSE);
+		$this->defaultQuerySettings = Tx_ThRating_Service_ObjectFactoryService::createObject( 'Tx_Extbase_Persistence_Typo3QuerySettings' );
+		If ( t3lib_utility_VersionNumber::convertVersionNumberToInteger(TYPO3_version) >= 6000000 ) {
+			$this->defaultQuerySettings->setIgnoreEnableFields(TRUE);
+		} else {
+			$this->defaultQuerySettings->setRespectEnableFields(FALSE);
+		}
 	}
 }
 

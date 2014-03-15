@@ -15,12 +15,13 @@ CREATE TABLE tx_thrating_domain_model_ratingobject (
 	cruser_id int(11) DEFAULT '0' NOT NULL,
 	deleted tinyint(4) unsigned DEFAULT '0' NOT NULL,
 	hidden tinyint(4) unsigned DEFAULT '0' NOT NULL,
-
+	is_dummy_record tinyint(1) unsigned DEFAULT '0' NOT NULL,
+	
 	PRIMARY KEY (uid),
 	KEY parent (pid),
+	KEY phpunit_dummy (is_dummy_record),
 	INDEX tx_thrating_domain_model_ratingobject_i1 (ratetable,ratefield)
 );
-
 
 #
 # Table structure for table 'tx_thrating_domain_model_stepconf'
@@ -40,12 +41,13 @@ CREATE TABLE tx_thrating_domain_model_stepconf (
 	cruser_id int(11) DEFAULT '0' NOT NULL,
 	deleted tinyint(4) unsigned DEFAULT '0' NOT NULL,
 	hidden tinyint(4) DEFAULT '0' NOT NULL,
+	is_dummy_record tinyint(1) unsigned DEFAULT '0' NOT NULL,
 
 	PRIMARY KEY (uid),
 	KEY parent (pid),
+	KEY phpunit_dummy (is_dummy_record),
 	INDEX tx_thrating_domain_model_stepconf_i1 (ratingobject,steporder)
 );
-
 
 #
 # Table structure for table 'tx_thrating_domain_model_stepname'
@@ -65,11 +67,12 @@ CREATE TABLE tx_thrating_domain_model_stepname (
 	sys_language_uid int(11) DEFAULT '0' NOT NULL,
 	l18n_parent int(11) DEFAULT '0' NOT NULL,
 	l18n_diffsource mediumblob NOT NULL,
+	is_dummy_record tinyint(1) unsigned DEFAULT '0' NOT NULL,
 
 	PRIMARY KEY (uid),
 	KEY parent (pid),
+	KEY phpunit_dummy (is_dummy_record),
 );
-
 
 #
 # Table structure for table 'tx_thrating_domain_model_rating'
@@ -88,9 +91,11 @@ CREATE TABLE tx_thrating_domain_model_rating (
 	cruser_id int(11) DEFAULT '0' NOT NULL,
 	deleted tinyint(4) unsigned DEFAULT '0' NOT NULL,
 	hidden tinyint(4) unsigned DEFAULT '0' NOT NULL,
+	is_dummy_record tinyint(1) unsigned DEFAULT '0' NOT NULL,
 
 	PRIMARY KEY (uid),
 	KEY parent (pid),
+	KEY phpunit_dummy (is_dummy_record),
 	INDEX tx_thrating_domain_model_rating_i1 (ratingobject,ratedobjectuid)
 );
 
@@ -110,8 +115,10 @@ CREATE TABLE tx_thrating_domain_model_vote (
 	cruser_id int(11) DEFAULT '0' NOT NULL,
 	deleted tinyint(4) unsigned DEFAULT '0' NOT NULL,
 	hidden tinyint(4) unsigned DEFAULT '0' NOT NULL,
+	is_dummy_record tinyint(1) unsigned DEFAULT '0' NOT NULL,
 
 	PRIMARY KEY (uid),
 	KEY parent (pid),
+	KEY phpunit_dummy (is_dummy_record),
 	INDEX tx_thrating_domain_model_vote_i1 (rating,voter)
 );

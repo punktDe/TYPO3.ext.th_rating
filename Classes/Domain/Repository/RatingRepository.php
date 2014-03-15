@@ -58,10 +58,10 @@ class Tx_ThRating_Domain_Repository_RatingRepository extends Tx_Extbase_Persiste
 			$foundRow = $queryResult->getFirst();
 		} else {
 			if ($addIfNotFound) {
-				$foundRow = $this->objectManager->create('Tx_ThRating_Domain_Model_Rating');
+				$foundRow = Tx_ThRating_Service_ObjectFactoryService::getObject('Tx_ThRating_Domain_Model_Rating');
 				$foundRow->setRatingobject($ratingobject);
 				$foundRow->setRatedobjectuid($ratedobjectuid);	
-				$validator = $this->objectManager->create('Tx_ThRating_Domain_Validator_RatingValidator');
+				$validator = Tx_ThRating_Service_ObjectFactoryService::createObject('Tx_ThRating_Domain_Validator_RatingValidator');
 				$validator->isValid($foundRow) && $this->add($foundRow);
 				Tx_ThRating_Utility_ExtensionManagementUtility::persistRepository('Tx_ThRating_Domain_Repository_RatingRepository', $foundRow);	
 				$foundRow = $this->findMatchingObjectAndUid($ratingobject, $ratedobjectuid);

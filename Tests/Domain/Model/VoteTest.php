@@ -32,7 +32,7 @@
  * @scope 		alpha
  * @entity
  */
-class VoteTest extends Tx_Extbase_BaseTestCase {
+class VoteTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
 
 	/**
 	 * Checks construction of a new vote object

@@ -32,8 +32,30 @@
  * @scope 		alpha
  * @entity
  */
-class RatingobjectTest extends Tx_Extbase_BaseTestCase {
+class RatingobjectTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
 
+	/**
+     * Fixture
+     * @var Tx_ThRating_Domain_Model_Ratingobject
+     */
+    protected $fixture;
+
+	/**
+	 * @var Tx_Phpunit_Framework
+	 */
+	private $testingFramework;
+
+	
+	public function setUp() {
+	  $this->testingFramework = new Tx_Phpunit_Framework('tx_thrating');
+	  $this->fixture = $this->objectManager->get('Tx_ThRating_Domain_Model_Ratingobject',array('tt_news', 'uid'));
+	}
+
+	public function tearDown() {
+	  $this->testingFramework->cleanUp();
+	  unset($this->fixture, $this->testingFramework);
+	}
+	
 	/**
 	 * Checks construction of a new rating object
 	 * @test

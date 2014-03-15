@@ -52,12 +52,12 @@ class Tx_ThRating_Domain_Repository_RatingobjectRepository extends Tx_Extbase_Pe
 						)
 					->setLimit(1);
 
-		$foundRow = Tx_ThRating_Service_ObjectFactoryService::getObject('Tx_ThRating_Domain_Model_Ratingobject');
 		$queryResult = $query->execute();
 		if (count($queryResult) != 0) {
 			$foundRow = $queryResult->getFirst();
 		} else {
 			if ($addIfNotFound) {
+				$foundRow = Tx_ThRating_Service_ObjectFactoryService::getObject('Tx_ThRating_Domain_Model_Ratingobject');
 				$foundRow->setRatetable($ratetable);
 				$foundRow->setRatefield($ratefield);
 				$validator = Tx_ThRating_Service_ObjectFactoryService::getObject('Tx_ThRating_Domain_Validator_RatingobjectValidator');

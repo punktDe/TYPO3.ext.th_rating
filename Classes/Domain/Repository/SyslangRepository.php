@@ -33,9 +33,13 @@ class Tx_ThRating_Domain_Repository_SyslangRepository extends Tx_Extbase_Persist
 	 */
 	public function initializeObject() {
 		$this->defaultQuerySettings = $this->objectManager->create('Tx_Extbase_Persistence_Typo3QuerySettings');
-		$this->defaultQuerySettings->setRespectEnableFields(TRUE);
 		$this->defaultQuerySettings->setRespectStoragePage(FALSE);
 		$this->defaultQuerySettings->setRespectSysLanguage(FALSE);
+		If ( t3lib_utility_VersionNumber::convertVersionNumberToInteger(TYPO3_version) >= 6000000 ) {
+			$this->defaultQuerySettings->setIgnoreEnableFields(TRUE);
+		} else {
+			$this->defaultQuerySettings->setRespectEnableFields(FALSE);
+		}
 	}
 }
 
