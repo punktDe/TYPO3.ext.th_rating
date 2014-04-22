@@ -142,14 +142,6 @@ class Tx_ThRating_Domain_Model_Stepname extends Tx_Extbase_DomainObject_Abstract
 	}
 	
 	/**
-	 * @param int $l18n_parent
-	 * @return void
-	 */
-	public function setUid($uid) {
-		$this->uid = $uid;
-	}
-
-	/**
 	 * @return int
 	 */
 	public function getL18nParent() {
