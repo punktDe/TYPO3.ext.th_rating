@@ -1,4 +1,5 @@
 <?php
+namespace Thucke\ThRating\Tests\Domain\Model;
 /***************************************************************
 *  Copyright notice
 *
@@ -32,28 +33,60 @@
  * @scope 		alpha
  * @entity
  */
-class RatingTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
+class RatingTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
+
+	/**
+	 * @var string Put the extension name here
+	 */
+	protected $extensionName = 'th_rating';
+ 
+ 
+	/**
+     * @var \Thucke\ThRating\Domain\Model\Rating
+     */
+    protected $fixture = NULL;
+
+    public function setUp() {
+		$this->ratingobject = \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase::getMock('Thucke\\ThRating\\Domain\\Model\\Ratingobject', array(), array('tt_news', 'uid'));
+		$this->stepconf = \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase::getMock('Thucke\\ThRating\\Domain\\Model\\Stepconf', array(), array($this->ratingobject, 1));
+		$this->stepconf->setStepweight(2);
+		$mockStepconfRepository = \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase::getMock('Thucke\\ThRating\\Domain\\Repository\\StepconfRepository', array(), array(), '', FALSE);
+		$this->ratingobject->injectStepconfRepository($mockStepconfRepository);
+		$this->ratingobject->addStepconf($this->stepconf);
+		$this->fixture = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Thucke\\ThRating\\Domain\\Model\\Rating', $this->ratingobject, 1);
+		$mockVoteRepository = \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase::getMock('Thucke\\ThRating\\Domain\\Repository\\VoteRepository', array(), array(), '', FALSE);
+		$this->fixture->injectVoteRepository($mockVoteRepository);
+    }
+
+    public function tearDown() {
+        unset($this->ratingobject, $this->stepconf);
+    }
 
 	/**
 	 * Checks construction of a new rating object
 	 * @test
 	 */
 	public function anInstanceOfTheRatingCanBeConstructed() {
-		$ratingobject = t3lib_div::makeInstance('Tx_ThRating_Domain_Model_Ratingobject', 'tt_news', 'uid');
-		$rating = t3lib_div::makeInstance('Tx_ThRating_Domain_Model_Rating', $ratingobject, 1);
-		$this->assertEquals($ratingobject, $rating->getRatingobject());
-		$this->assertEquals(1, $rating->getRatedobjectuid());
+		$this->assertEquals($this->ratingobject, $this->fixture->getRatingobject());
+		$this->assertEquals(1, $this->fixture->getRatedobjectuid());
 	}
 	
+	/**
+	 * Applies the validator
+	 * @test
+	 */
+	public function theValidatorCheckIsGood() {
+		$validator = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Thucke\\ThRating\\Domain\\Validator\\RatingValidator');
+		$this->assertTrue($validator->isValid($this->fixture));
+	}
+
 	/**
 	 * Checks the initialisation of a new ratingobject having no ratings
 	 * @test
 	 */
 	public function theVotesAreInitializedAsEmptyObjectStorage() {
-		$ratingobject = t3lib_div::makeInstance('Tx_ThRating_Domain_Model_Ratingobject', 'tt_news', 'uid');
-		$rating = t3lib_div::makeInstance('Tx_ThRating_Domain_Model_Rating', $ratingobject, 1);
-		$this->assertEquals('Tx_Extbase_Persistence_ObjectStorage', get_class($rating->getVotes()));
-		$this->assertEquals(0, count($rating->getVotes()));
+		$this->assertEquals('TYPO3\\CMS\\Extbase\\Persistence\\ObjectStorage', get_class($this->fixture->getVotes()));
+		$this->assertEquals(0, count($this->fixture->getVotes()));
 	}
 
 	/**
@@ -61,14 +94,11 @@ class RatingTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
 	 * @test
 	 */
 	public function aVoteCanBeAdded() {
-		$ratingobject = t3lib_div::makeInstance('Tx_ThRating_Domain_Model_Ratingobject', 'tt_news', 'uid');
-		$rating = t3lib_div::makeInstance('Tx_ThRating_Domain_Model_Rating', $ratingobject, 1);
-		//$vote = $this->getMock('Tx_ThRating_Domain_Model_Vote');
-		$vote = t3lib_div::makeInstance('Tx_ThRating_Domain_Model_Vote');
-		$vote->setRating($rating);
+		$vote = $this->getMock('Thucke\\ThRating\\Domain\\Model\\Vote',  array(), array(), '', FALSE);
+		//$vote = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Thucke\\ThRating\\Domain\\Model\\Vote');
 		$vote->setVote(3);
-		$rating->addVote($vote);
-		$this->assertTrue($rating->getVotes()->contains($vote));
+		$this->fixture->addVote($vote);
+		$this->assertTrue($this->fixture->getVotes()->contains($vote));
 	}
 	
 }

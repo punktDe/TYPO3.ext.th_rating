@@ -1,5 +1,5 @@
 <?php
-
+namespace Thucke\ThRating\Domain\Repository;
 /***************************************************************
 *  Copyright notice
 *
@@ -26,9 +26,9 @@
 /**
  * A repository for ratingstep configurations
  */
-class Tx_ThRating_Domain_Repository_StepconfRepository extends Tx_Extbase_Persistence_Repository {			
+class StepconfRepository extends \TYPO3\CMS\Extbase\Persistence\Repository {
 	protected $defaultOrderings = array(
-         'steporder' => Tx_Extbase_Persistence_QueryInterface::ORDER_ASCENDING
+         'steporder' => \TYPO3\CMS\Extbase\Persistence\QueryInterface::ORDER_ASCENDING
 	);
 
 	/**
@@ -36,21 +36,21 @@ class Tx_ThRating_Domain_Repository_StepconfRepository extends Tx_Extbase_Persis
 	 */
 	public function initializeObject() {
 		//disable RespectStoragePage as pid is always bound to parent objects pid
-		$defaultQuerySettings = $this->objectManager->get('Tx_Extbase_Persistence_Typo3QuerySettings');
+		$defaultQuerySettings = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Typo3QuerySettings');
 		$defaultQuerySettings->setRespectStoragePage(FALSE);
 		$this->setDefaultQuerySettings($defaultQuerySettings);
 		
-		$configurationManager = $this->objectManager->get('Tx_Extbase_Configuration_ConfigurationManager');
+		$configurationManager = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Configuration\\ConfigurationManager');
 		$settings = $configurationManager->getConfiguration('Settings', 'thRating', 'pi1');
 	}
 
 	/**
 	 * Finds the given stepconf object in the repository
 	 *
-	 * @param 	Tx_ThRating_Domain_Model_Stepconf	$stepconf 	The ratingobject to look for
-	 * @return	Tx_ThRating_Domain_Model_Stepconf
+	 * @param 	\Thucke\ThRating\Domain\Model\Stepconf	$stepconf 	The ratingobject to look for
+	 * @return	\Thucke\ThRating\Domain\Model\Stepconf
 	 */
-	public function findStepconfObject(Tx_ThRating_Domain_Model_Stepconf $stepconf) {
+	public function findStepconfObject(\Thucke\ThRating\Domain\Model\Stepconf $stepconf) {
 		$query = $this->createQuery();
 		$query	->matching(
 						$query->logicalAnd(
@@ -71,12 +71,12 @@ class Tx_ThRating_Domain_Repository_StepconfRepository extends Tx_Extbase_Persis
 	/**
 	 * Finds the ratingstep entry by giving ratingobjectUid
 	 *
-	 * @param 	Tx_ThRating_Domain_Model_Stepconf	$stepconf 	The uid of the ratingobject
-	 * @return	bool											TRUE if stepconf object exists in repository
+	 * @param 	\Thucke\ThRating\Domain\Model\Stepconf	$stepconf 	The uid of the ratingobject
+	 * @return	bool												TRUE if stepconf object exists in repository
 	 */
-	public function existStepconf(Tx_ThRating_Domain_Model_Stepconf $stepconf) {
+	public function existStepconf(\Thucke\ThRating\Domain\Model\Stepconf $stepconf) {
 		$lookForStepconf = $this->findStepconfObject($stepconf);
-		if ( $lookForStepconf instanceOf Tx_ThRating_Domain_Model_Stepconf ) {
+		if ( $lookForStepconf instanceof \Thucke\ThRating\Domain\Model\Stepconf ) {
 			return TRUE;
 		} 
 		return FALSE;

@@ -47,7 +47,7 @@ class tx_thrating_unlinkDynCss_eval {
 	 * @return	The new value of the field
 	 */
 	function evaluateFieldValue($value, $is_in, &$set) {
-		Tx_ThRating_Utility_TCALabelUserFuncUtility::clearCachePostProc(NULL, NULL, NULL);
+		\Thucke\ThRating\Utility\TCALabelUserFuncUtility::clearCachePostProc(NULL, NULL, NULL);
 		return $value;
 	}
 }

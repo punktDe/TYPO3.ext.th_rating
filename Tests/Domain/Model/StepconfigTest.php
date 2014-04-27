@@ -1,4 +1,5 @@
 <?php
+namespace Thucke\ThRating\Tests\Domain\Model;
 /***************************************************************
 *  Copyright notice
 *
@@ -32,7 +33,7 @@
  * @scope 		alpha
  * @entity
  */
-class StepconfigTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
+class StepconfigTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 
 	/**
 	 * @var string Put the extension name here
@@ -41,14 +42,14 @@ class StepconfigTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
  
  
     public function setUp() {
-        //$this->ratingobject = $this->getMock('Tx_ThRating_Domain_Model_Ratingobject');
-		$this->ratingobject = Tx_Extbase_Tests_Unit_BaseTestCase::getAccessibleMock('Tx_ThRating_Domain_Model_Ratingobject', array(), array('tt_news', 'uid'));
-        $this->stepconf = $this->objectManager->get('Tx_ThRating_Domain_Model_Stepconf');
+        //$this->ratingobject = $this->getMock('Thucke\\ThRating\\Domain\\Model\\Ratingobject');
+		$this->ratingobject = \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase::getAccessibleMock('Thucke\\ThRating\\Domain\\Model\\Ratingobject', array(), array('tt_news', 'uid'));
+        $this->stepconf = $this->objectManager->get('Thucke\\ThRating\\Domain\\Model\\Stepconf');
 		$this->stepconf->setRatingobject($this->ratingobject);
 		$this->stepconf->setSteporder(1);
 		$this->stepconf->setStepweight(2);
-		$this->stepname = Tx_Extbase_Tests_Unit_BaseTestCase::getAccessibleMock('Tx_ThRating_Domain_Model_Stepname', array(), array($this->stepconf, 'Step1'));
-		$mockRepository = Tx_Extbase_Tests_Unit_BaseTestCase::getAccessibleMock('Tx_ThRating_Domain_Repository_StepnameRepository');
+		$this->stepname = \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase::getAccessibleMock('Thucke\\ThRating\\Domain\\Model\\Stepname', array(), array($this->stepconf, 'Step1'));
+		$mockRepository = \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase::getAccessibleMock('Thucke\\ThRating\\Domain\\Repository\\StepnameRepository');
 		$this->stepconf->injectStepnameRepository($mockRepository);
     }
 
@@ -61,11 +62,11 @@ class StepconfigTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
 	 * @test
 	 */
 	public function anInstanceOfTheStepconfigurationHasBeenConstructed() {
-		$this->assertInstanceOf('Tx_ThRating_Domain_Model_Stepconf', $this->stepconf);
+		$this->assertInstanceOf('Thucke\\ThRating\\Domain\\Model\\Stepconf', $this->stepconf);
 		$this->assertSame($this->ratingobject, $this->stepconf->getRatingobject());
-		$this->assertEquals(1,$this->stepconf->getSteporder());
-		$this->assertEquals(2,$this->stepconf->getStepweight());
-		$this->assertEquals('1',$this->stepconf->getStepname());
+		$this->assertEquals(1, $this->stepconf->getSteporder());
+		$this->assertEquals(2, $this->stepconf->getStepweight());
+		$this->assertEquals('1', strval($this->stepconf->getStepname()));
 	}
 
 	/**
@@ -73,7 +74,7 @@ class StepconfigTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
 	 * @test
 	 */
 	public function toStringReturnsSteporder() {
-		$this->assertEquals($this->stepconf, $this->stepconf->getStepname());
+		$this->assertEquals($this->stepconf, strval($this->stepconf->getStepname()));
 		
 	}
 
@@ -84,9 +85,9 @@ class StepconfigTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
 	public function aStepameCouldBeAdded() {
 		$this->stepconf->addStepname($this->stepname);
 		$this->markTestIncomplete(
-          'This test has not been implemented yet. - '.$this->stepconf->getStepname()
+          'This test has not been implemented yet. - '.strval($this->stepconf->getStepname())
         );
-		$this->assertEquals('Step1', $this->stepconf->getStepname());	
+		$this->assertEquals('Step1', strval($this->stepconf->getStepname()));	
 	}
 	
 }

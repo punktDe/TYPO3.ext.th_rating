@@ -1,4 +1,5 @@
 <?php
+namespace Thucke\ThRating\Domain\Validator;
 /***************************************************************
 *  Copyright notice
 *
@@ -32,18 +33,18 @@
  * @copyright Copyright belongs to the respective authors
  * @scope singleton
  */
-class Tx_ThRating_Domain_Validator_StepnameValidator extends Tx_Extbase_Validation_Validator_AbstractValidator {
+class StepnameValidator extends \TYPO3\CMS\Extbase\Validation\Validator\AbstractValidator {
 
 	/**
-     * @var Tx_ThRating_Domain_Repository_StepnameRepository
+     * @var \Thucke\ThRating\Domain\Repository\StepnameRepository
      */
     protected $stepnameRepository;
 
     /**
-     * @param Tx_ThRating_Domain_Repository_StepnameRepository $stepnameRepository
+     * @param \Thucke\ThRating\Domain\Repository\StepnameRepository $stepnameRepository
      * @return void
      */
-    public function injectStepnameRepository(Tx_ThRating_Domain_Repository_StepnameRepository $stepnameRepository) {
+    public function injectStepnameRepository(\Thucke\ThRating\Domain\Repository\StepnameRepository $stepnameRepository) {
         $this->stepnameRepository = $stepnameRepository;
     }
 
@@ -51,19 +52,25 @@ class Tx_ThRating_Domain_Validator_StepnameValidator extends Tx_Extbase_Validati
 	/**
 	 * If the given step is valid
 	 *
-	 * @param Tx_ThRating_Domain_Model_Stepname $stepname
+	 * @param \Thucke\ThRating\Domain\Model\Stepname $stepname
 	 * @return boolean
 	 */
 	public function isValid($stepname) {
 		//a stepname object must have a stepconf
-		if (!$stepname->getStepconf() instanceof Tx_ThRating_Domain_Model_Stepconf) {
-			$this->addError(Tx_Extbase_Utility_Localization::translate('error.validator.stepname.stepconf', 'ThRating'), 1382895072);
+		if (!$stepname instanceof \Thucke\ThRating\Domain\Model\Stepname) {
+			$this->addError(\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('error.validator.stepname.stepconf', 'ThRating'), 1382895072);
+			return FALSE;
+		}
+
+		//a stepname object must have a stepconf
+		if (!$stepname->getStepconf() instanceof \Thucke\ThRating\Domain\Model\Stepconf) {
+			$this->addError(\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('error.validator.stepname.stepconf', 'ThRating'), 1382895072);
 			return FALSE;
 		}
 
 		//check if given languagecode exists in website
 		If ( !$this->stepnameRepository->checkStepnameLanguage($stepname) ) {
-			$this->addError(Tx_Extbase_Utility_Localization::translate('error.validator.stepname.sysLang', 'ThRating'), 1382895089);
+			$this->addError(\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('error.validator.stepname.sysLang', 'ThRating'), 1382895089);
 			return FALSE;
 		}
 	
@@ -71,8 +78,8 @@ class Tx_ThRating_Domain_Validator_StepnameValidator extends Tx_Extbase_Validati
 		$langUid = $stepname->get_languageUid();
 		if ( !empty($langUid) ) {
 			$defaultStepname = $this->stepnameRepository->findDefaultStepname($stepname);
-			if ( !($defaultStepname instanceof Tx_ThRating_Domain_Model_Stepname and $this->isValid($defaultStepname)) ) {
-				$this->addError(Tx_Extbase_Utility_Localization::translate('error.validator.stepname.defaultLang', 'ThRating'), 1382895097);
+			if ( !($defaultStepname instanceof \Thucke\ThRating\Domain\Model\Stepname and $this->isValid($defaultStepname)) ) {
+				$this->addError(\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('error.validator.stepname.defaultLang', 'ThRating'), 1382895097);
 				return FALSE;
 			}
 		}				

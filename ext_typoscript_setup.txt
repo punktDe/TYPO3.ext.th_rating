@@ -8,17 +8,23 @@
 #########################################################################
 config.tx_extbase.features.rewrittenPropertyMapper = 1
 config.tx_extbase.persistence.classes {
-	Tx_Extbase_Domain_Model_FrontendUser.mapping {
-		subclasses {
-			Tx_ThRating_Domain_Model_Voter = Tx_ThRating_Domain_Model_Voter
+	TYPO3\CMS\Extbase\Domain\Model\FrontendUser {
+		mapping {
+			subclasses {
+				Tx_ThRating_Domain_Model_Voter = Thucke\ThRating\Domain\Model\Voter
+			}
 		}
 	}
-	Tx_ThRating_Domain_Model_Voter.mapping {
-		tableName = fe_users
-		recordType >
+	Thucke\ThRating\Domain\Model\Voter {
+		mapping {
+			tableName = fe_users
+			recordType >
+		}
 	}
-	Tx_ThRating_Domain_Model_Syslang.mapping {
-		tableName = sys_language
-		recordType >
+	Thucke\ThRating\Domain\Model\Syslang {
+		mapping {
+			tableName = sys_language
+			recordType >
+		}
 	}
 }

@@ -1,5 +1,5 @@
 <?php
-
+namespace Thucke\ThRating\Domain\Repository;
 /***************************************************************
 *  Copyright notice
 *
@@ -26,7 +26,7 @@
 /**
  * A repository for votes
  */
-class Tx_ThRating_Domain_Repository_VoteRepository extends Tx_Extbase_Persistence_Repository {			
+class VoteRepository extends \TYPO3\CMS\Extbase\Persistence\Repository {			
 
 	/**
 	 * Defines name for function parameter
@@ -38,16 +38,16 @@ class Tx_ThRating_Domain_Repository_VoteRepository extends Tx_Extbase_Persistenc
 	 * Initialze this repository
 	 */
 	public function initializeObject() {
-		$configurationManager = $this->objectManager->get('Tx_Extbase_Configuration_ConfigurationManager');
+		$configurationManager = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Configuration\\ConfigurationManager');
 		$settings = $configurationManager->getConfiguration('Settings', 'thRating', 'pi1');
 	}
 
 	/**
 	 * Finds the voting by giving the rating and voter objects 
 	 *
-	 * @param 	Tx_ThRating_Domain_Model_Rating	$rating The concerned ratingobject
-	 * @param 	Tx_ThRating_Domain_Model_Voter	$voter 	The Uid of the rated row
-	 * @return 	Tx_ThRating_Domain_Model_Vote 			The voting
+	 * @param 	\Thucke\ThRating\Domain\Model\Rating	$rating The concerned ratingobject
+	 * @param 	\Thucke\ThRating\Domain\Model\Voter	$voter 	The Uid of the rated row
+	 * @return 	\Thucke\ThRating\Domain\Model\Vote 			The voting
 	 */
 	public function findMatchingRatingAndVoter($rating = NULL, $voter = NULL ) {
 		$query = $this->createQuery();
@@ -65,8 +65,8 @@ class Tx_ThRating_Domain_Repository_VoteRepository extends Tx_Extbase_Persistenc
 	/**
 	 * Counts all votings by giving the rating and ratingstep 
 	 *
-	 * @param 	Tx_ThRating_Domain_Model_Rating 	$rating 	The concerned ratingobject
-	 * @param 	Tx_ThRating_Domain_Model_Stepconf	$stepconf 	The stepconf object
+	 * @param 	\Thucke\ThRating\Domain\Model\Rating 	$rating 	The concerned ratingobject
+	 * @param 	\Thucke\ThRating\Domain\Model\Stepconf	$stepconf 	The stepconf object
 	 * @return 	Int
 	 */
 	public function countByMatchingRatingAndVote($rating = NULL, $stepconf = NULL ) {
@@ -83,8 +83,8 @@ class Tx_ThRating_Domain_Repository_VoteRepository extends Tx_Extbase_Persistenc
 	/**
 	 * Counts all anonymous votings by giving the rating and ratingstep 
 	 *
-	 * @param 	Tx_ThRating_Domain_Model_Rating 	$rating 		The concerned ratingobject
-	 * @param 	Tx_ThRating_Domain_Model_Stepconf	$stepconf 		The stepconf object
+	 * @param 	\Thucke\ThRating\Domain\Model\Rating 	$rating 		The concerned ratingobject
+	 * @param 	\Thucke\ThRating\Domain\Model\Stepconf	$stepconf 		The stepconf object
 	 * @param 	Int 								$anonymousVoter	UID of the anonymous account
 	 * @return 	Int
 	 */

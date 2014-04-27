@@ -3,7 +3,7 @@
 #########################################################################
 plugin.tx_thrating = USER_INT
 plugin.tx_thrating {
-	userFunc = tx_extbase_core_bootstrap->run
+	userFunc = TYPO3\CMS\Extbase\Core\Bootstrap->run
 	pluginName = Pi1
 	extensionName = ThRating
 	controller = Vote
@@ -63,7 +63,7 @@ plugin.tx_thrating {
 	persistence {
 		storagePid = {$plugin.tx_thrating.settings.storagePid},{$plugin.tx_thrating.settings.feUserStoragePid}
 		classes {
-			Tx_ThRating_Domain_Model_Ratingobject {
+			Thucke\ThRating\Domain\Model\Ratingobject {
 				newRecordStoragePid = {$plugin.tx_thrating.settings.newRecordStoragePid}
 			}
 		}

@@ -39,8 +39,8 @@ class RatingobjectRepositoryTest extends Tx_Extbase_BaseTestCase {
 	 * @test
 	 */
 	public function anInstanceOfTheRatingobjectCanBeRetrieved() {
-		$ratingobject = t3lib_div::makeInstance('Tx_ThRating_Domain_Model_Ratingobject');
-		$ratingobjectRepository = t3lib_div::makeInstance('Tx_ThRating_Domain_Repository_RatingobjectRepository');
+		$ratingobject = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Thucke\\ThRating\\Domain\\Model\\Ratingobject');
+		$ratingobjectRepository = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Tx_ThRating_Domain_Repository_RatingobjectRepository');
 		$ratingobject = $ratingobjectRepository->findMatchingTableAndField('tt_news','uid');
 		$this->assertEquals('tt_news', $ratingobject->getRatetable());
 	}

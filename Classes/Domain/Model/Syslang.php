@@ -1,4 +1,5 @@
 <?php
+namespace Thucke\ThRating\Domain\Model;
 /***************************************************************
  *  Copyright notice
  *
@@ -25,7 +26,7 @@
 /**
  * The voter
  */
-class Tx_ThRating_Domain_Model_Syslang extends Tx_Extbase_DomainObject_AbstractEntity {
+class Syslang extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 
 	/**
 	 * @var int 

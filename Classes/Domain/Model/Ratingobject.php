@@ -1,4 +1,5 @@
 <?php
+namespace Thucke\ThRating\Domain\Model;
 /***************************************************************
 *  Copyright notice
 *
@@ -28,11 +29,11 @@
  * @version 	$Id:$
  * @author		Thomas Hucke <thucke@web.de>
  * @copyright 	Copyright belongs to the respective authors
- * @license 		http://opensource.org/licenses/gpl-license.php GNU Public License, version 2
+ * @license 	http://opensource.org/licenses/gpl-license.php GNU Public License, version 2
  * @scope 		beta
  * @entity
  */
-class Tx_ThRating_Domain_Model_Ratingobject extends Tx_Extbase_DomainObject_AbstractEntity {
+class Ratingobject extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 
 	/**
 	 * Table name of the cObj
@@ -53,9 +54,9 @@ class Tx_ThRating_Domain_Model_Ratingobject extends Tx_Extbase_DomainObject_Abst
 	protected $ratefield;
 	
 	/**
-	 * The ratings of this object
+	 * The stepconfs of this object
 	 *
-	 * @var Tx_Extbase_Persistence_ObjectStorage<Tx_ThRating_Domain_Model_Stepconf>
+	 * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Thucke\ThRating\Domain\Model\Stepconf>
 	 * @lazy
 	 * @cascade remove
 	 */
@@ -64,21 +65,21 @@ class Tx_ThRating_Domain_Model_Ratingobject extends Tx_Extbase_DomainObject_Abst
 	/**
 	 * The ratings of this object
 	 *
-	 * @var Tx_Extbase_Persistence_ObjectStorage<Tx_ThRating_Domain_Model_Rating>
+	 * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Thucke\ThRating\Domain\Model\Rating>
 	 * @lazy
 	 * @cascade remove
 	 */
 	protected $ratings;
 	
 	/**
-	 * @var Tx_ThRating_Domain_Repository_StepconfRepository	$stepconfRepository
+	 * @var \Thucke\ThRating\Domain\Repository\StepconfRepository	$stepconfRepository
 	 */
 	protected $stepconfRepository;
 	/**
-	 * @param Tx_ThRating_Domain_Repository_StepconfRepository $stepconfRepository
+	 * @param \Thucke\ThRating\Domain\Repository\StepconfRepository $stepconfRepository
 	 * @return void
 	 */
-	public function injectStepconfRepository(Tx_ThRating_Domain_Repository_StepconfRepository $stepconfRepository) {
+	public function injectStepconfRepository(\Thucke\ThRating\Domain\Repository\StepconfRepository $stepconfRepository) {
 		$this->stepconfRepository = $stepconfRepository;
 	}
 
@@ -105,11 +106,11 @@ class Tx_ThRating_Domain_Model_Ratingobject extends Tx_Extbase_DomainObject_Abst
 
 		//Initialize rating storage if ratingobject is new
 		if (!is_object($this->ratings)) {
-			$this->ratings=Tx_ThRating_Service_ObjectFactoryService::getObject('Tx_Extbase_Persistence_ObjectStorage');
+			$this->ratings = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
 		}
 		//Initialize stepconf storage if ratingobject is new
 		if (!is_object($this->stepconfs)) {
-			$this->stepconfs=Tx_ThRating_Service_ObjectFactoryService::getObject('Tx_Extbase_Persistence_ObjectStorage');
+			$this->stepconfs = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
 		}
 	}
 
@@ -154,21 +155,21 @@ class Tx_ThRating_Domain_Model_Ratingobject extends Tx_Extbase_DomainObject_Abst
 	/**
 	 * Adds a raiting to this object
 	 *
-	 * @param Tx_ThRating_Domain_Model_Rating $rating
+	 * @param \Thucke\ThRating\Domain\Model\Rating $rating
 	 * @return void
 	 */
-	public function addRating(Tx_ThRating_Domain_Model_Rating $rating) {
+	public function addRating(\Thucke\ThRating\Domain\Model\Rating $rating) {
 		$this->ratings->attach($rating);
-		Tx_ThRating_Utility_ExtensionManagementUtility::persistRepository('Tx_ThRating_Domain_Repository_RatingRepository', $rating);
+		\Thucke\ThRating\Utility\ExtensionManagementUtility::persistRepository('\Thucke\ThRating\Domain\Repository\RatingRepository', $rating);
 	}
 
 	/**
 	 * Remove a raiting from this object
 	 *
-	 * @param Tx_ThRating_Domain_Model_Rating $rating The rating to be removed
+	 * @param \Thucke\ThRating\Domain\Model\Rating $rating The rating to be removed
 	 * @return void
 	 */
-	public function removeRating(Tx_ThRating_Domain_Model_Rating $rating) {
+	public function removeRating(\Thucke\ThRating\Domain\Model\Rating $rating) {
 		$this->ratings->detach($rating);
 	}
 
@@ -178,36 +179,36 @@ class Tx_ThRating_Domain_Model_Ratingobject extends Tx_Extbase_DomainObject_Abst
 	 * @return void
 	 */
 	public function removeAllRatings() {
-		$this->ratings = new Tx_Extbase_Persistence_ObjectStorage();
+		$this->ratings = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
 	}
 
 	/**
 	 * Adds a stepconf to this object
 	 *
-	 * @param Tx_ThRating_Domain_Model_Stepconf $stepconf
+	 * @param \Thucke\ThRating\Domain\Model\Stepconf $stepconf
 	 * @return void
 	 */
-	public function addStepconf(Tx_ThRating_Domain_Model_Stepconf $stepconf) {
+	public function addStepconf(\Thucke\ThRating\Domain\Model\Stepconf $stepconf) {
 		If (!$this->stepconfRepository->existStepconf($stepconf)) {
 			$this->stepconfs->attach( $stepconf );
-			Tx_ThRating_Utility_ExtensionManagementUtility::persistRepository('Tx_ThRating_Domain_Repository_StepconfRepository', $stepconf);
+			\Thucke\ThRating\Utility\ExtensionManagementUtility::persistRepository('\Thucke\ThRating\Domain\Repository\StepconfRepository', $stepconf);
 		}
 	}
 
 	/**
 	 * Sets all ratings of this ratingobject
 	 *
-	 * @param Tx_Extbase_Persistence_ObjectStorage<Tx_ThRating_Domain_Model_Stepconf> $stepconfs The step configurations for this ratingobject
+	 * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Thucke\ThRating\Domain\Model\Stepconf> $stepconfs The step configurations for this ratingobject
 	 * @return void
 	 */
-	public function setStepconfs(Tx_Extbase_Persistence_ObjectStorage $stepconfs) {
+	public function setStepconfs(\TYPO3\CMS\Extbase\Persistence\ObjectStorage $stepconfs) {
 		$this->stepconfs = $stepconfs;
 	}
 		
 	/**
 	 * Returns all ratings in this object
 	 *
-	 * @return Tx_Extbase_Persistence_ObjectStorage<Tx_ThRating_Domain_Model_Stepconf>
+	 * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Thucke\ThRating\Domain\Model\Stepconf>
 	 */
 	public function getStepconfs() {
 		return clone $this->stepconfs;
@@ -216,17 +217,17 @@ class Tx_ThRating_Domain_Model_Ratingobject extends Tx_Extbase_DomainObject_Abst
 	/**
 	 * Sets all ratings of this ratingobject
 	 *
-	 * @param Tx_Extbase_Persistence_ObjectStorage<Tx_ThRating_Domain_Model_Rating> $ratings The ratings of the organization
+	 * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Thucke\ThRating\Domain\Model\Rating> $ratings The ratings of the organization
 	 * @return void
 	 */
-	public function setRatings(Tx_Extbase_Persistence_ObjectStorage $ratings) {
+	public function setRatings(\TYPO3\CMS\Extbase\Persistence\ObjectStorage $ratings) {
 		$this->ratings = $ratings;
 	}
 		
 	/**
 	 * Returns all ratings in this object
 	 *
-	 * @return Tx_Extbase_Persistence_ObjectStorage<Tx_ThRating_Domain_Model_Rating>
+	 * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Thucke\ThRating\Domain\Model\Rating>
 	 */
 	public function getRatings() {
 		return clone $this->ratings;

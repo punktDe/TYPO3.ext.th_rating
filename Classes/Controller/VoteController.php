@@ -1,4 +1,5 @@
 <?php
+namespace Thucke\ThRating\Controller;
 /***************************************************************
  *  Copyright notice
  *
@@ -28,10 +29,10 @@
  * @version $Id:$
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License, version 2
  */
-class Tx_ThRating_Controller_VoteController extends Tx_Extbase_MVC_Controller_ActionController {
+class VoteController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController {
 
 	/**
-	 * @var Tx_ThRating_Domain_Model_Stepconf
+	 * @var \Thucke\ThRating\Domain\Model\Stepconf \Thucke\ThRating\Domain\Model\Stepconf
 	 */
 	protected $vote;
 	/**
@@ -51,7 +52,7 @@ class Tx_ThRating_Controller_VoteController extends Tx_Extbase_MVC_Controller_Ac
 	 */
 	protected $cookieLifetime;
 	/**
-	 * @var Tx_Extbase_SignalSlot_Dispatcher
+	 * @var \TYPO3\CMS\Extbase\SignalSlot\Dispatcher
 	 */
 	protected $signalSlotDispatcher;
 	/**
@@ -60,79 +61,79 @@ class Tx_ThRating_Controller_VoteController extends Tx_Extbase_MVC_Controller_Ac
 	protected $signalSlotHandlerContent;
 
 	/**
-	 * @param Tx_ThRating_Service_ObjectFactoryService $objectFactoryService
+	 * @param \Thucke\ThRating\Service\ObjectFactoryService $objectFactoryService
 	 */
-	public function injectObjectFactoryService(Tx_ThRating_Service_ObjectFactoryService $objectFactoryService) {
+	public function injectObjectFactoryService(\Thucke\ThRating\Service\ObjectFactoryService $objectFactoryService) {
 		//... to make static functions of this singleton avaiable
 	}
 	
 	/**
-	 * @var Tx_ThRating_Service_AccessControlService
+	 * @var \Thucke\ThRating\Service\AccessControlService
 	 */
 	protected $accessControllService;
 	/**
-	 * @param Tx_ThRating_Service_AccessControlService $accessControllService
+	 * @param \Thucke\ThRating\Service\AccessControlService $accessControllService
 	 */
-	public function injectAccessControlService(Tx_ThRating_Service_AccessControlService $accessControllService) {
+	public function injectAccessControlService(\Thucke\ThRating\Service\AccessControlService $accessControllService) {
 		$this->accessControllService = $accessControllService;
 	}
 
 	/**
-	 * @var Tx_ThRating_Domain_Repository_VoteRepository
+	 * @var \Thucke\ThRating\Domain\Repository\VoteRepository
 	 */
 	protected $voteRepository;
 	/**
-	 * @param Tx_ThRating_Domain_Repository_VoteRepository $voteRepository
+	 * @param \Thucke\ThRating\Domain\Repository\VoteRepository $voteRepository
 	 */
-	public function injectVoteRepository(Tx_ThRating_Domain_Repository_VoteRepository $voteRepository) {
+	public function injectVoteRepository(\Thucke\ThRating\Domain\Repository\VoteRepository $voteRepository) {
 		$this->voteRepository = $voteRepository;
 	}
 
 	/**
-	 * @var Tx_ThRating_Domain_Validator_VoteValidator
+	 * @var \Thucke\ThRating\Domain\Validator\VoteValidator
 	 */
 	protected $voteValidator;
 	/**
-	 * @param	Tx_ThRating_Domain_Validator_VoteValidator $voteValidator
+	 * @param	\Thucke\ThRating\Domain\Validator\VoteValidator $voteValidator
 	 * @return 	void
 	 */
-	public function injectVoteValidator(Tx_ThRating_Domain_Validator_VoteValidator $voteValidator) {
+	public function injectVoteValidator(\Thucke\ThRating\Domain\Validator\VoteValidator $voteValidator) {
 		$this->voteValidator = $voteValidator;
 	}
 
 	/**
-	 * @var Tx_ThRating_Domain_Validator_RatingValidator
+	 * @var \Thucke\ThRating\Domain\Validator\RatingValidator
 	 */
 	protected $ratingValidator;
 	/**
-	 * @param	Tx_ThRating_Domain_Validator_RatingValidator	$ratingValidator
+	 * @param	\Thucke\ThRating\Domain\Validator\RatingValidator	$ratingValidator
 	 * @return	void
 	 */
-	public function injectRatingValidator( Tx_ThRating_Domain_Validator_RatingValidator $ratingValidator ) {
+	public function injectRatingValidator( \Thucke\ThRating\Domain\Validator\RatingValidator $ratingValidator ) {
 		$this->ratingValidator = $ratingValidator;
 	}
 
 	/**
-	 * @var Tx_ThRating_Domain_Repository_RatingobjectRepository	$ratingobjectRepository
+	 * @var \Thucke\ThRating\Domain\Repository\RatingobjectRepository	$ratingobjectRepository
 	 */
 	protected $ratingobjectRepository;
 	/**
-	 * @param Tx_ThRating_Domain_Repository_RatingobjectRepository $ratingobjectRepository
+	 * @param \Thucke\ThRating\Domain\Repository\RatingobjectRepository $ratingobjectRepository
 	 * @return void
 	 */
-	public function injectRatingobjectRepository(Tx_ThRating_Domain_Repository_RatingobjectRepository $ratingobjectRepository) {
+	public function injectRatingobjectRepository(\Thucke\ThRating\Domain\Repository\RatingobjectRepository $ratingobjectRepository) {
 		$this->ratingobjectRepository = $ratingobjectRepository;
 	}
 
 	/**
-	 * @var Tx_ThRating_Domain_Repository_StepconfRepository	$stepconfRepository
+	 * @var \Thucke\ThRating\Domain\Repository\StepconfRepository	$stepconfRepository
 	 */
 	protected $stepconfRepository;
 	/**
-	 * @param Tx_ThRating_Domain_Repository_StepconfRepository $stepconfRepository
+	 * @param \Thucke\ThRating\Domain\Repository\StepconfRepository $stepconfRepository
 	 * @return void
 	 */
-	public function injectStepconfRepository(Tx_ThRating_Domain_Repository_StepconfRepository $stepconfRepository) {
+	public function injectStepconfRepository(\Thucke\ThRating\Domain\Repository\StepconfRepository $stepconfRepository) {
 		$this->stepconfRepository = $stepconfRepository;
 	}
 
@@ -143,14 +144,14 @@ class Tx_ThRating_Controller_VoteController extends Tx_Extbase_MVC_Controller_Ac
 	 */
 	public function initializeAction() {
 		$this->prefixId = strtolower('tx_' . $this->request->getControllerExtensionName(). '_' . $this->request->getPluginName());
-		$this->signalSlotDispatcher = $this->objectManager->get('Tx_Extbase_SignalSlot_Dispatcher');
+		$this->signalSlotDispatcher = $this->objectManager->get('TYPO3\\CMS\\Extbase\\SignalSlot\\Dispatcher');
 				
 		//Set default storage pids to SITEROOT
 		$this->setStoragePids();
 
-		//Tx_Extbase_Utility_Debugger::var_dump($this->settings,'settings');
+		//\TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump($this->settings,'settings');
 
-		$frameworkConfiguration = $this->configurationManager->getConfiguration(Tx_Extbase_Configuration_ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
+		$frameworkConfiguration = $this->configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
 		if ( $this->request->hasArgument('ajaxRef') ) {
 			//read unique AJAX identification on AJAX request
 			$this->ajaxSelections['ajaxRef'] = $this->request->getArgument('ajaxRef');
@@ -161,7 +162,7 @@ class Tx_ThRating_Controller_VoteController extends Tx_Extbase_MVC_Controller_Ac
 			$this->ajaxSelections['ajaxRef'] = $this->prefixId.'_'.$this->getRandomId();
 		}
 		$this->setFrameworkConfiguration($frameworkConfiguration);
-		$this->settings['ratingConfigurations'] = t3lib_div::array_merge_recursive_overrule($this->settings['ratingConfigurations'], $frameworkConfiguration['ratings']);
+		$this->settings['ratingConfigurations'] = \TYPO3\CMS\Core\Utility\GeneralUtility::array_merge_recursive_overrule($this->settings['ratingConfigurations'], $frameworkConfiguration['ratings']);
 	}
 
 
@@ -180,12 +181,12 @@ class Tx_ThRating_Controller_VoteController extends Tx_Extbase_MVC_Controller_Ac
 		$this->view->assign('ratingobjects', $this->ratingobjectRepository->findAll() );
 		
 		//initialize ratingobject and autocreate four ratingsteps
-		$ratingobject = Tx_ThRating_Utility_ExtensionManagementUtility::makeRatable('TestTable', 'TestField', 4);
+		$ratingobject = \Thucke\ThRating\Utility\ExtensionManagementUtility::makeRatable('TestTable', 'TestField', 4);
 
 		//add descriptions in default language to each stepconf
-		Tx_ThRating_Utility_ExtensionManagementUtility::setStepname($ratingobject->getStepconfs()->current(), 'Automatic generated entry ', 0, TRUE);		
+		\Thucke\ThRating\Utility\ExtensionManagementUtility::setStepname($ratingobject->getStepconfs()->current(), 'Automatic generated entry ', 0, TRUE);		
 		//add descriptions in german language to each stepconf
-		Tx_ThRating_Utility_ExtensionManagementUtility::setStepname($ratingobject->getStepconfs()->current(), 'Automatischer Eintrag ', 43, TRUE);		
+		\Thucke\ThRating\Utility\ExtensionManagementUtility::setStepname($ratingobject->getStepconfs()->current(), 'Automatischer Eintrag ', 43, TRUE);		
 	}
 
 
@@ -201,27 +202,27 @@ class Tx_ThRating_Controller_VoteController extends Tx_Extbase_MVC_Controller_Ac
 	/**
 	 * Displays the vote of the current user
 	 *
-	 * @param 	Tx_ThRating_Domain_Model_Vote	$vote
+	 * @param 	\Thucke\ThRating\Domain\Model\Vote	$vote
 	 * @return 	string 							The rendered voting
 	 */
-	public function showAction(	Tx_ThRating_Domain_Model_Vote	$vote = NULL ) {
-		//is_object($vote) && Tx_Extbase_Utility_Debugger::var_dump($vote->getUid(),'showAction');
-		//Tx_Extbase_Utility_Debugger::var_dump($vote->getVoter(),'vote_getVoter');
+	public function showAction(	\Thucke\ThRating\Domain\Model\Vote	$vote = NULL ) {
+		//is_object($vote) && \TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump($vote->getUid(),'showAction');
+		//\TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump($vote->getVoter(),'vote_getVoter');
 		$this->initVoting( $vote );  //just to set all properties
 
 		if ($this->voteValidator->isValid($this->vote)) {
 			if ($this->accessControllService->isLoggedIn($this->vote->getVoter())) {
 				$this->fillSummaryView();
 			} else {
-				$this->flashMessageContainer->add(	Tx_Extbase_Utility_Localization::translate('flash.vote.create.noPermission', 'ThRating'),
-													Tx_Extbase_Utility_Localization::translate('flash.heading.error', 'ThRating'),
-													t3lib_FlashMessage::ERROR);
+				$this->flashMessageContainer->add(	\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('flash.vote.create.noPermission', 'ThRating'),
+													\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('flash.heading.error', 'ThRating'),
+													\TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
 			}
 		} else {
 			if ($this->settings['showNotRated']) {
-				$this->flashMessageContainer->add(	Tx_Extbase_Utility_Localization::translate('flash.vote.show.notRated', 'ThRating'), 
-													Tx_Extbase_Utility_Localization::translate('flash.heading.notice', 'ThRating'),
-													t3lib_FlashMessage::NOTICE);
+				$this->flashMessageContainer->add(	\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('flash.vote.show.notRated', 'ThRating'), 
+													\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('flash.heading.notice', 'ThRating'),
+													\TYPO3\CMS\Core\Messaging\FlashMessage::NOTICE);
 			}
 		}
 	}
@@ -230,12 +231,12 @@ class Tx_ThRating_Controller_VoteController extends Tx_Extbase_MVC_Controller_Ac
 	/**
 	 * Creates a new vote
 	 *
-	 * @param Tx_ThRating_Domain_Model_Vote $vote A fresh vote object which has not yet been added to the repository
+	 * @param	\Thucke\ThRating\Domain\Model\Vote	$vote	A fresh vote object which has not yet been added to the repository
 	 * @return void
 	 * dontverifyrequesthash
 	 */
 	//http://localhost:8503/index.php?id=71&tx_thrating_pi1[controller]=Vote&tx_thrating_pi1[action]=create&tx_thrating_pi1[vote][rating]=1&tx_thrating_pi1[vote][voter]=1&tx_thrating_pi1[vote][vote]=1
-	public function createAction(Tx_ThRating_Domain_Model_Vote $vote) {
+	public function createAction( \Thucke\ThRating\Domain\Model\Vote $vote) {
 		if ($this->accessControllService->isLoggedIn($vote->getVoter()) || $vote->isAnonymous() ) {
 			//if not anonymous check if vote is already done
 			if ( !$vote->isAnonymous() ) {
@@ -249,36 +250,37 @@ class Tx_ThRating_Controller_VoteController extends Tx_Extbase_MVC_Controller_Ac
 					$anonymousRating['voteUid']=$vote->getUid();
 					$lifeTime = time() + 60 * 60 * 24 * $this->cookieLifetime;
 					//set cookie to prevent multiple anonymous ratings
-					Tx_ThRating_Service_CookieService::setVoteCookie($this->prefixId.'_AnonymousRating_'.$vote->getRating()->getUid(), json_encode($anonymousRating), $lifeTime );
+					\Thucke\ThRating\Service\CookieService::setVoteCookie($this->prefixId.'_AnonymousRating_'.$vote->getRating()->getUid(), json_encode($anonymousRating), $lifeTime );
 				}
 				$setResult = $this->setForeignRatingValues($vote->getRating());
 				If (!$setResult) {
-					$this->flashMessageContainer->add(	Tx_Extbase_Utility_Localization::translate('flash.vote.create.foreignUpdateFailed', 'ThRating'), 
-														Tx_Extbase_Utility_Localization::translate('flash.heading.warning', 'ThRating'),
-														t3lib_Flashmessage::WARNING);
+					$this->flashMessageContainer->add(	\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('flash.vote.create.foreignUpdateFailed', 'ThRating'), 
+														\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('flash.heading.warning', 'ThRating'),
+														\TYPO3\CMS\Core\Messaging\FlashMessage::WARNING);
 				}
-				$this->flashMessageContainer->add(	Tx_Extbase_Utility_Localization::translate('flash.vote.create.newCreated', 'ThRating'), 
-													Tx_Extbase_Utility_Localization::translate('flash.heading.ok', 'ThRating'),
-													t3lib_Flashmessage::OK);
+				$this->flashMessageContainer->add(	\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('flash.vote.create.newCreated', 'ThRating'), 
+													\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('flash.heading.ok', 'ThRating'),
+													\TYPO3\CMS\Core\Messaging\FlashMessage::OK);
 			} else {
 				$vote = $matchVote;
-				$this->flashMessageContainer->add(	Tx_Extbase_Utility_Localization::translate('flash.vote.create.alreadyRated', 'ThRating'), 
-													Tx_Extbase_Utility_Localization::translate('flash.heading.notice', 'ThRating'),
-													t3lib_FlashMessage::NOTICE);
+				$this->flashMessageContainer->add(	\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('flash.vote.create.alreadyRated', 'ThRating'), 
+													\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('flash.heading.notice', 'ThRating'),
+													\TYPO3\CMS\Core\Messaging\FlashMessage::NOTICE);
 			}
 			$this->vote = $vote;
 		} else {
-			$this->flashMessageContainer->add(	Tx_Extbase_Utility_Localization::translate('flash.vote.create.noPermission', 'ThRating'), 
-												Tx_Extbase_Utility_Localization::translate('flash.heading.error', 'ThRating'),
-												t3lib_FlashMessage::ERROR);
+			$this->flashMessageContainer->add(	\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('flash.vote.create.noPermission', 'ThRating'), 
+												\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('flash.heading.error', 'ThRating'),
+												\TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
 		}
 
 		$referrer = $this->request->getInternalArgument('__referrer');
 		$newArguments = $this->request->getArguments();
+		$newArguments['vote']['vote'] = $this->vote->getVote();  //replace vote argument with correct vote if user has already rated
 		
 		//Send signal to connected slots
 		$this->initSignalSlotDispatcher( 'afterCreateAction' );
-		$newArguments = t3lib_div::array_merge($newArguments, array('signalSlotHandlerContent' => $this->signalSlotHandlerContent));
+		$newArguments = \TYPO3\CMS\Core\Utility\GeneralUtility::array_merge($newArguments, array('signalSlotHandlerContent' => $this->signalSlotHandlerContent));
 
 		$this->forward($referrer['@action'], $referrer['@controller'], $referrer['@extension'], $newArguments );
 	}
@@ -288,12 +290,12 @@ class Tx_ThRating_Controller_VoteController extends Tx_Extbase_MVC_Controller_Ac
 	 * FE user gives a new vote by SELECT form
 	 * A classic SELECT input form will be provided to AJAX-submit the vote
 	 *
-	 * @param Tx_ThRating_Domain_Model_Vote 		$vote The new vote (used on callback from createAction)
+	 * @param \Thucke\ThRating\Domain\Model\Vote 		$vote The new vote (used on callback from createAction)
 	 * @return string The rendered view
 	 * @ignorevalidation $vote
 	 *
 	 */
-	public function newAction(	Tx_ThRating_Domain_Model_Vote	$vote = NULL) {
+	public function newAction(	\Thucke\ThRating\Domain\Model\Vote	$vote = NULL) {
 		//find vote using additional information
 		$this->initVoting( $vote );
 		if ( !$this->vote->hasRated() || (!$this->accessControllService->isLoggedIn($this->vote->getVoter()) && $this->vote->isAnonymous()) ) {
@@ -308,12 +310,12 @@ class Tx_ThRating_Controller_VoteController extends Tx_Extbase_MVC_Controller_Ac
 	 * FE user gives a new vote by using a starrating obejct
 	 * A graphic starrating object containing links will be provided to AJAX-submit the vote
 	 *
-	 * @param Tx_ThRating_Domain_Model_Vote 		$vote 	The new vote
+	 * @param \Thucke\ThRating\Domain\Model\Vote 		$vote 	The new vote
 	 * @return string The rendered view
 	 * @ignorevalidation $vote
 	 */
 	//http://localhost:8503/index.php?id=71&tx_thrating_pi1[controller]=Vote&tx_thrating_pi1[action]=ratinglinks
-	public function ratinglinksAction(	Tx_ThRating_Domain_Model_Vote	$vote = NULL) {
+	public function ratinglinksAction(	\Thucke\ThRating\Domain\Model\Vote	$vote = NULL) {
 		//set display configuration
 		if ( !empty($this->settings['display'] ) ) {
 			if ( isset($this->settings['ratingConfigurations'][$this->settings['display']]) ) {
@@ -321,9 +323,9 @@ class Tx_ThRating_Controller_VoteController extends Tx_Extbase_MVC_Controller_Ac
 			} else {
 				//switch back to default if given display configuration does not exist
 				$this->ratingName = $this->settings['ratingConfigurations']['default'];
-				$this->flashMessageContainer->add(	Tx_Extbase_Utility_Localization::translate('flash.vote.ratinglinks.wrongDisplayConfig', 'ThRating'), 
-													Tx_Extbase_Utility_Localization::translate('flash.heading.error', 'ThRating'),
-													t3lib_FlashMessage::ERROR);		
+				$this->flashMessageContainer->add(	\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('flash.vote.ratinglinks.wrongDisplayConfig', 'ThRating'), 
+													\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('flash.heading.error', 'ThRating'),
+													\TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);		
 			}
 		} else {
 			//choose default ratingConfiguration if nothing is defined
@@ -335,13 +337,13 @@ class Tx_ThRating_Controller_VoteController extends Tx_Extbase_MVC_Controller_Ac
 		if ( is_array($ratingConfiguration['settings']) ) {
 			unset($ratingConfiguration['settings']['defaultObject']);
 			unset($ratingConfiguration['settings']['ratingConfigurations']);
-			$this->settings = t3lib_div::array_merge_recursive_overrule($this->settings, $ratingConfiguration['settings']);
+			$this->settings = \TYPO3\CMS\Core\Utility\GeneralUtility::array_merge_recursive_overrule($this->settings, $ratingConfiguration['settings']);
 		}
 		//override fluid settings with rating fluid settings
 		if (is_array($ratingConfiguration['fluid'])) {
-			$this->settings['fluid'] = t3lib_div::array_merge_recursive_overrule($this->settings['fluid'], $ratingConfiguration['fluid']);
+			$this->settings['fluid'] = \TYPO3\CMS\Core\Utility\GeneralUtility::array_merge_recursive_overrule($this->settings['fluid'], $ratingConfiguration['fluid']);
 		}
-		$frameworkConfiguration = $this->configurationManager->getConfiguration(Tx_Extbase_Configuration_ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
+		$frameworkConfiguration = $this->configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
 		$frameworkConfiguration['settings'] = $this->settings;
 		$this->setFrameworkConfiguration($frameworkConfiguration);
 		$this->view->assign('barimage', 'noratingbar');
@@ -362,7 +364,7 @@ class Tx_ThRating_Controller_VoteController extends Tx_Extbase_MVC_Controller_Ac
 		}
 		$this->view->assign('ratingName', $this->ratingName);
 		$this->view->assign('ratingClass', $ratingClass);
-		//is_object($this->vote->getVoter()) && Tx_Extbase_Utility_Debugger::var_dump($this->vote->hasAnonymousVote($this->prefixId),'isAnonymous');
+		//is_object($this->vote->getVoter()) && \TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump($this->vote->hasAnonymousVote($this->prefixId),'isAnonymous');
 		if ( 	(!$this->vote->hasRated() && !$this->vote->isAnonymous() && $this->accessControllService->isLoggedIn($this->vote->getVoter())) ||
 				(	($this->vote->isAnonymous() && !$this->accessControllService->isLoggedIn($this->vote->getVoter())) &&
 				((!$this->vote->hasAnonymousVote($this->prefixId) && $this->cookieProtection && !$this->request->hasArgument('settings')) || !$this->cookieProtection)
@@ -409,17 +411,13 @@ class Tx_ThRating_Controller_VoteController extends Tx_Extbase_MVC_Controller_Ac
 			if ( $this->voteValidator->isValid($this->vote) ) {
 				$signalSlotMessage['voter'] = $this->vote->getVoter()->getUid();
 				$signalSlotMessage['votingStep'] = $this->vote->getVote()->getSteporder();
-				$signalSlotMessage['votingName'] = $this->vote->getVote()->getStepname();
+				$signalSlotMessage['votingName'] = strval($this->vote->getVote()->getStepname());
 				$signalSlotMessage['anonymousVote'] = (bool) $this->vote->isAnonymous();
 			}
 			
 			//clear signalSlotHandlerArray for sure
 			$this->signalSlotHandlerContent = array();
-
-			$this->signalSlotDispatcher->dispatch(__CLASS__, $slotName, array( $signalSlotMessage, &$this->signalSlotHandlerContent ));
-			//TODO: expected syntax for Typo3 6.x
-			//t3lib_SignalSlot_Dispatcher::getInstance()->dispatch(__CLASS__, 'afterRatinglinkAction', array( 'ratingname'=>$this->ratingname ));
-			
+			$this->signalSlotDispatcher->dispatch(__CLASS__, $slotName, array( $signalSlotMessage, &$this->signalSlotHandlerContent ));			
 		}
 		$this->view->assign('staticPreContent', $this->signalSlotHandlerContent['staticPreContent']);
 		$this->view->assign('staticPostContent', $this->signalSlotHandlerContent['staticPostContent']);
@@ -432,31 +430,31 @@ class Tx_ThRating_Controller_VoteController extends Tx_Extbase_MVC_Controller_Ac
 	/**
 	 * Check preconditions for rating
 	 *
-	 * @param Tx_ThRating_Domain_Model_Vote 			$vote 	the vote this selection is for
+	 * @param \Thucke\ThRating\Domain\Model\Vote 			$vote 	the vote this selection is for
 	 * @ignorevalidation $vote
 	 * @return void
 	 */
-	protected function initVoting(	Tx_ThRating_Domain_Model_Vote $vote = NULL ) {
+	protected function initVoting(	\Thucke\ThRating\Domain\Model\Vote $vote = NULL ) {
 		if ( $this->voteValidator->isValid($vote) ) {
 			$this->vote = $vote;
 		} else {
 			//first initialize parent objects for vote object
-			$ratingobject = Tx_ThRating_Service_ObjectFactoryService::getRatingobject( $this->settings );
-			$rating = Tx_ThRating_Service_ObjectFactoryService::getRating( $this->settings, $ratingobject );
-			$this->vote = Tx_ThRating_Service_ObjectFactoryService::getVote( $this->prefixId, $this->settings, $rating );
+			$ratingobject = \Thucke\ThRating\Service\ObjectFactoryService::getRatingobject( $this->settings );
+			$rating = \Thucke\ThRating\Service\ObjectFactoryService::getRating($this->settings, $ratingobject);
+			$this->vote = \Thucke\ThRating\Service\ObjectFactoryService::getVote( $this->prefixId, $this->settings, $rating );
 
 			$countSteps=count( $ratingobject->getStepconfs() );
 			If ( empty($countSteps)) {
-				$this->flashMessageContainer->add(	Tx_Extbase_Utility_Localization::translate('flash.ratingobject.noRatingsteps', 'ThRating'), 
-													Tx_Extbase_Utility_Localization::translate('flash.heading.error', 'ThRating'),
-													t3lib_FlashMessage::ERROR); 
+				$this->flashMessageContainer->add(	\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('flash.ratingobject.noRatingsteps', 'ThRating'), 
+													\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('flash.heading.error', 'ThRating'),
+													\TYPO3\CMS\Core\Messaging\FlashMessage::ERROR); 
 			}
 
-			if (!$this->vote->getVoter() instanceof Tx_ThRating_Domain_Model_Voter) {
+			if (!$this->vote->getVoter() instanceof \Thucke\ThRating\Domain\Model\Voter) {
 				If ( !empty($this->settings['showNoFEUser']) ) {
-					$this->flashMessageContainer->add(	Tx_Extbase_Utility_Localization::translate('flash.vote.noFEuser', 'ThRating'), 
-														Tx_Extbase_Utility_Localization::translate('flash.heading.notice', 'ThRating'),
-														t3lib_FlashMessage::NOTICE); 
+					$this->flashMessageContainer->add(	\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('flash.vote.noFEuser', 'ThRating'), 
+														\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('flash.heading.notice', 'ThRating'),
+														\TYPO3\CMS\Core\Messaging\FlashMessage::NOTICE); 
 				}
 			}
 		}
@@ -467,12 +465,12 @@ class Tx_ThRating_Controller_VoteController extends Tx_Extbase_MVC_Controller_Ac
 
 	/**
 	 * Build array of possible AJAX selection configuration
-	 * @param Tx_ThRating_Domain_Model_Vote $vote the vote this selection is for
+	 * @param \Thucke\ThRating\Domain\Model\Vote $vote the vote this selection is for
 	 *
 	 * @return array
 	 */
-	protected function setAjaxSelections(Tx_ThRating_Domain_Model_Vote $vote) {
-		if ($vote->getVoter() instanceof Tx_ThRating_Domain_Model_Voter) {
+	protected function setAjaxSelections(\Thucke\ThRating\Domain\Model\Vote $vote) {
+		if ($vote->getVoter() instanceof \Thucke\ThRating\Domain\Model\Voter) {
 			//cleanup settings to reduce data size in POST form
 			$tmpDisplayConfig = $this->settings['ratingConfigurations'][$this->settings['display']];
 			unset($this->settings['defaultObject']);
@@ -488,7 +486,7 @@ class Tx_ThRating_Controller_VoteController extends Tx_Extbase_MVC_Controller_Ac
 					'settings'		=> json_encode($this->settings),
 					'actionName'	=> strtolower($this->request->getControllerActionName()),
 					'ajaxRef' 		=> $this->ajaxSelections['ajaxRef'])));
-				$this->ajaxSelections['json'][$key] = $stepConf->getStepname();
+				$this->ajaxSelections['json'][$key] = strval($stepConf);
 				$this->ajaxSelections['steporder'][$stepConf->getSteporder()]['step'] = $stepConf;
 				$this->ajaxSelections['steporder'][$stepConf->getSteporder()]['ajaxvalue'] = $key;
 			}
@@ -514,9 +512,9 @@ class Tx_ThRating_Controller_VoteController extends Tx_Extbase_MVC_Controller_Ac
 			$this->view->assign('anonymousVotes', $currentrate['anonymousVotes']);
 			$this->view->assign('anonymousVoting', !empty($this->settings['mapAnonymous']) && !$this->accessControllService->getFrontendUserUid());
 			if ( $this->settings['showNotRated'] && empty($currentrate['currentrate']) ) {
-				$this->flashMessageContainer->add(	Tx_Extbase_Utility_Localization::translate('flash.vote.show.notRated', 'ThRating'), 
-													Tx_Extbase_Utility_Localization::translate('flash.heading.notice', 'ThRating'),
-													t3lib_FlashMessage::NOTICE);
+				$this->flashMessageContainer->add(	\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('flash.vote.show.notRated', 'ThRating'), 
+													\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('flash.heading.notice', 'ThRating'),
+													\TYPO3\CMS\Core\Messaging\FlashMessage::NOTICE);
 			}
 			if ( $this->voteValidator->isValid($this->vote) ) {
 				if ( ( !$this->vote->isAnonymous() && $this->vote->getVoter()->getUid() == $this->accessControllService->getFrontendUserUid()) ||
@@ -558,9 +556,9 @@ class Tx_ThRating_Controller_VoteController extends Tx_Extbase_MVC_Controller_Ac
 		$siteRootPids = $GLOBALS['TSFE']->getStorageSiterootPids();
 		$siteRoot = $siteRootPids['_SITEROOT'];
 		$storagePid = $siteRootPids['_STORAGE_PID'];
-		$frameworkConfiguration = $this->configurationManager->getConfiguration(Tx_Extbase_Configuration_ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
-		//t3lib_utility_Debug::debug($frameworkConfiguration,'frameworkConfiguration');
-		$storagePids = Tx_Extbase_Utility_Arrays::integerExplode(',', $frameworkConfiguration['persistence']['storagePid'], TRUE);
+		$frameworkConfiguration = $this->configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
+		//\TYPO3\CMS\Core\Utility\DebugUtility::debug($frameworkConfiguration,'frameworkConfiguration');
+		$storagePids = \TYPO3\CMS\Extbase\Utility\ArrayUtility::integerExplode(',', $frameworkConfiguration['persistence']['storagePid'], TRUE);
 		foreach ($storagePids as $i => $value) {
 			if ( !is_null($value) && (empty($value) || $value==$siteRoot) ) {
 				unset($storagePids[$i]);		//cleanup invalid values
@@ -572,9 +570,9 @@ class Tx_ThRating_Controller_VoteController extends Tx_Extbase_MVC_Controller_Ac
 		}
 
 		if (empty($storagePids[0])) {
-			$this->flashMessageContainer->add(	Tx_Extbase_Utility_Localization::translate('flash.vote.general.invalidStoragePid', 'ThRating'), 
-												Tx_Extbase_Utility_Localization::translate('flash.heading.error', 'ThRating'),
-												t3lib_FlashMessage::ERROR);
+			$this->flashMessageContainer->add(	\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('flash.vote.general.invalidStoragePid', 'ThRating'), 
+												\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('flash.heading.error', 'ThRating'),
+												\TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
 		} 
 		$frameworkConfiguration['persistence']['storagePid'] = implode(',', $storagePids);
 		$this->setFrameworkConfiguration($frameworkConfiguration);
@@ -625,7 +623,14 @@ class Tx_ThRating_Controller_VoteController extends Tx_Extbase_MVC_Controller_Ac
 				return;
 			}
 		}
-		
+		//display an error to update TYPO3 at least to version 6.2.1
+		If ( \TYPO3\CMS\Core\Utility\VersionNumberUtility::convertVersionNumberToInteger(TYPO3_version) == 6002000 ) {
+				$this->flashMessageContainer->add(	\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('flash.renderCSS.incompatible620', 'ThRating').' (1398526413)',
+															\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('flash.singleton.error', 'ThRating'),
+													\TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
+				return;
+		}
+
 		//now walk through all ratingobjects to calculate stepwidths
 		$allRatingobjects = $this->ratingobjectRepository->findAll(TRUE);
 		foreach ( $allRatingobjects as $ratingobject) {
@@ -633,13 +638,13 @@ class Tx_ThRating_Controller_VoteController extends Tx_Extbase_MVC_Controller_Ac
 			$stepconfObjects = $ratingobject->getStepconfs();
 			$stepcount = count($stepconfObjects);
 			If (!$stepcount) {
-				$this->flashMessageContainer->add(	Tx_Extbase_Utility_Localization::translate('flash.renderCSS.noStepconf', 'ThRating', 
+				$this->flashMessageContainer->add(	\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('flash.renderCSS.noStepconf', 'ThRating', 
 													array(1=>$ratingobject->getUid(), 2=>$ratingobject->getPid())).' (1384705470)',
-															Tx_Extbase_Utility_Localization::translate('flash.singleton.error', 'ThRating'),
-													t3lib_FlashMessage::ERROR);
+															\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('flash.singleton.error', 'ThRating'),
+													\TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
 				return;
 			}
-			$stepconfValidator = Tx_ThRating_Service_ObjectFactoryService::getObject( 'Tx_ThRating_Domain_Validator_StepconfValidator' );
+			$stepconfValidator = \Thucke\ThRating\Service\ObjectFactoryService::getObject( 'Thucke\\ThRating\\Domain\\Validator\\StepconfValidator' );
 			$stepconfs = $stepconfObjects->toArray();
 			foreach ( $stepconfs as $stepconf ) {	//stepconfs are already sorted by steporder
 				//just do checks here that all steps are OK
@@ -649,8 +654,8 @@ class Tx_ThRating_Controller_VoteController extends Tx_Extbase_MVC_Controller_Ac
 				} else {
 					foreach ($stepconfValidator->getErrors() as $errorMessage) {
 						$this->flashMessageContainer->add(	$errorMessage->getMessage().' ('.$errorMessage->getCode().')',
-															Tx_Extbase_Utility_Localization::translate('flash.singleton.error', 'ThRating'),
-															t3lib_FlashMessage::ERROR);
+															\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('flash.singleton.error', 'ThRating'),
+															\TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
 					}
 					return;
 				}
@@ -669,9 +674,9 @@ class Tx_ThRating_Controller_VoteController extends Tx_Extbase_MVC_Controller_Ac
 					$defaultRatingName = $this->settings['ratingConfigurations']['default'];
 					$ratingConfig = $this->settings['ratingConfigurations'][$defaultRatingName];
 					$filename = PATH_site.'/'.$ratingConfig['imagefile'];
-					$this->flashMessageContainer->add(	Tx_Extbase_Utility_Localization::translate('flash.vote.renderCSS.defaultImage', 'ThRating'), 
-														Tx_Extbase_Utility_Localization::translate('flash.heading.warning', 'ThRating'),
-														t3lib_FlashMessage::WARNING);
+					$this->flashMessageContainer->add(	\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('flash.vote.renderCSS.defaultImage', 'ThRating'), 
+														\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('flash.heading.warning', 'ThRating'),
+														\TYPO3\CMS\Core\Messaging\FlashMessage::WARNING);
 				}
 				$filenameUri = $basePath.'/'.$ratingConfig['imagefile'];		//prepend host basepath if no URL is given
 
@@ -725,12 +730,12 @@ class Tx_ThRating_Controller_VoteController extends Tx_Extbase_MVC_Controller_Ac
 	 * Sets the rating values in the foreign table
 	 * Recommended field type is DOUBLE
 	 *
-	 * @param Tx_ThRating_Domain_Model_Rating 		$rating The rating
+	 * @param \Thucke\ThRating\Domain\Model\Rating 		$rating The rating
 	 * 
 	 * @return boolean
 	 *
 	 */
-	protected function setForeignRatingValues(	Tx_ThRating_Domain_Model_Rating	$rating ) {
+	protected function setForeignRatingValues(	\Thucke\ThRating\Domain\Model\Rating	$rating ) {
 		$table=$rating->getRatingobject()->getRatetable();
 		$lockedFieldnames = $this->getLockedfieldnames($table);
 		$rateField = $rating->getRatingobject()->getRatefield();
@@ -756,10 +761,10 @@ class Tx_ThRating_Controller_VoteController extends Tx_Extbase_MVC_Controller_Ac
 	 *
 	 */
 	protected function getLockedfieldnames( $table ) {
-		$GLOBALS['TSFE']->includeTCA();
-		t3lib_div::loadTCA($table);
+		//$GLOBALS['TSFE']->includeTCA(); obsolete since TYPO3 6.1
+		//\TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA($table); obsolete since TYPO3 6.1
 		$TCA = &$GLOBALS['TCA'][$table]['ctrl']; // Set private TCA var
-		$lockedFields = Tx_Extbase_Utility_Arrays::trimExplode(',', $TCA['label_alt'], TRUE);
+		$lockedFields = \TYPO3\CMS\Extbase\Utility\ArrayUtility::trimExplode(',', $TCA['label_alt'], TRUE);
 		$lockedFields[] .= 'pid';
 		$lockedFields[] .= 'uid';
 		$lockedFields[] .= $TCA['label'];
@@ -793,10 +798,12 @@ class Tx_ThRating_Controller_VoteController extends Tx_Extbase_MVC_Controller_Ac
 	 * @param	array	$customContent 		array by reference to return pre and post content
 	 * @return	void
 	 */
-	public function afterRatinglinkActionHandler($signalSlotMessage, $customContent) {
-		//Tx_Extbase_Utility_Debugger::var_dump($signalSlotMessage,'signalSlotMessage');
+	public function afterRatinglinkActionHandler($signalSlotMessage, &$customContent) {
+		//\TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump($signalSlotMessage,'signalSlotMessage');
 		$customContent['preContent']='<b>This ist my preContent</b>';
+		$customContent['staticPreContent']='<b>This ist my staticPreContent</b>';
 		$customContent['postContent']='<b>This ist my postContent</b>';
+		$customContent['staticPostContent']='<b>This ist my stticPostContent</b>';
 	}
 
 	/**
@@ -806,9 +813,10 @@ class Tx_ThRating_Controller_VoteController extends Tx_Extbase_MVC_Controller_Ac
 	 * @param	array	$customContent 		array by reference to return pre and post content
 	 * @return	void
 	 */
-	public function afterCreateActionHandler($signalSlotMessage, $customContent) {
-		//Tx_Extbase_Utility_Debugger::var_dump($signalSlotMessage,'signalSlotMessage');
+	public function afterCreateActionHandler($signalSlotMessage, &$customContent) {
+		//\TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump($signalSlotMessage,'signalSlotMessage');
 		$customContent['preContent']='<b>This ist my preContent after afterCreateActionHandler</b>';
+		$customContent['staticPreContent']='<b>This ist my staticPreContent after afterCreateActionHandler</b>'; //this one would be display anyway ;-)
 		$customContent['postContent']='<b>This ist my postContent after afterCreateActionHandler</b>';
 	}
 

@@ -1,8 +1,20 @@
 <?php
 if (!defined ('TYPO3_MODE')) 	die ('Access denied.');
-
 $TCA['tx_thrating_domain_model_ratingobject'] = array(
-	'ctrl' => $TCA['tx_thrating_domain_model_ratingobject']['ctrl'],
+	'ctrl' => array (
+		'title'				=> 'LLL:'.\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('th_rating').'/Resources/Private/Language/locallang.xlf:tca.model.ratingobject.title',
+		'label'				=> 'uid',
+		'label_alt'			=> 'ratetable,ratefield',
+ 		'label_userFunc'	=> 'Thucke\\ThRating\\Utility\\TCALabelUserFuncUtility->getRatingObjectRecordTitle',
+		'tstamp'			=> 'tstamp',
+		'crdate'			=> 'crdate',
+		'cruser_id'			=> 'cruser_id',
+		'delete'			=> 'deleted',
+		'enablecolumns'		=> array(
+			'disabled'	=> 'hidden'
+			),
+		'iconfile' 			=> \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('th_rating') . 'Resources/Public/Icons/tx_thrating_domain_model_ratingobject.gif'
+	),
 	'interface' => array(
 		'showRecordFieldList' => 'hidden, ratetable, ratefield'
 	),
@@ -91,4 +103,5 @@ $TCA['tx_thrating_domain_model_ratingobject'] = array(
 		'1' => array('showitem' => '')
 	),
 );
+return $TCA['tx_thrating_domain_model_ratingobject'];
 ?>

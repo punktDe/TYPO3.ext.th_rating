@@ -1,4 +1,5 @@
 <?php
+namespace Thucke\ThRating\Service;
 /***************************************************************
 *  Copyright notice
 *
@@ -28,7 +29,13 @@
  * @version $Id:$
  * @license http://opensource.org/licenses/gpl-license.php GNU protected License, version 2
  */
-class Tx_ThRating_Service_CookieService implements t3lib_Singleton {
+class CookieService implements \TYPO3\CMS\Core\SingletonInterface {
+
+	// Write messages into the devlog?
+	/**
+	 * @todo Define visibility
+	 */
+	public $writeDevLog = FALSE;
 
 	/**
 	 * Gets the domain to be used on setting cookies.
@@ -40,18 +47,17 @@ class Tx_ThRating_Service_CookieService implements t3lib_Singleton {
 	protected function getCookieDomain() {
 		$result = '';
 		$cookieDomain = $GLOBALS['TYPO3_CONF_VARS']['SYS']['cookieDomain'];
-			// If a specific cookie domain is defined for a given TYPO3_MODE,
-			// use that domain
+		// If a specific cookie domain is defined for a given TYPO3_MODE,
+		// use that domain
 		if (!empty($GLOBALS['TYPO3_CONF_VARS']['FE']['cookieDomain'])) {
 			$cookieDomain = $GLOBALS['TYPO3_CONF_VARS']['FE']['cookieDomain'];
 		}
-
 		if ($cookieDomain) {
 			if ($cookieDomain{0} == '/') {
 				$match = array();
-				$matchCnt = @preg_match($cookieDomain, t3lib_div::getIndpEnv('TYPO3_HOST_ONLY'), $match);
+				$matchCnt = @preg_match($cookieDomain, \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_HOST_ONLY'), $match);
 				if ($matchCnt === FALSE) {
-					t3lib_div::sysLog('The regular expression for the cookie domain (' . $cookieDomain . ') contains errors. The session is not shared across sub-domains.', 'Core', 3);
+					\TYPO3\CMS\Core\Utility\GeneralUtility::sysLog('The regular expression for the cookie domain (' . $cookieDomain . ') contains errors. The session is not shared across sub-domains.', 'Core', \TYPO3\CMS\Core\Utility\GeneralUtility::SYSLOG_SEVERITY_ERROR);
 				} elseif ($matchCnt) {
 					$result = $match[0];
 				}
@@ -76,18 +82,19 @@ class Tx_ThRating_Service_CookieService implements t3lib_Singleton {
 		// do not set session cookies
 		If ( !empty($cookieExpire) ) {
 			$settings = $GLOBALS['TYPO3_CONF_VARS']['SYS'];
-
 			// Get the domain to be used for the cookie (if any):
 			$cookieDomain = self::getCookieDomain();
 			// If no cookie domain is set, use the base path:
-			$cookiePath = ($cookieDomain ? '/' : t3lib_div::getIndpEnv('TYPO3_SITE_PATH'));
+			$cookiePath = ($cookieDomain ? '/' : \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_PATH'));
+			// If the cookie lifetime is set, use it:
+			$cookieExpire = $GLOBALS['EXEC_TIME'] + $cookieExpire;
 			// Use the secure option when the current request is served by a secure connection:
-			$cookieSecure = (bool) $settings['cookieSecure'] && t3lib_div::getIndpEnv('TYPO3_SSL');
+			$cookieSecure = (bool) $settings['cookieSecure'] && \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SSL');
 			// Deliver cookies only via HTTP and prevent possible XSS by JavaScript:
 			$cookieHttpOnly = (bool) $settings['cookieHttpOnly'];
 
 			// Do not set cookie if cookieSecure is set to "1" (force HTTPS) and no secure channel is used:
-			if ((int) $settings['cookieSecure'] !== 1 || t3lib_div::getIndpEnv('TYPO3_SSL')) {
+			if ((int) $settings['cookieSecure'] !== 1 || \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SSL')) {
 				setcookie(
 					$cookieName,
 					$cookieValue,
@@ -98,11 +105,15 @@ class Tx_ThRating_Service_CookieService implements t3lib_Singleton {
 					$cookieHttpOnly
 				);
 			} else {
-				throw new t3lib_exception(
+				throw new \TYPO3\CMS\Core\Exception(
 					'Cookie was not set since HTTPS was forced in $TYPO3_CONF_VARS[SYS][cookieSecure].',
 					1254325546
 				);
 			}
+			/*if ($this->writeDevLog) {
+				$devLogMessage = ($isRefreshTimeBasedCookie ? 'Updated Cookie: ' : 'Set Cookie: ') . $this->id;
+				\TYPO3\CMS\Core\Utility\GeneralUtility::devLog($devLogMessage . ($cookieDomain ? ', ' . $cookieDomain : ''), 'TYPO3\\CMS\\Core\\Authentication\\AbstractUserAuthentication');
+			}*/
 		}
 	}
 }

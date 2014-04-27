@@ -1,8 +1,23 @@
 <?php
 if (!defined ('TYPO3_MODE')) 	die ('Access denied.');
-
-$TCA['tx_thrating_domain_model_stepconf'] = array(
-	'ctrl' => $TCA['tx_thrating_domain_model_stepconf']['ctrl'],
+$TCA['tx_thrating_domain_model_stepconf'] =  array(
+	'ctrl' => array (
+		'title'						=> 'LLL:'.\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('th_rating').'/Resources/Private/Language/locallang.xlf:tca.model.stepconf.title',
+		'label'						=> 'uid',
+		'label_alt' 				=> 'ratingobject,steporder',
+ 		'label_userFunc' 			=> 'Thucke\\ThRating\\Utility\\TCALabelUserFuncUtility->getStepconfRecordTitle',
+		'type'						=> '1',
+		'tstamp'					=> 'tstamp',
+		'crdate'					=> 'crdate',
+		'cruser_id'					=> 'cruser_id',
+		'delete'					=> 'deleted',
+		'adminOnly'					=> TRUE,
+		'hideTable'					=> TRUE,
+		'editlock'					=> 'steporder,stepweight',
+		'dividers2tabs'				=> TRUE,
+		'enablecolumns'				=> array( 'disabled'	=> 'hidden' ),
+		'iconfile'			=> \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('th_rating') . 'Resources/Public/Icons/tx_thrating_domain_model_stepconf.gif',
+	),
 	'interface' => array(
 		'showRecordFieldList' => 'hidden, ratingobject, steporder, stepweight, stepname'
 	),
@@ -111,4 +126,5 @@ $TCA['tx_thrating_domain_model_stepconf'] = array(
 		'1' => array('showitem' => ''),
 	),
 );
+return $TCA['tx_thrating_domain_model_stepconf'];
 ?>

@@ -1,5 +1,5 @@
 <?php
-
+namespace Thucke\ThRating\Domain\Repository;
 /***************************************************************
 *  Copyright notice
 *
@@ -26,7 +26,7 @@
 /**
  * A repository for rating objects
  */
-class Tx_ThRating_Domain_Repository_RatingobjectRepository extends Tx_Extbase_Persistence_Repository {			
+class RatingobjectRepository extends \TYPO3\CMS\Extbase\Persistence\Repository {			
 
 	/**
 	 * Defines name for function parameter
@@ -40,7 +40,7 @@ class Tx_ThRating_Domain_Repository_RatingobjectRepository extends Tx_Extbase_Pe
 	 * @param string 	$ratetable The tablename of the ratingobject
 	 * @param string 	$ratefield The fieldname of the ratingobject
 	 * @param bool 	$addIfNotFound Set to true if new objects should instantly be added
-	 * @return Tx_ThRating_Domain_Model_Ratingobject The ratingobject
+	 * @return \Thucke\ThRating\Domain\Model\Ratingobject The ratingobject
 	 */
 	public function findMatchingTableAndField($ratetable, $ratefield, $addIfNotFound = FALSE ) {
 		$query = $this->createQuery();
@@ -57,14 +57,14 @@ class Tx_ThRating_Domain_Repository_RatingobjectRepository extends Tx_Extbase_Pe
 			$foundRow = $queryResult->getFirst();
 		} else {
 			if ($addIfNotFound) {
-				$foundRow = Tx_ThRating_Service_ObjectFactoryService::getObject('Tx_ThRating_Domain_Model_Ratingobject');
+				$foundRow = \Thucke\ThRating\Service\ObjectFactoryService::getObject('Thucke\\ThRating\\Domain\\Model\\Ratingobject');
 				$foundRow->setRatetable($ratetable);
 				$foundRow->setRatefield($ratefield);
-				$validator = Tx_ThRating_Service_ObjectFactoryService::getObject('Tx_ThRating_Domain_Validator_RatingobjectValidator');
+				$validator = \Thucke\ThRating\Service\ObjectFactoryService::getObject('Thucke\\ThRating\\Domain\\Validator\\RatingobjectValidator');
 				if ($validator->isValid($foundRow)) {
 					$this->add($foundRow);
 				}
-				Tx_ThRating_Utility_ExtensionManagementUtility::persistRepository('Tx_ThRating_Domain_Repository_RatingobjectRepository', $foundRow);
+				\Thucke\ThRating\Utility\ExtensionManagementUtility::persistRepository('Thucke\\ThRating\\Domain\\Repository\\RatingobjectRepository', $foundRow);
 			} else {
 				unset($foundRow);
 			}
@@ -76,7 +76,7 @@ class Tx_ThRating_Domain_Repository_RatingobjectRepository extends Tx_Extbase_Pe
 	 * Finds the specific ratingobject by giving table and fieldname
 	 *
 	 * @param bool 	$respectStoragePage Set to true if storagepage should be ignored
-	 * @return Tx_ThRating_Domain_Model_Ratingobject All ratingobjects of the site
+	 * @return \Thucke\ThRating\Domain\Model\Ratingobject All ratingobjects of the site
 	 */
 	public function findAll($respectStoragePage = FALSE ) {
 		$query = $this->createQuery();

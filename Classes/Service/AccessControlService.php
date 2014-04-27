@@ -1,4 +1,5 @@
 <?php
+namespace Thucke\ThRating\Service;
 /***************************************************************
 *  Copyright notice
 *
@@ -28,17 +29,18 @@
  * @version $Id:$
  * @license http://opensource.org/licenses/gpl-license.php GNU protected License, version 2
  */
-class Tx_ThRating_Service_AccessControlService implements t3lib_Singleton {
+class AccessControlService implements \TYPO3\CMS\Core\SingletonInterface {
 
 	/**
 	 * Tests, if the given person is logged into the frontend
 	 *
-	 * @param	Tx_Extbase_Domain_Model_FrontendUser	$person	The person 
+	 * @param	\TYPO3\CMS\Extbase\Domain\Model\FrontendUser	$person	The person 
 	 * @return	bool 											The result; TRUE if the given person is logged in; otherwise FALSE
 	 */
-	public function isLoggedIn(Tx_Extbase_Domain_Model_FrontendUser $person = NULL) {
-		if ($person instanceof Tx_Extbase_Persistence_LazyLoadingProxy) {
-			$person->_loadRealInstance();
+	public function isLoggedIn(\TYPO3\CMS\Extbase\Domain\Model\FrontendUser $person = NULL) {
+		//\TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump($person,'person');
+		if ($person instanceof \TYPO3\CMS\Extbase\Persistence\Generic\LazyObjectStorage) {
+			$person->current();
 		}
 		if (is_object($person)) {
 			if ( 	 $person->getUid() &&
@@ -54,7 +56,7 @@ class Tx_ThRating_Service_AccessControlService implements t3lib_Singleton {
 	}
 	
 	public function hasLoggedInFrontendUser() {
-		return $GLOBALS['TSFE']->loginUser === 1 ? TRUE : FALSE;
+		return !empty($GLOBALS['TSFE']->loginUser);
 	}
 	
 	public function getFrontendUserGroups() {
@@ -75,12 +77,12 @@ class Tx_ThRating_Service_AccessControlService implements t3lib_Singleton {
 	 * Loads objects from repositories
 	 *
 	 * @param	mixed									$voter 
-	 * @return	Tx_Extbase_Domain_Model_FrontendUser 
+	 * @return	\TYPO3\CMS\Extbase\Domain\Model\FrontendUser 
 	 */
 	public function getFrontendUser($voter = NULL) {
 		//set userobject
-		if (!$voter instanceof Tx_Extbase_Domain_Model_FrontendUser) {
-			$frontendUserRepository = Tx_ThRating_Service_ObjectFactoryService::getObject('Tx_Extbase_Domain_Repository_FrontendUserRepository');
+		if (!$voter instanceof \TYPO3\CMS\Extbase\Domain\Model\FrontendUser) {
+			$frontendUserRepository = \Thucke\ThRating\Service\ObjectFactoryService::getObject('TYPO3\\CMS\\Extbase\\Domain\\Repository\\FrontendUserRepository');
 			//TODO Errorhandling if no user is logged in
 			if (!is_integer(intval($voter)) || intval($voter) == 0) {
 				//get logged in fe-user
@@ -96,12 +98,12 @@ class Tx_ThRating_Service_AccessControlService implements t3lib_Singleton {
 	 * Loads objects from repositories
 	 *
 	 * @param	mixed							$voter 
-	 * @return	Tx_ThRating_Domain_Model_Voter 
+	 * @return	\Thucke\ThRating\Domain\Model\Voter 
 	 */
 	public function getFrontendVoter($voter = NULL) {
 		//set userobject
-		if (!$voter instanceof Tx_ThRating_Domain_Model_Voter) {
-			$frontendUserRepository = Tx_ThRating_Service_ObjectFactoryService::getObject('Tx_ThRating_Domain_Repository_VoterRepository');
+		if (!$voter instanceof \Thucke\ThRating\Domain\Model\Voter) {
+			$frontendUserRepository = \Thucke\ThRating\Service\ObjectFactoryService::getObject('Thucke\\ThRating\\Domain\\Repository\\VoterRepository');
 			//TODO Errorhandling if no user is logged in
 			if (!is_integer(intval($voter)) || intval($voter) == 0) {
 				//get logged in fe-user

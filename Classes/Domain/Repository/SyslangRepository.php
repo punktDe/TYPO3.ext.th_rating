@@ -1,5 +1,5 @@
 <?php
-
+namespace Thucke\ThRating\Domain\Repository;
 /***************************************************************
 *  Copyright notice
 *
@@ -26,20 +26,16 @@
 /**
  * A repository for website languages
  */
-class Tx_ThRating_Domain_Repository_SyslangRepository extends Tx_Extbase_Persistence_Repository {		
+class SyslangRepository extends \TYPO3\CMS\Extbase\Persistence\Repository {		
 	
 	/**
 	 * Initialze this repository
 	 */
 	public function initializeObject() {
-		$this->defaultQuerySettings = $this->objectManager->create('Tx_Extbase_Persistence_Typo3QuerySettings');
+		$this->defaultQuerySettings = $this->objectManager->create('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Typo3QuerySettings');
 		$this->defaultQuerySettings->setRespectStoragePage(FALSE);
 		$this->defaultQuerySettings->setRespectSysLanguage(FALSE);
-		If ( t3lib_utility_VersionNumber::convertVersionNumberToInteger(TYPO3_version) >= 6000000 ) {
-			$this->defaultQuerySettings->setIgnoreEnableFields(TRUE);
-		} else {
-			$this->defaultQuerySettings->setRespectEnableFields(FALSE);
-		}
+		$this->defaultQuerySettings->setIgnoreEnableFields(TRUE);
 	}
 }
 

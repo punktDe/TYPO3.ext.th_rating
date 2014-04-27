@@ -1,5 +1,5 @@
 <?php
-
+namespace Thucke\ThRating\Domain\Repository;
 /***************************************************************
 *  Copyright notice
 *
@@ -26,21 +26,17 @@
 /**
  * A repository for votes
  */
-class Tx_ThRating_Domain_Repository_VoterRepository extends Tx_Extbase_Domain_Repository_FrontendUserRepository {		
+class VoterRepository extends \TYPO3\CMS\Extbase\Domain\Repository\FrontendUserRepository {		
 	
 	/**
 	 * Initialze this repository
 	 */
 	public function initializeObject() {
-		$configurationManager = $this->objectManager->get('Tx_Extbase_Configuration_ConfigurationManager');
+		$configurationManager = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Configuration\\ConfigurationManager');
 		$settings = $configurationManager->getConfiguration('Settings', 'thRating', 'pi1');
 		//Even hidden or deleted FE Users  should be found
-		$this->defaultQuerySettings = Tx_ThRating_Service_ObjectFactoryService::createObject( 'Tx_Extbase_Persistence_Typo3QuerySettings' );
-		If ( t3lib_utility_VersionNumber::convertVersionNumberToInteger(TYPO3_version) >= 6000000 ) {
-			$this->defaultQuerySettings->setIgnoreEnableFields(TRUE);
-		} else {
-			$this->defaultQuerySettings->setRespectEnableFields(FALSE);
-		}
+		$this->defaultQuerySettings = \Thucke\ThRating\Service\ObjectFactoryService::createObject( 'TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Typo3QuerySettings' );
+		$this->defaultQuerySettings->setIgnoreEnableFields(TRUE);
 	}
 }
 

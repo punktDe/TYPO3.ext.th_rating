@@ -1,4 +1,5 @@
 <?php
+namespace Thucke\ThRating\Tests\Unit\Domain\Model;
 /***************************************************************
 *  Copyright notice
 *
@@ -32,61 +33,29 @@
  * @scope 		alpha
  * @entity
  */
-class RatingobjectTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
+class RatingobjectTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 
 	/**
-     * Fixture
-     * @var Tx_ThRating_Domain_Model_Ratingobject
+     * @var \Thucke\ThRating\Domain\Model\Ratingobject
      */
-    protected $fixture;
+    protected $fixture = NULL;
 
-	/**
-	 * @var Tx_Phpunit_Framework
-	 */
-	private $testingFramework;
-
-	
 	public function setUp() {
-	  $this->testingFramework = new Tx_Phpunit_Framework('tx_thrating');
-	  $this->fixture = $this->objectManager->get('Tx_ThRating_Domain_Model_Ratingobject',array('tt_news', 'uid'));
+	  $this->fixture = new \Thucke\ThRating\Domain\Model\Ratingobject();
 	}
 
 	public function tearDown() {
-	  $this->testingFramework->cleanUp();
-	  unset($this->fixture, $this->testingFramework);
+	  unset($this->fixture);
 	}
 	
 	/**
 	 * Checks construction of a new rating object
 	 * @test
 	 */
-	public function anInstanceOfTheRatingobjectCanBeConstructed() {
-		$ratingobject = t3lib_div::makeInstance('Tx_ThRating_Domain_Model_Ratingobject', 'tt_news', 'uid');
-		$this->assertEquals('tt_news', $ratingobject->getRatetable());
-		$this->assertEquals('uid', $ratingobject->getRatefield());
-	}
-	
-	/**
-	 * Checks the initialisation of a new ratingobject having no ratings
-	 * @test
-	 */
-	public function theRatingsAreInitializedAsEmptyObjectStorage() {
-		$ratingobject = t3lib_div::makeInstance('Tx_ThRating_Domain_Model_Ratingobject', 'tt_news', 'uid');
-		$this->assertEquals('Tx_Extbase_Persistence_ObjectStorage', get_class($ratingobject->getRatings()));
-		$this->assertEquals(0, count($ratingobject->getRatings()));
+	public function doTestTheTest() {
+		$this->assertEquals('tt_news', $this->fixture->getRatetable());
+		$this->assertEquals('uid', $this->fixture->getRatefield());
 	}
 
-	/**
-	 * Checks adding a new rating to the object
-	 * @test
-	 */
-	public function aRatingCanBeAdded() {
-		$ratingobject = t3lib_div::makeInstance('Tx_ThRating_Domain_Model_Ratingobject', 'tt_news', 'uid');
-		//$rating = $this->getMock('Tx_ThRating_Domain_Model_Rating');
-		$rating = t3lib_div::makeInstance('Tx_ThRating_Domain_Model_Rating', $ratingobject, 998);
-		$ratingobject->addRating($rating);
-		$this->assertTrue($ratingobject->getRatings()->contains($rating));
-	}
-	
 }
 ?>

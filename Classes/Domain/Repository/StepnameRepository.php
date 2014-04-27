@@ -1,5 +1,5 @@
 <?php
-
+namespace Thucke\ThRating\Domain\Repository;
 /***************************************************************
 *  Copyright notice
 *
@@ -26,16 +26,16 @@
 /**
  * A repository for ratingstep configurations
  */
-class Tx_ThRating_Domain_Repository_StepnameRepository extends Tx_Extbase_Persistence_Repository {			
+class StepnameRepository extends \TYPO3\CMS\Extbase\Persistence\Repository {			
 	protected $defaultOrderings = array(
-         'sys_language_uid' => Tx_Extbase_Persistence_QueryInterface::ORDER_ASCENDING
+         'sys_language_uid' => \TYPO3\CMS\Extbase\Persistence\QueryInterface::ORDER_ASCENDING
 	);
 
 	/**
 	 * Initialze this repository
 	 */
 	public function initializeObject() {
-		$configurationManager = $this->objectManager->get('Tx_Extbase_Configuration_ConfigurationManager');
+		$configurationManager = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Configuration\\ConfigurationManager');
 		$settings = $configurationManager->getConfiguration('Settings', 'thRating', 'pi1');
 	}
 
@@ -43,14 +43,14 @@ class Tx_ThRating_Domain_Repository_StepnameRepository extends Tx_Extbase_Persis
 	/**
 	 * Checks if stepname got a valid language code
 	 *
-	 * @param 	Tx_ThRating_Domain_Model_Stepname	$stepname 	The stepname object
+	 * @param 	\Thucke\ThRating\Domain\Model\Stepname	$stepname 	The stepname object
 	 * @return	bool
 	 */
-	public function checkStepnameLanguage(Tx_ThRating_Domain_Model_Stepname $stepname) {
+	public function checkStepnameLanguage(\Thucke\ThRating\Domain\Model\Stepname $stepname) {
 		$stepnameLang = $stepname->get_languageUid();
 		If ( $stepnameLang > 0 ) {
 			//check if given language exist
-			$queryResult = Tx_ThRating_Service_ObjectFactoryService::getObject('Tx_ThRating_Domain_Repository_SyslangRepository')->findByUid($stepnameLang);
+			$queryResult = \Thucke\ThRating\Service\ObjectFactoryService::getObject('Thucke\\ThRating\\Domain\\Repository\\SyslangRepository')->findByUid($stepnameLang);
 			if (!empty($queryResult)) {
 				//language code found -> OK
 				return TRUE;
@@ -67,8 +67,8 @@ class Tx_ThRating_Domain_Repository_StepnameRepository extends Tx_Extbase_Persis
 	/**
 	 * Finds the default language stepconf by giving ratingobject and steporder
 	 *
-	 * @param 	Tx_ThRating_Domain_Model_Stepname	$stepname 	The ratingname to look for
-	 * @return	Tx_ThRating_Domain_Model_Stepname				The stepname in default language
+	 * @param 	\Thucke\ThRating\Domain\Model\Stepname	$stepname 	The ratingname to look for
+	 * @return	\Thucke\ThRating\Domain\Model\Stepname				The stepname in default language
 	 */
 	public function findDefaultStepname($stepname) {
 		$query = $this->createQuery();
@@ -92,10 +92,10 @@ class Tx_ThRating_Domain_Repository_StepnameRepository extends Tx_Extbase_Persis
 	/**
 	 * Finds the given stepconf object in the repository
 	 *
-	 * @param 	Tx_ThRating_Domain_Model_Stepname	$stepname 	The ratingname to look for
-	 * @return	Tx_ThRating_Domain_Model_Stepname
+	 * @param 	\Thucke\ThRating\Domain\Model\Stepname	$stepname 	The ratingname to look for
+	 * @return	\Thucke\ThRating\Domain\Model\Stepname
 	 */
-	public function findStepnameObject(Tx_ThRating_Domain_Model_Stepname $stepname) {
+	public function findStepnameObject(\Thucke\ThRating\Domain\Model\Stepname $stepname) {
 		$query = $this->createQuery();
 		$query	->getQuerySettings()->setRespectSysLanguage(FALSE);
 		$query	->matching(
@@ -117,10 +117,10 @@ class Tx_ThRating_Domain_Repository_StepnameRepository extends Tx_Extbase_Persis
 	/**
 	 * Check on double language entries
 	 *
-	 * @param 	Tx_ThRating_Domain_Model_Stepname	$stepname 	The ratingname to look for
+	 * @param 	\Thucke\ThRating\Domain\Model\Stepname	$stepname 	The ratingname to look for
 	 * @return	array	return values FALSE says OK
 	 */
-	public function checkConsistency(Tx_ThRating_Domain_Model_Stepname $stepname) {
+	public function checkConsistency(\Thucke\ThRating\Domain\Model\Stepname $stepname) {
 		//TODO - remove workaround when bug #47192 is solved
 		/* Bug #47192 - setRespectSysLanguage(FALSE) doesn't prevent language overlay when fetching localized objects
 		 * Here we need all active stepname entries for a specific stepconf to check if
@@ -136,10 +136,10 @@ class Tx_ThRating_Domain_Repository_StepnameRepository extends Tx_Extbase_Persis
 						$query->equals('stepconf', $stepname->getStepconf()->getUid())
 					);
 		$queryResult = $query->execute()->toArray();*/
-		$where = 'stepconf='.$stepname->getStepconf()->getUid() . tslib_cObj::enableFields('tx_thrating_domain_model_stepname');
+		$where = 'stepconf='.$stepname->getStepconf()->getUid() . \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::enableFields('tx_thrating_domain_model_stepname');
 		$queryResult = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('*', 'tx_thrating_domain_model_stepname', $where);
 		if ( count($queryResult) > 1 ) {
-			$allWebsiteLanguages = Tx_ThRating_Service_ObjectFactoryService::getObject('Tx_ThRating_Domain_Repository_SyslangRepository')->findAll()->toArray();
+			$allWebsiteLanguages = \Thucke\ThRating\Service\ObjectFactoryService::getObject('Thucke\\ThRating\\Domain\\Repository\\SyslangRepository')->findAll()->toArray();
 			foreach( $allWebsiteLanguages as $key => $language ) {
 				$websiteLanguagesArray[]=$language->getUid();
 			}
@@ -165,12 +165,12 @@ class Tx_ThRating_Domain_Repository_StepnameRepository extends Tx_Extbase_Persis
 	/**
 	 * Finds the localized ratingstep entry by giving ratingobjectUid
 	 *
-	 * @param 	Tx_ThRating_Domain_Model_Stepname	$stepconf 	The ratingname to look for
+	 * @param 	\Thucke\ThRating\Domain\Model\Stepname	$stepconf 	The ratingname to look for
 	 * @return	bool											TRUE if stepconf having same steporder and _languageUid exists
 	 */
-	public function existStepname(Tx_ThRating_Domain_Model_Stepname $stepname) {
+	public function existStepname(\Thucke\ThRating\Domain\Model\Stepname $stepname) {
 		$lookForStepname = $this->findStepnameObject($stepname);
-		if ( $lookForStepname instanceOf Tx_ThRating_Domain_Model_Stepname ) {
+		if ( $lookForStepname instanceof \Thucke\ThRating\Domain\Model\Stepname ) {
 			return TRUE;
 		} 
 		return FALSE;
@@ -182,13 +182,9 @@ class Tx_ThRating_Domain_Repository_StepnameRepository extends Tx_Extbase_Persis
 	 * @return	void
 	 */
 	public function clearQuerySettings() {
-		$this->defaultQuerySettings = $this->objectManager->create('Tx_Extbase_Persistence_Typo3QuerySettings');
+		$this->defaultQuerySettings = $this->objectManager->create('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Typo3QuerySettings');
 		$this->defaultQuerySettings->setRespectSysLanguage(FALSE);
-		If ( t3lib_utility_VersionNumber::convertVersionNumberToInteger(TYPO3_version) >= 6000000 ) {
-			$this->defaultQuerySettings->setIgnoreEnableFields(TRUE);
-		} else {
-			$this->defaultQuerySettings->setRespectEnableFields(FALSE);
-		}
+		$this->defaultQuerySettings->setIgnoreEnableFields(TRUE);
 	}
 	
 }

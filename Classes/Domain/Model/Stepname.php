@@ -1,4 +1,5 @@
 <?php
+namespace Thucke\ThRating\Domain\Model;
 /***************************************************************
 *  Copyright notice
 *
@@ -31,12 +32,11 @@
  * @scope 		beta
  * @entity
  */
-class Tx_ThRating_Domain_Model_Stepname extends Tx_Extbase_DomainObject_AbstractEntity {
+class Stepname extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 
 	/**
-	 * @var Tx_ThRating_Domain_Model_Stepconf	The Stepconf this name belongs to
-	 * @validate Tx_ThRating_Domain_Validator_StepconfValidator
-	 * @lazy
+	 * @var \Thucke\ThRating\Domain\Model\Stepconf	The Stepconf this name belongs to
+	 * @validate \Thucke\ThRating\Domain\Validator\StepconfValidator
 	 */
 	protected $stepconf;
 	
@@ -47,14 +47,6 @@ class Tx_ThRating_Domain_Model_Stepname extends Tx_Extbase_DomainObject_Abstract
 	 */
 	protected $stepname;
 	
-	/**
-	 * Uid set by extbase
-	 * Used to replace existing entries
-	 *
-	 * @var int 
-	 */
-	protected $uid;
-
 	/**
 	 * Localization entry
 	 * workaround to help avoiding bug in Typo 4.7 handling localized objects
@@ -75,7 +67,7 @@ class Tx_ThRating_Domain_Model_Stepname extends Tx_Extbase_DomainObject_Abstract
 	 * Constructs a new stepconfig object
 	 * @return void
 	 */
-	public function __construct( Tx_ThRating_Domain_Model_Stepconf $stepconf = NULL, $stepname=NULL ) {
+	public function __construct( \Thucke\ThRating\Domain\Model\Stepconf $stepconf = NULL, $stepname=NULL ) {
 		if ($stepconf) $this->setStepconf( $stepconf );
 		if ($stepname) $this->setStepname( $stepname );
 		$this->initializeObject();
@@ -85,18 +77,18 @@ class Tx_ThRating_Domain_Model_Stepname extends Tx_Extbase_DomainObject_Abstract
 	 * Initializes a new stepconf object
 	 * @return void
 	 */
-	 public function initializeObject() {
+	public function initializeObject() {
 		parent::initializeObject();
-	 }
+	}
 	
 	
 	/**
 	 * Sets the stepconf this rating is part of
 	 *
-	 * @param Tx_ThRating_Domain_Model_Stepconf $stepconf The Rating
+	 * @param \Thucke\ThRating\Domain\Model\Stepconf $stepconf The Rating
 	 * @return void
 	 */
-	public function setStepconf(Tx_ThRating_Domain_Model_Stepconf $stepconf) {
+	public function setStepconf(\Thucke\ThRating\Domain\Model\Stepconf $stepconf) {
 		$this->stepconf = $stepconf;
 		$this->setPid($stepconf->getPid());
 	}
@@ -104,12 +96,9 @@ class Tx_ThRating_Domain_Model_Stepname extends Tx_Extbase_DomainObject_Abstract
 	/**
 	 * Returns the stepconf this rating is part of
 	 *
-	 * @return	Tx_ThRating_Domain_Model_Stepconf The stepconf this rating is part of
+	 * @return	\Thucke\ThRating\Domain\Model\Stepconf The stepconf this rating is part of
 	 */
 	public function getStepconf() {
-		if ($this->stepconf instanceof Tx_Extbase_Persistence_LazyLoadingProxy) {
-			$this->stepconf = $this->stepconf->_loadRealInstance();
-		}
 		return $this->stepconf;
 	}
 
@@ -133,10 +122,10 @@ class Tx_ThRating_Domain_Model_Stepname extends Tx_Extbase_DomainObject_Abstract
 		$value = $this->stepname;
 		if ( strtoupper(substr($value, 0, 4)) == 'LLL:' ) {
 			$value = 'stepnames.'.substr($value, 4);
-			$value = Tx_Extbase_Utility_Localization::translate($value, 'ThRating');
+			$value = \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate($value, 'ThRating');
 		}
 		if ( empty($value) ) {
-			$value = strval($this->steporder);
+			$value = strval($this->getStepconf()->getSteporder());
 		}
 		return $value;
 	}

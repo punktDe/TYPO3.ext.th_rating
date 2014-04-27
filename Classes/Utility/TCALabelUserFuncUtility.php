@@ -1,4 +1,5 @@
 <?php
+namespace Thucke\ThRating\Utility;
 /***************************************************************
 *  Copyright notice
 *
@@ -28,7 +29,7 @@
  * @version $Id:$
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License, version 2
  */
-class Tx_ThRating_Utility_TCALabelUserFuncUtility {
+class TCALabelUserFuncUtility {
 
 	/**
 	 * Returns the record title for the rating object in BE
@@ -55,36 +56,39 @@ class Tx_ThRating_Utility_TCALabelUserFuncUtility {
 	 */
     public function getStepnameRecordTitle(&$params, &$pObj) {
 		//look into repository to find clear text object attributes
-		$stepnameRepository = Tx_ThRating_Service_ObjectFactoryService::getObject('Tx_ThRating_Domain_Repository_StepnameRepository');
+		$stepnameRepository = \Thucke\ThRating\Service\ObjectFactoryService::getObject('Thucke\\ThRating\\Domain\\Repository\\StepnameRepository');
         $stepnameRepository->clearQuerySettings();	//disable syslanguage and enableFields
         $stepnameObject = $stepnameRepository->findByUid(intval($params['row']['uid']));		
 		if (is_object($stepnameObject)) {
 			$stepnameLang = $stepnameObject->get_languageUid();
 			If (empty($stepnameLang)) {
-				$syslang = Tx_Extbase_Utility_Localization::translate('tca.BE.default', 'ThRating');
+				$syslang = \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('tca.BE.default', 'ThRating');
 			} elseif ($stepnameLang == -1) {
-				$syslang = Tx_Extbase_Utility_Localization::translate('tca.BE.all', 'ThRating');
+				$syslang = \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('tca.BE.all', 'ThRating');
 			} else {
 				//look for language name
-				$syslangRepository = Tx_ThRating_Service_ObjectFactoryService::getObject('Tx_ThRating_Domain_Repository_StepnameRepository');
+				$syslangRepository = \Thucke\ThRating\Service\ObjectFactoryService::getObject('Thucke\\ThRating\\Domain\\Repository\\StepnameRepository');
 				$syslangObject = $syslangRepository->findByUid($stepnameLang);
-				If ($syslangObject instanceOf Tx_ThRating_Domain_Model_Syslang) {
+				If ($syslangObject instanceof Thucke\ThRating\Domain\Model\Syslang) {
 					$syslang=$syslangObject->getTitle();
 				} else {
-					$syslang = Tx_Extbase_Utility_Localization::translate('tca.BE.unknown', 'ThRating');
+					$syslang = \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('tca.BE.unknown', 'ThRating');
 				}
 			}
 		} else {
 			$stepnameLang = 'new';
 		}
-		$stepconfRepository = Tx_ThRating_Service_ObjectFactoryService::getObject('Tx_ThRating_Domain_Repository_StepconfRepository');
+		$stepconfRepository = \Thucke\ThRating\Service\ObjectFactoryService::getObject('Thucke\\ThRating\\Domain\\Repository\\StepconfRepository');
         $stepconfObject = $stepconfRepository->findByUid(intval($params['row']['stepconf']));
-		$ratetable = Tx_Extbase_Utility_Localization::translate('tca.BE.new', 'ThRating');
-		$ratefield = Tx_Extbase_Utility_Localization::translate('tca.BE.new', 'ThRating');
-		$steporder = Tx_Extbase_Utility_Localization::translate('tca.BE.new', 'ThRating');
-		if ($stepconfObject instanceOf Tx_ThRating_Domain_Model_Stepconf) {
+		$ratetable = \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('tca.BE.new', 'ThRating');
+		$ratefield = \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('tca.BE.new', 'ThRating');
+		$steporder = \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('tca.BE.new', 'ThRating');
+		if ($stepconfObject instanceof \Thucke\ThRating\Domain\Model\Stepconf) {
 			$ratingObject = $stepconfObject->getRatingobject();
-			if ($ratingObject instanceOf Tx_ThRating_Domain_Model_Ratingobject) {
+			if ($ratingObject instanceof \TYPO3\CMS\Extbase\Persistence\Generic\LazyLoadingProxy) {
+				$ratingObject = $ratingObject->_loadRealInstance();
+			}
+			if ($ratingObject instanceof \Thucke\ThRating\Domain\Model\Ratingobject) {
 				$ratetable = $ratingObject->getRatetable();
 				$ratefield = $ratingObject->getRatefield();
 				$steporder = $stepconfObject->getSteporder();
@@ -133,7 +137,7 @@ class Tx_ThRating_Utility_TCALabelUserFuncUtility {
 	 * @return 	array	ratinglink configurations
 	 */
 	public function dynFlexRatinglinkConfig($config) {
-		//t3lib_utility_Debug::debug($config,'config');		
+		//\TYPO3\CMS\Core\Utility\DebugUtility::debug($config,'config');		
 		$settings = $this->loadTypoScriptForBEModule('tx_thrating', $config['row']['pid']);
 		$ratingconfigs = $settings['settings.']['ratingConfigurations.'];
 		$optionList = array();
@@ -160,9 +164,9 @@ class Tx_ThRating_Utility_TCALabelUserFuncUtility {
 	 * @return 	array
 	 */
 	function loadTypoScriptForBEModule($extKey,$pid) {
-		$sysPageObj = t3lib_div::makeInstance('t3lib_pageSelect');
+		$sysPageObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\Page\\PageRepository');
         $rootLine = $sysPageObj->getRootLine($pid);
-        $TSObj = t3lib_div::makeInstance('t3lib_tsparser_ext');
+        $TSObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\TypoScript\\ExtendedTemplateService');
         $TSObj->tt_track = 0;
         $TSObj->init();
         $TSObj->runThroughTemplates($rootLine);

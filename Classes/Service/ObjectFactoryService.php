@@ -1,4 +1,5 @@
 <?php
+namespace Thucke\ThRating\Service;
 /***************************************************************
 *  Copyright notice
 *
@@ -28,7 +29,7 @@
  * @version $Id:$
  * @license http://opensource.org/licenses/gpl-license.php GNU protected License, version 2
  */
-class Tx_ThRating_Service_ObjectFactoryService implements t3lib_Singleton {
+class ObjectFactoryService implements \TYPO3\CMS\Core\SingletonInterface {
 
 	/**
 	 * Returns the completed settings array
@@ -37,10 +38,10 @@ class Tx_ThRating_Service_ObjectFactoryService implements t3lib_Singleton {
 	 * @return	array
 	 */
 	private function completeConfigurationSettings( array $settings ) {
-		$configurationManager = self::getObject('Tx_Extbase_Configuration_ConfigurationManager');
+		$configurationManager = self::getObject('TYPO3\\CMS\\Extbase\\Configuration\\ConfigurationManager');
 		$cObj = $configurationManager->getContentObject();
 		$currentRecord = array();
-		if ( isset($cObj->currentRecord) ) {
+		if ( !empty($cObj->currentRecord) ) {
 			$currentRecord = explode(':', $cObj->currentRecord);	//build array [0=>cObj tablename, 1=> cObj uid] - initialize with content information (usage as normal content)
 		} else {
 			$currentRecord = array('pages',$GLOBALS['TSFE']->page['uid']);	//build array [0=>cObj tablename, 1=> cObj uid] - initialize with page info if used by typoscript
@@ -62,11 +63,10 @@ class Tx_ThRating_Service_ObjectFactoryService implements t3lib_Singleton {
 	 * Returns a new or existing ratingobject
 	 * 
 	 * @param	array	$settings
-	 * @return	Tx_ThRating_Domain_Model_Ratingobject
+	 * @return	\Thucke\ThRating\Domain\Model\Ratingobject
 	 */
 	static function getRatingobject( array $settings ) {
-		$ratingobjectRepository = self::getObject('Tx_ThRating_Domain_Repository_RatingobjectRepository');
-
+		$ratingobjectRepository = self::getObject('Thucke\\ThRating\\Domain\\Repository\\RatingobjectRepository');
 		//check whether a dedicated ratingobject is configured
 		if ( !empty($settings['ratingobject']) ) {
 			$ratingobject = $ratingobjectRepository->findByUid($settings['ratingobject']);
@@ -76,8 +76,8 @@ class Tx_ThRating_Service_ObjectFactoryService implements t3lib_Singleton {
 				$settings = array_merge($settings, $settings['defaultObject']);
 			}
 			$settings = self::completeConfigurationSettings( $settings );		
-			$ratingobject = $ratingobjectRepository->findMatchingTableAndField($settings['ratetable'], $settings['ratefield'], Tx_ThRating_Domain_Repository_RatingobjectRepository::addIfNotFound);
-			//Tx_ThRating_Utility_ExtensionManagementUtility::persistObjectIfDirty('Tx_ThRating_Domain_Repository_RatingobjectRepository', $ratingobject);
+			$ratingobject = $ratingobjectRepository->findMatchingTableAndField($settings['ratetable'], $settings['ratefield'], \Thucke\ThRating\Domain\Repository\RatingobjectRepository::addIfNotFound);
+			//\Thucke\ThRating\Utility\ExtensionManagementUtility::persistObjectIfDirty('\Thucke\ThRating\Domain\Repository\RatingobjectRepository', $ratingobject);
 		}
 		return $ratingobject;
 	}			
@@ -86,10 +86,10 @@ class Tx_ThRating_Service_ObjectFactoryService implements t3lib_Singleton {
 	 * Returns a new or existing ratingobject
 	 * 
 	 * @param	array	$stepconfArray
-	 * @return	Tx_ThRating_Domain_Model_Stepconf
+	 * @return	\Thucke\ThRating\Domain\Model\Stepconf
 	 */
 	static function createStepconf( array $stepconfArray ) {
-		$stepconf = t3lib_div::makeInstance('Tx_ThRating_Domain_Model_Stepconf');
+		$stepconf = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Thucke\\ThRating\\Domain\\Model\\Stepconf');
 		$stepconf->setRatingobject( $stepconfArray['ratingobject'] );
 		$stepconf->setSteporder( $stepconfArray['steporder'] );
 		$stepconf->setStepweight( $stepconfArray['stepweight'] );
@@ -100,15 +100,15 @@ class Tx_ThRating_Service_ObjectFactoryService implements t3lib_Singleton {
 	 * Returns a new or existing ratingobject
 	 * 
 	 * @param	array	$stepconfArray
-	 * @return	Tx_ThRating_Domain_Model_Stepconf
+	 * @return	\Thucke\ThRating\Domain\Model\Stepconf
 	 */
 	static function createStepname ( array $stepnameArray ) {
-		$stepname = t3lib_div::makeInstance('Tx_ThRating_Domain_Model_Stepname');
+		$stepname = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Thucke\\ThRating\\Domain\\Model\\Stepname');
 		$stepname->setStepname( $stepnameArray['stepname'] );
 		
 		if ( !empty($stepnameArray['languageIso2Code']) ) {
 			//check if additional language flag exists in current website
-			$syslangRepository = self::getObject('Tx_ThRating_Domain_Repository_SyslangRepository');
+			$syslangRepository = self::getObject('Thucke\\ThRating\\Domain\\Repository\\SyslangRepository');
 			$languageObject = $syslangRepository->findByStaticLangIsocode($stepnameArray['languageIso2Code']);
 			if ( $languageObject->count() > 0 ) {
 				$stepname->set_languageUid( $languageObject->getFirst()->getUid() );
@@ -130,7 +130,7 @@ class Tx_ThRating_Service_ObjectFactoryService implements t3lib_Singleton {
 	 */
 	static function getObject( $newObject ) {
 		// get an ObjectManager first
-		$objectManager = t3lib_div::makeInstance('Tx_Extbase_Object_ObjectManager');
+		$objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
 		return $objectManager->get($newObject);
 	}
 
@@ -142,11 +142,11 @@ class Tx_ThRating_Service_ObjectFactoryService implements t3lib_Singleton {
 	 * @return	mixed
 	 */
 	static function createObject( $newObject ) {
-		If ( t3lib_utility_VersionNumber::convertVersionNumberToInteger(TYPO3_version) >= 6001000 ) {
+		If ( \TYPO3\CMS\Core\Utility\VersionNumberUtility::convertVersionNumberToInteger(TYPO3_version) >= 6001000 ) {
 			return self::getObject($newObject);
 		} else {
 			// get an ObjectManager first
-			$objectManager = t3lib_div::makeInstance('Tx_Extbase_Object_ObjectManager');
+			$objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
 			return $objectManager->create($newObject);
 		}
 	}
@@ -156,20 +156,26 @@ class Tx_ThRating_Service_ObjectFactoryService implements t3lib_Singleton {
 	 * Returns a new or existing rating
 	 * 
 	 * @param	array	$settings
- 	 * @param	Tx_ThRating_Domain_Model_Ratingobject	$ratingobject
-	 * @return	Tx_ThRating_Domain_Model_Rating
+ 	 * @param	\Thucke\ThRating\Domain\Model\Ratingobject	$ratingobject
+ 	 * @throws 	RuntimeException
+	 * @return	\Thucke\ThRating\Domain\Model\Rating
 	 */
-	static function getRating( array $settings,	Tx_ThRating_Domain_Model_Ratingobject $ratingobject = NULL ) {
+	static function getRating( array $settings,	\Thucke\ThRating\Domain\Model\Ratingobject $ratingobject = NULL ) {
 		$settings = self::completeConfigurationSettings( $settings );		
-		$ratingobjectValidator = self::getObject('Tx_ThRating_Domain_Validator_RatingobjectValidator');
-		$ratingRepository = self::getObject('Tx_ThRating_Domain_Repository_RatingRepository');
+		$ratingobjectValidator = self::getObject('Thucke\\ThRating\\Domain\\Validator\\RatingobjectValidator');
+		$ratingRepository = self::getObject('Thucke\\ThRating\\Domain\\Repository\\RatingRepository');
 
 		if ( !empty($settings['rating']) ) {
 			//fetch rating when it is configured
 			$rating = $ratingRepository->findByUid($settings['rating']);
 		} elseif ( $ratingobjectValidator->isValid($ratingobject) && $settings['ratedobjectuid'] ) {
 			//get rating according to given row
-			$rating = $ratingRepository->findMatchingObjectAndUid($ratingobject, $settings['ratedobjectuid'], Tx_ThRating_Domain_Repository_RatingRepository::addIfNotFound);
+			$rating = $ratingRepository->findMatchingObjectAndUid($ratingobject, $settings['ratedobjectuid'], \Thucke\ThRating\Domain\Repository\RatingRepository::addIfNotFound);
+		} else {
+			throw new \TYPO3\CMS\Core\Exception(
+				'Incomplete configuration setting. Either \'rating\' or \'ratedobjectuid\' are missing.',
+				1398351336
+			);		
 		}
 		return $rating;
 	}			
@@ -179,15 +185,15 @@ class Tx_ThRating_Service_ObjectFactoryService implements t3lib_Singleton {
 	 * 
 	 * @param									$prefixId
 	 * @param	array							$settings
- 	 * @param	Tx_ThRating_Domain_Model_Rating	$rating
-	 * @return	Tx_ThRating_Domain_Model_Vote
+ 	 * @param	\Thucke\ThRating\Domain\Model\Rating	$rating
+	 * @return	\Thucke\ThRating\Domain\Model\Vote
 	 */
-	static function getVote( $prefixId, array $settings, Tx_ThRating_Domain_Model_Rating $rating ) {
-		$voteRepository = self::getObject('Tx_ThRating_Domain_Repository_VoteRepository');
-		$voteValidator = self::getObject('Tx_ThRating_Domain_Validator_VoteValidator');
-
+	static function getVote( $prefixId, array $settings, \Thucke\ThRating\Domain\Model\Rating $rating ) {
+		$voteRepository = self::getObject('Thucke\\ThRating\\Domain\\Repository\\VoteRepository');
+		$voteValidator = self::getObject('Thucke\\ThRating\\Domain\\Validator\\VoteValidator');
+		
 		//first fetch real voter or anonymous
-		$accessControllService = self::getObject('Tx_ThRating_Service_AccessControlService' );
+		$accessControllService = self::getObject('Thucke\\ThRating\\Service\\AccessControlService' );
 		$frontendUserUid = $accessControllService->getFrontendUserUid();
 		if ( !empty($settings['mapAnonymous']) && !$frontendUserUid ) {
 			//set anonymous vote
@@ -200,20 +206,19 @@ class Tx_ThRating_Service_ObjectFactoryService implements t3lib_Singleton {
 			if ( $frontendUserUid ) {
 				//set FEUser if one is logged on
 				$voter =  $accessControllService->getFrontendVoter( $frontendUserUid );
-				if ($voter instanceof Tx_ThRating_Domain_Model_Voter) {
+				if ($voter instanceof \Thucke\ThRating\Domain\Model\Voter) {
 					$vote = $voteRepository->findMatchingRatingAndVoter($rating->getUid(), $voter->getUid());
 				}
 			}
 		}
-		
 		//voting not found in database or anonymous vote? - create new one
 		if ( !$voteValidator->isValid($vote) ) {
-			$vote = t3lib_div::makeInstance('Tx_ThRating_Domain_Model_Vote');
-			$ratingValidator = self::getObject('Tx_ThRating_Domain_Validator_RatingValidator');
+			$vote = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Thucke\\ThRating\\Domain\\Model\\Vote');
+			$ratingValidator = self::getObject('Thucke\\ThRating\\Domain\\Validator\\RatingValidator');
 			if ( $ratingValidator->isValid($rating) ) {
 				$vote->setRating($rating);
 			}
-			if ($voter instanceof Tx_ThRating_Domain_Model_Voter) {
+			if ($voter instanceof \Thucke\ThRating\Domain\Model\Voter) {
 				$vote->setVoter($voter);
 			}
 		}

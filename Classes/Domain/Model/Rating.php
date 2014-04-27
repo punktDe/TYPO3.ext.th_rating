@@ -1,4 +1,5 @@
 <?php
+namespace Thucke\ThRating\Domain\Model;
 /***************************************************************
 *  Copyright notice
 *
@@ -27,33 +28,32 @@
  *
  * @author		Thomas Hucke <thucke@web.de>
  * @copyright 	Copyright belongs to the respective authors
- * @license 		http://opensource.org/licenses/gpl-license.php GNU Public License, version 2
+ * @license 	http://opensource.org/licenses/gpl-license.php GNU Public License, version 2
  * @scope 		beta
  * @entity
  */
-class Tx_ThRating_Domain_Model_Rating extends Tx_Extbase_DomainObject_AbstractEntity {
+class Rating extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 
 	//TODO check deleted referenced records
 	
 	/**
-	 * @var Tx_ThRating_Domain_Model_Ratingobject	The ratingobject this rating belongs to
-	 * @validate Tx_ThRating_Domain_Validator_RatingobjectValidator
-	 * @lazy
+	 * @var \Thucke\ThRating\Domain\Model\Ratingobject	The ratingobject this rating belongs to
+	 * @validate \Thucke\ThRating\Domain\Validator\RatingobjectValidator
 	 */
 	protected $ratingobject;
 	
 	/**
-	 * The ratings of this object
+	 * The ratings uid of this object
 	 *
-	 * @var int holding uid of the rated row
-	 * @validate NumberRange(startRange = 1)
+	 * @var int
+	 * @validate NumberRange(minimum = 1)
 	 */
 	protected $ratedobjectuid;
 	
 	/**
 	 * The ratings of this object
 	 *
-	 * @var Tx_Extbase_Persistence_ObjectStorage<Tx_ThRating_Domain_Model_Vote>
+	 * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Thucke\ThRating\Domain\Model\Vote>
 	 * @lazy
 	 * @cascade remove
 	 */
@@ -85,7 +85,7 @@ class Tx_ThRating_Domain_Model_Rating extends Tx_Extbase_DomainObject_AbstractEn
 	 * Constructs a new rating object
 	 * @return void
 	 */
-	public function __construct( Tx_ThRating_Domain_Model_Ratingobject $ratingobject = NULL, $ratedobjectuid=NULL ) {
+	public function __construct( \Thucke\ThRating\Domain\Model\Ratingobject $ratingobject = NULL, $ratedobjectuid=NULL ) {
 		if ($ratingobject) $this->setRatingobject( $ratingobject );
 		if ($ratedobjectuid) $this->setRatedobjectuid( $ratedobjectuid );
 		$this->initializeObject();
@@ -98,11 +98,11 @@ class Tx_ThRating_Domain_Model_Rating extends Tx_Extbase_DomainObject_AbstractEn
 	 */
 	 public function initializeObject() {
 		parent::initializeObject();
-		$this->settings = Tx_ThRating_Service_ObjectFactoryService::getObject('Tx_Extbase_Configuration_ConfigurationManager')->getConfiguration('Settings', 'thRating', 'pi1');
+		$this->settings = \Thucke\ThRating\Service\ObjectFactoryService::getObject('TYPO3\\CMS\\Extbase\\Configuration\\ConfigurationManager')->getConfiguration('Settings', 'thRating', 'pi1');
 
 		//Initialize vote storage if rating is new
 		if (!is_object($this->votes)) {
-			$this->votes=Tx_ThRating_Service_ObjectFactoryService::getObject('Tx_Extbase_Persistence_ObjectStorage');
+			$this->votes = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
 		}
 
 	 }
@@ -110,10 +110,10 @@ class Tx_ThRating_Domain_Model_Rating extends Tx_Extbase_DomainObject_AbstractEn
 	/**
 	 * Sets the ratingobject this rating is part of
 	 *
-	 * @param Tx_ThRating_Domain_Model_Ratingobject $ratingobject The Rating
+	 * @param \Thucke\ThRating\Domain\Model\Ratingobject $ratingobject The Rating
 	 * @return void
 	 */
-	public function setRatingobject(Tx_ThRating_Domain_Model_Ratingobject $ratingobject) {
+	public function setRatingobject(\Thucke\ThRating\Domain\Model\Ratingobject $ratingobject) {
 		$this->ratingobject = $ratingobject;
 		$this->setPid($ratingobject->getPid());
 	}
@@ -121,12 +121,9 @@ class Tx_ThRating_Domain_Model_Rating extends Tx_Extbase_DomainObject_AbstractEn
 	/**
 	 * Returns the ratingobject this rating is part of
 	 *
-	 * @return	Tx_ThRating_Domain_Model_Ratingobject The ratingobject this rating is part of
+	 * @return	\Thucke\ThRating\Domain\Model\Ratingobject The ratingobject this rating is part of
 	 */
 	public function getRatingobject() {
-		if ($this->ratingobject instanceof Tx_Extbase_Persistence_LazyLoadingProxy) {
-			$this->ratingobject = $this->ratingobject->_loadRealInstance();
-		}
 		return $this->ratingobject;
 	}
 
@@ -152,22 +149,22 @@ class Tx_ThRating_Domain_Model_Rating extends Tx_Extbase_DomainObject_AbstractEn
 	/**
 	 * Adds a vote to this rating
 	 *
-	 * @param Tx_ThRating_Domain_Model_Vote $vote
+	 * @param \Thucke\ThRating\Domain\Model\Vote $vote
 	 * @return void
 	 */
-	public function addVote(Tx_ThRating_Domain_Model_Vote $vote) {
+	public function addVote(\Thucke\ThRating\Domain\Model\Vote $vote) {
 		$this->votes->attach($vote);
 		$this->addCurrentrate($vote);
-		Tx_ThRating_Utility_ExtensionManagementUtility::persistRepository('Tx_ThRating_Domain_Repository_VoteRepository', $vote);
+		\Thucke\ThRating\Utility\ExtensionManagementUtility::persistRepository('\Thucke\ThRating\Domain\Repository\VoteRepository', $vote);
 	}
 
 	/**
 	 * Remove a vote from this rating
 	 *
-	 * @param Tx_ThRating_Domain_Model_Vote $voteToRemove The vote to be removed
+	 * @param \Thucke\ThRating\Domain\Model\Vote $voteToRemove The vote to be removed
 	 * @return void
 	 */
-	public function removeVote(Tx_ThRating_Domain_Model_Vote $voteToRemove) {
+	public function removeVote(\Thucke\ThRating\Domain\Model\Vote $voteToRemove) {
 		$this->votes->detach($voteToRemove);
 	}
 
@@ -177,13 +174,13 @@ class Tx_ThRating_Domain_Model_Rating extends Tx_Extbase_DomainObject_AbstractEn
 	 * @return void
 	 */
 	public function removeAllVotes() {
-		$this->votes = new Tx_Extbase_Persistence_ObjectStorage();
+		$this->votes = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
 	}
 
 	/**
 	 * Returns all votes in this rating
 	 *
-	 * @return	Tx_Extbase_Persistence_ObjectStorage<Tx_ThRating_Domain_Model_Vote>
+	 * @return	TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Thucke\ThRating\Domain\Model\Vote>
 	 */
 	public function getVotes() {
 		return clone $this->votes;
@@ -196,7 +193,7 @@ class Tx_ThRating_Domain_Model_Rating extends Tx_Extbase_DomainObject_AbstractEn
 	 * @return void
 	 */
 	public function checkCurrentrates() {
-		$voteRepository = Tx_ThRating_Service_ObjectFactoryService::getObject('Tx_ThRating_Domain_Repository_VoteRepository');
+		$voteRepository = \Thucke\ThRating\Service\ObjectFactoryService::getObject('Thucke\\ThRating\\Domain\\Repository\\VoteRepository');
 		foreach ( $this->getRatingobject()->getStepconfs() as $stepConf ) {
 			$stepOrder = $stepConf->getSteporder();
 			$voteCount = $voteRepository->countByMatchingRatingAndVote($this, $stepConf);
@@ -215,10 +212,10 @@ class Tx_ThRating_Domain_Model_Rating extends Tx_Extbase_DomainObject_AbstractEn
 	/**
 	 * Adds a vote to the calculations of this rating
 	 *
-	 * @param Tx_ThRating_Domain_Model_Vote $voteToRemove The vote to be removed
+	 * @param \Thucke\ThRating\Domain\Model\Vote $voteToRemove The vote to be removed
 	 * @return void
 	 */
-	public function addCurrentrate(Tx_ThRating_Domain_Model_Vote $voting) {
+	public function addCurrentrate(\Thucke\ThRating\Domain\Model\Vote $voting) {
 		if ( empty($this->currentrates) ) {
 			$this->checkCurrentrates(); //initialize entry
 		}

@@ -1,8 +1,26 @@
 <?php
 if (!defined ('TYPO3_MODE')) 	die ('Access denied.');
-
 $TCA['tx_thrating_domain_model_stepname'] = array(
-	'ctrl' => $TCA['tx_thrating_domain_model_stepname']['ctrl'],
+	'ctrl' => array (
+		'title'						=> 'LLL:'.\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('th_rating').'/Resources/Private/Language/locallang.xlf:tca.model.stepname.title',
+		'label'						=> 'uid',
+		'label_alt' 				=> 'stepconf,sys_language_uid',
+ 		'label_userFunc' 			=> 'Thucke\\ThRating\\Utility\\TCALabelUserFuncUtility->getStepnameRecordTitle',
+		'type'						=> '1',
+		'tstamp'					=> 'tstamp',
+		'crdate'					=> 'crdate',
+		'cruser_id'					=> 'cruser_id',
+		'languageField'           	=> 'sys_language_uid',
+		'transOrigPointerField'    	=> 'l18n_parent',
+		'transOrigDiffSourceField'	=> 'l18n_diffsource',
+		'delete'					=> 'deleted',
+		'adminOnly'					=> FALSE,
+		'hideTable'					=> FALSE,
+		'editlock'					=> 'sys_language_uid,stepconf',
+		'dividers2tabs'				=> TRUE,
+		'enablecolumns'				=> array( 'disabled'	=> 'hidden' ),
+		'iconfile'					=> \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('th_rating') . 'Resources/Public/Icons/tx_thrating_domain_model_stepname.gif',
+	),
 	'interface' => array(
 		'showRecordFieldList' => 'hidden, stepconf, stepname'
 	),
@@ -84,4 +102,5 @@ $TCA['tx_thrating_domain_model_stepname'] = array(
 		'1' => array('showitem' => ''),
 	),
 );
+return $TCA['tx_thrating_domain_model_stepname'];
 ?>

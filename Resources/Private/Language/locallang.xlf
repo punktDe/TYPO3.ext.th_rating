@@ -273,6 +273,9 @@
 			<trans-unit id="flash.renderCSS.noStepconf" xml:space="preserve">
 				<source>Stepconf missing in ratingobject configuration of UID %1$s - check PID %2$s.</source>
 			</trans-unit>
+			<trans-unit id="flash.renderCSS.incompatible620" xml:space="preserve">
+				<source>Incompatible version - please upgrade to at least TYPO3 6.2.1</source>
+			</trans-unit>
 			<trans-unit id="flash.vote.create.alreadyRated" xml:space="preserve">
 				<source>Already rated.</source>
 			</trans-unit>

@@ -1,3 +1,6 @@
-- rejected support for TYPO3 6.2
+- least supported version TYPO3 6.1.7
+- major changes 'under the hood'
+- fully switched to namespaces in code
+- switched from $TCA to $GLOBALS['TCA']
+- FLUID: changed namespace to {namespace thr=Thucke\ThRating\ViewHelpers}
 - bugfix for handling AJAX requests
-- last version for TYPO3 4.x

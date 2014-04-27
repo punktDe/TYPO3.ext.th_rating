@@ -1,5 +1,5 @@
 <?php
-
+namespace Thucke\ThRating\Domain\Repository;
 /***************************************************************
 *  Copyright notice
 *
@@ -26,7 +26,7 @@
 /**
  * A repository for ratings
  */
-class Tx_ThRating_Domain_Repository_RatingRepository extends Tx_Extbase_Persistence_Repository {			
+class RatingRepository extends \TYPO3\CMS\Extbase\Persistence\Repository {			
 
 	/**
 	 * Defines name for function parameter
@@ -37,12 +37,12 @@ class Tx_ThRating_Domain_Repository_RatingRepository extends Tx_Extbase_Persiste
 	/**
 	 * Finds the specific rating by giving the object and row uid
 	 *
-	 * @param	Tx_ThRating_Domain_Model_Ratingobject	$ratingobject 	The concerned ratingobject
-	 * @param	int 									$ratedobjectuid The Uid of the rated row
-	 * @param	bool									$addIfNotFound	Set to true if new objects should instantly be added
-	 * @validate	$ratingobject Tx_ThRating_Domain_Validator_RatingobjectValidator
-	 * @validate	$ratedobjectuid NumberRange(startRange = 1)
-	 * @return Tx_ThRating_Domain_Model_Rating 		The rating
+	 * @param	\Thucke\ThRating\Domain\Model\Ratingobject	$ratingobject 	The concerned ratingobject
+	 * @param	int 										$ratedobjectuid The Uid of the rated row
+	 * @param	bool										$addIfNotFound	Set to true if new objects should instantly be added
+	 * @validate $ratingobject \Thucke\ThRating\Domain\Validator\RatingobjectValidator
+	 * @validate $ratedobjectuid NumberRange(minimum = 1)
+	 * @return \Thucke\ThRating\Domain\Model\Rating 		The rating
 	 */
 	public function findMatchingObjectAndUid($ratingobject, $ratedobjectuid, $addIfNotFound = FALSE ) {
 		$query = $this->createQuery();
@@ -56,14 +56,20 @@ class Tx_ThRating_Domain_Repository_RatingRepository extends Tx_Extbase_Persiste
 		$queryResult = $query->execute();
 		if ($queryResult->count() != 0) {
 			$foundRow = $queryResult->getFirst();
+			//Cope with an obviuos bug in TYPO3 6.1 that $queryResult->getFirst() doesn´t return the fully loaded object
+			If ( \TYPO3\CMS\Core\Utility\VersionNumberUtility::convertVersionNumberToInteger(TYPO3_version) < 6002000 ) {
+				$dummy = \TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump($foundRow, 'dummy', 2, FALSE, FALSE, TRUE);
+			}
 		} else {
 			if ($addIfNotFound) {
-				$foundRow = Tx_ThRating_Service_ObjectFactoryService::getObject('Tx_ThRating_Domain_Model_Rating');
+				$foundRow = \Thucke\ThRating\Service\ObjectFactoryService::getObject('Thucke\\ThRating\\Domain\\Model\\Rating');
 				$foundRow->setRatingobject($ratingobject);
 				$foundRow->setRatedobjectuid($ratedobjectuid);	
-				$validator = Tx_ThRating_Service_ObjectFactoryService::createObject('Tx_ThRating_Domain_Validator_RatingValidator');
-				$validator->isValid($foundRow) && $this->add($foundRow);
-				Tx_ThRating_Utility_ExtensionManagementUtility::persistRepository('Tx_ThRating_Domain_Repository_RatingRepository', $foundRow);	
+				$validator = \Thucke\ThRating\Service\ObjectFactoryService::createObject('Thucke\\ThRating\\Domain\\Validator\\RatingValidator');
+				if ($validator->isValid($foundRow)) {
+					$this->add($foundRow);
+				}
+				\Thucke\ThRating\Utility\ExtensionManagementUtility::persistRepository('Thucke\\ThRating\\Domain\\Repository\\RatingRepository', $foundRow);	
 				$foundRow = $this->findMatchingObjectAndUid($ratingobject, $ratedobjectuid);
 			} else {
 				unset($foundRow);

@@ -43,7 +43,7 @@
 							<label>LLL:EXT:th_rating/Resources/Private/Language/locallang.xlf:flexform.general_display</label>
 							<config>
 								<type>select</type>
-								<itemsProcFunc>Tx_ThRating_Utility_TCALabelUserFuncUtility->dynFlexRatinglinkConfig</itemsProcFunc>
+								<itemsProcFunc>Thucke\ThRating\Utility\TCALabelUserFuncUtility->dynFlexRatinglinkConfig</itemsProcFunc>
 							</config>							
 						</TCEforms>
 					</settings.display>

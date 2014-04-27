@@ -1,4 +1,5 @@
 <?php
+namespace Thucke\ThRating\Service;
 /***************************************************************
 *  Copyright notice
 *
@@ -31,7 +32,7 @@
  * @package SjrOffers
  * @version $ID: $
  */
-class Tx_ThRating_Service_AccessException extends Exception {
+class AccessException extends \TYPO3\CMS\Extbase\Exception {
 
 }
 ?>

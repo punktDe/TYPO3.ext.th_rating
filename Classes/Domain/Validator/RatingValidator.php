@@ -1,4 +1,5 @@
 <?php
+namespace Thucke\ThRating\Domain\Validator;
 /***************************************************************
 *  Copyright notice
 *
@@ -32,27 +33,26 @@
  * @copyright 	Copyright belongs to the respective authors
  * @scope singleton
  */
-class Tx_ThRating_Domain_Validator_RatingValidator extends Tx_Extbase_Validation_Validator_AbstractValidator {
+class RatingValidator extends \TYPO3\CMS\Extbase\Validation\Validator\AbstractValidator {
 
 	/**
 	 * If the given Rating is valid
 	 *
-	 * @param Tx_ThRating_Domain_Model_Rating $rating The rating
+	 * @param \Thucke\ThRating\Domain\Model\Rating $rating The rating
 	 * @return boolean true
 	 */
 	public function isValid($rating) {
 		//a rating object must be given
-		if (!$rating instanceof Tx_ThRating_Domain_Model_Rating) {
+		if (!$rating instanceof \Thucke\ThRating\Domain\Model\Rating) {
 			return FALSE;
 		} 
 		$ratedobjectuid = $rating->getRatedobjectuid();
 		if (empty($ratedobjectuid)) {
-			$this->addError(Tx_Extbase_Utility_Localization::translate('error.validator.rating.ratedobjectuid', 'ThRating'), 1283536994);
+			$this->addError(\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('error.validator.rating.ratedobjectuid', 'ThRating'), 1283536994);
 			return FALSE;
 		}
-		//t3lib_div::debug($rating->getRatingobject());
-		if (!$rating->getRatingobject() instanceof Tx_ThRating_Domain_Model_Ratingobject) {
-			$this->addError(Tx_Extbase_Utility_Localization::translate('error.validator.rating.ratingobject', 'ThRating'), 1283538549);
+		if (!$rating->getRatingobject() instanceof \Thucke\ThRating\Domain\Model\Ratingobject) {
+			$this->addError(\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('error.validator.rating.ratingobject', 'ThRating'), 1283538549);
 			return FALSE;
 		}
 		return TRUE;

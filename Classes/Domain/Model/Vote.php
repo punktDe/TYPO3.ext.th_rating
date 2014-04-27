@@ -1,4 +1,5 @@
 <?php
+namespace Thucke\ThRating\Domain\Model;
 /***************************************************************
 *  Copyright notice
 *
@@ -31,30 +32,26 @@
  * @scope 		beta
  * @entity
  */
-class Tx_ThRating_Domain_Model_Vote extends Tx_Extbase_DomainObject_AbstractEntity {
+class Vote extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 
 	/**
-	 * @var 		Tx_ThRating_Domain_Model_Rating
-	 * @validate 	Tx_ThRating_Domain_Validator_RatingValidator
-	 * lazy
+	 * @var 		\Thucke\ThRating\Domain\Model\Rating
+	 * @validate 	\Thucke\ThRating\Domain\Validator\RatingValidator
 	 */
 	protected $rating;
 	
 	/**
 	 * The voter of this object
 	 *
-	 * @var 	Tx_ThRating_Domain_Model_Voter
-	 * validate Tx_ThRating_Domain_Validator_VoterValidator
-	 * @lazy
+	 * @var 	\Thucke\ThRating\Domain\Model\Voter
 	 */
 	protected $voter;
 	
 	/**
 	 * The actual voting of this object
 	 *
-	 * @var 		Tx_ThRating_Domain_Model_Stepconf
-	 * @validate	Tx_ThRating_Domain_Validator_StepconfValidator
-	 * lazy
+	 * @var 		\Thucke\ThRating\Domain\Model\Stepconf
+	 * @validate	\Thucke\ThRating\Domain\Validator\StepconfValidator
 	 */
 	protected $vote;
 
@@ -69,9 +66,9 @@ class Tx_ThRating_Domain_Model_Vote extends Tx_Extbase_DomainObject_AbstractEnti
 	 * @return void
 	 */
 	public function __construct( 
-					Tx_ThRating_Domain_Model_Rating			$rating = NULL,
-					Tx_ThRating_Domain_Model_Voter			$voter = NULL, 
-					Tx_ThRating_Domain_Model_Stepconf		$vote  = NULL ) {
+					\Thucke\ThRating\Domain\Model\Rating			$rating = NULL,
+					\Thucke\ThRating\Domain\Model\Voter			$voter = NULL, 
+					\Thucke\ThRating\Domain\Model\Stepconf		$vote  = NULL ) {
 		If ($rating)  $this->setRating($rating);
 		If ($voter)   $this->setVoter($voter);
 		If ($vote)    $this->setVote($vote);
@@ -85,17 +82,17 @@ class Tx_ThRating_Domain_Model_Vote extends Tx_Extbase_DomainObject_AbstractEnti
 	 */
 	 public function initializeObject() {
 		parent::initializeObject();
-		$this->settings = Tx_ThRating_Service_ObjectFactoryService::getObject('Tx_Extbase_Configuration_ConfigurationManager')->getConfiguration('Settings', 'thRating', 'pi1');
+		$this->settings = \Thucke\ThRating\Service\ObjectFactoryService::getObject('TYPO3\\CMS\\Extbase\\Configuration\\ConfigurationManager')->getConfiguration('Settings', 'thRating', 'pi1');
 	 }
 	 
 
 	/**
 	 * Sets the rating this vote is part of
 	 *
-	 * @param Tx_ThRating_Domain_Model_Rating $rating The Rating
+	 * @param \Thucke\ThRating\Domain\Model\Rating $rating The Rating
 	 * @return void
 	 */
-	public function setRating(Tx_ThRating_Domain_Model_Rating $rating) {
+	public function setRating(\Thucke\ThRating\Domain\Model\Rating $rating) {
 		$this->rating = $rating;
 		$this->setPid($rating->getPid());
 	}
@@ -103,34 +100,28 @@ class Tx_ThRating_Domain_Model_Vote extends Tx_Extbase_DomainObject_AbstractEnti
 	/**
 	 * Returns the rating this vote is part of
 	 *
-	 * @return Tx_ThRating_Domain_Model_Rating The rating this vote is part of
+	 * @return \Thucke\ThRating\Domain\Model\Rating The rating this vote is part of
 	 */
 	public function getRating() {
-		if ($this->rating instanceof Tx_Extbase_Persistence_LazyLoadingProxy) {
-			$this->rating = $this->rating->_loadRealInstance();
-		}
 		return $this->rating;
 	}
 
 	/**
 	 * Sets the frontenduser of this vote 
 	 *
-	 * @param Tx_ThRating_Domain_Model_Voter	$voter	The frontenduser
+	 * @param \Thucke\ThRating\Domain\Model\Voter	$voter	The frontenduser
 	 * @return void
 	 */
-	public function setVoter(Tx_ThRating_Domain_Model_Voter $voter) {
+	public function setVoter(\Thucke\ThRating\Domain\Model\Voter $voter) {
 		$this->voter = $voter;
 	}
 
 	/**
 	 * Returns the frontenduser of this vote
 	 *
-	 * @return Tx_ThRating_Domain_Model_Voter	The frontenduser of this vote
+	 * @return \Thucke\ThRating\Domain\Model\Voter	The frontenduser of this vote
 	 */
 	public function getVoter() {
-		if ($this->voter instanceof Tx_Extbase_Persistence_LazyLoadingProxy) {
-			$this->voter = $this->voter->_loadRealInstance();
-		}
 		return $this->voter;
 	}
 	
@@ -138,7 +129,7 @@ class Tx_ThRating_Domain_Model_Vote extends Tx_Extbase_DomainObject_AbstractEnti
 	/**
 	 * Sets the choosen stepconfig
 	 * 
-	 * @param Tx_ThRating_Domain_Model_Stepconf $vote
+	 * @param \Thucke\ThRating\Domain\Model\Stepconf $vote
 	 * @return void
 	 */
 	public function setVote($vote) {
@@ -148,12 +139,9 @@ class Tx_ThRating_Domain_Model_Vote extends Tx_Extbase_DomainObject_AbstractEnti
 	/**
 	 * Gets the rating object uid
 	 * 
-	 * @return Tx_ThRating_Domain_Model_Stepconf Reference to selected stepconfig
+	 * @return \Thucke\ThRating\Domain\Model\Stepconf Reference to selected stepconfig
 	 */
 	public function getVote() {
-		if ($this->vote instanceof Tx_Extbase_Persistence_LazyLoadingProxy) {
-			$this->vote = $this->vote->_loadRealInstance();
-		}
 		return $this->vote;
 	}
 
@@ -163,7 +151,7 @@ class Tx_ThRating_Domain_Model_Vote extends Tx_Extbase_DomainObject_AbstractEnti
 	 * @return boolean
 	 */
 	public function hasRated() {
-		return (get_class($this->getVote()) == 'Tx_ThRating_Domain_Model_Stepconf');
+		return (get_class($this->getVote()) == 'Thucke\ThRating\Domain\Model\Stepconf');
 	}
 
 	/**
@@ -172,7 +160,7 @@ class Tx_ThRating_Domain_Model_Vote extends Tx_Extbase_DomainObject_AbstractEnti
 	 * @return booelan
 	 */
 	public function isAnonymous() {
-		if ( $this->getVoter() instanceof Tx_ThRating_Domain_Model_Voter ) {
+		if ( $this->getVoter() instanceof \Thucke\ThRating\Domain\Model\Voter ) {
 			$retVal = $this->getVoter()->getUid() == $this->settings['mapAnonymous'] && !empty($this->settings['mapAnonymous']);
 		} else {
 			$retVal = FALSE;

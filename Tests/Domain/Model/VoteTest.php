@@ -1,4 +1,5 @@
 <?php
+namespace Thucke\ThRating\Tests\Domain\Model;
 /***************************************************************
 *  Copyright notice
 *
@@ -32,19 +33,19 @@
  * @scope 		alpha
  * @entity
  */
-class VoteTest extends Tx_Extbase_Tests_Unit_BaseTestCase {
+class VoteTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 
 	/**
 	 * Checks construction of a new vote object
 	 * @test
 	 */
 	public function anInstanceOfTheVoteCanBeConstructed() {
-		$ratingobject = t3lib_div::makeInstance('Tx_ThRating_Domain_Model_Ratingobject', 'tt_news', 'uid');
-		$rating = t3lib_div::makeInstance('Tx_ThRating_Domain_Model_Rating', $ratingobject, 3);
-		$step = t3lib_div::makeInstance('Tx_ThRating_Domain_Model_Stepconf', $ratingobject, 1);
-		$feU = t3lib_div::makeInstance('Tx_Extbase_Domain_Repository_FrontendUserRepository');
+		$ratingobject = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Thucke\\ThRating\\Domain\\Model\\Ratingobject', 'tt_news', 'uid');
+		$rating = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Thucke\\ThRating\\Domain\\Model\\Ratingobject', $ratingobject, 3);
+		$step = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Thucke\\ThRating\\Domain\\Model\\Stepconf', $ratingobject, 1);
+		//$feU = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Domain\\Repository\\FrontendUserRepository');
 		//$voter = $feUsers->findByUid(1);
-		//$vote = t3lib_div::makeInstance('Tx_ThRating_Domain_Model_Vote',$rating,$voter,$step);
+		//$vote = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Thucke\\ThRating\\Domain\\Model\\Vote',$rating,$voter,$step);
 		//$this->assertEquals($rating,$vote->getRating());
 		//$this->assertEquals($voter,$vote->getVoter());
 		//$this->assertEquals(1,$vote->getVote());
