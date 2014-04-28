@@ -52,10 +52,6 @@ class VoteController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 	 */
 	protected $cookieLifetime;
 	/**
-	 * @var \TYPO3\CMS\Extbase\SignalSlot\Dispatcher
-	 */
-	protected $signalSlotDispatcher;
-	/**
 	 * @var array
 	 */
 	protected $signalSlotHandlerContent;
@@ -66,7 +62,6 @@ class VoteController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 	public function injectObjectFactoryService(\Thucke\ThRating\Service\ObjectFactoryService $objectFactoryService) {
 		//... to make static functions of this singleton avaiable
 	}
-	
 	/**
 	 * @var \Thucke\ThRating\Service\AccessControlService
 	 */
@@ -77,7 +72,6 @@ class VoteController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 	public function injectAccessControlService(\Thucke\ThRating\Service\AccessControlService $accessControllService) {
 		$this->accessControllService = $accessControllService;
 	}
-
 	/**
 	 * @var \Thucke\ThRating\Domain\Repository\VoteRepository
 	 */
@@ -88,7 +82,6 @@ class VoteController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 	public function injectVoteRepository(\Thucke\ThRating\Domain\Repository\VoteRepository $voteRepository) {
 		$this->voteRepository = $voteRepository;
 	}
-
 	/**
 	 * @var \Thucke\ThRating\Domain\Validator\VoteValidator
 	 */
@@ -100,7 +93,6 @@ class VoteController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 	public function injectVoteValidator(\Thucke\ThRating\Domain\Validator\VoteValidator $voteValidator) {
 		$this->voteValidator = $voteValidator;
 	}
-
 	/**
 	 * @var \Thucke\ThRating\Domain\Validator\RatingValidator
 	 */
@@ -112,7 +104,6 @@ class VoteController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 	public function injectRatingValidator( \Thucke\ThRating\Domain\Validator\RatingValidator $ratingValidator ) {
 		$this->ratingValidator = $ratingValidator;
 	}
-
 	/**
 	 * @var \Thucke\ThRating\Domain\Repository\RatingobjectRepository	$ratingobjectRepository
 	 */
@@ -124,7 +115,6 @@ class VoteController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 	public function injectRatingobjectRepository(\Thucke\ThRating\Domain\Repository\RatingobjectRepository $ratingobjectRepository) {
 		$this->ratingobjectRepository = $ratingobjectRepository;
 	}
-
 	/**
 	 * @var \Thucke\ThRating\Domain\Repository\StepconfRepository	$stepconfRepository
 	 */
@@ -144,7 +134,6 @@ class VoteController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 	 */
 	public function initializeAction() {
 		$this->prefixId = strtolower('tx_' . $this->request->getControllerExtensionName(). '_' . $this->request->getPluginName());
-		$this->signalSlotDispatcher = $this->objectManager->get('TYPO3\\CMS\\Extbase\\SignalSlot\\Dispatcher');
 				
 		//Set default storage pids to SITEROOT
 		$this->setStoragePids();
