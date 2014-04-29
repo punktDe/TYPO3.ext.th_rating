@@ -49,8 +49,8 @@ class RatingViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\CObjectViewHelper {
 			$this->simulateFrontendEnvironment();
 		}
 
-		$cObj = \Thucke\ThRating\Service\ObjectFactoryService::getObject('TYPO3\\CMS\\Extbase\\Configuration\\ConfigurationManager')->getContentObject();
-		$cObj->start($data);
+		$cObj = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Configuration\\ConfigurationManager')->getContentObject();
+		$cObj->start($cObj->data);
 
 		$pathSegments = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode('.', $typoscriptObjectPath);
 		$lastSegment = array_pop($pathSegments);
