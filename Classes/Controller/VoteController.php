@@ -459,7 +459,7 @@ class VoteController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 	 * @return array
 	 */
 	protected function setAjaxSelections(\Thucke\ThRating\Domain\Model\Vote $vote) {
-		if ($vote->getVoter() instanceof \Thucke\ThRating\Domain\Model\Voter) {
+		if ($vote->getVoter() instanceof \Thucke\ThRating\Domain\Model\Voter && empty($this->settings['displayOnly']) {
 			//cleanup settings to reduce data size in POST form
 			$tmpDisplayConfig = $this->settings['ratingConfigurations'][$this->settings['display']];
 			unset($this->settings['defaultObject']);
