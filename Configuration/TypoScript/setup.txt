@@ -32,6 +32,7 @@ plugin.tx_thrating {
 				showNoFEUser = 1
 				showNotRated = 1
 				mapAnonymous = 0
+				displayOnly = 0
 				cookieLifetime = 0
 			}
 			fluid {
