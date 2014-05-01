@@ -47,6 +47,7 @@ div.tx-thrating-ratinglinks > div.stepnameTooltipOn {
     padding:2px 0.8em 2px 0.8em;
     font-size: 0.8em;
     box-shadow: 6px 6px 4px #6B6A6A;
+	z-index:5;
 }
 div.tx-thrating-ratinglinks ul{
     position:relative;
