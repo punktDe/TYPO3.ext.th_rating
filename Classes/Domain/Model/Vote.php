@@ -61,6 +61,18 @@ class Vote extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	protected $settings;
 
 	/**
+	 * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface	$objectManager
+	 */
+	protected $objectManager;
+	/**
+	 * @param \TYPO3\CMS\Extbase\Object\ObjectManagerInterface	$objectManager
+	 * @return void
+	 */
+	public function injectObjectManager(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager) {
+		$this->objectManager = $objectManager;
+	}
+
+	/**
 	 * Constructs a new rating object
 	 *
 	 * @return void
@@ -82,7 +94,10 @@ class Vote extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	 */
 	 public function initializeObject() {
 		parent::initializeObject();
-		$this->settings = \Thucke\ThRating\Service\ObjectFactoryService::getObject('TYPO3\\CMS\\Extbase\\Configuration\\ConfigurationManager')->getConfiguration('Settings', 'thRating', 'pi1');
+		if ( empty($this->objectManager) ) {
+			$this->objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
+		}
+		$this->settings = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Configuration\\ConfigurationManager')->getConfiguration('Settings', 'thRating', 'pi1');
 	 }
 	 
 

@@ -57,12 +57,6 @@ class VoteController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 	protected $signalSlotHandlerContent;
 
 	/**
-	 * @param \Thucke\ThRating\Service\ObjectFactoryService $objectFactoryService
-	 */
-	public function injectObjectFactoryService(\Thucke\ThRating\Service\ObjectFactoryService $objectFactoryService) {
-		//... to make static functions of this singleton avaiable
-	}
-	/**
 	 * @var \Thucke\ThRating\Service\AccessControlService
 	 */
 	protected $accessControllService;
@@ -126,6 +120,29 @@ class VoteController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 	public function injectStepconfRepository(\Thucke\ThRating\Domain\Repository\StepconfRepository $stepconfRepository) {
 		$this->stepconfRepository = $stepconfRepository;
 	}
+	/**
+	 * @var \Thucke\ThRating\Stepconf\Domain\Validator\StepconfValidator
+	 */
+	protected $stepconfValidator;
+	/**
+	 * @param	\Thucke\ThRating\Domain\Validator\StepconfValidator	$stepconfValidator
+	 * @return	void
+	 */
+	public function injectStepconfValidator( \Thucke\ThRating\Domain\Validator\StepconfValidator $stepconfValidator ) {
+		$this->stepconfValidator = $stepconfValidator;
+	}
+
+	/**
+	 * @var \Thucke\ThRating\Service\ObjectFactoryService $objectFactoryService
+	 */
+	protected $objectFactoryService;
+	/**
+	 * @param	\Thucke\ThRating\Service\ObjectFactoryService $objectFactoryService
+	 * @return	void
+	 */
+	public function injectObjectFactoryService( \Thucke\ThRating\Service\ObjectFactoryService $objectFactoryService ) {
+		$this->objectFactoryService = $objectFactoryService;
+	}
 
 	/**
 	 * Initializes the current action
@@ -170,12 +187,11 @@ class VoteController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 		$this->view->assign('ratingobjects', $this->ratingobjectRepository->findAll() );
 		
 		//initialize ratingobject and autocreate four ratingsteps
-		$ratingobject = \Thucke\ThRating\Utility\ExtensionManagementUtility::makeRatable('TestTable', 'TestField', 4);
-
+		$ratingobject = $this->objectManager->get('Thucke\\ThRating\\Utility\\ExtensionManagementUtility')->makeRatable('TestTable', 'TestField', 4);
 		//add descriptions in default language to each stepconf
-		\Thucke\ThRating\Utility\ExtensionManagementUtility::setStepname($ratingobject->getStepconfs()->current(), 'Automatic generated entry ', 0, TRUE);		
+		$this->objectManager->get('Thucke\\ThRating\\Utility\\ExtensionManagementUtility')->setStepname($ratingobject->getStepconfs()->current(), 'Automatic generated entry ', 0, TRUE);		
 		//add descriptions in german language to each stepconf
-		\Thucke\ThRating\Utility\ExtensionManagementUtility::setStepname($ratingobject->getStepconfs()->current(), 'Automatischer Eintrag ', 43, TRUE);		
+		$this->objectManager->get('Thucke\\ThRating\\Utility\\ExtensionManagementUtility')->setStepname($ratingobject->getStepconfs()->current(), 'Automatischer Eintrag ', 43, TRUE);		
 	}
 
 
@@ -428,9 +444,9 @@ class VoteController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 			$this->vote = $vote;
 		} else {
 			//first initialize parent objects for vote object
-			$ratingobject = \Thucke\ThRating\Service\ObjectFactoryService::getRatingobject( $this->settings );
-			$rating = \Thucke\ThRating\Service\ObjectFactoryService::getRating($this->settings, $ratingobject);
-			$this->vote = \Thucke\ThRating\Service\ObjectFactoryService::getVote( $this->prefixId, $this->settings, $rating );
+			$ratingobject = $this->objectFactoryService->getRatingobject( $this->settings );
+			$rating = $this->objectFactoryService->getRating($this->settings, $ratingobject);
+			$this->vote = $this->objectFactoryService->getVote( $this->prefixId, $this->settings, $rating );
 
 			$countSteps=count( $ratingobject->getStepconfs() );
 			If ( empty($countSteps)) {
@@ -615,7 +631,7 @@ class VoteController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 		//display an error to update TYPO3 at least to version 6.2.1
 		If ( \TYPO3\CMS\Core\Utility\VersionNumberUtility::convertVersionNumberToInteger(TYPO3_version) == 6002000 ) {
 				$this->flashMessageContainer->add(	\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('flash.renderCSS.incompatible620', 'ThRating').' (1398526413)',
-															\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('flash.singleton.error', 'ThRating'),
+													\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('flash.singleton.error', 'ThRating'),
 													\TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
 				return;
 		}
@@ -633,15 +649,14 @@ class VoteController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 													\TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);
 				return;
 			}
-			$stepconfValidator = \Thucke\ThRating\Service\ObjectFactoryService::getObject( 'Thucke\\ThRating\\Domain\\Validator\\StepconfValidator' );
 			$stepconfs = $stepconfObjects->toArray();
 			foreach ( $stepconfs as $stepconf ) {	//stepconfs are already sorted by steporder
 				//just do checks here that all steps are OK
-				if ($stepconfValidator->isValid($stepconf)) {
+				if ($this->stepconfValidator->isValid($stepconf)) {
 					$stepWeights[] = $stepconf->getStepweight();
 					$sumStepWeights += $stepconf->getStepweight();
 				} else {
-					foreach ($stepconfValidator->getErrors() as $errorMessage) {
+					foreach ($this->stepconfValidator->getErrors() as $errorMessage) {
 						$this->flashMessageContainer->add(	$errorMessage->getMessage().' ('.$errorMessage->getCode().')',
 															\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('flash.singleton.error', 'ThRating'),
 															\TYPO3\CMS\Core\Messaging\FlashMessage::ERROR);

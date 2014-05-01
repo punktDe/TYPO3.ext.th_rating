@@ -72,6 +72,18 @@ class Ratingobject extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	protected $ratings;
 	
 	/**
+	 * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface	$objectManager
+	 */
+	protected $objectManager;
+	/**
+	 * @param \TYPO3\CMS\Extbase\Object\ObjectManagerInterface	$objectManager
+	 * @return void
+	 */
+	public function injectObjectManager(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager) {
+		$this->objectManager = $objectManager;
+	}
+
+	/**
 	 * @var \Thucke\ThRating\Domain\Repository\StepconfRepository	$stepconfRepository
 	 */
 	protected $stepconfRepository;
@@ -81,6 +93,18 @@ class Ratingobject extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	 */
 	public function injectStepconfRepository(\Thucke\ThRating\Domain\Repository\StepconfRepository $stepconfRepository) {
 		$this->stepconfRepository = $stepconfRepository;
+	}
+
+	/**
+	 * @var \Thucke\ThRating\Service\ObjectFactoryService $objectFactoryService
+	 */
+	protected $objectFactoryService;
+	/**
+	 * @param	\Thucke\ThRating\Service\ObjectFactoryService $objectFactoryService
+	 * @return	void
+	 */
+	public function injectObjectFactoryService( \Thucke\ThRating\Service\ObjectFactoryService $objectFactoryService ) {
+		$this->objectFactoryService = $objectFactoryService;
 	}
 
 	/**
@@ -160,7 +184,7 @@ class Ratingobject extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	 */
 	public function addRating(\Thucke\ThRating\Domain\Model\Rating $rating) {
 		$this->ratings->attach($rating);
-		\Thucke\ThRating\Utility\ExtensionManagementUtility::persistRepository('\Thucke\ThRating\Domain\Repository\RatingRepository', $rating);
+		$this->objectFactoryService->persistRepository('\Thucke\ThRating\Domain\Repository\RatingRepository', $rating);
 	}
 
 	/**
@@ -191,7 +215,7 @@ class Ratingobject extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	public function addStepconf(\Thucke\ThRating\Domain\Model\Stepconf $stepconf) {
 		If (!$this->stepconfRepository->existStepconf($stepconf)) {
 			$this->stepconfs->attach( $stepconf );
-			\Thucke\ThRating\Utility\ExtensionManagementUtility::persistRepository('\Thucke\ThRating\Domain\Repository\StepconfRepository', $stepconf);
+			$this->objectFactoryService->persistRepository('\Thucke\ThRating\Domain\Repository\StepconfRepository', $stepconf);
 		}
 	}
 

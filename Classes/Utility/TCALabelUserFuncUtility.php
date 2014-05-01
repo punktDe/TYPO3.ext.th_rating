@@ -32,6 +32,28 @@ namespace Thucke\ThRating\Utility;
 class TCALabelUserFuncUtility {
 
 	/**
+	 * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface	$objectManager
+	 */
+	protected $objectManager;
+	/**
+	 * @param \TYPO3\CMS\Extbase\Object\ObjectManagerInterface	$objectManager
+	 * @return void
+	 */
+	public function injectObjectManager(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager) {
+		$this->objectManager = $objectManager;
+	}
+
+	/**
+	 * Constructs a new rating object
+	 * @return void
+	 */
+	public function __construct( ) {
+		if ( empty($this->objectManager) ) {
+			$this->objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
+		}
+	}
+
+	/**
 	 * Returns the record title for the rating object in BE
 	 *
 	 * @return byRef $params
@@ -56,7 +78,7 @@ class TCALabelUserFuncUtility {
 	 */
     public function getStepnameRecordTitle(&$params, &$pObj) {
 		//look into repository to find clear text object attributes
-		$stepnameRepository = \Thucke\ThRating\Service\ObjectFactoryService::getObject('Thucke\\ThRating\\Domain\\Repository\\StepnameRepository');
+		$stepnameRepository = $this->objectManager->get('Thucke\\ThRating\\Domain\\Repository\\StepnameRepository');
         $stepnameRepository->clearQuerySettings();	//disable syslanguage and enableFields
         $stepnameObject = $stepnameRepository->findByUid(intval($params['row']['uid']));		
 		if (is_object($stepnameObject)) {
@@ -67,7 +89,7 @@ class TCALabelUserFuncUtility {
 				$syslang = \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('tca.BE.all', 'ThRating');
 			} else {
 				//look for language name
-				$syslangRepository = \Thucke\ThRating\Service\ObjectFactoryService::getObject('Thucke\\ThRating\\Domain\\Repository\\StepnameRepository');
+				$syslangRepository = $this->objectManager->get('Thucke\\ThRating\\Domain\\Repository\\StepnameRepository');
 				$syslangObject = $syslangRepository->findByUid($stepnameLang);
 				If ($syslangObject instanceof Thucke\ThRating\Domain\Model\Syslang) {
 					$syslang=$syslangObject->getTitle();
@@ -78,7 +100,7 @@ class TCALabelUserFuncUtility {
 		} else {
 			$stepnameLang = 'new';
 		}
-		$stepconfRepository = \Thucke\ThRating\Service\ObjectFactoryService::getObject('Thucke\\ThRating\\Domain\\Repository\\StepconfRepository');
+		$stepconfRepository = $this->objectManager->get('Thucke\\ThRating\\Domain\\Repository\\StepconfRepository');
         $stepconfObject = $stepconfRepository->findByUid(intval($params['row']['stepconf']));
 		$ratetable = \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('tca.BE.new', 'ThRating');
 		$ratefield = \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('tca.BE.new', 'ThRating');
@@ -164,9 +186,9 @@ class TCALabelUserFuncUtility {
 	 * @return 	array
 	 */
 	function loadTypoScriptForBEModule($extKey,$pid) {
-		$sysPageObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\Page\\PageRepository');
+		$sysPageObj = $this->objectManager->get('TYPO3\\CMS\\Frontend\\Page\\PageRepository');
         $rootLine = $sysPageObj->getRootLine($pid);
-        $TSObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\TypoScript\\ExtendedTemplateService');
+        $TSObj = $this->objectManager->get('TYPO3\\CMS\\Core\\TypoScript\\ExtendedTemplateService');
         $TSObj->tt_track = 0;
         $TSObj->init();
         $TSObj->runThroughTemplates($rootLine);

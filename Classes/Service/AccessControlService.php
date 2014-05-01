@@ -32,13 +32,35 @@ namespace Thucke\ThRating\Service;
 class AccessControlService implements \TYPO3\CMS\Core\SingletonInterface {
 
 	/**
+	 * @var \TYPO3\CMS\Extbase\Domain\Repository\FrontendUserRepository	$frontendUserRepository
+	 */
+	protected $frontendUserRepository;
+	/**
+	 * @param \TYPO3\CMS\Extbase\Domain\Repository\FrontendUserRepository $frontendUserRepository
+	 * @return void
+	 */
+	public function injectFrontendUserRepository(\TYPO3\CMS\Extbase\Domain\Repository\FrontendUserRepository $frontendUserRepository) {
+		$this->frontendUserRepository = $frontendUserRepository;
+	}
+	/**
+	 * @var \Thucke\ThRating\Domain\Repository\VoterRepository	$voterRepository
+	 */
+	protected $voterRepository;
+	/**
+	 * @param \Thucke\ThRating\Domain\Repository\VoterRepository $voterRepository
+	 * @return void
+	 */
+	public function injectVoterRepository(\Thucke\ThRating\Domain\Repository\VoterRepository $voterRepository) {
+		$this->voterRepository = $voterRepository;
+	}
+
+	/**
 	 * Tests, if the given person is logged into the frontend
 	 *
 	 * @param	\TYPO3\CMS\Extbase\Domain\Model\FrontendUser	$person	The person 
 	 * @return	bool 											The result; TRUE if the given person is logged in; otherwise FALSE
 	 */
 	public function isLoggedIn(\TYPO3\CMS\Extbase\Domain\Model\FrontendUser $person = NULL) {
-		//\TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump($person,'person');
 		if ($person instanceof \TYPO3\CMS\Extbase\Persistence\Generic\LazyObjectStorage) {
 			$person->current();
 		}
@@ -82,13 +104,12 @@ class AccessControlService implements \TYPO3\CMS\Core\SingletonInterface {
 	public function getFrontendUser($voter = NULL) {
 		//set userobject
 		if (!$voter instanceof \TYPO3\CMS\Extbase\Domain\Model\FrontendUser) {
-			$frontendUserRepository = \Thucke\ThRating\Service\ObjectFactoryService::getObject('TYPO3\\CMS\\Extbase\\Domain\\Repository\\FrontendUserRepository');
 			//TODO Errorhandling if no user is logged in
 			if (!is_integer(intval($voter)) || intval($voter) == 0) {
 				//get logged in fe-user
-				$voter = $frontendUserRepository->findByUid($this->getFrontendUserUid());
+				$voter = $this->frontendUserRepository->findByUid($this->getFrontendUserUid());
 			} else {
-				$voter = $frontendUserRepository->findByUid(intval($voter));
+				$voter = $this->frontendUserRepository->findByUid(intval($voter));
 			}
 		}
 		return $voter;
@@ -103,13 +124,12 @@ class AccessControlService implements \TYPO3\CMS\Core\SingletonInterface {
 	public function getFrontendVoter($voter = NULL) {
 		//set userobject
 		if (!$voter instanceof \Thucke\ThRating\Domain\Model\Voter) {
-			$frontendUserRepository = \Thucke\ThRating\Service\ObjectFactoryService::getObject('Thucke\\ThRating\\Domain\\Repository\\VoterRepository');
 			//TODO Errorhandling if no user is logged in
 			if (!is_integer(intval($voter)) || intval($voter) == 0) {
 				//get logged in fe-user
-				$voter = $frontendUserRepository->findByUid($this->getFrontendUserUid());
+				$voter = $this->voterRepository->findByUid($this->getFrontendUserUid());
 			} else {
-				$voter = $frontendUserRepository->findByUid(intval($voter));
+				$voter = $this->voterRepository->findByUid(intval($voter));
 			}
 		}
 		return $voter;

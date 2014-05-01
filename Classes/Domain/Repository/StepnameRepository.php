@@ -50,7 +50,7 @@ class StepnameRepository extends \TYPO3\CMS\Extbase\Persistence\Repository {
 		$stepnameLang = $stepname->get_languageUid();
 		If ( $stepnameLang > 0 ) {
 			//check if given language exist
-			$queryResult = \Thucke\ThRating\Service\ObjectFactoryService::getObject('Thucke\\ThRating\\Domain\\Repository\\SyslangRepository')->findByUid($stepnameLang);
+			$queryResult = $this->objectManager->get('Thucke\\ThRating\\Domain\\Repository\\SyslangRepository')->findByUid($stepnameLang);
 			if (!empty($queryResult)) {
 				//language code found -> OK
 				return TRUE;
@@ -139,7 +139,7 @@ class StepnameRepository extends \TYPO3\CMS\Extbase\Persistence\Repository {
 		$where = 'stepconf='.$stepname->getStepconf()->getUid() . \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::enableFields('tx_thrating_domain_model_stepname');
 		$queryResult = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('*', 'tx_thrating_domain_model_stepname', $where);
 		if ( count($queryResult) > 1 ) {
-			$allWebsiteLanguages = \Thucke\ThRating\Service\ObjectFactoryService::getObject('Thucke\\ThRating\\Domain\\Repository\\SyslangRepository')->findAll()->toArray();
+			$allWebsiteLanguages = $this->objectManager->get('Thucke\\ThRating\\Domain\\Repository\\SyslangRepository')->findAll()->toArray();
 			foreach( $allWebsiteLanguages as $key => $language ) {
 				$websiteLanguagesArray[]=$language->getUid();
 			}

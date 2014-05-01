@@ -60,6 +60,42 @@ class Rating extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	protected $votes;
 
 	/**
+	 * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface	$objectManager
+	 */
+	protected $objectManager;
+	/**
+	 * @param \TYPO3\CMS\Extbase\Object\ObjectManagerInterface	$objectManager
+	 * @return void
+	 */
+	public function injectObjectManager(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager) {
+		$this->objectManager = $objectManager;
+	}
+
+	/**
+	 * @var \Thucke\ThRating\Domain\Repository\VoteRepository	$voteRepository
+	 */
+	protected $voteRepository;
+	/**
+	 * @param \Thucke\ThRating\Domain\Repository\VoteRepository $voteRepository
+	 * @return void
+	 */
+	public function injectVoteRepository(\Thucke\ThRating\Domain\Repository\VoteRepository $voteRepository) {
+		$this->voteRepository = $voteRepository;
+	}
+
+	/**
+	 * @var \Thucke\ThRating\Service\ObjectFactoryService $objectFactoryService
+	 */
+	protected $objectFactoryService;
+	/**
+	 * @param	\Thucke\ThRating\Service\ObjectFactoryService $objectFactoryService
+	 * @return	void
+	 */
+	public function injectObjectFactoryService( \Thucke\ThRating\Service\ObjectFactoryService $objectFactoryService ) {
+		$this->objectFactoryService = $objectFactoryService;
+	}
+
+	/**
 	 * The current calculated rates
 	 *
 	 * Redundant information to enhance performance in displaying calculated informations
@@ -96,16 +132,19 @@ class Rating extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	 * Initializes a new rating object
 	 * @return void
 	 */
-	 public function initializeObject() {
+	public function initializeObject() {
 		parent::initializeObject();
-		$this->settings = \Thucke\ThRating\Service\ObjectFactoryService::getObject('TYPO3\\CMS\\Extbase\\Configuration\\ConfigurationManager')->getConfiguration('Settings', 'thRating', 'pi1');
+		
+		if ( empty($this->objectManager) ) {
+			$this->objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
+		}
+		$this->settings = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Configuration\\ConfigurationManager')->getConfiguration('Settings', 'thRating', 'pi1');
 
 		//Initialize vote storage if rating is new
 		if (!is_object($this->votes)) {
 			$this->votes = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
 		}
-
-	 }
+	}
 	 
 	/**
 	 * Sets the ratingobject this rating is part of
@@ -155,7 +194,7 @@ class Rating extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	public function addVote(\Thucke\ThRating\Domain\Model\Vote $vote) {
 		$this->votes->attach($vote);
 		$this->addCurrentrate($vote);
-		\Thucke\ThRating\Utility\ExtensionManagementUtility::persistRepository('\Thucke\ThRating\Domain\Repository\VoteRepository', $vote);
+		$this->objectFactoryService->persistRepository('\Thucke\ThRating\Domain\Repository\VoteRepository', $vote);
 	}
 
 	/**
@@ -193,11 +232,10 @@ class Rating extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	 * @return void
 	 */
 	public function checkCurrentrates() {
-		$voteRepository = \Thucke\ThRating\Service\ObjectFactoryService::getObject('Thucke\\ThRating\\Domain\\Repository\\VoteRepository');
 		foreach ( $this->getRatingobject()->getStepconfs() as $stepConf ) {
 			$stepOrder = $stepConf->getSteporder();
-			$voteCount = $voteRepository->countByMatchingRatingAndVote($this, $stepConf);
-			$anonymousCount = $voteRepository->countAnonymousByMatchingRatingAndVote($this, $stepConf, $this->settings['mapAnonymous']);
+			$voteCount = $this->voteRepository->countByMatchingRatingAndVote($this, $stepConf);
+			$anonymousCount = $this->voteRepository->countAnonymousByMatchingRatingAndVote($this, $stepConf, $this->settings['mapAnonymous']);
 			$currentratesDecoded['weightedVotes'][$stepOrder] = $voteCount * $stepConf->getStepweight();
 			$currentratesDecoded['sumWeightedVotes'][$stepOrder] = $currentratesDecoded['weightedVotes'][$stepOrder] * $stepOrder;
 			$numAllVotes += $voteCount;

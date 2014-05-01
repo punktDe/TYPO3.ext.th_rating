@@ -32,14 +32,67 @@ namespace Thucke\ThRating\Service;
 class ObjectFactoryService implements \TYPO3\CMS\Core\SingletonInterface {
 
 	/**
+	 * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface	$objectManager
+	 */
+	protected $objectManager;
+	/**
+	 * @param \TYPO3\CMS\Extbase\Object\ObjectManagerInterface	$objectManager
+	 * @return void
+	 */
+	public function injectObjectManager(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager) {
+		$this->objectManager = $objectManager;
+	}
+	/**
+	 * @var \Thucke\ThRating\Domain\Repository\RatingobjectRepository	$ratingobjectRepository
+	 */
+	protected $ratingobjectRepository;
+	/**
+	 * @param \Thucke\ThRating\Domain\Repository\RatingobjectRepository $ratingobjectRepository
+	 * @return void
+	 */
+	public function injectRatingobjectRepository(\Thucke\ThRating\Domain\Repository\RatingobjectRepository $ratingobjectRepository) {
+		$this->ratingobjectRepository = $ratingobjectRepository;
+	}
+	/**
+	 * @var \Thucke\ThRating\Domain\Repository\RatingRepository	$ratingRepository
+	 */
+	protected $ratingRepository;
+	/**
+	 * @param \Thucke\ThRating\Domain\Repository\RatingRepository $ratingRepository
+	 * @return void
+	 */
+	public function injectRatingRepository(\Thucke\ThRating\Domain\Repository\RatingRepository $ratingRepository) {
+		$this->ratingRepository = $ratingRepository;
+	}
+	/**
+	 * @var \Thucke\ThRating\Domain\Repository\VoteRepository
+	 */
+	protected $voteRepository;
+	/**
+	 * @param \Thucke\ThRating\Domain\Repository\VoteRepository $voteRepository
+	 */
+	public function injectVoteRepository(\Thucke\ThRating\Domain\Repository\VoteRepository $voteRepository) {
+		$this->voteRepository = $voteRepository;
+	}
+	/**
+	 * @var \Thucke\ThRating\Service\AccessControlService
+	 */
+	protected $accessControllService;
+	/**
+	 * @param \Thucke\ThRating\Service\AccessControlService $accessControllService
+	 */
+	public function injectAccessControlService(\Thucke\ThRating\Service\AccessControlService $accessControllService) {
+		$this->accessControllService = $accessControllService;
+	}
+
+	/**
 	 * Returns the completed settings array
 	 * 
 	 * @param	array	$settings
 	 * @return	array
 	 */
 	private function completeConfigurationSettings( array $settings ) {
-		$configurationManager = self::getObject('TYPO3\\CMS\\Extbase\\Configuration\\ConfigurationManager');
-		$cObj = $configurationManager->getContentObject();
+		$cObj = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Configuration\\ConfigurationManager')->getContentObject();
 		$currentRecord = array();
 		if ( !empty($cObj->currentRecord) ) {
 			$currentRecord = explode(':', $cObj->currentRecord);	//build array [0=>cObj tablename, 1=> cObj uid] - initialize with content information (usage as normal content)
@@ -65,19 +118,17 @@ class ObjectFactoryService implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @param	array	$settings
 	 * @return	\Thucke\ThRating\Domain\Model\Ratingobject
 	 */
-	static function getRatingobject( array $settings ) {
-		$ratingobjectRepository = self::getObject('Thucke\\ThRating\\Domain\\Repository\\RatingobjectRepository');
+	public function getRatingobject( array $settings ) {
 		//check whether a dedicated ratingobject is configured
 		if ( !empty($settings['ratingobject']) ) {
-			$ratingobject = $ratingobjectRepository->findByUid($settings['ratingobject']);
+			$ratingobject = $$this->ratingobjectRepository->findByUid($settings['ratingobject']);
 		} else {
 			if ( empty($settings['ratetable']) || empty($settings['ratefield']) ) {
 				//fallback to default configuration
 				$settings = array_merge($settings, $settings['defaultObject']);
 			}
-			$settings = self::completeConfigurationSettings( $settings );		
-			$ratingobject = $ratingobjectRepository->findMatchingTableAndField($settings['ratetable'], $settings['ratefield'], \Thucke\ThRating\Domain\Repository\RatingobjectRepository::addIfNotFound);
-			//\Thucke\ThRating\Utility\ExtensionManagementUtility::persistObjectIfDirty('\Thucke\ThRating\Domain\Repository\RatingobjectRepository', $ratingobject);
+			$settings = $this->completeConfigurationSettings( $settings );		
+			$ratingobject = $this->ratingobjectRepository->findMatchingTableAndField($settings['ratetable'], $settings['ratefield'], \Thucke\ThRating\Domain\Repository\RatingobjectRepository::addIfNotFound);
 		}
 		return $ratingobject;
 	}			
@@ -88,8 +139,8 @@ class ObjectFactoryService implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @param	array	$stepconfArray
 	 * @return	\Thucke\ThRating\Domain\Model\Stepconf
 	 */
-	static function createStepconf( array $stepconfArray ) {
-		$stepconf = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Thucke\\ThRating\\Domain\\Model\\Stepconf');
+	public function createStepconf( array $stepconfArray ) {
+		$stepconf = $this->objectManager->get('Thucke\\ThRating\\Domain\\Model\\Stepconf');
 		$stepconf->setRatingobject( $stepconfArray['ratingobject'] );
 		$stepconf->setSteporder( $stepconfArray['steporder'] );
 		$stepconf->setStepweight( $stepconfArray['stepweight'] );
@@ -102,14 +153,13 @@ class ObjectFactoryService implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @param	array	$stepconfArray
 	 * @return	\Thucke\ThRating\Domain\Model\Stepconf
 	 */
-	static function createStepname ( array $stepnameArray ) {
-		$stepname = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Thucke\\ThRating\\Domain\\Model\\Stepname');
+	public function createStepname ( array $stepnameArray ) {
+		$stepname = $this->objectManager->get('Thucke\\ThRating\\Domain\\Model\\Stepname');
 		$stepname->setStepname( $stepnameArray['stepname'] );
 		
 		if ( !empty($stepnameArray['languageIso2Code']) ) {
 			//check if additional language flag exists in current website
-			$syslangRepository = self::getObject('Thucke\\ThRating\\Domain\\Repository\\SyslangRepository');
-			$languageObject = $syslangRepository->findByStaticLangIsocode($stepnameArray['languageIso2Code']);
+			$languageObject = $this->objectManager->get('Thucke\\ThRating\\Domain\\Repository\\SyslangRepository')->findByStaticLangIsocode($stepnameArray['languageIso2Code']);
 			if ( $languageObject->count() > 0 ) {
 				$stepname->set_languageUid( $languageObject->getFirst()->getUid() );
 			} else {
@@ -121,37 +171,7 @@ class ObjectFactoryService implements \TYPO3\CMS\Core\SingletonInterface {
 		}
 		return $stepname;
 	}			
-
-	/**
-	 * Implemente a static version of the objectmanager get method
-	 * 
-	 * @param	string	$newObject	Object class name to get
-	 * @return	mixed
-	 */
-	static function getObject( $newObject ) {
-		// get an ObjectManager first
-		$objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
-		return $objectManager->get($newObject);
-	}
-
-
-	/**
-	 * Implemente a static version of the objectmanager get method
-	 * 
-	 * @param	string	$newObject	Object class name to get
-	 * @return	mixed
-	 */
-	static function createObject( $newObject ) {
-		If ( \TYPO3\CMS\Core\Utility\VersionNumberUtility::convertVersionNumberToInteger(TYPO3_version) >= 6001000 ) {
-			return self::getObject($newObject);
-		} else {
-			// get an ObjectManager first
-			$objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
-			return $objectManager->create($newObject);
-		}
-	}
-
-
+	
 	/**
 	 * Returns a new or existing rating
 	 * 
@@ -160,17 +180,14 @@ class ObjectFactoryService implements \TYPO3\CMS\Core\SingletonInterface {
  	 * @throws 	RuntimeException
 	 * @return	\Thucke\ThRating\Domain\Model\Rating
 	 */
-	static function getRating( array $settings,	\Thucke\ThRating\Domain\Model\Ratingobject $ratingobject = NULL ) {
-		$settings = self::completeConfigurationSettings( $settings );		
-		$ratingobjectValidator = self::getObject('Thucke\\ThRating\\Domain\\Validator\\RatingobjectValidator');
-		$ratingRepository = self::getObject('Thucke\\ThRating\\Domain\\Repository\\RatingRepository');
-
+	public function getRating( array $settings,	\Thucke\ThRating\Domain\Model\Ratingobject $ratingobject = NULL ) {
+		$settings = $this->completeConfigurationSettings( $settings );		
 		if ( !empty($settings['rating']) ) {
 			//fetch rating when it is configured
-			$rating = $ratingRepository->findByUid($settings['rating']);
-		} elseif ( $ratingobjectValidator->isValid($ratingobject) && $settings['ratedobjectuid'] ) {
+			$rating = $this->ratingRepository->findByUid($settings['rating']);
+		} elseif ( $this->objectManager->get('Thucke\\ThRating\\Domain\\Validator\\RatingobjectValidator')->isValid($ratingobject) && $settings['ratedobjectuid'] ) {
 			//get rating according to given row
-			$rating = $ratingRepository->findMatchingObjectAndUid($ratingobject, $settings['ratedobjectuid'], \Thucke\ThRating\Domain\Repository\RatingRepository::addIfNotFound);
+			$rating = $this->ratingRepository->findMatchingObjectAndUid($ratingobject, $settings['ratedobjectuid'], \Thucke\ThRating\Domain\Repository\RatingRepository::addIfNotFound);
 		} else {
 			throw new \TYPO3\CMS\Core\Exception(
 				'Incomplete configuration setting. Either \'rating\' or \'ratedobjectuid\' are missing.',
@@ -179,7 +196,7 @@ class ObjectFactoryService implements \TYPO3\CMS\Core\SingletonInterface {
 		}
 		return $rating;
 	}			
-	
+
 	/**
 	 * Returns a new or existing vote
 	 * 
@@ -188,34 +205,29 @@ class ObjectFactoryService implements \TYPO3\CMS\Core\SingletonInterface {
  	 * @param	\Thucke\ThRating\Domain\Model\Rating	$rating
 	 * @return	\Thucke\ThRating\Domain\Model\Vote
 	 */
-	static function getVote( $prefixId, array $settings, \Thucke\ThRating\Domain\Model\Rating $rating ) {
-		$voteRepository = self::getObject('Thucke\\ThRating\\Domain\\Repository\\VoteRepository');
-		$voteValidator = self::getObject('Thucke\\ThRating\\Domain\\Validator\\VoteValidator');
-		
+	public function getVote( $prefixId, array $settings, \Thucke\ThRating\Domain\Model\Rating $rating ) {
 		//first fetch real voter or anonymous
-		$accessControllService = self::getObject('Thucke\\ThRating\\Service\\AccessControlService' );
-		$frontendUserUid = $accessControllService->getFrontendUserUid();
+		$frontendUserUid = $this->accessControllService->getFrontendUserUid();
 		if ( !empty($settings['mapAnonymous']) && !$frontendUserUid ) {
 			//set anonymous vote
-			$voter =  $accessControllService->getFrontendVoter($settings['mapAnonymous']);
+			$voter =  $this->accessControllService->getFrontendVoter($settings['mapAnonymous']);
 			$anonymousRating = json_decode($_COOKIE[$prefixId.'_AnonymousRating_'.$rating->getUid()], TRUE);
 			if ( !empty($anonymousRating['voteUid']) ) {
-				$vote = $voteRepository->findByUid($anonymousRating['voteUid']);
+				$vote = $this->voteRepository->findByUid($anonymousRating['voteUid']);
 			}
 		} else {
 			if ( $frontendUserUid ) {
 				//set FEUser if one is logged on
-				$voter =  $accessControllService->getFrontendVoter( $frontendUserUid );
+				$voter =  $this->accessControllService->getFrontendVoter( $frontendUserUid );
 				if ($voter instanceof \Thucke\ThRating\Domain\Model\Voter) {
-					$vote = $voteRepository->findMatchingRatingAndVoter($rating->getUid(), $voter->getUid());
+					$vote = $$this->voteRepository->findMatchingRatingAndVoter($rating->getUid(), $voter->getUid());
 				}
 			}
 		}
 		//voting not found in database or anonymous vote? - create new one
-		if ( !$voteValidator->isValid($vote) ) {
-			$vote = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Thucke\\ThRating\\Domain\\Model\\Vote');
-			$ratingValidator = self::getObject('Thucke\\ThRating\\Domain\\Validator\\RatingValidator');
-			if ( $ratingValidator->isValid($rating) ) {
+		if ( !$this->objectManager->get('Thucke\\ThRating\\Domain\\Validator\\VoteValidator')->isValid($vote) ) {
+			$vote = $this->objectManager->get('Thucke\\ThRating\\Domain\\Model\\Vote');
+			if ( $this->objectManager->get('Thucke\\ThRating\\Domain\\Validator\\RatingValidator')->isValid($rating) ) {
 				$vote->setRating($rating);
 			}
 			if ($voter instanceof \Thucke\ThRating\Domain\Model\Voter) {
@@ -223,6 +235,24 @@ class ObjectFactoryService implements \TYPO3\CMS\Core\SingletonInterface {
 			}
 		}
 		return $vote;
-	}				
+	}
+
+	/**
+	 * Update and persist attached objects to the repository
+	 *
+	 * @param	string	$repository
+	 * @param	\TYPO3\CMS\Extbase\DomainObject\AbstractEntity	$objectToPersist
+	 * @return void
+	 */
+	public function persistRepository($repository, \TYPO3\CMS\Extbase\DomainObject\AbstractEntity $objectToPersist) {
+		$objectUid=$objectToPersist->getUid();
+		If (empty($objectUid)) {
+			$this->objectManager->get($repository)->add($objectToPersist);
+		} else {
+			$this->objectManager->get($repository)->update($objectToPersist);
+		}
+		$this->objectManager->get('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\PersistenceManager')->persistAll();
+		$this->objectManager->get('Thucke\\ThRating\\Utility\\TCALabelUserFuncUtility')->clearCachePostProc(NULL, NULL, NULL);  //Delete the file 'typo3temp/thratingDyn.css'
+	}
 }
 ?>

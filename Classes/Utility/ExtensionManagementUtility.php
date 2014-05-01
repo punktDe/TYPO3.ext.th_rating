@@ -32,45 +32,27 @@ namespace Thucke\ThRating\Utility;
 class ExtensionManagementUtility implements \TYPO3\CMS\Core\SingletonInterface {
 
 	/**
-	 * @param \Thucke\ThRating\Utility\TCALabelUserFuncUtility $tcaLabelUserFuncUtility
+	 * @var \Thucke\ThRating\Service\ObjectFactoryService $objectFactoryService
 	 */
-	public function injectTCALabelUserFuncUtility(\Thucke\ThRating\Utility\TCALabelUserFuncUtility $tcaLabelUserFuncUtility) {
-		//... to make static functions of this singleton avaiable
-	}
-
+	protected $objectFactoryService;
 	/**
-	 * Set a new properties for a stepconf
-	 * 
-	 * @param	string	$repository
-	 * @param	\TYPO3\CMS\Extbase\DomainObject\AbstractEntity	$objectToPersist
+	 * @param	\Thucke\ThRating\Service\ObjectFactoryService $objectFactoryService
 	 * @return	void
-	 *
-	public function persistObjectIfDirty( $repository, \TYPO3\CMS\Extbase\DomainObject\AbstractEntity $objectToPersist ) {
-		If ( $objectToPersist->_isDirty() ) {
-			self::persistRepository($repository, $objectToPersist);
-		}
-	}*/
-
-	/**
-	 * Update and persist attached objects to the repository
-	 *
-	 * @param	string	$repository
-	 * @param	\TYPO3\CMS\Extbase\DomainObject\AbstractEntity	$objectToPersist
-	 * @return void
 	 */
-	public function persistRepository( $repository, \TYPO3\CMS\Extbase\DomainObject\AbstractEntity $objectToPersist ) {
-		If ( \TYPO3\CMS\Core\Utility\VersionNumberUtility::convertVersionNumberToInteger(TYPO3_version) >= 6001000 ) {
-			$objectUid=$objectToPersist->getUid();
-			If (empty($objectUid)) {
-				\Thucke\ThRating\Service\ObjectFactoryService::getObject($repository)->add($objectToPersist);
-			} else {
-				\Thucke\ThRating\Service\ObjectFactoryService::getObject($repository)->update($objectToPersist);
-			}
-		}
-		\Thucke\ThRating\Service\ObjectFactoryService::getObject('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\PersistenceManager')->persistAll();
-		\Thucke\ThRating\Utility\TCALabelUserFuncUtility::clearCachePostProc(NULL, NULL, NULL);  //Delete the file 'typo3temp/thratingDyn.css'
+	public function injectObjectFactoryService( \Thucke\ThRating\Service\ObjectFactoryService $objectFactoryService ) {
+		$this->objectFactoryService = $objectFactoryService;
 	}
-
+	/**
+	 * @var \TYPO3\CMS\Extbase\Mvc\Controller\FlashMessageContainer $flashMessageContainer
+	 */
+	protected $flashMessageContainer;
+	/**
+	 * @param	\TYPO3\CMS\Extbase\Mvc\Controller\FlashMessageContainer $flashMessageContainer
+	 * @return	void
+	 */
+	public function injectFlashMessageContainer(\TYPO3\CMS\Extbase\Mvc\Controller\FlashMessageContainer $flashMessageContainer) {
+		$this->flashMessageContainer = $flashMessageContainer;
+	}
 
 	/**
 	 * Prepares an object for ratings
@@ -80,8 +62,8 @@ class ExtensionManagementUtility implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @param	int		$stepcount
 	 * @return	\Thucke\ThRating\Domain\Model\Ratingobject
 	 */
-	static function makeRatable( $tablename, $fieldname, $stepcount ) {
-		$ratingobject = \Thucke\ThRating\Service\ObjectFactoryService::getRatingobject( array('ratetable'=>$tablename, 'ratefield'=>$fieldname) );
+	public function makeRatable( $tablename, $fieldname, $stepcount ) {
+		$ratingobject = $this->objectFactoryService->getRatingobject( array('ratetable'=>$tablename, 'ratefield'=>$fieldname) );
 		
 		//create a new default stepconf having stepweight 1 for each step
 		for ( $i=1; $i<=$stepcount; $i++) {
@@ -89,10 +71,9 @@ class ExtensionManagementUtility implements \TYPO3\CMS\Core\SingletonInterface {
 				'ratingobject' 	=> $ratingobject,
 				'steporder'		=> $i,
 				'stepweight'	=> 1 );
-			$stepconf = \Thucke\ThRating\Service\ObjectFactoryService::createStepconf($stepconfArray);
+			$stepconf = $this->objectFactoryService->createStepconf($stepconfArray);
 			$ratingobject->addStepconf($stepconf);
 		}
-		//self::persistRepository('\Thucke\ThRating\Domain\Repository\RatingobjectRepository', $ratingobject);	
 		return $ratingobject;
 	}			
 
@@ -105,15 +86,21 @@ class ExtensionManagementUtility implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @param	bool	$allStepconfs	Take stepname for all steps and add steporder number at the end
 	 * @return	void
 	 */
-	static function setStepname( \Thucke\ThRating\Domain\Model\Stepconf $stepconf, $stepname, $languageIso2Code=0, $allStepconfs=FALSE ) {
-		if ( !$allStepconfs ) {
+	public function setStepname( \Thucke\ThRating\Domain\Model\Stepconf $stepconf, $stepname, $languageIso2Code=0 ) {
+		$success = TRUE;
+		If ( !$allStepconfs ) {
 			//only add the one specific stepname
 			$stepnameArray = array(
 				'stepname'	=> $stepname,
 				'languageIso2Code'	=> $languageIso2Code );
-			$stepname = \Thucke\ThRating\Service\ObjectFactoryService::createStepname($stepnameArray);
-			$stepConf->addStepname($stepname);
-			//self::persistRepository('\Thucke\ThRating\Domain\Repository\StepconfRepository', $stepConf);	
+			$stepname = $this->objectFactoryService->createStepname($stepnameArray);
+			If ( !$stepconf->addStepname($stepname) ) {
+				$this->flashMessageContainer->add(	\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('flash.extMgmntUtil.singleStepnameExist', 'ThRating', 
+													array(1=>$stepconf->getSteporder(), 2=>$stepname->getStepname(), 3=>$stepname->get_languageUid())).' (1398972827)',
+													\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('flash.heading.warning', 'ThRating'),
+													\TYPO3\CMS\Core\Messaging\FlashMessage::WARNING);
+				$success = FALSE;
+			}
 		} else {
 			$ratingobject = $stepconf->getRatingobject();
 			//add stepnames to every stepconf
@@ -121,10 +108,15 @@ class ExtensionManagementUtility implements \TYPO3\CMS\Core\SingletonInterface {
 				$stepnameArray = array(
 					'stepname'	=> $stepname.$loopStepConf->getSteporder(),
 					'languageIso2Code'	=> $languageIso2Code );
-				$stepnameObject = \Thucke\ThRating\Service\ObjectFactoryService::createStepname($stepnameArray);
-				$loopStepConf->addStepname($stepnameObject);
+				$stepnameObject = $this->objectFactoryService->createStepname($stepnameArray);
+				If ( !$loopStepConf->addStepname($stepnameObject) && $success ) {
+					$this->flashMessageContainer->add(	\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('flash.extMgmntUtil.bulkStepnameExist', 'ThRating', 
+														array(1=>$loopStepConf->getSteporder())).' (1398972331)',
+														\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('flash.heading.warning', 'ThRating'),
+														\TYPO3\CMS\Core\Messaging\FlashMessage::WARNING);
+					$success = FALSE;
+				}
 			}
-			//self::persistRepository('\Thucke\ThRating\Domain\Repository\RatingobjectRepository', $ratingobject);	
 		}
 		return;
 	}			

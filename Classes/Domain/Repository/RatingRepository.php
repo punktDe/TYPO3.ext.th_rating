@@ -35,6 +35,18 @@ class RatingRepository extends \TYPO3\CMS\Extbase\Persistence\Repository {
 	const addIfNotFound = TRUE;
 
 	/**
+	 * @var \Thucke\ThRating\Service\ObjectFactoryService $objectFactoryService
+	 */
+	protected $objectFactoryService;
+	/**
+	 * @param	\Thucke\ThRating\Service\ObjectFactoryService $objectFactoryService
+	 * @return	void
+	 */
+	public function injectObjectFactoryService( \Thucke\ThRating\Service\ObjectFactoryService $objectFactoryService ) {
+		$this->objectFactoryService = $objectFactoryService;
+	}
+
+	/**
 	 * Finds the specific rating by giving the object and row uid
 	 *
 	 * @param	\Thucke\ThRating\Domain\Model\Ratingobject	$ratingobject 	The concerned ratingobject
@@ -62,14 +74,15 @@ class RatingRepository extends \TYPO3\CMS\Extbase\Persistence\Repository {
 			}
 		} else {
 			if ($addIfNotFound) {
-				$foundRow = \Thucke\ThRating\Service\ObjectFactoryService::getObject('Thucke\\ThRating\\Domain\\Model\\Rating');
+				$foundRow = $this->objectManager->get('Thucke\\ThRating\\Domain\\Model\\Rating');
 				$foundRow->setRatingobject($ratingobject);
 				$foundRow->setRatedobjectuid($ratedobjectuid);	
-				$validator = \Thucke\ThRating\Service\ObjectFactoryService::createObject('Thucke\\ThRating\\Domain\\Validator\\RatingValidator');
+				$foundRow->injectObjectManager($objectManager);
+				$validator = $this->objectManager->get('Thucke\\ThRating\\Domain\\Validator\\RatingValidator');
 				if ($validator->isValid($foundRow)) {
 					$this->add($foundRow);
 				}
-				\Thucke\ThRating\Utility\ExtensionManagementUtility::persistRepository('Thucke\\ThRating\\Domain\\Repository\\RatingRepository', $foundRow);	
+				$this->objectFactoryService->persistRepository('Thucke\\ThRating\\Domain\\Repository\\RatingRepository', $foundRow);	
 				$foundRow = $this->findMatchingObjectAndUid($ratingobject, $ratedobjectuid);
 			} else {
 				unset($foundRow);

@@ -1,6 +1,3 @@
-- least supported version TYPO3 6.1.7
-- major changes 'under the hood'
-- fully switched to namespaces in code
-- switched from $TCA to $GLOBALS['TCA']
-- FLUID: changed namespace to {namespace thr=Thucke\ThRating\ViewHelpers}
-- bugfix for handling AJAX requests
+- new configuration setting 'displayOnly'
+- added z-index in CSS for tooltips
+- refactored static classes (ExtensionManagementUtility, ObjectFactoryService) to objects

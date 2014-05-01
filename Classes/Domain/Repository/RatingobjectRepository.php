@@ -35,6 +35,18 @@ class RatingobjectRepository extends \TYPO3\CMS\Extbase\Persistence\Repository {
 	const addIfNotFound = TRUE;
 
 	/**
+	 * @var \Thucke\ThRating\Service\ObjectFactoryService $objectFactoryService
+	 */
+	protected $objectFactoryService;
+	/**
+	 * @param	\Thucke\ThRating\Service\ObjectFactoryService $objectFactoryService
+	 * @return	void
+	 */
+	public function injectObjectFactoryService( \Thucke\ThRating\Service\ObjectFactoryService $objectFactoryService ) {
+		$this->objectFactoryService = $objectFactoryService;
+	}
+
+	/**
 	 * Finds the specific ratingobject by giving table and fieldname
 	 *
 	 * @param string 	$ratetable The tablename of the ratingobject
@@ -57,14 +69,14 @@ class RatingobjectRepository extends \TYPO3\CMS\Extbase\Persistence\Repository {
 			$foundRow = $queryResult->getFirst();
 		} else {
 			if ($addIfNotFound) {
-				$foundRow = \Thucke\ThRating\Service\ObjectFactoryService::getObject('Thucke\\ThRating\\Domain\\Model\\Ratingobject');
+				$foundRow = $this->objectManager->get('Thucke\\ThRating\\Domain\\Model\\Ratingobject');
 				$foundRow->setRatetable($ratetable);
 				$foundRow->setRatefield($ratefield);
-				$validator = \Thucke\ThRating\Service\ObjectFactoryService::getObject('Thucke\\ThRating\\Domain\\Validator\\RatingobjectValidator');
+				$validator = $this->objectManager->get('Thucke\\ThRating\\Domain\\Validator\\RatingobjectValidator');
 				if ($validator->isValid($foundRow)) {
 					$this->add($foundRow);
 				}
-				\Thucke\ThRating\Utility\ExtensionManagementUtility::persistRepository('Thucke\\ThRating\\Domain\\Repository\\RatingobjectRepository', $foundRow);
+				$this->objectFactoryService->persistRepository('Thucke\\ThRating\\Domain\\Repository\\RatingobjectRepository', $foundRow);
 			} else {
 				unset($foundRow);
 			}

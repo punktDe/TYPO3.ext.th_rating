@@ -80,6 +80,18 @@ class Stepconf extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 
 	
 	/**
+	 * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface	$objectManager
+	 */
+	protected $objectManager;
+	/**
+	 * @param \TYPO3\CMS\Extbase\Object\ObjectManagerInterface	$objectManager
+	 * @return void
+	 */
+	public function injectObjectManager(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager) {
+		$this->objectManager = $objectManager;
+	}
+
+	/**
 	 * @var \Thucke\ThRating\Domain\Repository\StepnameRepository	$stepnameRepository
 	 */
 	protected $stepnameRepository;
@@ -89,6 +101,18 @@ class Stepconf extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	 */
 	public function injectStepnameRepository(\Thucke\ThRating\Domain\Repository\StepnameRepository $stepnameRepository) {
 		$this->stepnameRepository = $stepnameRepository;
+	}
+
+	/**
+	 * @var \Thucke\ThRating\Service\ObjectFactoryService $objectFactoryService
+	 */
+	protected $objectFactoryService;
+	/**
+	 * @param	\Thucke\ThRating\Service\ObjectFactoryService $objectFactoryService
+	 * @return	void
+	 */
+	public function injectObjectFactoryService( \Thucke\ThRating\Service\ObjectFactoryService $objectFactoryService ) {
+		$this->objectFactoryService = $objectFactoryService;
 	}
 
 	/**
@@ -111,10 +135,6 @@ class Stepconf extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 		//Initialize vote storage if rating is new
 		if (!is_object($this->votes)) {
 			$this->votes = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
-		}
-		//Initialize repository if injection did not occur on newly generated stepconf object
-		if (!$this->stepnameRepository instanceof \Thucke\ThRating\Domain\Repository\StepnameRepository) {
-			$this->stepnameRepository = \Thucke\ThRating\Service\ObjectFactoryService::getObject('Thucke\\ThRating\\Domain\\Repository\\StepnameRepository');
 		}
 	}
 	
@@ -184,20 +204,29 @@ class Stepconf extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	 * Adds a localized stepname to this stepconf
 	 *
 	 * @param \Thucke\ThRating\Domain\Model\Stepname $stepname
-	 * @return void
+	 * @return boolean
 	 */
 	public function addStepname(\Thucke\ThRating\Domain\Model\Stepname $stepname) {
+		$success = TRUE;
 		$stepname->setStepconf($this);
 		If (!$this->stepnameRepository->existStepname($stepname)) {
 			$defaultLanguageObject = $this->stepnameRepository->findDefaultStepname($stepname);
 			if ( is_object($defaultLanguageObject) ) {
 				//handle localization if an entry for the default language exists
 				$stepname->setL18nParent($defaultLanguageObject->getUid());
+			} else {
+				$stepname->setL18nParent(NULL);
+				$this->stepname = $stepname;
+			
 			}
-			$this->stepname->attach($stepname);
-			\Thucke\ThRating\Utility\ExtensionManagementUtility::persistRepository('\Thucke\ThRating\Domain\Repository\StepnameRepository', $stepname);
-			\Thucke\ThRating\Utility\ExtensionManagementUtility::persistRepository('\Thucke\ThRating\Domain\Repository\StepconfRepository', $this);
+			$this->stepnameRepository->add($stepname);
+			$this->objectFactoryService->persistRepository('\Thucke\ThRating\Domain\Repository\StepnameRepository', $stepname);
+			$this->objectFactoryService->persistRepository('\Thucke\ThRating\Domain\Repository\StepconfRepository', $this);
+		} else {
+			//warning - existing stepname entry for a language will not be overwritten
+			$success = FALSE;
 		}
+		return $success;
 	}
 
 	/**
