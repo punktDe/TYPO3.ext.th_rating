@@ -193,8 +193,8 @@ page {
 		jquery.compressed = 1
 		jquery.external = 1
 		jquery.forceOnTop = 1
-		jQueryFormPlugin = EXT:th_rating/Resources/Public/Js/jquery.form.js
-		actions = EXT:th_rating/Resources/Public/Js/actions.js
+		jQueryFormPlugin = EXT:th_rating/Resources/Public/JavaScript/jquery.form.js
+		actions = EXT:th_rating/Resources/Public/JavaScript/actions.js
 	}
 	includeCSS {
 		thRatingdyn = typo3temp/thratingDyn.css
