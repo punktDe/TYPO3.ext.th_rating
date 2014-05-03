@@ -86,7 +86,7 @@ class ExtensionManagementUtility implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @param	bool	$allStepconfs	Take stepname for all steps and add steporder number at the end
 	 * @return	void
 	 */
-	public function setStepname( \Thucke\ThRating\Domain\Model\Stepconf $stepconf, $stepname, $languageIso2Code=0 ) {
+	public function setStepname( \Thucke\ThRating\Domain\Model\Stepconf $stepconf, $stepname, $languageIso2Code=0, $allStepconfs=FALSE ) {
 		$success = TRUE;
 		If ( !$allStepconfs ) {
 			//only add the one specific stepname
