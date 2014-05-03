@@ -53,7 +53,21 @@ class ExtensionManagementUtility implements \TYPO3\CMS\Core\SingletonInterface {
 	public function injectFlashMessageContainer(\TYPO3\CMS\Extbase\Mvc\Controller\FlashMessageContainer $flashMessageContainer) {
 		$this->flashMessageContainer = $flashMessageContainer;
 	}
+	/**
+	 * @var $logger \TYPO3\CMS\Core\Log\Logger
+	 */
+	protected $logger;
 
+	/**
+	 * Constructor
+	 * @return void
+	 */
+	public function __construct(  ) {
+		//instantiate the logger
+		$this->logger = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager')->get('Thucke\\ThRating\\Service\\ObjectFactoryService')->getLogger(__CLASS__);
+	}
+
+	
 	/**
 	 * Prepares an object for ratings
 	 * 
@@ -63,6 +77,7 @@ class ExtensionManagementUtility implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @return	\Thucke\ThRating\Domain\Model\Ratingobject
 	 */
 	public function makeRatable( $tablename, $fieldname, $stepcount ) {
+		$this->logger->log(\TYPO3\CMS\Core\Log\LogLevel::INFO, 'makeRatable called', array('tablename' => $tablename, 'fieldname' => $fieldname, 'stepcount' => $stepcount));
 		$ratingobject = $this->objectFactoryService->getRatingobject( array('ratetable'=>$tablename, 'ratefield'=>$fieldname) );
 		
 		//create a new default stepconf having stepweight 1 for each step
@@ -87,6 +102,14 @@ class ExtensionManagementUtility implements \TYPO3\CMS\Core\SingletonInterface {
 	 * @return	void
 	 */
 	public function setStepname( \Thucke\ThRating\Domain\Model\Stepconf $stepconf, $stepname, $languageIso2Code=0, $allStepconfs=FALSE ) {
+		$this->logger->log(	\TYPO3\CMS\Core\Log\LogLevel::INFO,
+							'setStepname called',
+							array(
+								'stepconf' => $stepconf->getUid(),
+								'steporder' => $stepconf->getSteporder(),
+								'stepname' => $stepname,
+								'languageIso2Code' => $languageIso2Code,
+								'allStepconfs' => $allStepconfs));
 		$success = TRUE;
 		If ( !$allStepconfs ) {
 			//only add the one specific stepname
@@ -95,10 +118,15 @@ class ExtensionManagementUtility implements \TYPO3\CMS\Core\SingletonInterface {
 				'languageIso2Code'	=> $languageIso2Code );
 			$stepname = $this->objectFactoryService->createStepname($stepnameArray);
 			If ( !$stepconf->addStepname($stepname) ) {
-				$this->flashMessageContainer->add(	\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('flash.extMgmntUtil.singleStepnameExist', 'ThRating', 
-													array(1=>$stepconf->getSteporder(), 2=>$stepname->getStepname(), 3=>$stepname->get_languageUid())).' (1398972827)',
-													\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('flash.heading.warning', 'ThRating'),
-													\TYPO3\CMS\Core\Messaging\FlashMessage::WARNING);
+				$this->logger->log(	\TYPO3\CMS\Core\Log\LogLevel::WARNING,
+									'Stepname entry for language already exists', 
+									array(
+										'stepconf' => $stepconf->getUid(),
+										'steporder' => $stepconf->getSteporder(),
+										'stepname' => $stepname,
+										'languageIso2Code' => $languageIso2Code,
+										'errorCode' => 1398972827
+									));
 				$success = FALSE;
 			}
 		} else {
@@ -110,15 +138,20 @@ class ExtensionManagementUtility implements \TYPO3\CMS\Core\SingletonInterface {
 					'languageIso2Code'	=> $languageIso2Code );
 				$stepnameObject = $this->objectFactoryService->createStepname($stepnameArray);
 				If ( !$loopStepConf->addStepname($stepnameObject) && $success ) {
-					$this->flashMessageContainer->add(	\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('flash.extMgmntUtil.bulkStepnameExist', 'ThRating', 
-														array(1=>$loopStepConf->getSteporder())).' (1398972331)',
-														\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('flash.heading.warning', 'ThRating'),
-														\TYPO3\CMS\Core\Messaging\FlashMessage::WARNING);
+					$this->logger->log(	\TYPO3\CMS\Core\Log\LogLevel::WARNING,
+										'Stepname entry for language already exists',
+										array(
+											'stepconf' => $stepconf->getUid(),
+											'steporder' => $stepconf->getSteporder(),
+											'stepname' => $stepname,
+											'languageIso2Code' => $languageIso2Code,
+											'errorCode' => 1398972331
+										));
 					$success = FALSE;
 				}
 			}
 		}
-		return;
+		return $success;
 	}			
 }
 ?>

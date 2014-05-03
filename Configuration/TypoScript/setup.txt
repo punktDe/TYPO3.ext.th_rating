@@ -92,7 +92,16 @@ plugin.tx_thrating {
 		showNoFEUser = {$plugin.tx_thrating.config.showNoFEUser}
 		mapAnonymous = {$plugin.tx_thrating.config.mapAnonymous}
 		ratingContext = defaultContext
-
+		logging {
+			emergency = 1
+			alert = 1
+			critical = 1
+			error = 1
+			warning = 0
+			notice = 0
+			info = 0
+			debug = 0
+		}
 		#this section would be overridden by a similar section within your ratingconfiguration
 		fluid {
 			layouts {

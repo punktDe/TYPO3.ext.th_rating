@@ -29,7 +29,7 @@ namespace Thucke\ThRating\Service;
  * @version $Id:$
  * @license http://opensource.org/licenses/gpl-license.php GNU protected License, version 2
  */
-class AccessControlService implements \TYPO3\CMS\Core\SingletonInterface {
+class AccessControlService extends \Thucke\ThRating\Service\AbstractExtensionService {
 
 	/**
 	 * @var \TYPO3\CMS\Extbase\Domain\Repository\FrontendUserRepository	$frontendUserRepository

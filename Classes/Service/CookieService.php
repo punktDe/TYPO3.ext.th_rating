@@ -29,13 +29,7 @@ namespace Thucke\ThRating\Service;
  * @version $Id:$
  * @license http://opensource.org/licenses/gpl-license.php GNU protected License, version 2
  */
-class CookieService implements \TYPO3\CMS\Core\SingletonInterface {
-
-	// Write messages into the devlog?
-	/**
-	 * @todo Define visibility
-	 */
-	public $writeDevLog = FALSE;
+class CookieService extends \Thucke\ThRating\Service\AbstractExtensionService {
 
 	/**
 	 * Gets the domain to be used on setting cookies.
@@ -57,7 +51,12 @@ class CookieService implements \TYPO3\CMS\Core\SingletonInterface {
 				$match = array();
 				$matchCnt = @preg_match($cookieDomain, \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_HOST_ONLY'), $match);
 				if ($matchCnt === FALSE) {
-					\TYPO3\CMS\Core\Utility\GeneralUtility::sysLog('The regular expression for the cookie domain (' . $cookieDomain . ') contains errors. The session is not shared across sub-domains.', 'Core', \TYPO3\CMS\Core\Utility\GeneralUtility::SYSLOG_SEVERITY_ERROR);
+					$this->logger->log(	\TYPO3\CMS\Core\Log\LogLevel::ERROR,
+										'getCookieDomain: The regular expression for the cookie domain contains errors. The session is not shared across sub-domains.',
+										array(
+											'cookieDomain' => $cookieDomain,
+											'errorCode' => 1399137882,											
+										));
 				} elseif ($matchCnt) {
 					$result = $match[0];
 				}
@@ -104,16 +103,23 @@ class CookieService implements \TYPO3\CMS\Core\SingletonInterface {
 					$cookieSecure,
 					$cookieHttpOnly
 				);
+				$this->logger->log(	\TYPO3\CMS\Core\Log\LogLevel::INFO,
+									'setVoteCookie: Cookie set',
+									array(
+										'cookieName' => $cookieName,
+										'cookieValue' => $cookieValue,
+										'cookieExpire' => $cookieExpire,
+										'cookiePath' => $cookiePath,
+										'cookieDomain' => $cookieDomain,
+										'cookieSecure' => $cookieSecure,
+										'cookieHttpOnly' => $cookieHttpOnly,
+									));
 			} else {
 				throw new \TYPO3\CMS\Core\Exception(
 					'Cookie was not set since HTTPS was forced in $TYPO3_CONF_VARS[SYS][cookieSecure].',
 					1254325546
 				);
 			}
-			/*if ($this->writeDevLog) {
-				$devLogMessage = ($isRefreshTimeBasedCookie ? 'Updated Cookie: ' : 'Set Cookie: ') . $this->id;
-				\TYPO3\CMS\Core\Utility\GeneralUtility::devLog($devLogMessage . ($cookieDomain ? ', ' . $cookieDomain : ''), 'TYPO3\\CMS\\Core\\Authentication\\AbstractUserAuthentication');
-			}*/
 		}
 	}
 }

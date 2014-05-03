@@ -71,7 +71,7 @@ class Stepname extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 		if ($stepconf) $this->setStepconf( $stepconf );
 		if ($stepname) $this->setStepname( $stepname );
 		$this->initializeObject();
-}
+	}
 	
 	/**
 	 * Initializes a new stepconf object

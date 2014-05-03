@@ -29,19 +29,8 @@ namespace Thucke\ThRating\Service;
  * @version $Id:$
  * @license http://opensource.org/licenses/gpl-license.php GNU protected License, version 2
  */
-class ObjectFactoryService implements \TYPO3\CMS\Core\SingletonInterface {
+class ObjectFactoryService extends \Thucke\ThRating\Service\AbstractExtensionService {
 
-	/**
-	 * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface	$objectManager
-	 */
-	protected $objectManager;
-	/**
-	 * @param \TYPO3\CMS\Extbase\Object\ObjectManagerInterface	$objectManager
-	 * @return void
-	 */
-	public function injectObjectManager(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager) {
-		$this->objectManager = $objectManager;
-	}
 	/**
 	 * @var \Thucke\ThRating\Domain\Repository\RatingobjectRepository	$ratingobjectRepository
 	 */
@@ -83,6 +72,19 @@ class ObjectFactoryService implements \TYPO3\CMS\Core\SingletonInterface {
 	 */
 	public function injectAccessControlService(\Thucke\ThRating\Service\AccessControlService $accessControllService) {
 		$this->accessControllService = $accessControllService;
+	}
+
+	/**
+	 * Constructor
+	 * Must overrule the abstract class method to avoid self referencing
+	 * @return void
+	 */
+	public function __construct(  ) {
+		if ( empty($this->objectManager) ) {
+			$this->objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
+		}
+		//instantiate the logger
+		$this->logger = $this->getLogger(get_class($this));
 	}
 
 	/**
@@ -237,6 +239,48 @@ class ObjectFactoryService implements \TYPO3\CMS\Core\SingletonInterface {
 		return $vote;
 	}
 
+	
+	/**
+	 * Get a logger instance
+	 * The configuration of the logger is modified by extension typoscript config
+	 *
+	 * @param	string	$name the class name which this logger is for
+	 * @return void
+	 */
+	public function getLogger( $name ) {
+		$writerConfiguration = $GLOBALS['TYPO3_CONF_VARS']['LOG']['Thucke']['ThRating']['writerConfiguration'];
+		$settings = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Configuration\\ConfigurationManager')->getConfiguration('Settings', 'thRating', 'pi1');
+		$logSettings = $settings['logging'];
+		If (empty($settings['logging']['debug'] )) {
+			unset($writerConfiguration[\TYPO3\CMS\Core\Log\LogLevel::DEBUG]);
+		}
+		If (empty($settings['logging']['info'] )) {
+			unset($writerConfiguration[\TYPO3\CMS\Core\Log\LogLevel::INFO]);
+		}
+		If (empty($settings['logging']['notice'] )) {
+			unset($writerConfiguration[\TYPO3\CMS\Core\Log\LogLevel::NOTICE]);
+		}
+		If (empty($settings['logging']['warning'])) {
+			unset($writerConfiguration[\TYPO3\CMS\Core\Log\LogLevel::WARNING]);
+		}
+		If (empty($settings['logging']['error'] )) {
+			unset($writerConfiguration[\TYPO3\CMS\Core\Log\LogLevel::ERROR]);
+		}
+		If (empty($settings['logging']['critical'])) {
+			unset($writerConfiguration[\TYPO3\CMS\Core\Log\LogLevel::CRITICAL]);
+		}
+		If (empty($settings['logging']['alert'])) {
+			unset($writerConfiguration[\TYPO3\CMS\Core\Log\LogLevel::ALERT]);
+		}
+		If (empty($settings['logging']['emergency'])) {
+			unset($writerConfiguration[\TYPO3\CMS\Core\Log\LogLevel::EMERGENCY]);
+		}
+		$GLOBALS['TYPO3_CONF_VARS']['LOG']['Thucke']['ThRating']['writerConfiguration'] = $writerConfiguration;
+		$logger = $this->objectManager->get('TYPO3\\CMS\\Core\\Log\\LogManager')->getLogger( $name );
+		\TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump($logger,'logger');
+		return $logger;
+	}
+	
 	/**
 	 * Update and persist attached objects to the repository
 	 *
