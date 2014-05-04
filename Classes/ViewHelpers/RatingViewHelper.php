@@ -32,6 +32,22 @@ namespace Thucke\ThRating\ViewHelpers;
 class RatingViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\CObjectViewHelper {
 	
 	/**
+	 * @var \Thucke\ThRating\Service\AccessControlService
+	 */
+	protected $logger;
+	/**
+	 * @var \Thucke\ThRating\Service\ObjectFactoryService $objectFactoryService
+	 */
+	protected $objectFactoryService;
+	/**
+	 * @param	\Thucke\ThRating\Service\ObjectFactoryService $objectFactoryService
+	 * @return	void
+	 */
+	public function injectObjectFactoryService( \Thucke\ThRating\Service\ObjectFactoryService $objectFactoryService ) {
+		$this->objectFactoryService = $objectFactoryService;
+	}
+
+	/**
 	 * Renders the rating object
 	 *
 	 * @param string $action the controller action that should be used (ratinglinks, show, new )
@@ -44,12 +60,30 @@ class RatingViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\CObjectViewHelper {
 	 * @author Thomas Hucke <thucke@web.de>
 	 */
 	public function render($action = NULL, $ratingobject = NULL, $ratetable = NULL, $ratefield = NULL, $ratedobjectuid = NULL, $display = NULL) {
+		//instantiate the logger
+		$this->logger = $this->objectFactoryService->getLogger(__CLASS__);
+		$this->logger->log(	\TYPO3\CMS\Core\Log\LogLevel::DEBUG,
+							'Entry point',
+							array(
+								'action' => $action,
+								'ratingobject' => is_object($ratingobject) ? $ratingobject->getUid() : NULL,
+								'ratetable' => $ratetable,
+								'ratefield' => $ratefield,
+								'ratedobjectuid' => $ratedobjectuid,
+								'display' => $display,
+							));
+
 		$typoscriptObjectPath = 'plugin.tx_thrating';
 		if (TYPO3_MODE === 'BE') {
+			$this->logger->log(	\TYPO3\CMS\Core\Log\LogLevel::DEBUG, 'TYPO3_MODE is BE => simulateFrontendEnvironment', array());
 			$this->simulateFrontendEnvironment();
 		}
 
 		$cObj = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Configuration\\ConfigurationManager')->getContentObject();
+		$this->logger->log(	\TYPO3\CMS\Core\Log\LogLevel::DEBUG, 'ContentObject to build', 
+							array(
+								'cObj type' => get_class(cObj),
+								'data config' => $cObj->data));
 		$cObj->start($cObj->data);
 
 		$pathSegments = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode('.', $typoscriptObjectPath);
@@ -57,6 +91,13 @@ class RatingViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\CObjectViewHelper {
 		$setup = $this->typoScriptSetup;
 		foreach ($pathSegments as $segment) {
 			if (!array_key_exists($segment . '.', $setup)) {
+				$this->logger->log(	\TYPO3\CMS\Core\Log\LogLevel::CRITICAL,
+									'TypoScript object path does not exist',
+									array(
+										'Typoscript object path' => htmlspecialchars($typoscriptObjectPath),
+										'Setup' => $setup,
+										'errorCode' => 1253191023
+									));
 				throw new \TYPO3\CMS\Fluid\Core\ViewHelper\Exception('TypoScript object path "' . htmlspecialchars($typoscriptObjectPath) . '" does not exist', 1253191023);
 			}
 			$setup = $setup[$segment . '.'];
@@ -75,17 +116,21 @@ class RatingViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\CObjectViewHelper {
 		if ($ratedobjectuid !== NULL) {
 			$setup[$lastSegment . '.']['settings.']['ratedobjectuid'] = $ratedobjectuid;
 		} else {
+				$this->logger->log(	\TYPO3\CMS\Core\Log\LogLevel::CRITICAL, 'ratedobjectuid not set', array('errorCode' => 1304624408));
 				throw new \TYPO3\CMS\Fluid\Core\ViewHelper\Exception('ratedobjectuid not set', 1304624408);
 		}
 		if ($display !== NULL) {
 			$setup[$lastSegment . '.']['settings.']['display'] = $display;
 		}		
 		$content = $cObj->cObjGetSingle($setup[$lastSegment], $setup[$lastSegment . '.']);
+		$this->logger->log(	\TYPO3\CMS\Core\Log\LogLevel::INFO, 'Generated content', array('content' => $content));
 
 		if (TYPO3_MODE === 'BE') {
+			$this->logger->log(	\TYPO3\CMS\Core\Log\LogLevel::DEBUG, 'TYPO3_MODE is BE => resetFrontendEnvironment', array());
 			$this->resetFrontendEnvironment();
 		}
 
+		$this->logger->log(	\TYPO3\CMS\Core\Log\LogLevel::DEBUG, 'Exit point', array());
 		return $content;
 	}	
 	
