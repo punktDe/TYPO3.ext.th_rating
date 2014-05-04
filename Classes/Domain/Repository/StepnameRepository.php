@@ -137,7 +137,9 @@ class StepnameRepository extends \TYPO3\CMS\Extbase\Persistence\Repository {
 					);
 		$queryResult = $query->execute()->toArray();*/
 		$where = 'stepconf='.$stepname->getStepconf()->getUid() . \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::enableFields('tx_thrating_domain_model_stepname');
-		$queryResult = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('*', 'tx_thrating_domain_model_stepname', $where);
+		$databaseConnection = $this->objectManager->get('TYPO3\\CMS\\Dbal\\Database\\DatabaseConnection');
+		//old way disabled  $queryResult = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('*', 'tx_thrating_domain_model_stepname', $where);
+		$queryResult = $databaseConnection->exec_SELECTgetRows('*', 'tx_thrating_domain_model_stepname', $where);
 		if ( count($queryResult) > 1 ) {
 			$allWebsiteLanguages = $this->objectManager->get('Thucke\\ThRating\\Domain\\Repository\\SyslangRepository')->findAll()->toArray();
 			foreach( $allWebsiteLanguages as $key => $language ) {
