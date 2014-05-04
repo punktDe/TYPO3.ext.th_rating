@@ -82,7 +82,7 @@ class RatingViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\CObjectViewHelper {
 		$cObj = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Configuration\\ConfigurationManager')->getContentObject();
 		$this->logger->log(	\TYPO3\CMS\Core\Log\LogLevel::DEBUG, 'ContentObject to build', 
 							array(
-								'cObj type' => get_class(cObj),
+								'cObj type' => get_class($cObj),
 								'data config' => $cObj->data));
 		$cObj->start($cObj->data);
 
