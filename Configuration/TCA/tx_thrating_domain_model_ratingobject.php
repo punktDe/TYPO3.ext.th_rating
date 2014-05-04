@@ -1,6 +1,6 @@
 <?php
 if (!defined ('TYPO3_MODE')) 	die ('Access denied.');
-$TCA['tx_thrating_domain_model_ratingobject'] = array(
+$GLOBALS['TCA']['tx_thrating_domain_model_ratingobject'] = array(
 	'ctrl' => array (
 		'title'				=> 'LLL:'.\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('th_rating').'/Resources/Private/Language/locallang.xlf:tca.model.ratingobject.title',
 		'label'				=> 'uid',
@@ -103,5 +103,5 @@ $TCA['tx_thrating_domain_model_ratingobject'] = array(
 		'1' => array('showitem' => '')
 	),
 );
-return $TCA['tx_thrating_domain_model_ratingobject'];
+return $GLOBALS['TCA']['tx_thrating_domain_model_ratingobject'];
 ?>
