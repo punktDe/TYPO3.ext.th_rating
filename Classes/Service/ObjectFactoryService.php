@@ -277,7 +277,6 @@ class ObjectFactoryService extends \Thucke\ThRating\Service\AbstractExtensionSer
 		}
 		$GLOBALS['TYPO3_CONF_VARS']['LOG']['Thucke']['ThRating']['writerConfiguration'] = $writerConfiguration;
 		$logger = $this->objectManager->get('TYPO3\\CMS\\Core\\Log\\LogManager')->getLogger( $name );
-		\TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump($logger,'logger');
 		return $logger;
 	}
 	
