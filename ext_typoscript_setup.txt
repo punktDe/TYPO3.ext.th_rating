@@ -6,7 +6,7 @@
 #########################################################################
 # Configure table mapping for voter objects
 #########################################################################
-config.tx_extbase.features.rewrittenPropertyMapper = 1
+config.tx_extbase.legacy.enableLegacyFlashMessageHandling = 0
 config.tx_extbase.persistence.classes {
 	TYPO3\CMS\Extbase\Domain\Model\FrontendUser {
 		mapping {
