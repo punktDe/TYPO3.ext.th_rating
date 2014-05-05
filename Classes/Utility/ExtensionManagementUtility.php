@@ -43,17 +43,6 @@ class ExtensionManagementUtility implements \TYPO3\CMS\Core\SingletonInterface {
 		$this->objectFactoryService = $objectFactoryService;
 	}
 	/**
-	 * @var \TYPO3\CMS\Extbase\Mvc\Controller\FlashMessageContainer $flashMessageContainer
-	 */
-	protected $flashMessageContainer;
-	/**
-	 * @param	\TYPO3\CMS\Extbase\Mvc\Controller\FlashMessageContainer $flashMessageContainer
-	 * @return	void
-	 */
-	public function injectFlashMessageContainer(\TYPO3\CMS\Extbase\Mvc\Controller\FlashMessageContainer $flashMessageContainer) {
-		$this->flashMessageContainer = $flashMessageContainer;
-	}
-	/**
 	 * @var $logger \TYPO3\CMS\Core\Log\Logger
 	 */
 	protected $logger;
