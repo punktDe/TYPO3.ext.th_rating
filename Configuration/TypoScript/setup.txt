@@ -93,14 +93,27 @@ plugin.tx_thrating {
 		mapAnonymous = {$plugin.tx_thrating.config.mapAnonymous}
 		ratingContext = defaultContext
 		logging {
-			emergency = 1
-			alert = 1
-			critical = 1
-			error = 1
-			warning = 0
-			notice = 0
-			info = 0
-			debug = 0
+			emergency {
+				file = typo3temp/logs/ThRating.log
+				table = sys_log
+			}
+			alert {
+				table = sys_log
+			}
+			critical {
+				table = sys_log
+			}
+			error {
+				table = sys_log
+			}
+			warning {
+			}
+			notice {
+			}
+			info {
+			}
+			debug {
+			}
 		}
 		#this section would be overridden by a similar section within your ratingconfiguration
 		fluid {
