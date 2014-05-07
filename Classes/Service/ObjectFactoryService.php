@@ -123,7 +123,7 @@ class ObjectFactoryService extends \Thucke\ThRating\Service\AbstractExtensionSer
 	public function getRatingobject( array $settings ) {
 		//check whether a dedicated ratingobject is configured
 		if ( !empty($settings['ratingobject']) ) {
-			$ratingobject = $$this->ratingobjectRepository->findByUid($settings['ratingobject']);
+			$ratingobject = $this->ratingobjectRepository->findByUid($settings['ratingobject']);
 		} else {
 			if ( empty($settings['ratetable']) || empty($settings['ratefield']) ) {
 				//fallback to default configuration
@@ -222,7 +222,7 @@ class ObjectFactoryService extends \Thucke\ThRating\Service\AbstractExtensionSer
 				//set FEUser if one is logged on
 				$voter =  $this->accessControllService->getFrontendVoter( $frontendUserUid );
 				if ($voter instanceof \Thucke\ThRating\Domain\Model\Voter) {
-					$vote = $$this->voteRepository->findMatchingRatingAndVoter($rating->getUid(), $voter->getUid());
+					$vote = $this->voteRepository->findMatchingRatingAndVoter($rating->getUid(), $voter->getUid());
 				}
 			}
 		}
@@ -250,30 +250,16 @@ class ObjectFactoryService extends \Thucke\ThRating\Service\AbstractExtensionSer
 	public function getLogger( $name ) {
 		$writerConfiguration = $GLOBALS['TYPO3_CONF_VARS']['LOG']['Thucke']['ThRating']['writerConfiguration'];
 		$settings = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Configuration\\ConfigurationManager')->getConfiguration('Settings', 'thRating', 'pi1');
-		$logSettings = $settings['logging'];
-		If (empty($settings['logging']['debug'] )) {
-			unset($writerConfiguration[\TYPO3\CMS\Core\Log\LogLevel::DEBUG]);
-		}
-		If (empty($settings['logging']['info'] )) {
-			unset($writerConfiguration[\TYPO3\CMS\Core\Log\LogLevel::INFO]);
-		}
-		If (empty($settings['logging']['notice'] )) {
-			unset($writerConfiguration[\TYPO3\CMS\Core\Log\LogLevel::NOTICE]);
-		}
-		If (empty($settings['logging']['warning'])) {
-			unset($writerConfiguration[\TYPO3\CMS\Core\Log\LogLevel::WARNING]);
-		}
-		If (empty($settings['logging']['error'] )) {
-			unset($writerConfiguration[\TYPO3\CMS\Core\Log\LogLevel::ERROR]);
-		}
-		If (empty($settings['logging']['critical'])) {
-			unset($writerConfiguration[\TYPO3\CMS\Core\Log\LogLevel::CRITICAL]);
-		}
-		If (empty($settings['logging']['alert'])) {
-			unset($writerConfiguration[\TYPO3\CMS\Core\Log\LogLevel::ALERT]);
-		}
-		If (empty($settings['logging']['emergency'])) {
-			unset($writerConfiguration[\TYPO3\CMS\Core\Log\LogLevel::EMERGENCY]);
+		foreach ($settings['logging'] as $logLevel => $logConfig) {
+			$levelUppercase = strtoupper($logLevel);
+			If ( !empty($logConfig['file'] )) {
+				$writerConfiguration[constant('\TYPO3\CMS\Core\Log\LogLevel::'.$levelUppercase)]['TYPO3\\CMS\\Core\\Log\\Writer\\FileWriter'] = 
+					array('logFile' => $logConfig['file']);
+			}
+			If ( !empty($logConfig['database'] )) {
+				$writerConfiguration[constant('\TYPO3\CMS\Core\Log\LogLevel::'.$levelUppercase)]['TYPO3\\CMS\\Core\\Log\\Writer\\Database'] = 
+					array('table' => $logConfig['table']);
+			}
 		}
 		$GLOBALS['TYPO3_CONF_VARS']['LOG']['Thucke']['ThRating']['writerConfiguration'] = $writerConfiguration;
 		$logger = $this->objectManager->get('TYPO3\\CMS\\Core\\Log\\LogManager')->getLogger( $name );
