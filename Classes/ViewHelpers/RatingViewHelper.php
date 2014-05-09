@@ -103,25 +103,25 @@ class RatingViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\CObjectViewHelper {
 			$setup = $setup[$segment . '.'];
 		}
 		
-		if ($action !== NULL) {
+		if (!empty($action)) {
 			$setup[$lastSegment . '.']['action'] = $action;
 			$setup[$lastSegment . '.']['switchableControllerActions.']['Vote.']['1'] = $action;
 		}
-		if ($ratingobject !== NULL) {
+		if (!empty($ratingobject)) {
 			$setup[$lastSegment . '.']['settings.']['ratingobject'] = $ratingobject;
 		} elseif ( $ratetable !== NULL && $ratefield !== NULL ) {
 			$setup[$lastSegment . '.']['settings.']['ratetable'] = $ratetable;
 			$setup[$lastSegment . '.']['settings.']['ratefield'] = $ratefield;
 		}
-		if ($ratedobjectuid !== NULL) {
+		if (!empty($ratedobjectuid)) {
 			$setup[$lastSegment . '.']['settings.']['ratedobjectuid'] = $ratedobjectuid;
 		} else {
 				$this->logger->log(	\TYPO3\CMS\Core\Log\LogLevel::CRITICAL, 'ratedobjectuid not set', array('errorCode' => 1304624408));
 				throw new \TYPO3\CMS\Fluid\Core\ViewHelper\Exception('ratedobjectuid not set', 1304624408);
 		}
-		if ($display !== NULL) {
+		if (!empty($display)) {
 			$setup[$lastSegment . '.']['settings.']['display'] = $display;
-		}		
+		}
 		$content = $cObj->cObjGetSingle($setup[$lastSegment], $setup[$lastSegment . '.']);
 		$this->logger->log(	\TYPO3\CMS\Core\Log\LogLevel::INFO, 'Generated content', array('content' => $content));
 
