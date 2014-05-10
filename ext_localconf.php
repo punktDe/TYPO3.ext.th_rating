@@ -25,8 +25,7 @@ $TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['clearCachePostP
 /**
  * Base configuration of logging events.
  * Each loglevel could be swichted off using typoscript setting
- */
-
+ *
 $GLOBALS['TYPO3_CONF_VARS']['LOG']['Thucke']['ThRating']['writerConfiguration'] = array(
 	\TYPO3\CMS\Core\Log\LogLevel::EMERGENCY => array(
 	),
@@ -44,7 +43,7 @@ $GLOBALS['TYPO3_CONF_VARS']['LOG']['Thucke']['ThRating']['writerConfiguration'] 
 	),
 	\TYPO3\CMS\Core\Log\LogLevel::DEBUG => array(
 	),
-);
+); */
 
 // Example for using signals of this extension:
 //$signalSlotDispatcher = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\SignalSlot\\Dispatcher');
