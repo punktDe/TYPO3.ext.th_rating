@@ -109,9 +109,12 @@ class RatingViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\CObjectViewHelper {
 		}
 		if (!empty($ratingobject)) {
 			$setup[$lastSegment . '.']['settings.']['ratingobject'] = $ratingobject;
-		} elseif ( $ratetable !== NULL && $ratefield !== NULL ) {
+		} elseif ( !empty($ratetable) && !empty($ratefield)) {
 			$setup[$lastSegment . '.']['settings.']['ratetable'] = $ratetable;
 			$setup[$lastSegment . '.']['settings.']['ratefield'] = $ratefield;
+		} else {
+				$this->logger->log(	\TYPO3\CMS\Core\Log\LogLevel::CRITICAL, 'ratingobject not specified or ratetable/ratfield not set', array('errorCode' => 1399727698));
+				throw new \TYPO3\CMS\Fluid\Core\ViewHelper\Exception('ratingobject not specified or ratetable/ratfield not set', 1399727698);
 		}
 		if (!empty($ratedobjectuid)) {
 			$setup[$lastSegment . '.']['settings.']['ratedobjectuid'] = $ratedobjectuid;
