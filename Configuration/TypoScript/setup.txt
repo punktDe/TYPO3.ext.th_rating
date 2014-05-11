@@ -10,6 +10,7 @@ plugin.tx_thrating {
 	action = ratinglinks
 	#action = show
 	#action = new
+	mvc.callDefaultActionIfActionCantBeResolved = 1
 	switchableControllerActions {
 		Vote {
 			1 = ratinglinks

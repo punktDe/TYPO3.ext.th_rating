@@ -82,8 +82,8 @@ class RatingViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\CObjectViewHelper {
 			$this->simulateFrontendEnvironment();
 		}
 
-		$cObj = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Configuration\\ConfigurationManager')->getContentObject('USER_INT');
-		$this->logger->log(	\TYPO3\CMS\Core\Log\LogLevel::DEBUG, 'ContentObject to build', 
+		$cObj = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Configuration\\ConfigurationManager')->getContentObject();
+		$this->logger->log(	\TYPO3\CMS\Core\Log\LogLevel::DEBUG, 'ContentObject to initialize', 
 							array(
 								'cObj type' => get_class($cObj),
 								'data config' => $cObj->data));
@@ -128,6 +128,10 @@ class RatingViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\CObjectViewHelper {
 		if (!empty($display)) {
 			$setup[$lastSegment . '.']['settings.']['display'] = $display;
 		}
+		$this->logger->log(	\TYPO3\CMS\Core\Log\LogLevel::DEBUG, 'Single contentObject to get',
+							array(
+								'cObj type' => $setup[$lastSegment],
+								'cOjb config' => $setup[$lastSegment . '.']));
 		$content = $cObj->cObjGetSingle($setup[$lastSegment], $setup[$lastSegment . '.']);
 		$this->logger->log(	\TYPO3\CMS\Core\Log\LogLevel::INFO, 'Generated content', array('content' => $content));
 
