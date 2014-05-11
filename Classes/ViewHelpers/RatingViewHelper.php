@@ -65,12 +65,15 @@ class RatingViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\CObjectViewHelper {
 		$this->logger->log(	\TYPO3\CMS\Core\Log\LogLevel::DEBUG,
 							'Entry point',
 							array(
-								'action' => $action,
-								'ratingobject' => is_object($ratingobject) ? $ratingobject->getUid() : NULL,
-								'ratetable' => $ratetable,
-								'ratefield' => $ratefield,
-								'ratedobjectuid' => $ratedobjectuid,
-								'display' => $display,
+								'Viewhelper parameters' => array (
+									'action' => $action,
+									'ratingobject' => is_object($ratingobject) ? $ratingobject->getUid() : NULL,
+									'ratetable' => $ratetable,
+									'ratefield' => $ratefield,
+									'ratedobjectuid' => $ratedobjectuid,
+									'display' => $display,
+								),
+								'typoscript' => $this->configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT),
 							));
 
 		$typoscriptObjectPath = 'plugin.tx_thrating';
@@ -84,7 +87,7 @@ class RatingViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\CObjectViewHelper {
 							array(
 								'cObj type' => get_class($cObj),
 								'data config' => $cObj->data));
-		//$cObj->start($cObj->data);
+		$cObj->start($cObj->data);
 
 		$pathSegments = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode('.', $typoscriptObjectPath);
 		$lastSegment = array_pop($pathSegments);
