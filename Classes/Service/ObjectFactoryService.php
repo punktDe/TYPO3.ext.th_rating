@@ -250,15 +250,17 @@ class ObjectFactoryService extends \Thucke\ThRating\Service\AbstractExtensionSer
 	public function getLogger( $name ) {
 		$writerConfiguration = $GLOBALS['TYPO3_CONF_VARS']['LOG']['Thucke']['ThRating']['writerConfiguration'];
 		$settings = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Configuration\\ConfigurationManager')->getConfiguration('Settings', 'thRating', 'pi1');
-		foreach ($settings['logging'] as $logLevel => $logConfig) {
-			$levelUppercase = strtoupper($logLevel);
-			If ( !empty($logConfig['file'] )) {
-				$writerConfiguration[constant('\TYPO3\CMS\Core\Log\LogLevel::'.$levelUppercase)]['TYPO3\\CMS\\Core\\Log\\Writer\\FileWriter'] = 
-					array('logFile' => $logConfig['file']);
-			}
-			If ( !empty($logConfig['database'] )) {
-				$writerConfiguration[constant('\TYPO3\CMS\Core\Log\LogLevel::'.$levelUppercase)]['TYPO3\\CMS\\Core\\Log\\Writer\\Database'] = 
-					array('table' => $logConfig['table']);
+		If ( is_array($settings) ){
+			foreach ($settings['logging'] as $logLevel => $logConfig) {
+				$levelUppercase = strtoupper($logLevel);
+				If ( !empty($logConfig['file']) ) {
+					$writerConfiguration[constant('\TYPO3\CMS\Core\Log\LogLevel::'.$levelUppercase)]['TYPO3\\CMS\\Core\\Log\\Writer\\FileWriter'] = 
+						array('logFile' => $logConfig['file']);
+				}
+				If ( !empty($logConfig['database']) ) {
+					$writerConfiguration[constant('\TYPO3\CMS\Core\Log\LogLevel::'.$levelUppercase)]['TYPO3\\CMS\\Core\\Log\\Writer\\Database'] = 
+						array('table' => $logConfig['table']);
+				}
 			}
 		}
 		$GLOBALS['TYPO3_CONF_VARS']['LOG']['Thucke']['ThRating']['writerConfiguration'] = $writerConfiguration;
