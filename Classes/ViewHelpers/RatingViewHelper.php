@@ -51,7 +51,7 @@ class RatingViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\CObjectViewHelper {
 	 * Renders the rating object
 	 *
 	 * @param string $action the controller action that should be used (ratinglinks, show, new )
-	 * @param \Thucke\ThRating\Domain\Model\Ratingobject $ratingobject
+	 * @param mixed $ratingobject
 	 * @param string $ratetable
 	 * @param string $ratefield
 	 * @param integer $ratedobjectuid
@@ -82,12 +82,12 @@ class RatingViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\CObjectViewHelper {
 			$this->simulateFrontendEnvironment();
 		}
 
-		$cObj = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Configuration\\ConfigurationManager')->getContentObject();
+		$contentObject = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer');
 		$this->logger->log(	\TYPO3\CMS\Core\Log\LogLevel::DEBUG, 'ContentObject to initialize', 
 							array(
-								'cObj type' => get_class($cObj),
-								'data config' => $cObj->data));
-		$cObj->start($cObj->data);
+								'contentObject type' => get_class($contentObject),
+								'data config' => $contentObject->data));
+		$contentObject->start($contentObject->data);
 
 		$pathSegments = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode('.', $typoscriptObjectPath);
 		$lastSegment = array_pop($pathSegments);
@@ -130,9 +130,9 @@ class RatingViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\CObjectViewHelper {
 		}
 		$this->logger->log(	\TYPO3\CMS\Core\Log\LogLevel::DEBUG, 'Single contentObject to get',
 							array(
-								'cObj type' => $setup[$lastSegment],
+								'contentObject type' => $setup[$lastSegment],
 								'cOjb config' => $setup[$lastSegment . '.']));
-		$content = $cObj->cObjGetSingle($setup[$lastSegment], $setup[$lastSegment . '.']);
+		$content = $contentObject->cObjGetSingle($setup[$lastSegment], $setup[$lastSegment . '.']);
 		$this->logger->log(	\TYPO3\CMS\Core\Log\LogLevel::INFO, 'Generated content', array('content' => $content));
 
 		if (TYPO3_MODE === 'BE') {
