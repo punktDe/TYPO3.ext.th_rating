@@ -51,7 +51,7 @@ class RatingViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\CObjectViewHelper {
 	 * Renders the rating object
 	 *
 	 * @param string $action the controller action that should be used (ratinglinks, show, new )
-	 * @param mixed $ratingobject
+	 * @param integer $ratingobject
 	 * @param string $ratetable
 	 * @param string $ratefield
 	 * @param integer $ratedobjectuid
@@ -67,7 +67,7 @@ class RatingViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\CObjectViewHelper {
 							array(
 								'Viewhelper parameters' => array (
 									'action' => $action,
-									'ratingobject' => is_object($ratingobject) ? $ratingobject->getUid() : NULL,
+									'ratingobject' => $ratingobject,
 									'ratetable' => $ratetable,
 									'ratefield' => $ratefield,
 									'ratedobjectuid' => $ratedobjectuid,
