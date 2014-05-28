@@ -77,7 +77,6 @@ class RatingRepository extends \TYPO3\CMS\Extbase\Persistence\Repository {
 				$foundRow = $this->objectManager->get('Thucke\\ThRating\\Domain\\Model\\Rating');
 				$foundRow->setRatingobject($ratingobject);
 				$foundRow->setRatedobjectuid($ratedobjectuid);	
-				$foundRow->injectObjectManager($objectManager);
 				$validator = $this->objectManager->get('Thucke\\ThRating\\Domain\\Validator\\RatingValidator');
 				if ($validator->isValid($foundRow)) {
 					$this->add($foundRow);
