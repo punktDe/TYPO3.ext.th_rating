@@ -77,6 +77,7 @@ class RatingobjectRepository extends \TYPO3\CMS\Extbase\Persistence\Repository {
 					$this->add($foundRow);
 				}
 				$this->objectFactoryService->persistRepository('Thucke\\ThRating\\Domain\\Repository\\RatingobjectRepository', $foundRow);
+				$foundRow = $this->findMatchingTableAndField($ratetable, $ratefield);
 			} else {
 				unset($foundRow);
 			}
