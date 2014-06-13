@@ -63,7 +63,7 @@ plugin.tx_thrating {
 		}
 	}
 	persistence {
-		storagePid = {$plugin.tx_thrating.settings.storagePid},{$plugin.tx_thrating.settings.feUserStoragePid}
+		storagePid = {$plugin.tx_thrating.settings.newRecordStoragePid},{$plugin.tx_thrating.settings.storagePid},{$plugin.tx_thrating.settings.feUserStoragePid}
 		classes {
 			Thucke\ThRating\Domain\Model\Ratingobject {
 				newRecordStoragePid = {$plugin.tx_thrating.settings.newRecordStoragePid}
