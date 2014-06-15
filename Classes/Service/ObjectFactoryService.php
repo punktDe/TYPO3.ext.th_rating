@@ -250,7 +250,7 @@ class ObjectFactoryService extends \Thucke\ThRating\Service\AbstractExtensionSer
 	public function getLogger( $name ) {
 		$writerConfiguration = $GLOBALS['TYPO3_CONF_VARS']['LOG']['Thucke']['ThRating']['writerConfiguration'];
 		$settings = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Configuration\\ConfigurationManager')->getConfiguration('Settings', 'thRating', 'pi1');
-		If ( is_array($settings) ){
+		If ( is_array($settings['logging']) ){
 			foreach ($settings['logging'] as $logLevel => $logConfig) {
 				$levelUppercase = strtoupper($logLevel);
 				If ( !empty($logConfig['file']) ) {
