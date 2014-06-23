@@ -10,20 +10,20 @@
  ***************************************************************/
 $EM_CONF[$_EXTKEY] = array(
 	'title' => 'Rating AX',
-	'description' => 'Inspired by the extension \'ratings\' and \'tt_rating\' moved to extbase/fluid. Allows multiple AJAX ratings (jQuery) within one page. Flexible usage as a cObj especially in other extensions. A rating is not only done using numbers. Each ratingstep could also have a name - international localization included.',
+	'description' => 'Highly flexible AJAX rating based on extbase/fluid/jquery. Allows multiple ratings within one page. Could be used as a cObj by other extensions or included in every FLUID template using the viewhelper. Each ratingstep could be configured having a name - international localization included.',
 	'category' => 'misc',
 	'shy' => 0,
-	'version' => '0.10.1',
+	'version' => '1.0.0',
 	'dependencies' => 'static_info_tables',
 	'conflicts' => '',
 	'priority' => '',
 	'loadOrder' => '',
 	'module' => '',
-	'state' => 'beta',
+	'state' => 'stable',
 	'uploadfolder' => 0,
 	'createDirs' => '',
 	'modify_tables' => '',
-	'clearcacheonload' => 0,
+	'clearcacheonload' => 1,
 	'lockType' => '',
 	'author' => 'Thomas Hucke',
 	'author_email' => 'thucke@web.de',
@@ -32,7 +32,7 @@ $EM_CONF[$_EXTKEY] = array(
 	'CGLcompliance_note' => '',
 	'constraints' => array(
 		'depends' => array(
-			'php' => '5.3.0-0.0.0',
+			'php' => '5.3.0-5.4.99',
 			'typo3' => '6.1.7-6.2.99',
 			'static_info_tables' => '6.0.5',
 		),

@@ -77,7 +77,7 @@ class CookieService extends \Thucke\ThRating\Service\AbstractExtensionService {
 	 *
 	 * @return	void
 	 */
-	static function setVoteCookie($cookieName, $cookieValue, $cookieExpire=0 ) {
+	public function setVoteCookie($cookieName, $cookieValue, $cookieExpire=0 ) {
 		// do not set session cookies
 		If ( !empty($cookieExpire) ) {
 			$settings = $GLOBALS['TYPO3_CONF_VARS']['SYS'];

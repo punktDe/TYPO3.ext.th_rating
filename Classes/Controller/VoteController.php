@@ -160,10 +160,10 @@ class VoteController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 
 		$this->prefixId = strtolower('tx_' . $this->request->getControllerExtensionName(). '_' . $this->request->getPluginName());
 				
+		//\TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump($this->settings,'settings');
+
 		//Set default storage pids to SITEROOT
 		$this->setStoragePids();
-
-		//\TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump($this->settings,'settings');
 
 		$frameworkConfiguration = $this->configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
 		if ( $this->request->hasArgument('ajaxRef') ) {
@@ -232,19 +232,15 @@ class VoteController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 			if ($this->accessControllService->isLoggedIn($this->vote->getVoter())) {
 				$this->fillSummaryView();
 			} else {
-				$this->controllerContext->getFlashMessageQueue()->addMessage(
-						new \TYPO3\CMS\Core\Messaging\FlashMessage(
-										\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('flash.vote.create.noPermission', 'ThRating'),
+				$this->logFlashMessage(	\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('flash.vote.create.noPermission', 'ThRating'),
 										\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('flash.heading.error', 'ThRating'),
-										\TYPO3\CMS\Core\Messaging\FlashMessage::ERROR));
+										"ERROR", array('errorCode' => 1403201246));
 			}
 		} else {
 			if ($this->settings['showNotRated']) {
-				$this->controllerContext->getFlashMessageQueue()->addMessage(
-						new \TYPO3\CMS\Core\Messaging\FlashMessage(
-										\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('flash.vote.show.notRated', 'ThRating'), 
+				$this->logFlashMessage(	\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('flash.vote.show.notRated', 'ThRating'), 
 										\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('flash.heading.notice', 'ThRating'),
-										\TYPO3\CMS\Core\Messaging\FlashMessage::NOTICE));
+										"NOTICE", array('errorCode' => 1403201498));
 			}
 		}
 		$this->logger->log(	\TYPO3\CMS\Core\Log\LogLevel::DEBUG, 'Exit showAction', array());
@@ -278,53 +274,40 @@ class VoteController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 					$anonymousRating['voteUid']=$vote->getUid();
 					$lifeTime = time() + 60 * 60 * 24 * $this->cookieLifetime;
 					//set cookie to prevent multiple anonymous ratings
-					\Thucke\ThRating\Service\CookieService::setVoteCookie($this->prefixId.'_AnonymousRating_'.$vote->getRating()->getUid(), json_encode($anonymousRating), $lifeTime );
+					$this->objectManager->get('Thucke\\ThRating\\Service\\CookieService')->setVoteCookie($this->prefixId.'_AnonymousRating_'.$vote->getRating()->getUid(), json_encode($anonymousRating), $lifeTime );
 				}
 				$setResult = $this->setForeignRatingValues($vote->getRating());
 				If (!$setResult) {
-					$this->logger->log(	\TYPO3\CMS\Core\Log\LogLevel::WARNING, 'Update of foreign field has failed.',
-										array(
+					$this->logFlashMessage(	\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('flash.vote.create.foreignUpdateFailed', 'ThRating'), 
+											\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('flash.heading.warning', 'ThRating'),
+											"WARNING", array('errorCode' => 1403201551,
 											'ratingobject' => $vote->getRating()->getRatingobject()->getUid(),
 											'ratetable' => $vote->getRating()->getRatingobject()->getRatetable(),
 											'ratefield' => $vote->getRating()->getRatingobject()->getRatefield()));
-					$this->controllerContext->getFlashMessageQueue()->addMessage(
-						new \TYPO3\CMS\Core\Messaging\FlashMessage(
-										\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('flash.vote.create.foreignUpdateFailed', 'ThRating'), 
-										\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('flash.heading.warning', 'ThRating'),
-										\TYPO3\CMS\Core\Messaging\FlashMessage::WARNING));
 				}
-				$this->logger->log(	\TYPO3\CMS\Core\Log\LogLevel::INFO, 'Foreign field updated.',
-									array(
-										'ratingobject UID' => $vote->getRating()->getRatingobject()->getUid(),
-										'ratetable' => $vote->getRating()->getRatingobject()->getRatetable(),
-										'ratefield' => $vote->getRating()->getRatingobject()->getRatefield()));
-				$this->controllerContext->getFlashMessageQueue()->addMessage(
-						new \TYPO3\CMS\Core\Messaging\FlashMessage(
-										\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('flash.vote.create.newCreated', 'ThRating'), 
+				$this->logFlashMessage(	\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('flash.vote.create.newCreated', 'ThRating'), 
 										\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('flash.heading.ok', 'ThRating'),
-										\TYPO3\CMS\Core\Messaging\FlashMessage::OK));
+										"DEBUG", array( 'ratingobject' => $vote->getRating()->getRatingobject()->getUid(),
+														'ratetable' => $vote->getRating()->getRatingobject()->getRatetable(),
+														'ratefield' => $vote->getRating()->getRatingobject()->getRatefield(),
+														'voter' => $vote->getVoter()->getUsername(),
+														'vote' => (string) $vote->getVote(),
+														));
 			} else {
 				$vote = $matchVote;
-				$this->logger->log(	\TYPO3\CMS\Core\Log\LogLevel::NOTICE, 'Voter has already rated',
-									array(
+				$this->logFlashMessage(	\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('flash.vote.create.alreadyRated', 'ThRating'), 
+										\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('flash.heading.notice', 'ThRating'),
+										"NOTICE", array('errorCode' => 1403202280,
 										'voter UID' => $vote->getVoter()->getUid(),
 										'ratingobject UID' => $vote->getRating()->getRatingobject()->getUid(),
 										'rating' => $vote->getRating()->getUid(),
 										'vote UID' => $vote->getUid() ));
-				$this->controllerContext->getFlashMessageQueue()->addMessage(
-						new \TYPO3\CMS\Core\Messaging\FlashMessage(
-										\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('flash.vote.create.alreadyRated', 'ThRating'), 
-										\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('flash.heading.notice', 'ThRating'),
-										\TYPO3\CMS\Core\Messaging\FlashMessage::NOTICE));
 			}
 			$this->vote = $vote;
 		} else {
-			$this->logger->log(	\TYPO3\CMS\Core\Log\LogLevel::ERROR, 'No permission for this action.', array());
-			$this->controllerContext->getFlashMessageQueue()->addMessage(
-						new \TYPO3\CMS\Core\Messaging\FlashMessage(
-										\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('flash.vote.create.noPermission', 'ThRating'), 
-										\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('flash.heading.error', 'ThRating'),
-										\TYPO3\CMS\Core\Messaging\FlashMessage::ERROR));
+			$this->logFlashMessage(	\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('flash.vote.create.noPermission', 'ThRating'), 
+									\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('flash.heading.error', 'ThRating'),
+									"ERROR", array('errorCode' => 1403203210));
 		}
 
 		$referrer = $this->request->getInternalArgument('__referrer');
@@ -378,72 +361,101 @@ class VoteController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 	 * @ignorevalidation $vote
 	 */
 	//http://localhost:8503/index.php?id=71&tx_thrating_pi1[controller]=Vote&tx_thrating_pi1[action]=ratinglinks
-	public function ratinglinksAction(	\Thucke\ThRating\Domain\Model\Vote	$vote = NULL) {
+	public function ratinglinksAction( \Thucke\ThRating\Domain\Model\Vote $vote = NULL) {
 		$this->logger->log(	\TYPO3\CMS\Core\Log\LogLevel::DEBUG, 'Entry ratinglinksAction', array());
-		//set display configuration
-		if ( !empty($this->settings['display'] ) ) {
-			if ( isset($this->settings['ratingConfigurations'][$this->settings['display']]) ) {
-				$this->ratingName = $this->settings['display'];
-			} else {
-				//switch back to default if given display configuration does not exist
-				$this->ratingName = $this->settings['ratingConfigurations']['default'];
-				$this->logger->log(	\TYPO3\CMS\Core\Log\LogLevel::WARNING, 'Check TSConfig setting for display name - switching to default',
-									array(
-										'settings display' => $this->settings['display'],
-										'avaiable ratingConfigurations' => $this->settings['ratingConfigurations']));
-				$this->controllerContext->getFlashMessageQueue()->addMessage(
-						new \TYPO3\CMS\Core\Messaging\FlashMessage(
-										\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('flash.vote.ratinglinks.wrongDisplayConfig', 'ThRating'),
-										\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('flash.heading.error', 'ThRating'),
-										\TYPO3\CMS\Core\Messaging\FlashMessage::WARNING));
-			}
-		} else {
-			//choose default ratingConfiguration if nothing is defined
-			$this->ratingName = $this->settings['ratingConfigurations']['default'];
-			$this->logger->log(	\TYPO3\CMS\Core\Log\LogLevel::WARNING, 'Display name not set - using configured default',
-								array('default display' => $this->ratingName));
-		}
-		$ratingConfiguration = $this->settings['ratingConfigurations'][$this->ratingName];
-
-		//override extension settings with rating configuration settings
-		if ( is_array($ratingConfiguration['settings']) ) {
-			unset($ratingConfiguration['settings']['defaultObject']);
-			unset($ratingConfiguration['settings']['ratingConfigurations']);
-			$this->settings = \TYPO3\CMS\Core\Utility\GeneralUtility::array_merge_recursive_overrule($this->settings, $ratingConfiguration['settings']);
-			$this->logger->log(	\TYPO3\CMS\Core\Log\LogLevel::DEBUG, 'Override extension settings with rating configuration settings', array());
-		}
-		//override fluid settings with rating fluid settings
-		if (is_array($ratingConfiguration['fluid'])) {
-			$this->settings['fluid'] = \TYPO3\CMS\Core\Utility\GeneralUtility::array_merge_recursive_overrule($this->settings['fluid'], $ratingConfiguration['fluid']);
-			$this->logger->log(	\TYPO3\CMS\Core\Log\LogLevel::DEBUG, 'Override fluid settings with rating fluid settings', array());
-		}
-		$this->logger->log(	\TYPO3\CMS\Core\Log\LogLevel::INFO, 'Final extension configuration',
-							array('settings' => $this->settings));
-		$frameworkConfiguration = $this->configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
-		$frameworkConfiguration['settings'] = $this->settings;
-		$this->setFrameworkConfiguration($frameworkConfiguration);
-		$this->view->assign('barimage', 'noratingbar');
-		if ( $ratingConfiguration['tilt']) {
-			$this->logger->log(	\TYPO3\CMS\Core\Log\LogLevel::DEBUG, 'Tilt rating class configuration', array());
-			$ratingClass = 'tilt';
-			if ( $ratingConfiguration['barimage']) {
-				$this->view->assign('barimage', 'ratingbar');
-				$this->logger->log(	\TYPO3\CMS\Core\Log\LogLevel::DEBUG, 'Set ratingbar config', array());
-			}
-		} else {
-			$this->logger->log(	\TYPO3\CMS\Core\Log\LogLevel::DEBUG, 'Normal rating class configuration', array());
-			$ratingClass = 'normal';
-		}
-
-		$this->initVoting( $vote );
+		$this->settings['ratingConfigurations']['default'] = 'stars';
 		
+		$this->graphicActionHelper($vote);
+		if ( $this->settings['fluid']['templates']['ratinglinks']['likesMode'] ) {
+			\TYPO3\CMS\Core\Utility\GeneralUtility::deprecationLog(
+				get_class($this).': Setting "fluid.templates.ratinglinks.likesMode" is deprecated' .
+					' Use the specific action "mark" as a replacement. Will be removed two versions after 0.10.2 - at least in version 1.0.'
+			);
+			$this->view->assign('actionMethodName','markAction');
+		}
+		
+		$this->initSignalSlotDispatcher( 'afterRatinglinkAction' );
+		$this->logger->log(	\TYPO3\CMS\Core\Log\LogLevel::DEBUG, 'Exit ratinglinksAction', array());
+	}
+
+	
+	
+	/**
+	 * Handle graphic pollings
+	 * Graphic bars containing links will be provided to AJAX-submit the polling
+	 *
+	 * @param \Thucke\ThRating\Domain\Model\Vote $vote The new vote
+	 * @return string The rendered view
+	 * @ignorevalidation $vote
+	 */
+	public function pollingAction( \Thucke\ThRating\Domain\Model\Vote $vote = NULL) {
+		$this->logger->log(	\TYPO3\CMS\Core\Log\LogLevel::DEBUG, 'Entry pollingAction', array());
+		$this->settings['ratingConfigurations']['default'] = 'polling';
+
+		$this->graphicActionHelper($vote);
+
+		$this->initSignalSlotDispatcher( 'afterPollingAction' );
+		$this->logger->log(	\TYPO3\CMS\Core\Log\LogLevel::DEBUG, 'Exit pollingAction', array());
+	}
+
+
+	/**
+	 * Handle mark action
+	 * An icon containing for the mark action will be provided for AJAX-submission
+	 *
+	 * @param \Thucke\ThRating\Domain\Model\Vote 		$vote 	The new vote
+	 * @return string The rendered view
+	 * @ignorevalidation $vote
+	 */
+	public function markAction( \Thucke\ThRating\Domain\Model\Vote $vote = NULL) {
+		$this->logger->log(	\TYPO3\CMS\Core\Log\LogLevel::DEBUG, 'Entry markAction', array());
+		$this->settings['ratingConfigurations']['default'] = 'smileyLikes';
+
+		$this->graphicActionHelper($vote);
+		
+		$this->initSignalSlotDispatcher( 'afterMarkAction' );
+		$this->logger->log(	\TYPO3\CMS\Core\Log\LogLevel::DEBUG, 'Exit markAction', array());
+	}
+
+	
+	/**
+	 * FE user gives a new vote by using a starrating obejct
+	 * A graphic starrating object containing links will be provided to AJAX-submit the vote
+	 *
+	 * @param \Thucke\ThRating\Domain\Model\Vote 		$vote 	The new vote
+	 * @return string The rendered view
+	 * @ignorevalidation $vote
+	 */
+	//http://localhost:8503/index.php?id=71&tx_thrating_pi1[controller]=Vote&tx_thrating_pi1[action]=ratinglinks
+	public function graphicActionHelper(\Thucke\ThRating\Domain\Model\Vote	$vote = NULL) {
+		$this->logger->log(	\TYPO3\CMS\Core\Log\LogLevel::DEBUG, 'Entry graphicActionHelper', array());
+		$this->initSettings( $vote );
+		$this->initVoting( $vote );
+		$this->view->assign('actionMethodName',$this->actionMethodName);
+
 		if ( $this->ratingValidator->isValid($this->vote->getRating()) ) {
 			$calculatedRate = $this->vote->getRating()->getCalculatedRate().'%';
 			$this->logger->log(	\TYPO3\CMS\Core\Log\LogLevel::DEBUG, 'Calculated rate', array('calculatedRate' => $calculatedRate));
 			$this->view->assign('calculatedRate', $calculatedRate);
+
+			$filename = PATH_site.'/'.$this->settings['ratingConfigurations'][$this->ratingName]['imagefile'];
+			//read dimensions of the image
+			list($width, $height) = getimagesize($filename);
+			
+			//calculate concrete values for polling display
+			$currentRates = $this->vote->getRating()->getCurrentrates();
+			$currentPollDimensions = $currentRates['currentPollDimensions'];
+			foreach ( $currentPollDimensions as $step => $currentPollDimension ) {
+				$currentPollDimensions[$step]['steporder'] = $step;
+				$currentPollDimensions[$step]['backgroundPos'] = round( $height/3 * ( ($currentPollDimension['pctValue'] / 100) - 2 ),1);
+				$currentPollDimensions[$step]['backgroundPosTilt'] = round( $width/3 * ( ($currentPollDimension['pctValue'] / 100) - 2 ),1);
+			}
+			
+			$this->logger->log(	\TYPO3\CMS\Core\Log\LogLevel::DEBUG, 'Current polling dimensions', array('currentPollDimensions' => $currentPollDimensions));
+			$this->view->assign('currentPollDimensions', $currentPollDimensions);
 		}
 		$this->view->assign('ratingName', $this->ratingName);
-		$this->view->assign('ratingClass', $ratingClass);
+		$this->view->assign('ratingClass', $this->settings['ratingClass']);
 		if ( 	(!$this->vote->hasRated() && !$this->vote->isAnonymous() && $this->accessControllService->isLoggedIn($this->vote->getVoter())) ||
 				(	($this->vote->isAnonymous() && !$this->accessControllService->isLoggedIn($this->vote->getVoter())) &&
 				((!$this->vote->hasAnonymousVote($this->prefixId) && $this->cookieProtection && !$this->request->hasArgument('settings')) || !$this->cookieProtection)
@@ -455,9 +467,10 @@ class VoteController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 		}
 		$this->fillSummaryView();
 		$this->initSignalSlotDispatcher( 'afterRatinglinkAction' );
-		$this->logger->log(	\TYPO3\CMS\Core\Log\LogLevel::DEBUG, 'Exit ratinglinksAction', array());
+		$this->logger->log(	\TYPO3\CMS\Core\Log\LogLevel::DEBUG, 'Exit graphicActionHelper', array());
 	}
-
+	
+	
 	/**
 	 * Initialize signalSlotHandler for given action
 	 * Registered slots are being called with two parameters
@@ -533,34 +546,101 @@ class VoteController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 
 			$countSteps=count( $ratingobject->getStepconfs() );
 			If ( empty($countSteps)) {
-				$this->controllerContext->getFlashMessageQueue()->addMessage(
-						new \TYPO3\CMS\Core\Messaging\FlashMessage(
-										\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('flash.ratingobject.noRatingsteps', 'ThRating'), 
+				$this->logFlashMessage(	\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('flash.ratingobject.noRatingsteps', 'ThRating'),
 										\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('flash.heading.error', 'ThRating'),
-										\TYPO3\CMS\Core\Messaging\FlashMessage::ERROR));
+										"ERROR", array('errorCode' => 1403201012));
 			}
 
 			if (!$this->vote->getVoter() instanceof \Thucke\ThRating\Domain\Model\Voter) {
+				$logVoterUid = 0;
 				If ( !empty($this->settings['showNoFEUser']) ) {
-					$this->controllerContext->getFlashMessageQueue()->addMessage(
-						new \TYPO3\CMS\Core\Messaging\FlashMessage(
-										\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('flash.vote.noFEuser', 'ThRating'), 
-										\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('flash.heading.notice', 'ThRating'),
-										\TYPO3\CMS\Core\Messaging\FlashMessage::NOTICE));
+					$this->logFlashMessage(	\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('flash.vote.noFEuser', 'ThRating'), 
+											\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('flash.heading.notice', 'ThRating'),
+											"NOTICE", array('errorCode' => 1403201096));
 				}
+			} else {
+				$logVoterUid = $this->vote->getVoter()->getUid();
 			}
 		}
 		$this->logger->log(	\TYPO3\CMS\Core\Log\LogLevel::INFO, 'Using vote', 
 							array(
 								'ratingobject' => $this->vote->getRating()->getRatingobject()->getUid(),
 								'rating' => $this->vote->getRating()->getUid(),
-								'voter' => $this->vote->getVoter()->getUid(),
+								'voter' => $logVoterUid,
 							));
 		//set array to create voting information
 		$this->setAjaxSelections($this->vote);
 		$this->logger->log(	\TYPO3\CMS\Core\Log\LogLevel::DEBUG, 'Exit initVoting', array());
 	}
 
+	
+	/**
+	 * Check preconditions for settings
+	 *
+	 * @return void
+	 */
+	protected function initSettings() {
+		$this->logger->log(	\TYPO3\CMS\Core\Log\LogLevel::DEBUG, 'Entry initSettings', array());
+
+		//set display configuration
+		if ( !empty($this->settings['display'] ) ) {
+			if ( isset($this->settings['ratingConfigurations'][$this->settings['display']]) ) {
+				$this->ratingName = $this->settings['display'];
+			} else {
+				//switch back to default if given display configuration does not exist
+				$this->ratingName = $this->settings['ratingConfigurations']['default'];
+				$this->logFlashMessage(	\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('flash.vote.ratinglinks.wrongDisplayConfig', 'ThRating'),
+										\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('flash.heading.error', 'ThRating'),
+										"WARNING", array('errorCode' => 1403203414,
+										'settings display' => $this->settings['display'],
+										'avaiable ratingConfigurations' => $this->settings['ratingConfigurations']));
+			}
+		} else {
+			//choose default ratingConfiguration if nothing is defined
+			$this->ratingName = $this->settings['ratingConfigurations']['default'];
+			$this->logger->log(	\TYPO3\CMS\Core\Log\LogLevel::WARNING, 'Display name not set - using configured default',
+								array('default display' => $this->ratingName));
+		}
+		$ratingConfiguration = $this->settings['ratingConfigurations'][$this->ratingName];
+
+		//override extension settings with rating configuration settings
+		if ( is_array($ratingConfiguration['settings']) ) {
+			unset($ratingConfiguration['settings']['defaultObject']);
+			unset($ratingConfiguration['settings']['ratingConfigurations']);
+			$this->settings = \TYPO3\CMS\Core\Utility\GeneralUtility::array_merge_recursive_overrule($this->settings, $ratingConfiguration['settings']);
+			$this->logger->log(	\TYPO3\CMS\Core\Log\LogLevel::DEBUG, 
+								'Override extension settings with rating configuration settings', 
+								array("Original setting" => $this->settings, "Overruling settings" => $ratingConfiguration['settings']));
+		}
+		//override fluid settings with rating fluid settings
+		if (is_array($ratingConfiguration['fluid'])) {
+			$this->settings['fluid'] = \TYPO3\CMS\Core\Utility\GeneralUtility::array_merge_recursive_overrule($this->settings['fluid'], $ratingConfiguration['fluid']);
+			$this->logger->log(	\TYPO3\CMS\Core\Log\LogLevel::DEBUG, 'Override fluid settings with rating fluid settings', array());
+		}
+		$this->logger->log(	\TYPO3\CMS\Core\Log\LogLevel::INFO, 'Final extension configuration',
+							array('settings' => $this->settings));
+		
+		//distinguish between bar and no-bar rating
+		$this->view->assign('barimage', 'noratingbar');
+		if ( $ratingConfiguration['barimage']) {
+			$this->view->assign('barimage', 'ratingbar');
+			$this->logger->log(	\TYPO3\CMS\Core\Log\LogLevel::DEBUG, 'Set ratingbar config', array());
+		}
+
+		//set tilt or normal rating direction
+		$this->settings['ratingClass'] = 'normal';
+		if ( $ratingConfiguration['tilt']) {
+			$this->logger->log(	\TYPO3\CMS\Core\Log\LogLevel::DEBUG, 'Tilt rating class configuration', array());
+			$this->settings['ratingClass'] = 'tilt';
+		}
+
+		$frameworkConfiguration = $this->configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
+		$frameworkConfiguration['settings'] = $this->settings;
+		$this->setFrameworkConfiguration($frameworkConfiguration);
+
+		$this->logger->log(	\TYPO3\CMS\Core\Log\LogLevel::DEBUG, 'Exit initSettings', array());
+	}
+	
 
 	/**
 	 * Build array of possible AJAX selection configuration
@@ -575,6 +655,9 @@ class VoteController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 			unset($this->settings['defaultObject']);
 			unset($this->settings['ratingConfigurations']);
 			$this->settings['ratingConfigurations'][$this->settings['display']] = $tmpDisplayConfig;
+
+			$currentRates = $this->vote->getRating()->getCurrentrates();
+			$currentPollDimensions = $currentRates['currentPollDimensions'];
 			
 			foreach ( $vote->getRating()->getRatingobject()->getStepconfs() as $i => $stepConf ) {
 				$key = utf8_encode(json_encode( array(
@@ -588,6 +671,7 @@ class VoteController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 				$this->ajaxSelections['json'][$key] = strval($stepConf);
 				$this->ajaxSelections['steporder'][$stepConf->getSteporder()]['step'] = $stepConf;
 				$this->ajaxSelections['steporder'][$stepConf->getSteporder()]['ajaxvalue'] = $key;
+				$this->ajaxSelections['steporder'][$stepConf->getSteporder()]['currentPollDimension'] = $currentPollDimensions[$stepConf->getSteporder()]['pctValue'].'%';
 			}
 			$this->logger->log(	\TYPO3\CMS\Core\Log\LogLevel::DEBUG, 'Finalized ajaxSelections', array('ajaxSelections' => $this->ajaxSelections));
 		}
@@ -612,12 +696,9 @@ class VoteController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 			$this->view->assign('anonymousVotes', $currentrate['anonymousVotes']);
 			$this->view->assign('anonymousVoting', !empty($this->settings['mapAnonymous']) && !$this->accessControllService->getFrontendUserUid());
 			if ( $this->settings['showNotRated'] && empty($currentrate['currentrate']) ) {
-				$this->logger->log(	\TYPO3\CMS\Core\Log\LogLevel::NOTICE, 'Not already rated', array());
-				$this->controllerContext->getFlashMessageQueue()->addMessage(
-						new \TYPO3\CMS\Core\Messaging\FlashMessage(
-										\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('flash.vote.show.notRated', 'ThRating'), 
+				$this->logFlashMessage(	\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('flash.vote.show.notRated', 'ThRating'), 
 										\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('flash.heading.notice', 'ThRating'),
-										\TYPO3\CMS\Core\Messaging\FlashMessage::NOTICE));
+										"NOTICE", array('errorCode' => 1403203414));
 			}
 			if ( $this->voteValidator->isValid($this->vote) ) {
 				if ( ( !$this->vote->isAnonymous() && $this->vote->getVoter()->getUid() == $this->accessControllService->getFrontendUserUid()) ||
@@ -671,13 +752,33 @@ class VoteController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 			array_unshift($storagePids, $storagePid);	//append the page storagePid if it is assumed to be missed and is valid
 		}
 
+		foreach ( $frameworkConfiguration['persistence']['pluginCheckHelper'] as $x => $y) {
+			if (intval($y)==0) {
+				$frameworkConfiguration['persistence']['pluginCheckHelper'][$x] = 0;
+			}
+		}
 		if (empty($storagePids[0])) {
-			$this->controllerContext->getFlashMessageQueue()->addMessage(
-						new \TYPO3\CMS\Core\Messaging\FlashMessage(
-										\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('flash.vote.general.invalidStoragePid', 'ThRating'), 
-										\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('flash.heading.error', 'ThRating'),
-										\TYPO3\CMS\Core\Messaging\FlashMessage::ERROR));
+			$this->logFlashMessage(	\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('flash.vote.general.invalidStoragePid', 'ThRating', array (1=>$storagePid)),
+									\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('flash.heading.error', 'ThRating'),
+									"ERROR", array('errorCode' => 1403203519));
 		} 
+		if ( empty($frameworkConfiguration['persistence']['pluginCheckHelper']['pluginStoragePid']) ) {
+			$frameworkConfiguration['persistence']['classes']['Thucke\ThRating\Domain\Model\Ratingobject']['newRecordStoragePid'] = $storagePid;
+			$this->logFlashMessage(	\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('flash.pluginConfiguration.missing.pluginStoragePid', 'ThRating', array(1=>$storagePid)),
+									\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('flash.configuration.error', 'ThRating'),
+									"WARNING", array('errorCode' => 1403203529,
+													 '_STORAGE_PID' => $storagePid));
+		}
+		if ( empty($frameworkConfiguration['persistence']['pluginCheckHelper']['feUserStoragePid']) ) {
+			$this->logFlashMessage(	\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('flash.pluginConfiguration.missing.feUserStoragePid', 'ThRating', array()),
+									\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('flash.configuration.error', 'ThRating'),
+									"ERROR", array('errorCode' => 1403190539));
+		}
+		if ( empty($frameworkConfiguration['persistence']['pluginCheckHelper']['storagePid']) ) {
+			$messageText = \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('flash.pluginConfiguration.deprecated.storagePid', 'ThRating', array()).' (1403191997)';
+			\TYPO3\CMS\Core\Utility\GeneralUtility::deprecationLog( get_class($this).': ' . $messageText . ' Will be removed two versions after 0.10.2 - at least in version 1.0.');
+			$this->logger->log(	\TYPO3\CMS\Core\Log\LogLevel::WARNING, $messageText, array());
+		}
 		$frameworkConfiguration['persistence']['storagePid'] = implode(',', $storagePids);
 		$this->setFrameworkConfiguration($frameworkConfiguration);
 	}
@@ -730,17 +831,10 @@ class VoteController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 		}
 		//display an error to update TYPO3 at least to version 6.2.1
 		If ( \TYPO3\CMS\Core\Utility\VersionNumberUtility::convertVersionNumberToInteger(TYPO3_version) == 6002000 ) {
-				$this->controllerContext->getFlashMessageQueue()->addMessage(
-						new \TYPO3\CMS\Core\Messaging\FlashMessage(
-										\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('flash.renderCSS.incompatible620', 'ThRating').' (1398526413)',
-										\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('flash.singleton.error', 'ThRating'),
-										\TYPO3\CMS\Core\Messaging\FlashMessage::ERROR));
-				$this->logger->log(	\TYPO3\CMS\Core\Log\LogLevel::EMERGENCY,
-									'Incompatible version - please upgrade to at least TYPO3 6.2.1',
-									array(
-										'T3version' => TYPO3_version,
-										'errorCode' => 1398526413,
-									));
+				$this->logFlashMessage(	\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('flash.renderCSS.incompatible620', 'ThRating'),
+										\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('flash.configuration.error', 'ThRating'),
+										"EMERGENCY", array( 'errorCode' => 1398526413,
+															'T3version' => TYPO3_version));
 				return;
 		}
 
@@ -751,19 +845,12 @@ class VoteController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 			$stepconfObjects = $ratingobject->getStepconfs();
 			$stepcount = count($stepconfObjects);
 			If (!$stepcount) {
-				$this->controllerContext->getFlashMessageQueue()->addMessage(
-						new \TYPO3\CMS\Core\Messaging\FlashMessage(
-										\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('flash.renderCSS.noStepconf', 'ThRating', 
-												array(1=>$ratingobject->getUid(), 2=>$ratingobject->getPid())).' (1384705470)',
-										\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('flash.singleton.error', 'ThRating'),
-										\TYPO3\CMS\Core\Messaging\FlashMessage::ERROR));
-				$this->logger->log(	\TYPO3\CMS\Core\Log\LogLevel::WARNING,
-									'Stepconf missing in ratingobject configuration',
-									array(
-										'ratingobject UID' => $ratingobject->getUid(), 
-										'ratingobject PID' => $ratingobject->getPid(),
-										'errorCode' => 1384705470,
-									));
+				$this->logFlashMessage(	\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('flash.renderCSS.noStepconf', 'ThRating', 
+																							array(1=>$ratingobject->getUid(), 2=>$ratingobject->getPid())),
+										\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('flash.configuration.error', 'ThRating'),
+										"ERROR", array( 'errorCode' => 1384705470,
+														'ratingobject UID' => $ratingobject->getUid(), 
+														'ratingobject PID' => $ratingobject->getPid()));
 				return;
 			}
 			$stepconfs = $stepconfObjects->toArray();
@@ -774,17 +861,10 @@ class VoteController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 					$sumStepWeights += $stepconf->getStepweight();
 				} else {
 					foreach ($this->stepconfValidator->getErrors() as $errorMessage) {
-						$this->controllerContext->getFlashMessageQueue()->addMessage(
-								new \TYPO3\CMS\Core\Messaging\FlashMessage(
-										$errorMessage->getMessage().' ('.$errorMessage->getCode().')',
-										\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('flash.singleton.error', 'ThRating'),
-										\TYPO3\CMS\Core\Messaging\FlashMessage::ERROR));
-						$this->logger->log(	\TYPO3\CMS\Core\Log\LogLevel::WARNING,
-											'Error in stepconf validation',
-											array(
-												'errorMessage' => $errorMessage->getMessage(),
-												'errorCode' => $errorMessage->getCode(),
-											));
+						$this->logFlashMessage(	$errorMessage->getMessage(), 
+												\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('flash.configuration.error', 'ThRating'),
+												"ERROR", array( 'errorCode' => $errorMessage->getCode(),
+																'errorMessage' => $errorMessage->getMessage()));
 					}
 					return;
 				}
@@ -809,18 +889,12 @@ class VoteController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 
 				$filename = PATH_site.'/'.$ratingConfig['imagefile'];
 				if ( empty($ratingConfig['imagefile']) || !file_exists($filename) ) {
-					$this->controllerContext->getFlashMessageQueue()->addMessage(
-						new \TYPO3\CMS\Core\Messaging\FlashMessage(
-										\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('flash.vote.renderCSS.defaultImage', 'ThRating'), 
-										\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('flash.heading.warning', 'ThRating'),
-										\TYPO3\CMS\Core\Messaging\FlashMessage::WARNING));
-					$this->logger->log(	\TYPO3\CMS\Core\Log\LogLevel::WARNING,
-										'Issue found with configuration for rating display - using default configuration.',
-										array(
-											'ratingName' => $ratingName, 
-											'ratingConfig' => $ratingConfig,
-											'filename' => $filename,
-										));
+					$this->logFlashMessage(	\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('flash.vote.renderCSS.defaultImage', 'ThRating'),
+											\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('flash.heading.warning', 'ThRating'),
+											"WARNING", array( 'errorCode' => 1403192702,
+															  'ratingName' => $ratingName, 
+															  'ratingConfig' => $ratingConfig,
+															  'imageFilename' => $filename));
 					$defaultRatingName = $this->settings['ratingConfigurations']['default'];
 					$ratingConfig = $this->settings['ratingConfigurations'][$defaultRatingName];
 					$filename = PATH_site.'/'.$ratingConfig['imagefile'];
@@ -839,30 +913,52 @@ class VoteController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 
 				//calculate overall rating size depending on rating direction
 				if ( $ratingConfig['tilt'] ){
-					$width = round($width / 3);
+					$width = round($width / 3,1);
 					if ( !$ratingConfig['barimage'] ) {
 						$height = $height * $sumStepWeights;
 					}
 					$cssFile .= $mainId.' { width:'.$width.'px; height:'.$height.'px; }'.CHR(10);
 					$cssFile .= $mainId.', '.$mainId.' span:hover, '.$mainId.' span:active, '.$mainId.' span:focus, '.$mainId.' .current-rating {	background:url('.$filenameUri.') 0 0 repeat-y;	}'.CHR(10);
-					$cssFile .= $mainId.' span, '.$mainId.' .current-rating {	width:'.$width.'px; }'.CHR(10);
+					$cssFile .= $mainId.' span, '.$mainId.' .current-rating { width:'.$width.'px; }'.CHR(10);
 				} else {
-					$height = round($height / 3);
+					$height = round($height / 3,1);
 					if ( !$ratingConfig['barimage'] ) {
 						$width = $width * $sumStepWeights;
 					}
 					$cssFile .= $mainId.' { width:'.$width.'px; height:'.$height.'px; }'.CHR(10);
 					$cssFile .= $mainId.', '.$mainId.' span:hover, '.$mainId.' span:active, '.$mainId.' span:focus, '.$mainId.' .current-rating {	background:url('.$filenameUri.') 0 0 repeat-x;	}'.CHR(10);
-					$cssFile .= $mainId.' span, '.$mainId.' .current-rating {	height:'.$height.'px; line-height:'.$height.'px; }'.CHR(10);
+					$cssFile .= $mainId.' span, '.$mainId.' .current-rating { height:'.$height.'px; line-height:'.$height.'px; }'.CHR(10);
+					//calculate widths/heights related to stepweights
+					$i = 1;
+					$stepPart = 0;
+					foreach ( $stepWeights as $stepWeight) {
+						$sumWeights +=  $stepWeight;
+						$zIndex = $stepcount-$i+2;
+						//configure styles for current pollings
+						$cssFile .= 'span.RObj'.$ratingobjectUid.'-StpOdr'.$i.'-ratingpoll-normal { width:'.$stepPart.'%; z-index:'.$zIndex.'; }'.CHR(10);
+						$cssFile .= 'span.RObj'.$ratingobjectUid.'-StpOdr'.$i.'-ratingstep-tilt { height:'.$stepPart.'%; z-index:'.$zIndex.'; }'.CHR(10);
+						$i++;
+					}
 				}
+				$cssFile .= $mainId.', '.$mainId.' span:hover, '.$mainId.' span:active, '.$mainId.' span:focus, '.$mainId.' .current-poll {	background:url('.$filenameUri.');	}'.CHR(10);
 			}
 				
 			//calculate widths/heights related to stepweights
 			$i = 1;
+			$stepPart = 0;
+			$sumWeights = 0;
 			foreach ( $stepWeights as $stepWeight) {
 				$sumWeights +=  $stepWeight;
 				$zIndex = $stepcount-$i+2;
-				$stepPart =  round($sumWeights * 100 / $sumStepWeights);
+				//configure rating and polling styles for steps
+				$oneStepPart =  round($stepWeight * 100 / $sumStepWeights, 1);	//calculate single width of ratingstep
+				$cssFile .= 'span.RObj'.$ratingobjectUid.'-StpOdr'.$i.'-ratingpoll-normal { width:'.$oneStepPart.'%; z-index:'.$zIndex.'; margin-left:'.$stepPart.'%;}'.CHR(10);
+				$cssFile .= 'span.RObj'.$ratingobjectUid.'-StpOdr'.$i.'-ratingpoll-normal span { text-indent:0em; -moz-transform: rotate(90deg); -ms-transform: rotate(90deg); ';
+				$cssFile .= '-o-transform: rotate(90deg); -webkit-transform: rotate(90deg); transform: rotate(90deg);  min-width:100%; text-align:center; }'.CHR(10);
+				$cssFile .= 'span.RObj'.$ratingobjectUid.'-StpOdr'.$i.'-ratingpoll-tilt { height:'.$oneStepPart.'%; z-index:'.$zIndex.'; margin-bottom:'.$stepPart.'%; }'.CHR(10);
+				$cssFile .= 'li.RObj'.$ratingobjectUid.'-StpOdr'.$i.'-currentpoll-normal { width:'.$oneStepPart.'%; margin-left:'.$stepPart.'%; }'.CHR(10);
+				$cssFile .= 'li.RObj'.$ratingobjectUid.'-StpOdr'.$i.'-currentpoll-tilt { height:'.$oneStepPart.'%; margin-bottom:'.$stepPart.'%; }'.CHR(10);
+				$stepPart =  round($sumWeights * 100 / $sumStepWeights, 1);	//calculate sum of widths to this ratingstep
 				$cssFile .= 'span.RObj'.$ratingobjectUid.'-StpOdr'.$i.'-ratingstep-normal { width:'.$stepPart.'%; z-index:'.$zIndex.'; }'.CHR(10);
 				$cssFile .= 'span.RObj'.$ratingobjectUid.'-StpOdr'.$i.'-ratingstep-tilt { height:'.$stepPart.'%; z-index:'.$zIndex.'; }'.CHR(10);
 				$i++;
@@ -879,6 +975,76 @@ class VoteController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 		fwrite ( $fp, $cssFile);
 		fclose ( $fp );
 		return;
+	}
+
+	/**
+	 * Sends log information to flashMessage and logging framework
+	 *
+	 * $messageText		string 	The message
+	 * $messageTitle 	string	The header of the message
+	 * $severity		string 	Logging severity
+	 * $additionalInfo	array	some additional data - at least 'errorCode'
+	 * @return	void
+	 */
+	private function logFlashMessage(	$messageText, 
+										$messageTitle, 
+										$severity, 
+										array $additionalInfo) {
+		$additionalInfo = \TYPO3\CMS\Core\Utility\GeneralUtility::array_merge($additionalInfo, array('messageTitle' => $messageTitle));
+		$severity = strtoupper($severity);
+		switch ($severity) {
+			case 'DEBUG' :
+				$flashSeverity = 'OK';
+				break;
+			case 'INFO' :
+				$flashSeverity = 'NOTICE';
+				break;
+			case 'NOTICE' :
+				$flashSeverity = 'INFO';
+				break;
+			case 'WARNING' :
+				$flashSeverity = 'WARNING';
+				break;
+			default :
+				$flashSeverity = 'ERROR';
+		}
+		If ( intval($additionalInfo['errorCode']) ) {
+			$messageText = $messageText.' ('.$additionalInfo['errorCode'].')';
+		}
+		$this->addFlashMessage( $messageText,
+								$messageTitle,
+								constant('\TYPO3\CMS\Core\Messaging\AbstractMessage::'.$flashSeverity));
+		$this->logger->log(	constant('\TYPO3\CMS\Core\Log\LogLevel::'.$severity),
+							$messageText,
+							$additionalInfo );
+	}
+
+	/**
+	 * Adds a flash message to the messaging queue
+	 *
+	 * TODO backport from version TYPO3 6.2 - remove when support for 6.1 is dropped
+	 *
+	 * $messageText		string 	The message
+	 * $messageTitle 	string	The header of the message
+	 * $severity		string 	Logging severity
+	 * $storeInSession	boolean
+	 * @return	void
+	 */
+	public function addFlashMessage($messageBody, $messageTitle = '', $severity = \TYPO3\CMS\Core\Messaging\AbstractMessage::OK, $storeInSession = TRUE) {
+		If ( \TYPO3\CMS\Core\Utility\VersionNumberUtility::convertVersionNumberToInteger(TYPO3_version) >= 6002000 ) {
+			parent::addFlashMessage($messageBody, $messageTitle = '', $severity = \TYPO3\CMS\Core\Messaging\AbstractMessage::OK, $storeInSession = TRUE);
+		} else {
+			if (!is_string($messageBody)) {
+					throw new \InvalidArgumentException('The message body must be of type string, "' . gettype($messageBody) . '" given.', 1243258395);
+				}
+			/* @var \TYPO3\CMS\Core\Messaging\FlashMessage $flashMessage */
+			$flashMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
+					'TYPO3\\CMS\\Core\\Messaging\\FlashMessage', $messageBody, $messageTitle, $severity, $storeInSession
+			);
+			if ( is_object($this->controllerContext) ) {
+				$this->controllerContext->getFlashMessageQueue()->enqueue($flashMessage);
+			}
+		}
 	}
 
 	/**
@@ -923,8 +1089,6 @@ class VoteController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 	 *
 	 */
 	protected function getLockedfieldnames( $table ) {
-		//$GLOBALS['TSFE']->includeTCA(); obsolete since TYPO3 6.1
-		//\TYPO3\CMS\Core\Utility\GeneralUtility::loadTCA($table); obsolete since TYPO3 6.1
 		$TCA = &$GLOBALS['TCA'][$table]['ctrl']; // Set private TCA var
 		$lockedFields = \TYPO3\CMS\Extbase\Utility\ArrayUtility::trimExplode(',', $TCA['label_alt'], TRUE);
 		$lockedFields[] .= 'pid';

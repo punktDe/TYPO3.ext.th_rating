@@ -33,6 +33,14 @@
 										 <numIndex index="0">LLL:EXT:th_rating/Resources/Private/Language/locallang.xlf:flexform.general_actions_4</numIndex>
 										 <numIndex index="1">Vote->index</numIndex>
 									</numIndex>									
+									<numIndex index="4">
+										<numIndex index="0">LLL:EXT:th_rating/Resources/Private/Language/locallang.xlf:flexform.general_actions_5</numIndex>
+										<numIndex index="1">Vote->polling</numIndex>
+									</numIndex>
+									<numIndex index="5">
+										<numIndex index="0">LLL:EXT:th_rating/Resources/Private/Language/locallang.xlf:flexform.general_actions_6</numIndex>
+										<numIndex index="1">Vote->mark</numIndex>
+									</numIndex>
 								</items>
 						  </config>
 					</TCEforms>
@@ -40,6 +48,8 @@
 					<settings.display>
 						<TCEforms>
 							<displayCond>FIELD:switchableControllerActions:=:Vote->ratinglinks</displayCond>
+							<displayCond>FIELD:switchableControllerActions:=:Vote->polling</displayCond>
+							<displayCond>FIELD:switchableControllerActions:=:Vote->mark</displayCond>
 							<label>LLL:EXT:th_rating/Resources/Private/Language/locallang.xlf:flexform.general_display</label>
 							<config>
 								<type>select</type>

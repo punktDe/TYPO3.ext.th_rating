@@ -1,0 +1,29 @@
+<f:layout name="PollingLayout" />
+
+<f:section name="content">
+<f:comment><!-- switch according display mode --></f:comment>
+<span name="dummy4focus" tabindex="-1"></span>
+<f:comment><!-- display normal ratinglinkblock --></f:comment>
+<f:render partial="pollinglinkBlock" arguments="{voting:voting, ratingClass:ratingClass, ratingobject:ratingobject, ratingName:ratingName, currentPollDimensions:currentPollDimensions, stepCount:stepCount, barimage:barimage, ajaxSelections:ajaxSelections}"/>
+</f:section>
+<f:comment>
+<!--
+******************************************************************************************
+* Forwarded variables
+* --------------------
+* ==> all variables used in defaultLayout
+* {barimage}				-	ratingbar / noratingbar
+* {currentPollDimensions}	-	associative array contains style definition
+*								['step']				- steporder number
+*								['value']				-  current polling value in percent
+*								['backgroundPos']		-  css style for normal display
+*								['backgroundPosTilt']	-  css style for tilt display
+* {ratingName}				-	Name of the ratinglink
+* {ratingClass}				-	tilt / normal
+* {ajaxSelections}			-	associative array of possible ratingsteps consisting of
+*								[order of ratingstep]
+*								['step'] 		- Domain object: stepconf
+*								['ajaxvalue']	- JSON encoded value to handle AJAX request
+******************************************************************************************
+-->
+</f:comment>

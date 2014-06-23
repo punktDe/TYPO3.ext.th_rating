@@ -105,7 +105,7 @@ class Rating extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	 * Specific handling must be defined when ratingsteps are added or removed or stepweights are changed
 	 * Caclution of ratings:
 	 *	currentrate = (  sum of all ( stepweight(n) * votecounts(n) ) ) / number of all votes
-	 *	currentwidth = round (currentrate * 100 / number of ratingsteps  )
+	 *	currentwidth = round (currentrate * 100 / number of ratingsteps, 1)
 	 *
 	 * @var string	JSON encoded rating summary
 	 * @lazy
@@ -290,7 +290,15 @@ class Rating extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 		} else {
 			$currentrate = 0;
 		}
-		return array ('currentrate' => $currentrate, 'weightedVotes' => $weightedVotes, 'sumWeightedVotes' => $sumWeightedVotes, 'anonymousVotes' => $numAnonymousVotes);
+		//calculate current polling styles -> holds a percent value for usage in CSS to display polling relations
+		foreach ( $this->getRatingobject()->getStepconfs() as $stepConf ) {
+			$currentPollDimensions[$stepConf->getStepOrder()]['pctValue'] = round ( ($currentratesDecoded['weightedVotes'][$stepConf->getStepOrder()]  * 100) / array_sum($weightedVotes), 1 );
+		}
+		return array (	'currentrate' => $currentrate,
+						'weightedVotes' => $weightedVotes,
+						'sumWeightedVotes' => $sumWeightedVotes,
+						'currentPollDimensions' => $currentPollDimensions ,
+						'anonymousVotes' => $numAnonymousVotes);
 	}
 
 	/**
@@ -301,7 +309,7 @@ class Rating extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	public function getCalculatedRate() {
 		$currentrate = $this->getCurrentrates();
 		if (!empty($currentrate['weightedVotes'])) {
-			$calculatedRate = round ( ($currentrate['currentrate']  * 100) / count($currentrate['weightedVotes']) );
+			$calculatedRate = round ( ($currentrate['currentrate']  * 100) / count($currentrate['weightedVotes']), 1 );
 		} else {
 			$calculatedRate = 0;
 		}

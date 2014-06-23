@@ -33,6 +33,12 @@
 			<trans-unit id="flexform.general_actions_4" xml:space="preserve">
 				<source>Index</source>
 			</trans-unit>
+			<trans-unit id="flexform.general_actions_5" xml:space="preserve">
+				<source>Polling</source>
+			</trans-unit>
+			<trans-unit id="flexform.general_actions_6" xml:space="preserve">
+				<source>Mark</source>
+			</trans-unit>
 			<trans-unit id="flexform.general_display" xml:space="preserve">
 				<source>Ratinglink configuration</source>
 			</trans-unit>
@@ -255,7 +261,7 @@
 			<trans-unit id="flash.heading.error" xml:space="preserve">
 				<source>Error !!!!</source>
 			</trans-unit>
-			<trans-unit id="flash.singleton.error" xml:space="preserve">
+			<trans-unit id="flash.configuration.error" xml:space="preserve">
 				<source>Error in configuration of extension 'Rating AX'</source>
 			</trans-unit>
 			<trans-unit id="flash.heading.warning" xml:space="preserve">
@@ -272,6 +278,15 @@
 			</trans-unit>
 			<trans-unit id="flash.renderCSS.noStepconf" xml:space="preserve">
 				<source>Stepconf missing in ratingobject configuration of UID %1$s - check PID %2$s.</source>
+			</trans-unit>
+			<trans-unit id="flash.pluginConfiguration.missing.pluginStoragePid" xml:space="preserve">
+				<source>Constant pluginStoragePid not set using default %1$s.</source>
+			</trans-unit>
+			<trans-unit id="flash.pluginConfiguration.missing.feUserStoragePid" xml:space="preserve">
+				<source>Constant "plugin.tx_thrating.settings.feUserStoragePid" not set.</source>
+			</trans-unit>
+			<trans-unit id="flash.pluginConfiguration.deprecated.storagePid" xml:space="preserve">
+				<source>Constant "plugin.tx_thrating.settings.storagePid" is deprecated. Use the constant "plugin.tx_thrating.settings.pluginStoragePid" instead.</source>
 			</trans-unit>
 			<trans-unit id="flash.renderCSS.incompatible620" xml:space="preserve">
 				<source>Incompatible version - please upgrade to at least TYPO3 6.2.1</source>

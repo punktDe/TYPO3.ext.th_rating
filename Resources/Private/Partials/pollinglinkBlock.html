@@ -1,0 +1,44 @@
+<f:if condition="{ratingName}"><f:then>
+	<div class='tx-thrating-ratinglinks'>
+		<ul class='thRating thRating-{ratingClass} thRating-RObj{ratingobject.uid}-{ratingName}'>
+			<f:if condition="{currentPollDimensions}"><f:then>
+				<f:for each="{currentPollDimensions}" as="currentPollDimension">
+				<li class="current-poll {barimage} RObj{ratingobject.uid}-StpOdr{currentPollDimension.steporder}-currentpoll-{ratingClass}" style="{f:if(condition: '{0: ratingClass} == {0: \'tilt\'}', then: 'width:{currentPollDimension.pctValue}%; background-position:0px {currentPollDimension.backgroundPosTilt}px', else: 'height:{currentPollDimension.pctValue}%; background-position:0px {currentPollDimension.backgroundPos}px')}" title="<f:translate key='fluid.template.ratinglinks.currentRating' default='fluid.template.ratinglinks.currentRating' arguments='{1:currentRates, 2:stepCount}'/>" title='{currentPollDimension.pctValue}%' tabindex='-1' ></li>
+				</f:for>
+			</f:then></f:if>
+
+			<f:comment><!-- Only generate links if rating is allowed user is logged on --></f:comment>
+			<f:if condition="{ajaxSelections}"><f:then>
+				<f:for each="{ajaxSelections}" as="ajaxSelection">
+				<li><span class="ajaxLink RObj{ratingobject.uid}-StpOdr{ajaxSelection.step.steporder}-ratingpoll-{ratingClass} {barimage}" title='{ajaxSelection.step}' tabindex='-1' >
+						<input type="hidden" name="ajaxSelect" value="{ajaxSelection.ajaxvalue}" />
+						<span class="currentPollText">{ajaxSelection.currentPollDimension}</span>
+					</span>
+				</li>
+				</f:for>
+			</f:then></f:if>
+		</ul>
+        <f:if condition="{settings.fluid.templates.ratinglinks.tooltips}"><f:then>
+        <div class='stepnameTooltip' aria-life="polite" aria-atomic="false" aria-relevant="text">&nbsp;</div>
+        </f:then></f:if>
+	</div>
+</f:then></f:if>
+<f:comment>
+<!--
+******************************************************************************************
+* This partial displays the vote that the current user has placed
+******************************************************************************************
+* Needed variables
+* --------------------
+* {ratingobject}			- 	Domain object: ratingabject
+* {barimage}				-	ratingbar / noratingbar
+* {ratingClass}				-	tilt / normal
+* {ratingName}				-	Name of the ratinglink
+* {currentPollDimension}	-	style definition for current rating in percent
+* {ajaxSelections}			-	associative array of possible ratingsteps consisting of
+*								[order of ratingstep]
+*								['step'] 		- Domain object: stepconf
+*								['ajaxvalue']	- JSON encoded value to handle AJAX request
+******************************************************************************************
+-->
+</f:comment>

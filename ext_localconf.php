@@ -10,10 +10,10 @@ if (!defined ('TYPO3_MODE')) 	die ('Access denied.');
 	'Thucke.' . $_EXTKEY,	// The extension name (in UpperCamelCase) or the extension key (in lower_underscore)
 	'Pi1',		// A unique name of the plugin in UpperCamelCase
 	array(		// An array holding the controller-action-combinations that are accessible 
-		'Vote' 			=> 'ratinglinks,index,show,create,new,singleton',	// The first controller and its first action will be the default 
+		'Vote' 			=> 'ratinglinks,polling,mark,index,show,create,new,singleton',	// The first controller and its first action will be the default 
 	),
 	array(		// An array of non-cachable controller-action-combinations (they must already be enabled)
-		'Vote' 			=> 'new,create,ratinglinks',
+		'Vote' 			=> 'new,create,ratinglinks,polling,mark',
 		)
 );
 

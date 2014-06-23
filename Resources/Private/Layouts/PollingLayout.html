@@ -8,25 +8,22 @@
 	</f:then></f:if>
 	<f:if condition="{stepCount} > 0">
 	  <f:then>
-		<f:comment><!-- display check regarding section 'content' of view action--></f:comment>
-		<f:if condition="{settings.fluid.layouts.default.showSectionContent}"><f:then>
-			<f:render section="content" />
-		</f:then></f:if>
-		<f:if condition="{settings.fluid.layouts.default.showSummary}"><f:then>
+		<f:render section="content" />
+		<f:if condition="{settings.fluid.layouts.polling.showSummary}"><f:then>
 		<div class='tx-thrating-summary'>
 			<f:comment><!-- display check regarding rating summary information --></f:comment>
-			<f:if condition="{settings.fluid.layouts.default.showCurrentRates}"><f:then>
+			<f:if condition="{settings.fluid.layouts.polling.showCurrentPolls}"><f:then>
 				<f:if condition="{currentRates}"><f:then>
-					<f:translate key='fluid.layout.default.currentRating' default='fluid.layout.default.currentRating' arguments="{1:currentRates, 2:'{f:count(subject:\"{rating.votes}\")}'}"/>
+					<f:translate key='fluid.layout.polling.currentRating' default='fluid.layout.polling.currentRating' arguments="{1:currentRates, 2:'{f:count(subject:\"{rating.votes}\")}'}"/>
 					<f:if condition="{anonymousVotes}"><f:then>
-					<br/><f:translate key='fluid.layout.default.anonymousVotes' default='fluid.layout.default.anonymousVotes' arguments='{1:anonymousVotes}'/>
+					<br/><f:translate key='fluid.layout.polling.anonymousVotes' default='fluid.layout.polling.anonymousVotes' arguments='{1:anonymousVotes}'/>
 					</f:then></f:if>
 				</f:then><f:else>
-					<f:translate key='fluid.layout.default.noRatingDone' default='fluid.layout.default.noRatingDone'/>
+					<f:translate key='fluid.layout.polling.noRatingDone' default='fluid.layout.polling.noRatingDone'/>
 				</f:else></f:if>
 				<br/>
 			</f:then></f:if>
-			<f:if condition="{actionMethodName}='MarkAction'"><f:then>
+			<f:if condition="{settings.fluid.templates.ratinglinks.likesMode}"><f:then>
 				<f:comment>Display nothing if we are in likesMode - Users rating is already shown in content section</f:comment>
 			</f:then><f:else>
 				<f:if condition="{voting}"><f:then>
@@ -39,8 +36,9 @@
 		</div>
 		</f:then></f:if>	
 	</f:then><f:else>
-		<f:translate key='fluid.layout.default.noRatingSteps' default='fluid.layout.default.noRatingSteps'/>
+		<f:translate key='fluid.layout.polling.noRatingSteps' default='fluid.layout.polling.noRatingSteps'/>
 	</f:else></f:if>
+	
 	<f:if condition="{postContent}"><f:then>
 		<div class='tx-thrating-postContent'><f:format.raw>{postContent}</f:format.raw></div>
 	</f:then></f:if>

@@ -63,10 +63,15 @@ plugin.tx_thrating {
 		}
 	}
 	persistence {
-		storagePid = {$plugin.tx_thrating.settings.newRecordStoragePid},{$plugin.tx_thrating.settings.storagePid},{$plugin.tx_thrating.settings.feUserStoragePid}
+		pluginCheckHelper {
+			pluginStoragePid = {$plugin.tx_thrating.settings.pluginStoragePid}
+			feUserStoragePid = {$plugin.tx_thrating.settings.feUserStoragePid}
+			storagePid = {$plugin.tx_thrating.settings.storagePid}
+		}
+		storagePid = {$plugin.tx_thrating.settings.pluginStoragePid},{$plugin.tx_thrating.settings.feUserStoragePid},{$plugin.tx_thrating.settings.storagePid}
 		classes {
 			Thucke\ThRating\Domain\Model\Ratingobject {
-				newRecordStoragePid = {$plugin.tx_thrating.settings.newRecordStoragePid}
+				newRecordStoragePid = {$plugin.tx_thrating.settings.pluginStoragePid}
 			}
 		}
 	}
@@ -150,7 +155,9 @@ plugin.tx_thrating {
 		#make configured ratings avaiable to the extension 
 		ratingConfigurations < plugin.tx_thrating.ratings
 		ratingConfigurations {
-			default = stars
+			#default = stars		- default setting for ratinglinks action
+			#default = polling		- default setting for polling action
+			#default = smileyLikes	- default setting for mark action
 			stars {
 				imagefile = typo3conf/ext/th_rating/Resources/Public/Css/stars.gif
 				barimage = 0
@@ -203,6 +210,11 @@ plugin.tx_thrating {
 						}
 					}
 				}
+			}
+			polling {
+				imagefile = typo3conf/ext/th_rating/Resources/Public/Css/polling.png
+				barimage = 0
+				tilt = 0
 			}
 		}
 	}

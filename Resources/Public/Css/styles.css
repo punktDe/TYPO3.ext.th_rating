@@ -62,14 +62,15 @@ div.tx-thrating-ratinglinks ul{
     background-position:right bottom;
 }
 .thRating span,
-.thRating .current-rating{
+.thRating .current-rating,
+.thRating .current-poll{
     position:absolute;
     bottom:0;
     left:0;
-    text-indent:-1000em;
     outline:0px;
     overflow:hidden;
     border: 0px;
+    text-indent:-1000em;
 }
 .thRating-normal span:hover,
 .thRating-normal span:active,
@@ -79,6 +80,14 @@ div.tx-thrating-ratinglinks ul{
 .thRating-normal .current-rating{
     z-index:1;
     background-position: left center;
+}
+.thRating-normal .current-poll{
+    z-index:1;
+}
+.currentPollText{
+	background:none !important;
+	font-family:Sans-Serif;
+	font-weight:normal;
 }
 
 /* necessary because of bug in IE
@@ -96,7 +105,9 @@ div.tx-thrating-ratinglinks ul{
     z-index:1;
     background-position: center bottom;
 }
-
+.thRating-tilt .current-poll{
+    z-index:1;
+}
 .tx-thrating-pi1-content{
 	position:relative;
 	width:0px;

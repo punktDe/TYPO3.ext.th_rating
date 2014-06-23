@@ -1,8 +1,9 @@
-- new configuration setting 'displayOnly'
-- added z-index in CSS for tooltips
-- refactored static classes (ExtensionManagementUtility, ObjectFactoryService) to objects
-- now using logging framework in controller, services and ExtensionManagementUtility
-- fixed: CSS info for DEBUG messages is in page output
-- moved to new FlashMessageQueue
-- Bug #58596: Object of class Thucke\ThRating\Service\ObjectFactoryService could not be converted to string
-- RatingViehelper: make sure that NULL-values result in an error message
+- Avoid 'PHP Warning: Invalid argument supplied for foreach()' on creating logger instance with wrong configuration
+- new action handlers 'polling' and 'mark' (last one replacing likesMode configuration option)
+- deprecated constant settings.storagePid - now all records are read and created on one single page
+- deprecated constant settings.newRecordStoragePid 
+- new constant settings.pluginStoragePid - all records are read and created on this single page
+- added some configuration checks on PID settings
+- Bug #58766: List modul with PHP5.9 foreach
+- Bug #58802: ViewHelper no default controller
+- Bug #59061: Exception when generating new ratings

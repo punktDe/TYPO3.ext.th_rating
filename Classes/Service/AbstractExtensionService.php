@@ -56,7 +56,7 @@ class AbstractExtensionService implements \TYPO3\CMS\Core\SingletonInterface {
 			$this->objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
 		}
 		//instantiate the logger
-		$this->logger = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager')->get('Thucke\\ThRating\\Service\\ObjectFactoryService')->getLogger(get_class($this));
+		$this->logger = $this->objectManager->get('Thucke\\ThRating\\Service\\ObjectFactoryService')->getLogger(get_class($this));
 	}
 }
 ?>
