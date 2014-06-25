@@ -289,6 +289,7 @@ class Rating extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 			$currentrate = array_sum ( $sumWeightedVotes ) / $numAllVotes;
 		} else {
 			$currentrate = 0;
+			$numAllVotes = 0;
 		}
 		//calculate current polling styles -> holds a percent value for usage in CSS to display polling relations
 		foreach ( $this->getRatingobject()->getStepconfs() as $stepConf ) {
@@ -298,7 +299,8 @@ class Rating extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 						'weightedVotes' => $weightedVotes,
 						'sumWeightedVotes' => $sumWeightedVotes,
 						'currentPollDimensions' => $currentPollDimensions ,
-						'anonymousVotes' => $numAnonymousVotes);
+						'anonymousVotes' => $numAnonymousVotes,
+						'numAllVotes' => $numAllVotes);
 	}
 
 	/**
