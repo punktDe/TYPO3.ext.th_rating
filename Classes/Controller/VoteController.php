@@ -466,7 +466,6 @@ class VoteController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 			$this->logger->log(	\TYPO3\CMS\Core\Log\LogLevel::INFO, 'Set ratinglink information', array('ajaxSelections[steporder]' => $this->ajaxSelections['steporder']));
 		}
 		$this->fillSummaryView();
-		$this->initSignalSlotDispatcher( 'afterRatinglinkAction' );
 		$this->logger->log(	\TYPO3\CMS\Core\Log\LogLevel::DEBUG, 'Exit graphicActionHelper', array());
 	}
 	
@@ -1049,7 +1048,7 @@ class VoteController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 
 	/**
 	 * Sets the rating values in the foreign table
-	 * Recommended field type is DOUBLE
+	 * Recommended field type is VARCHAR(255)
 	 *
 	 * @param \Thucke\ThRating\Domain\Model\Rating 		$rating The rating
 	 * 
@@ -1064,11 +1063,10 @@ class VoteController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 			$databaseConnection = $this->objectManager->get('TYPO3\\CMS\\Dbal\\Database\\DatabaseConnection');
 			$rateTable = $rating->getRatingobject()->getRatetable();
 			$rateUid = $rating->getRatedobjectuid();
-			$currentRatesArray = $rating->getCurrentrates();
-			$currentRate = round($currentRatesArray['currentrate'], 2);
+			$currentRates = json_encode($rating->getCurrentrates());
 			//do update foreign table
-			//old way disabled $queryResult = $GLOBALS['TYPO3_DB']->exec_UPDATEquery ($rateTable, 'uid = '.$rateUid, array($rateField => $currentRate));
-			$queryResult = $databaseConnection->exec_UPDATEquery ($rateTable, 'uid = '.$rateUid, array($rateField => $currentRate));
+			//old way disabled $queryResult = $GLOBALS['TYPO3_DB']->exec_UPDATEquery ($rateTable, 'uid = '.$rateUid, array($rateField => $currentRates));
+			$queryResult = $databaseConnection->exec_UPDATEquery ($rateTable, 'uid = '.$rateUid, array($rateField => $currentRates));
 			return !empty($queryResult);
 		} else {
 			$this->logger->log(	\TYPO3\CMS\Core\Log\LogLevel::NOTICE, 'Foreign ratefield does not exist in ratetable',
