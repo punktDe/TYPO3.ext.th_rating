@@ -2,7 +2,7 @@
 if (!defined ('TYPO3_MODE')) 	die ('Access denied.');
 $GLOBALS['TCA']['tx_thrating_domain_model_stepconf'] =  array(
 	'ctrl' => array (
-		'title'						=> 'LLL:'.\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('th_rating').'/Resources/Private/Language/locallang.xlf:tca.model.stepconf.title',
+		'title'						=> 'LLL:EXT:th_rating/Resources/Private/Language/locallang.xlf:tca.model.stepconf.title',
 		'label'						=> 'uid',
 		'label_alt' 				=> 'ratingobject,steporder',
  		'label_userFunc' 			=> 'Thucke\\ThRating\\Utility\\TCALabelUserFuncUtility->getStepconfRecordTitle',
