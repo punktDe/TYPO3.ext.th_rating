@@ -4,6 +4,8 @@
 - deprecated constant settings.newRecordStoragePid 
 - new constant settings.pluginStoragePid - all records are read and created on this single page
 - added some configuration checks on PID settings
+- chacnge setForeignRatingValues() to do update with the whole getCurrentRates array
 - Bug #58766: List modul with PHP5.9 foreach
 - Bug #58802: ViewHelper no default controller
 - Bug #59061: Exception when generating new ratings
+- Suggestion #59869: add numAllVotes in getter for currentRates
