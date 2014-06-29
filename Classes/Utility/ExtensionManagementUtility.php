@@ -29,7 +29,7 @@ namespace Thucke\ThRating\Utility;
  * @version $Id:$
  * @license http://opensource.org/licenses/gpl-license.php GNU protected License, version 2
  */
-class ExtensionManagementUtility implements \TYPO3\CMS\Core\SingletonInterface {
+class ExtensionManagementUtility extends \Thucke\ThRating\Utility\AbstractExtensionUtility {
 
 	/**
 	 * @var \Thucke\ThRating\Service\ObjectFactoryService $objectFactoryService
@@ -42,21 +42,7 @@ class ExtensionManagementUtility implements \TYPO3\CMS\Core\SingletonInterface {
 	public function injectObjectFactoryService( \Thucke\ThRating\Service\ObjectFactoryService $objectFactoryService ) {
 		$this->objectFactoryService = $objectFactoryService;
 	}
-	/**
-	 * @var $logger \TYPO3\CMS\Core\Log\Logger
-	 */
-	protected $logger;
 
-	/**
-	 * Constructor
-	 * @return void
-	 */
-	public function __construct(  ) {
-		//instantiate the logger
-		$this->logger = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager')->get('Thucke\\ThRating\\Service\\ObjectFactoryService')->getLogger(__CLASS__);
-	}
-
-	
 	/**
 	 * Prepares an object for ratings
 	 * 
