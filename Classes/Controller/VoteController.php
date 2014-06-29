@@ -36,6 +36,10 @@ class VoteController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 	 */
 	protected $vote;
 	/**
+	 * @var \Thucke\ThRating\Domain\Model\RatingImage $ratingImage
+	 */
+	protected $ratingImage;
+	/**
 	 * @var array
 	 */
 	protected $ajaxSelections;
@@ -135,7 +139,6 @@ class VoteController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 	public function injectStepconfValidator( \Thucke\ThRating\Domain\Validator\StepconfValidator $stepconfValidator ) {
 		$this->stepconfValidator = $stepconfValidator;
 	}
-
 	/**
 	 * @var \Thucke\ThRating\Service\ObjectFactoryService $objectFactoryService
 	 */
@@ -438,9 +441,11 @@ class VoteController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 			$this->logger->log(	\TYPO3\CMS\Core\Log\LogLevel::DEBUG, 'Calculated rate', array('calculatedRate' => $calculatedRate));
 			$this->view->assign('calculatedRate', $calculatedRate);
 
-			$filename = PATH_site.'/'.$this->settings['ratingConfigurations'][$this->ratingName]['imagefile'];
+			$this->ratingImage = $this->objectManager->get('Thucke\\ThRating\\Domain\\Model\\RatingImage',$this->settings['ratingConfigurations'][$this->ratingName]['imagefile']);
 			//read dimensions of the image
-			list($width, $height) = getimagesize($filename);
+			$imageDimensions = $this->ratingImage->getImageDimensions();
+			$height = $imageDimensions['height'];
+			$width = $imageDimensions['width'];
 			
 			//calculate concrete values for polling display
 			$currentRates = $this->vote->getRating()->getCurrentrates();
@@ -886,22 +891,24 @@ class VoteController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 				$subURI = substr(PATH_site, strlen($_SERVER['DOCUMENT_ROOT'])+1);
 				$basePath = $GLOBALS['TSFE']->baseUrl ? $GLOBALS['TSFE']->baseUrl : 'http://'.$_SERVER['HTTP_HOST'].'/'.$subURI;
 
-				$filename = PATH_site.'/'.$ratingConfig['imagefile'];
-				if ( empty($ratingConfig['imagefile']) || !file_exists($filename) ) {
+				$this->ratingImage = $this->objectManager->get('Thucke\\ThRating\\Domain\\Model\\RatingImage',$ratingConfig['imagefile']);
+				$filename = $this->ratingImage->getImageFile();
+				if ( empty($filename) ) {
 					$this->logFlashMessage(	\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('flash.vote.renderCSS.defaultImage', 'ThRating'),
 											\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('flash.heading.warning', 'ThRating'),
 											"WARNING", array( 'errorCode' => 1403192702,
 															  'ratingName' => $ratingName, 
-															  'ratingConfig' => $ratingConfig,
-															  'imageFilename' => $filename));
+															  'ratingConfig' => $ratingConfig));
 					$defaultRatingName = $this->settings['ratingConfigurations']['default'];
 					$ratingConfig = $this->settings['ratingConfigurations'][$defaultRatingName];
-					$filename = PATH_site.'/'.$ratingConfig['imagefile'];
+					$this->ratingImage->setConf($ratingConfig['imagefile']);
+					$filename = $this->ratingImage->getImageFile();
 				}
-				$filenameUri = $basePath.'/'.$ratingConfig['imagefile'];		//prepend host basepath if no URL is given
+				$filenameUri = $basePath.'/'.$filename;		//prepend host basepath if no URL is given
 
-				//read dimensions of the image
-				list($width, $height) = getimagesize($filename);
+				$imageDimensions = $this->ratingImage->getImageDimensions();
+				$height = $imageDimensions['height'];
+				$width = $imageDimensions['width'];
 				$mainId = '.thRating-RObj'.$ratingobjectUid.'-'.$ratingName;
 				$this->logger->log(	\TYPO3\CMS\Core\Log\LogLevel::DEBUG, 'Main CSS info',
 									array(
