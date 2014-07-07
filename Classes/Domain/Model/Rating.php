@@ -291,9 +291,16 @@ class Rating extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 			$currentrate = 0;
 			$numAllVotes = 0;
 		}
-		//calculate current polling styles -> holds a percent value for usage in CSS to display polling relations
-		foreach ( $this->getRatingobject()->getStepconfs() as $stepConf ) {
-			$currentPollDimensions[$stepConf->getStepOrder()]['pctValue'] = round ( ($currentratesDecoded['weightedVotes'][$stepConf->getStepOrder()]  * 100) / array_sum($weightedVotes), 1 );
+		
+		$sumWeightedVotes = array_sum($weightedVotes);
+		if ( empty($sumWeightedVotes) ) {
+			//set current polling styles to zero percent and prevent division by zero error in lower formula
+			$currentPollDimensions[$stepConf->getStepOrder()]['pctValue'] = 0;
+		} else { 
+			//calculate current polling styles -> holds a percent value for usage in CSS to display polling relations
+			foreach ( $this->getRatingobject()->getStepconfs() as $stepConf ) {
+				$currentPollDimensions[$stepConf->getStepOrder()]['pctValue'] = round ( ($currentratesDecoded['weightedVotes'][$stepConf->getStepOrder()]  * 100) / $sumWeightedVotes, 1 );
+			}
 		}
 		return array (	'currentrate' => $currentrate,
 						'weightedVotes' => $weightedVotes,
