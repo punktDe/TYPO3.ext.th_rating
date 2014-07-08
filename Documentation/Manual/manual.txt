@@ -1,1 +1,0 @@
-Documentation moved to Wiki at http://wiki.typo3.org/EXT/Rating_AX
