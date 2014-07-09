@@ -289,7 +289,7 @@ class Rating extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 			$numAllVotes = 0;
 		}
 		
-		$sumAllWeightedVotes = array_sum($weightedVotes);
+		$sumAllWeightedVotes = array_sum($currentratesDecoded['weightedVotes']);
 		if ( empty($sumAllWeightedVotes) ) {
 			//set current polling styles to zero percent and prevent division by zero error in lower formula
 			$currentPollDimensions[$stepConf->getStepOrder()]['pctValue'] = 0;
