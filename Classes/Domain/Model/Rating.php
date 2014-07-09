@@ -281,32 +281,30 @@ class Rating extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 			$this->checkCurrentrates();
 			$currentratesDecoded = json_decode($this->currentrates, TRUE);
 		}
-		$weightedVotes = $currentratesDecoded['weightedVotes'];
-		$sumWeightedVotes = $currentratesDecoded['sumWeightedVotes'];
 		$numAllVotes = $currentratesDecoded['numAllVotes'];
-		$numAnonymousVotes = $currentratesDecoded['anonymousVotes'];
 		if (!empty($numAllVotes)) {
-			$currentrate = array_sum ( $sumWeightedVotes ) / $numAllVotes;
+			$currentrate = array_sum ( $currentratesDecoded['sumWeightedVotes'] ) / $numAllVotes;
 		} else {
 			$currentrate = 0;
 			$numAllVotes = 0;
 		}
 		
-		$sumWeightedVotes = array_sum($weightedVotes);
-		if ( empty($sumWeightedVotes) ) {
+		$sumAllWeightedVotes = array_sum($weightedVotes);
+		if ( empty($sumAllWeightedVotes) ) {
 			//set current polling styles to zero percent and prevent division by zero error in lower formula
 			$currentPollDimensions[$stepConf->getStepOrder()]['pctValue'] = 0;
 		} else { 
 			//calculate current polling styles -> holds a percent value for usage in CSS to display polling relations
 			foreach ( $this->getRatingobject()->getStepconfs() as $stepConf ) {
-				$currentPollDimensions[$stepConf->getStepOrder()]['pctValue'] = round ( ($currentratesDecoded['weightedVotes'][$stepConf->getStepOrder()]  * 100) / $sumWeightedVotes, 1 );
+				$currentPollDimensions[$stepConf->getStepOrder()]['pctValue'] = round ( ($currentratesDecoded['weightedVotes'][$stepConf->getStepOrder()]  * 100) / $sumAllWeightedVotes, 1 );
 			}
 		}
+		
 		return array (	'currentrate' => $currentrate,
-						'weightedVotes' => $weightedVotes,
-						'sumWeightedVotes' => $sumWeightedVotes,
+						'weightedVotes' => $currentratesDecoded['weightedVotes'],
+						'sumWeightedVotes' => $currentratesDecoded['sumWeightedVotes'],
+						'anonymousVotes' => $currentratesDecoded['anonymousVotes'],
 						'currentPollDimensions' => $currentPollDimensions ,
-						'anonymousVotes' => $numAnonymousVotes,
 						'numAllVotes' => $numAllVotes);
 	}
 
