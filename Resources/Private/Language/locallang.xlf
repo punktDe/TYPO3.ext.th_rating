@@ -291,6 +291,12 @@
 			<trans-unit id="flash.renderCSS.incompatible620" xml:space="preserve">
 				<source>Incompatible version - please upgrade to at least TYPO3 6.2.1</source>
 			</trans-unit>
+			<trans-unit id="flash.vote.create.updateExistingVote" xml:space="preserve">
+				<source>Your vote has been updated. It was step %1$d - '%2$s'.</source>
+			</trans-unit>
+			<trans-unit id="flash.vote.create.noUpdateSameVote" xml:space="preserve">
+				<source>Your vote is identical as before. No update needed.</source>
+			</trans-unit>
 			<trans-unit id="flash.vote.create.alreadyRated" xml:space="preserve">
 				<source>Already rated.</source>
 			</trans-unit>

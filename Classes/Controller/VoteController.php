@@ -259,20 +259,20 @@ class VoteController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 	 */
 	//http://localhost:8503/index.php?id=71&tx_thrating_pi1[controller]=Vote&tx_thrating_pi1[action]=create&tx_thrating_pi1[vote][rating]=1&tx_thrating_pi1[vote][voter]=1&tx_thrating_pi1[vote][vote]=1
 	public function createAction( \Thucke\ThRating\Domain\Model\Vote $vote) {
-		$this->logger->log(	\TYPO3\CMS\Core\Log\LogLevel::DEBUG, 'Entry createAction', array());
+		$this->logger->log(	\TYPO3\CMS\Core\Log\LogLevel::DEBUG, 'Entry createAction', array('errorCode' => 1404934047));
 		if ($this->accessControllService->isLoggedIn($vote->getVoter()) || $vote->isAnonymous() ) {
-			$this->logger->log(	\TYPO3\CMS\Core\Log\LogLevel::DEBUG, 'Start processing', array());
+			$this->logger->log(	\TYPO3\CMS\Core\Log\LogLevel::DEBUG, 'Start processing', array('errorCode' => 1404934054));
 			//if not anonymous check if vote is already done
 			if ( !$vote->isAnonymous() ) {
-				$this->logger->log(	\TYPO3\CMS\Core\Log\LogLevel::DEBUG, 'FE user is logged in - looking for existing vote', array());
+				$this->logger->log(	\TYPO3\CMS\Core\Log\LogLevel::DEBUG, 'FE user is logged in - looking for existing vote', array('errorCode' => 1404933999));
 				$matchVote = $this->voteRepository->findMatchingRatingAndVoter($vote->getRating(), $vote->getVoter());
 			}
 			//add new or anonymous vote
 			if ( !$this->voteValidator->isValid($matchVote) || $vote->isAnonymous() ) {
-				$this->logger->log(	\TYPO3\CMS\Core\Log\LogLevel::DEBUG, 'New vote could be added', array());
+				$this->logger->log(	\TYPO3\CMS\Core\Log\LogLevel::DEBUG, 'New vote could be added', array('errorCode' => 1404934012));
 				$vote->getRating()->addVote($vote);
 				if ( $vote->isAnonymous() && !$vote->hasAnonymousVote($this->prefixId) && $this->cookieProtection ) {
-					$this->logger->log(	\TYPO3\CMS\Core\Log\LogLevel::DEBUG, 'Anonymous rating; preparing cookie potection', array());
+					$this->logger->log(	\TYPO3\CMS\Core\Log\LogLevel::DEBUG, 'Anonymous rating; preparing cookie potection', array('errorCode' => 1404934021));
 					$anonymousRating['ratingtime']=time();
 					$anonymousRating['voteUid']=$vote->getUid();
 					$lifeTime = time() + 60 * 60 * 24 * $this->cookieLifetime;
@@ -294,17 +294,44 @@ class VoteController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 														'ratetable' => $vote->getRating()->getRatingobject()->getRatetable(),
 														'ratefield' => $vote->getRating()->getRatingobject()->getRatefield(),
 														'voter' => $vote->getVoter()->getUsername(),
-														'vote' => (string) $vote->getVote(),
-														));
+														'vote' => (string) $vote->getVote()));
 			} else {
-				$vote = $matchVote;
-				$this->logFlashMessage(	\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('flash.vote.create.alreadyRated', 'ThRating'), 
-										\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('flash.heading.notice', 'ThRating'),
-										"NOTICE", array('errorCode' => 1403202280,
-										'voter UID' => $vote->getVoter()->getUid(),
-										'ratingobject UID' => $vote->getRating()->getRatingobject()->getUid(),
-										'rating' => $vote->getRating()->getUid(),
-										'vote UID' => $vote->getUid() ));
+				If ( $this->voteValidator->isValid($matchVote) && !empty($this->settings['enableReVote']) ) {
+					$matchVoteStepconf = $matchVote->getVote();
+					$newVoteStepconf = $vote->getVote();
+					If ( $matchVoteStepconf !== $newVoteStepconf ) {
+						//do update of existing vote
+						$this->logFlashMessage(	\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('flash.vote.create.updateExistingVote', 'ThRating', 
+													array($matchVoteStepconf->getSteporder(), (string) $matchVoteStepconf)),
+												\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('flash.heading.ok', 'ThRating'),
+												"DEBUG", array('voter UID' => $vote->getVoter()->getUid(),
+												'ratingobject UID' => $vote->getRating()->getRatingobject()->getUid(),
+												'rating' => $vote->getRating()->getUid(),
+												'vote UID' => $vote->getUid(),
+												'new vote' => (string) $vote->getVote(),
+												'old vote' => (string) $matchVoteStepconf));
+						$vote->getRating()->updateVote($matchVote, $vote);
+					} else {
+						$this->logFlashMessage(	\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('flash.vote.create.noUpdateSameVote', 'ThRating'), 
+												\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('flash.heading.warning', 'ThRating'),
+												"WARNING", array('voter UID' => $vote->getVoter()->getUid(),
+												'ratingobject UID' => $vote->getRating()->getRatingobject()->getUid(),
+												'rating' => $vote->getRating()->getUid(),
+												'vote UID' => $vote->getUid(),
+												'new vote' => (string) $newVoteStepconf,
+												'old vote' => (string) $matchVoteStepconf));
+					}
+				} else {
+					//display message that rating has been already done
+					$vote = $matchVote;
+					$this->logFlashMessage(	\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('flash.vote.create.alreadyRated', 'ThRating'), 
+											\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('flash.heading.notice', 'ThRating'),
+											"NOTICE", array('errorCode' => 1403202280,
+											'voter UID' => $vote->getVoter()->getUid(),
+											'ratingobject UID' => $vote->getRating()->getRatingobject()->getUid(),
+											'rating' => $vote->getRating()->getUid(),
+											'vote UID' => $vote->getUid()));
+				}
 			}
 			$this->vote = $vote;
 		} else {
@@ -436,6 +463,7 @@ class VoteController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 		$this->initVoting( $vote );
 		$this->view->assign('actionMethodName',$this->actionMethodName);
 
+
 		if ( $this->ratingValidator->isValid($this->vote->getRating()) ) {
 			$calculatedRate = $this->vote->getRating()->getCalculatedRate().'%';
 			$this->logger->log(	\TYPO3\CMS\Core\Log\LogLevel::DEBUG, 'Calculated rate', array('calculatedRate' => $calculatedRate));
@@ -461,14 +489,14 @@ class VoteController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 		}
 		$this->view->assign('ratingName', $this->ratingName);
 		$this->view->assign('ratingClass', $this->settings['ratingClass']);
-		if ( 	(!$this->vote->hasRated() && !$this->vote->isAnonymous() && $this->accessControllService->isLoggedIn($this->vote->getVoter())) ||
-				(	($this->vote->isAnonymous() && !$this->accessControllService->isLoggedIn($this->vote->getVoter())) &&
-				((!$this->vote->hasAnonymousVote($this->prefixId) && $this->cookieProtection && !$this->request->hasArgument('settings')) || !$this->cookieProtection)
-				) 
+		if ( 	(!$this->vote->isAnonymous() && $this->accessControllService->isLoggedIn($this->vote->getVoter()) && 
+					(!$this->vote->hasRated() || !empty($this->settings['enableReVote']))) ||
+				(($this->vote->isAnonymous() && !$this->accessControllService->isLoggedIn($this->vote->getVoter())) &&
+					((!$this->vote->hasAnonymousVote($this->prefixId) && $this->cookieProtection && !$this->request->hasArgument('settings')) || !$this->cookieProtection))
 			) {
 			//if user hasn´t voted yet then include ratinglinks
 			$this->view->assign('ajaxSelections', $this->ajaxSelections['steporder']);
-			$this->logger->log(	\TYPO3\CMS\Core\Log\LogLevel::INFO, 'Set ratinglink information', array('ajaxSelections[steporder]' => $this->ajaxSelections['steporder']));
+			$this->logger->log(	\TYPO3\CMS\Core\Log\LogLevel::INFO, 'Set ratinglink information', array('errorCode' => 1404933850, 'ajaxSelections[steporder]' => $this->ajaxSelections['steporder']));
 		}
 		$this->fillSummaryView();
 		$this->logger->log(	\TYPO3\CMS\Core\Log\LogLevel::DEBUG, 'Exit graphicActionHelper', array());
