@@ -198,12 +198,27 @@ class Rating extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	}
 
 	/**
+	 * Updates an existing vote to this rating
+	 *
+	 * @param \Thucke\ThRating\Domain\Model\Vote $existingVote
+	 * @param \Thucke\ThRating\Domain\Model\Vote $newVote
+	 * @return void
+	 */
+	public function updateVote(\Thucke\ThRating\Domain\Model\Vote $existingVote, \Thucke\ThRating\Domain\Model\Vote $newVote) {
+		$this->removeCurrentrate($existingVote);
+		$existingVote->setVote($newVote->getVote());
+		$this->addCurrentrate($existingVote);
+		$this->objectFactoryService->persistRepository('\Thucke\ThRating\Domain\Repository\VoteRepository', $existingVote);
+	}
+
+	/**
 	 * Remove a vote from this rating
 	 *
 	 * @param \Thucke\ThRating\Domain\Model\Vote $voteToRemove The vote to be removed
 	 * @return void
 	 */
 	public function removeVote(\Thucke\ThRating\Domain\Model\Vote $voteToRemove) {
+		$this->removeCurrentrate($voteToRemove);
 		$this->votes->detach($voteToRemove);
 	}
 
@@ -214,6 +229,7 @@ class Rating extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	 */
 	public function removeAllVotes() {
 		$this->votes = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
+		unset($this->currentrates);
 	}
 
 	/**
@@ -250,7 +266,7 @@ class Rating extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	/**
 	 * Adds a vote to the calculations of this rating
 	 *
-	 * @param \Thucke\ThRating\Domain\Model\Vote $voteToRemove The vote to be removed
+	 * @param \Thucke\ThRating\Domain\Model\Vote $voting The vote to be added
 	 * @return void
 	 */
 	public function addCurrentrate(\Thucke\ThRating\Domain\Model\Vote $voting) {
@@ -267,6 +283,29 @@ class Rating extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 		$votingStepweight = $votingStep->getStepweight(); 
 		$currentratesDecoded['weightedVotes'][$votingSteporder] += $votingStepweight;
 		$currentratesDecoded['sumWeightedVotes'][$votingSteporder] += $votingStepweight * $votingSteporder;
+		$this->currentrates = json_encode($currentratesDecoded);
+	}
+
+	/**
+	 * Adds a vote to the calculations of this rating
+	 *
+	 * @param \Thucke\ThRating\Domain\Model\Vote $voting The vote to be removed
+	 * @return void
+	 */
+	public function removeCurrentrate(\Thucke\ThRating\Domain\Model\Vote $voting) {
+		if ( empty($this->currentrates) ) {
+			$this->checkCurrentrates(); //initialize entry
+		}
+		$currentratesDecoded = json_decode($this->currentrates, TRUE);
+		$currentratesDecoded['numAllVotes']--;
+		if ( $voting->isAnonymous() ) {
+			$currentratesDecoded['anonymousVotes']--;
+		}
+		$votingStep = $voting->getVote();
+		$votingSteporder = $votingStep->getSteporder(); 
+		$votingStepweight = $votingStep->getStepweight(); 
+		$currentratesDecoded['weightedVotes'][$votingSteporder] -= $votingStepweight;
+		$currentratesDecoded['sumWeightedVotes'][$votingSteporder] -= $votingStepweight * $votingSteporder;
 		$this->currentrates = json_encode($currentratesDecoded);
 	}
 
@@ -290,12 +329,12 @@ class Rating extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 		}
 		
 		$sumAllWeightedVotes = array_sum($currentratesDecoded['weightedVotes']);
-		if ( empty($sumAllWeightedVotes) ) {
-			//set current polling styles to zero percent and prevent division by zero error in lower formula
-			$currentPollDimensions[$stepConf->getStepOrder()]['pctValue'] = 0;
-		} else { 
-			//calculate current polling styles -> holds a percent value for usage in CSS to display polling relations
-			foreach ( $this->getRatingobject()->getStepconfs() as $stepConf ) {
+		foreach ( $this->getRatingobject()->getStepconfs() as $stepConf ) {
+			if ( empty($sumAllWeightedVotes) ) {
+				//set current polling styles to zero percent and prevent division by zero error in lower formula
+				$currentPollDimensions[$stepConf->getStepOrder()]['pctValue'] = 0;
+			} else {
+				//calculate current polling styles -> holds a percent value for usage in CSS to display polling relations
 				$currentPollDimensions[$stepConf->getStepOrder()]['pctValue'] = round ( ($currentratesDecoded['weightedVotes'][$stepConf->getStepOrder()]  * 100) / $sumAllWeightedVotes, 1 );
 			}
 		}
