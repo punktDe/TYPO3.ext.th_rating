@@ -1,4 +1,4 @@
-- imagefile setting in ratingconfigurations now handle GIFBUILDER configuration
+- imagefile setting in ratingconfigurations now handles GIFBUILDER configuration
 - documentation is now rendered by sphinx project
 - Bug #60090: error in log : division by zero 
 - New feature: change given votes using setting enableReVote

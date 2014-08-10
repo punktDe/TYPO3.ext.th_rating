@@ -703,7 +703,6 @@ class VoteController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 				$this->ajaxSelections['json'][$key] = strval($stepConf);
 				$this->ajaxSelections['steporder'][$stepConf->getSteporder()]['step'] = $stepConf;
 				$this->ajaxSelections['steporder'][$stepConf->getSteporder()]['ajaxvalue'] = $key;
-				$this->ajaxSelections['steporder'][$stepConf->getSteporder()]['currentPollDimension'] = $currentPollDimensions[$stepConf->getSteporder()]['pctValue'].'%';
 			}
 			$this->logger->log(	\TYPO3\CMS\Core\Log\LogLevel::DEBUG, 'Finalized ajaxSelections', array('ajaxSelections' => $this->ajaxSelections));
 		}
@@ -965,14 +964,6 @@ class VoteController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 					//calculate widths/heights related to stepweights
 					$i = 1;
 					$stepPart = 0;
-					foreach ( $stepWeights as $stepWeight) {
-						$sumWeights +=  $stepWeight;
-						$zIndex = $stepcount-$i+2;
-						//configure styles for current pollings
-						$cssFile .= 'span.RObj'.$ratingobjectUid.'-StpOdr'.$i.'-ratingpoll-normal { width:'.$stepPart.'%; z-index:'.$zIndex.'; }'.CHR(10);
-						$cssFile .= 'span.RObj'.$ratingobjectUid.'-StpOdr'.$i.'-ratingstep-tilt { height:'.$stepPart.'%; z-index:'.$zIndex.'; }'.CHR(10);
-						$i++;
-					}
 				}
 				$cssFile .= $mainId.', '.$mainId.' span:hover, '.$mainId.' span:active, '.$mainId.' span:focus, '.$mainId.' .current-poll {	background:url('.$filenameUri.');	}'.CHR(10);
 			}
@@ -983,15 +974,15 @@ class VoteController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 			$sumWeights = 0;
 			foreach ( $stepWeights as $stepWeight) {
 				$sumWeights +=  $stepWeight;
-				$zIndex = $stepcount-$i+2;
+				$zIndex = $stepcount-$i+2;  //add 2 to override .current-poll and .currentPollText
 				//configure rating and polling styles for steps
 				$oneStepPart =  round($stepWeight * 100 / $sumStepWeights, 1);	//calculate single width of ratingstep
 				$cssFile .= 'span.RObj'.$ratingobjectUid.'-StpOdr'.$i.'-ratingpoll-normal { width:'.$oneStepPart.'%; z-index:'.$zIndex.'; margin-left:'.$stepPart.'%;}'.CHR(10);
-				$cssFile .= 'span.RObj'.$ratingobjectUid.'-StpOdr'.$i.'-ratingpoll-normal span { text-indent:0em; -moz-transform: rotate(90deg); -ms-transform: rotate(90deg); ';
-				$cssFile .= '-o-transform: rotate(90deg); -webkit-transform: rotate(90deg); transform: rotate(90deg);  min-width:100%; text-align:center; }'.CHR(10);
 				$cssFile .= 'span.RObj'.$ratingobjectUid.'-StpOdr'.$i.'-ratingpoll-tilt { height:'.$oneStepPart.'%; z-index:'.$zIndex.'; margin-bottom:'.$stepPart.'%; }'.CHR(10);
 				$cssFile .= 'li.RObj'.$ratingobjectUid.'-StpOdr'.$i.'-currentpoll-normal { width:'.$oneStepPart.'%; margin-left:'.$stepPart.'%; }'.CHR(10);
+				$cssFile .= 'li.RObj'.$ratingobjectUid.'-StpOdr'.$i.'-currentpoll-normal span { width:100%; }'.CHR(10);
 				$cssFile .= 'li.RObj'.$ratingobjectUid.'-StpOdr'.$i.'-currentpoll-tilt { height:'.$oneStepPart.'%; margin-bottom:'.$stepPart.'%; }'.CHR(10);
+				$cssFile .= 'li.RObj'.$ratingobjectUid.'-StpOdr'.$i.'-currentpoll-tilt span { height:100%; }'.CHR(10);
 				$stepPart =  round($sumWeights * 100 / $sumStepWeights, 1);	//calculate sum of widths to this ratingstep
 				$cssFile .= 'span.RObj'.$ratingobjectUid.'-StpOdr'.$i.'-ratingstep-normal { width:'.$stepPart.'%; z-index:'.$zIndex.'; }'.CHR(10);
 				$cssFile .= 'span.RObj'.$ratingobjectUid.'-StpOdr'.$i.'-ratingstep-tilt { height:'.$stepPart.'%; z-index:'.$zIndex.'; }'.CHR(10);

@@ -82,12 +82,35 @@ div.tx-thrating-ratinglinks ul{
     background-position: left center;
 }
 .thRating-normal .current-poll{
+	height:100%;
     z-index:1;
 }
+.thRating-normal .currentPollText { 
+	text-indent:0em; 
+	-moz-transform: rotate(90deg); 
+	-ms-transform: rotate(90deg); 
+	-o-transform: rotate(90deg); 
+	-webkit-transform: rotate(90deg); 
+	transform: rotate(90deg);  
+	min-width:100%; 
+	text-align:center; 
+}
+.thRating-tilt .current-poll{
+	width:100%;
+    z-index:1;
+}
+.thRating-tilt .currentPollText { 
+	text-indent:0em; 
+	min-height:100%; 
+	text-align:center; 
+}
+
 .currentPollText{
 	background:none !important;
 	font-family:Sans-Serif;
 	font-weight:normal;
+	font-size:80%;
+	z-index:2;
 }
 
 /* necessary because of bug in IE
