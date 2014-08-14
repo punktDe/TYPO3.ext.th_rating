@@ -1085,7 +1085,7 @@ class VoteController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 		$table=$rating->getRatingobject()->getRatetable();
 		$lockedFieldnames = $this->getLockedfieldnames($table);
 		$rateField = $rating->getRatingobject()->getRatefield();
-		if ( !in_array($rateField, $lockedFieldnames) && !empty($GLOBALS['TCA'][$table]['columns'][rateField])) {
+		if ( !in_array($rateField, $lockedFieldnames) && !empty($GLOBALS['TCA'][$table]['columns'][$rateField])) {
 			$databaseConnection = $this->objectManager->get('TYPO3\\CMS\\Dbal\\Database\\DatabaseConnection');
 			$rateTable = $rating->getRatingobject()->getRatetable();
 			$rateUid = $rating->getRatedobjectuid();
