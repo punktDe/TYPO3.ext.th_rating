@@ -66,9 +66,8 @@ plugin.tx_thrating {
 		pluginCheckHelper {
 			pluginStoragePid = {$plugin.tx_thrating.settings.pluginStoragePid}
 			feUserStoragePid = {$plugin.tx_thrating.settings.feUserStoragePid}
-			storagePid = {$plugin.tx_thrating.settings.storagePid}
 		}
-		storagePid = {$plugin.tx_thrating.settings.pluginStoragePid},{$plugin.tx_thrating.settings.feUserStoragePid},{$plugin.tx_thrating.settings.storagePid}
+		storagePid = {$plugin.tx_thrating.settings.pluginStoragePid},{$plugin.tx_thrating.settings.feUserStoragePid}
 		classes {
 			Thucke\ThRating\Domain\Model\Ratingobject {
 				newRecordStoragePid = {$plugin.tx_thrating.settings.pluginStoragePid}

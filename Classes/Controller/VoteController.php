@@ -805,11 +805,6 @@ class VoteController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 									\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('flash.configuration.error', 'ThRating'),
 									"ERROR", array('errorCode' => 1403190539));
 		}
-		if ( empty($frameworkConfiguration['persistence']['pluginCheckHelper']['storagePid']) ) {
-			$messageText = \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('flash.pluginConfiguration.deprecated.storagePid', 'ThRating', array()).' (1403191997)';
-			\TYPO3\CMS\Core\Utility\GeneralUtility::deprecationLog( get_class($this).': ' . $messageText . ' Will be removed two versions after 0.10.2 - at least in version 1.0.');
-			$this->logger->log(	\TYPO3\CMS\Core\Log\LogLevel::WARNING, $messageText, array());
-		}
 		$frameworkConfiguration['persistence']['storagePid'] = implode(',', $storagePids);
 		$this->setFrameworkConfiguration($frameworkConfiguration);
 	}

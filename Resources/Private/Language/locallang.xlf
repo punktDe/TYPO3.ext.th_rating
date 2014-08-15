@@ -285,9 +285,6 @@
 			<trans-unit id="flash.pluginConfiguration.missing.feUserStoragePid" xml:space="preserve">
 				<source>Constant "plugin.tx_thrating.settings.feUserStoragePid" not set.</source>
 			</trans-unit>
-			<trans-unit id="flash.pluginConfiguration.deprecated.storagePid" xml:space="preserve">
-				<source>Constant "plugin.tx_thrating.settings.storagePid" is deprecated. Use the constant "plugin.tx_thrating.settings.pluginStoragePid" instead.</source>
-			</trans-unit>
 			<trans-unit id="flash.renderCSS.incompatible620" xml:space="preserve">
 				<source>Incompatible version - please upgrade to at least TYPO3 6.2.1</source>
 			</trans-unit>
