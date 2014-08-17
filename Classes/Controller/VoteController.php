@@ -150,6 +150,25 @@ class VoteController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 	public function injectObjectFactoryService( \Thucke\ThRating\Service\ObjectFactoryService $objectFactoryService ) {
 		$this->objectFactoryService = $objectFactoryService;
 	}
+	/**
+	 * @var \TYPO3\CMS\Core\Database\DatabaseConnection	The TYPO3 database object
+	 */
+	 protected $databaseConnection;
+	 
+	/**
+	   * Lifecycle-Event
+	   * wird nach der Initialisierung des Objekts und nach dem Auflösen der Dependencies aufgerufen.
+	   * 
+	   */
+	  public function initializeObject() {
+		 $this->databaseConnection = $GLOBALS['TYPO3_DB'];
+		 //uncomment the following lines to get SQL DEBUG information of this extension
+		 /*
+		 $this->databaseConnection->explainOutput = 2;
+		 $this->databaseConnection->store_lastBuiltQuery = TRUE;
+		 $this->databaseConnection->debugOutput = 2;
+		 */
+	 }
 
 	/**
 	 * Initializes the current action
@@ -1081,11 +1100,10 @@ class VoteController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 		$lockedFieldnames = $this->getLockedfieldnames($table);
 		$rateField = $rating->getRatingobject()->getRatefield();
 		if ( !in_array($rateField, $lockedFieldnames) && !empty($GLOBALS['TCA'][$table]['columns'][$rateField])) {
-			$databaseConnection = $this->objectManager->get('TYPO3\\CMS\\Dbal\\Database\\DatabaseConnection');
 			$rateTable = $rating->getRatingobject()->getRatetable();
 			$rateUid = $rating->getRatedobjectuid();
 			$currentRatesArray = $rating->getCurrentrates();
-			If (empty($this->settings['foreignFieldArrayUpdate'])) {
+				If (empty($this->settings['foreignFieldArrayUpdate'])) {
 				//do update using DOUBLE value
 				$currentRates = round($currentRatesArray['currentrate'], 2);
 			} else {
@@ -1093,8 +1111,7 @@ class VoteController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 				$currentRates = json_encode($currentRatesArray);
 			}
 			//do update foreign table
-			//old way disabled $queryResult = $GLOBALS['TYPO3_DB']->exec_UPDATEquery ($rateTable, 'uid = '.$rateUid, array($rateField => $currentRates));
-			$queryResult = $databaseConnection->exec_UPDATEquery ($rateTable, 'uid = '.$rateUid, array($rateField => $currentRates));
+			$queryResult = $this->databaseConnection->exec_UPDATEquery ($rateTable, 'uid = '.$rateUid, array($rateField => $currentRates));
 			return !empty($queryResult);
 		} else {
 			$this->logger->log(	\TYPO3\CMS\Core\Log\LogLevel::NOTICE, 'Foreign ratefield does not exist in ratetable',
