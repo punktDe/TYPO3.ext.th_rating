@@ -1084,7 +1084,14 @@ class VoteController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 			$databaseConnection = $this->objectManager->get('TYPO3\\CMS\\Dbal\\Database\\DatabaseConnection');
 			$rateTable = $rating->getRatingobject()->getRatetable();
 			$rateUid = $rating->getRatedobjectuid();
-			$currentRates = json_encode($rating->getCurrentrates());
+			$currentRatesArray = $rating->getCurrentrates();
+			If (empty($this->settings['foreignFieldArrayUpdate'])) {
+				//do update using DOUBLE value
+				$currentRates = round($currentRatesArray['currentrate'], 2);
+			} else {
+				//do update using whole currentrates JSON array
+				$currentRates = json_encode($currentRatesArray);
+			}
 			//do update foreign table
 			//old way disabled $queryResult = $GLOBALS['TYPO3_DB']->exec_UPDATEquery ($rateTable, 'uid = '.$rateUid, array($rateField => $currentRates));
 			$queryResult = $databaseConnection->exec_UPDATEquery ($rateTable, 'uid = '.$rateUid, array($rateField => $currentRates));
