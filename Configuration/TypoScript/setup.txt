@@ -222,7 +222,7 @@ plugin.tx_thrating {
 # Include all needed javascript and CSS styles
 #########################################################################
 page {
-	includeJS {
+	includeJSFooter {
 		jquery = //ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js
 		jquery.compressed = 1
 		jquery.external = 1
