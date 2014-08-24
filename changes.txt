@@ -1,4 +1,6 @@
-- imagefile setting in ratingconfigurations now handles GIFBUILDER configuration
-- documentation is now rendered by sphinx project
-- Bug #60090: error in log : division by zero 
-- New feature: change given votes using setting enableReVote
+- new configuration settings.foreignFieldArrayUpdate
+- Bugfix: Update of foreign table fails
+- Bugfix: DefaultLayout had typo in condition check
+- Bugfix in setForeignRatingValues()
+- Removed deprecated constant settings.storagePid
+- moved extension javascript to the footer
