@@ -1,6 +1,3 @@
-- new configuration settings.foreignFieldArrayUpdate
-- Bugfix: Update of foreign table fails
-- Bugfix: DefaultLayout had typo in condition check
-- Bugfix in setForeignRatingValues()
-- Removed deprecated constant settings.storagePid
-- moved extension javascript to the footer
+- first stable version
+- dropped support vor TYPO3 > 6.2
+- raised compatibility up to PHP 5.5.x
