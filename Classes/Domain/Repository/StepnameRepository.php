@@ -131,11 +131,10 @@ class StepnameRepository extends \TYPO3\CMS\Extbase\Persistence\Repository {
 		 ********************************************************************************************************
 		$query = $this->createQuery();
 		$query	->getQuerySettings()->setRespectSysLanguage(FALSE);
-		$query	->getQuerySettings()->setReturnRawQueryResult(TRUE);
 		$query	->matching(
 						$query->equals('stepconf', $stepname->getStepconf()->getUid())
 					);
-		$queryResult = $query->execute()->toArray();*/
+		$queryResult = $query->execute(TRUE)->toArray();  //instead of setReturnRawQueryResult(TRUE); */
 		$where = 'stepconf='.$stepname->getStepconf()->getUid() . \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::enableFields('tx_thrating_domain_model_stepname');
 		$databaseConnection = $this->objectManager->get('TYPO3\\CMS\\Dbal\\Database\\DatabaseConnection');
 		//old way disabled  $queryResult = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('*', 'tx_thrating_domain_model_stepname', $where);
