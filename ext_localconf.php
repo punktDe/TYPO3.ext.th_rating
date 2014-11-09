@@ -49,11 +49,4 @@ $GLOBALS['TYPO3_CONF_VARS']['LOG']['Thucke']['ThRating']['writerConfiguration'] 
 //$signalSlotDispatcher = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\SignalSlot\\Dispatcher');
 //$signalSlotDispatcher->connect('Thucke\\ThRating\\Controller\\VoteController', 'afterRatinglinkAction', 'Thucke\\ThRating\\Controller\\VoteController', 'afterRatinglinkActionHandler',FALSE);
 //$signalSlotDispatcher->connect('Thucke\\ThRating\\Controller\\VoteController', 'afterCreateAction', 'Thucke\\ThRating\\Controller\\VoteController', 'afterCreateActionHandler',FALSE);
-
-// Add database table optimization collection task
-$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks']['Thucke\\ThRating\\Task\\DatabaseTableOptimizationTask'] = array(
-        'extension' => $_EXTKEY,
-        'title' => 'Database table optimization',
-        'description' => 'Use only on Innodb tables on mysql db: Does an optimize table for every table in the database an frees up space.',
-);
 ?>
