@@ -1,5 +1,7 @@
 plugin.tx_thrating {
 	config {
+		# cat=plugin.tx_thrating/enable/b; type=boolean; label=Load jQuery by this extension
+		loadJQuery = 1
 		# cat=plugin.tx_thrating//b; type=int; label=Map anonymous votings to FEUser Uid (global setting)
 		mapAnonymous = 0
 		# cat=plugin.tx_thrating/enable/b; type=boolean; label=Info on not logged in user: make message visible (set to 1 - global setting)

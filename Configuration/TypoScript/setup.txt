@@ -221,12 +221,18 @@ plugin.tx_thrating {
 #########################################################################
 # Include all needed javascript and CSS styles
 #########################################################################
+#include only if it is wanted by configuration
+[globalVar = LIT:1 = {$plugin.tx_thrating.config.loadJQuery}]
+page.includeJSFooterlibs {
+	jquery = //ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js
+	jquery.compressed = 1
+	jquery.external = 1
+	jquery.forceOnTop = 1
+}
+
+[global]
 page {
 	includeJSFooter {
-		jquery = //ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js
-		jquery.compressed = 1
-		jquery.external = 1
-		jquery.forceOnTop = 1
 		jQueryFormPlugin = EXT:th_rating/Resources/Public/JavaScript/jquery.form.js
 		actions = EXT:th_rating/Resources/Public/JavaScript/actions.js
 	}
@@ -235,6 +241,7 @@ page {
 		thRating = EXT:th_rating/Resources/Public/Css/styles.css
 	}
 }
+
 
 
 #########################################################################

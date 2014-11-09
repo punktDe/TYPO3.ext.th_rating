@@ -1,3 +1,1 @@
-- first stable version
-- dropped support vor TYPO3 > 6.2
-- raised compatibility up to PHP 5.5.x
+- added constant {$plugin.tx_thrating.config.loadJQuery} to prevent jQuery from loading
