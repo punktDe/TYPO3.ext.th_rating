@@ -200,8 +200,12 @@ class VoteController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 			$this->logger->log(	\TYPO3\CMS\Core\Log\LogLevel::DEBUG, 'Set id for AJAX requests', $this->ajaxSelections);
 		}
 
+		if ( !is_array($frameworkConfiguration['ratings']) ) {
+			$frameworkConfiguration['ratings'] = array();
+		}	
         if (\TYPO3\CMS\Core\Utility\VersionNumberUtility::convertVersionNumberToInteger(TYPO3_version) < 6002004) {
-            $this->settings['ratingConfigurations'] = \TYPO3\CMS\Core\Utility\GeneralUtility::array_merge_recursive_overrule($this->settings['ratingConfigurations'], $frameworkConfiguration['ratings']);
+            \TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule($this->settings['ratingConfigurations'], $frameworkConfiguration['ratings']);
+            //$this->settings['ratingConfigurations'] = \TYPO3\CMS\Core\Utility\GeneralUtility::array_merge_recursive_overrule($this->settings['ratingConfigurations'], $frameworkConfiguration['ratings']);
         } else {
             \TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule($this->settings['ratingConfigurations'], $frameworkConfiguration['ratings']);
 		}
@@ -664,14 +668,17 @@ class VoteController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 		if ( is_array($ratingConfiguration['settings']) ) {
 			unset($ratingConfiguration['settings']['defaultObject']);
 			unset($ratingConfiguration['settings']['ratingConfigurations']);
-			$this->settings = \TYPO3\CMS\Core\Utility\GeneralUtility::array_merge_recursive_overrule($this->settings, $ratingConfiguration['settings']);
+			if ( !is_array($ratingConfiguration['ratings'] )) {
+				$ratingConfiguration['ratings'] = array();
+			}	
+            \TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule($this->settings, $ratingConfiguration['ratings']);
 			$this->logger->log(	\TYPO3\CMS\Core\Log\LogLevel::DEBUG, 
 								'Override extension settings with rating configuration settings', 
 								array("Original setting" => $this->settings, "Overruling settings" => $ratingConfiguration['settings']));
 		}
 		//override fluid settings with rating fluid settings
 		if (is_array($ratingConfiguration['fluid'])) {
-			$this->settings['fluid'] = \TYPO3\CMS\Core\Utility\GeneralUtility::array_merge_recursive_overrule($this->settings['fluid'], $ratingConfiguration['fluid']);
+            \TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule($this->settings['fluid'], $ratingConfiguration['fluid']);
 			$this->logger->log(	\TYPO3\CMS\Core\Log\LogLevel::DEBUG, 'Override fluid settings with rating fluid settings', array());
 		}
 		$this->logger->log(	\TYPO3\CMS\Core\Log\LogLevel::INFO, 'Final extension configuration',
