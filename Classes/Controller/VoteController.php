@@ -1072,34 +1072,6 @@ class VoteController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 	}
 
 	/**
-	 * Adds a flash message to the messaging queue
-	 *
-	 * TODO backport from version TYPO3 6.2 - remove when support for 6.1 is dropped
-	 *
-	 * $messageText		string 	The message
-	 * $messageTitle 	string	The header of the message
-	 * $severity		string 	Logging severity
-	 * $storeInSession	boolean
-	 * @return	void
-	 */
-	public function addFlashMessage($messageBody, $messageTitle = '', $severity = \TYPO3\CMS\Core\Messaging\AbstractMessage::OK, $storeInSession = TRUE) {
-		If ( \TYPO3\CMS\Core\Utility\VersionNumberUtility::convertVersionNumberToInteger(TYPO3_version) >= 6002000  && is_object($this->controllerContext)) {
-			parent::addFlashMessage($messageBody, $messageTitle, $severity, $storeInSession);
-		} else {
-			if (!is_string($messageBody)) {
-					throw new \InvalidArgumentException('The message body must be of type string, "' . gettype($messageBody) . '" given.', 1243258395);
-				}
-			/* @var \TYPO3\CMS\Core\Messaging\FlashMessage $flashMessage */
-			$flashMessage = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(
-					'TYPO3\\CMS\\Core\\Messaging\\FlashMessage', $messageBody, $messageTitle, $severity, $storeInSession
-			);
-			if ( is_object($this->controllerContext) ) {
-				$this->controllerContext->getFlashMessageQueue()->enqueue($flashMessage);
-			}
-		}
-	}
-
-	/**
 	 * Sets the rating values in the foreign table
 	 * Recommended field type is VARCHAR(255)
 	 *
