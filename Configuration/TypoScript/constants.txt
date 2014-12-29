@@ -13,12 +13,4 @@ plugin.tx_thrating {
 		# cat=plugin.tx_thrating//a; type=int; label=FE Users and Groups [pid]: Enter the PID where website users and groups are stored
 		feUserStoragePid = 0
 	}
-	view {
-		 # cat=plugin.tx_thrating/file; type=string; label=Path to template root (FE)
-		templateRootPath = EXT:th_rating/Resources/Private/Templates/
-		 # cat=plugin.tx_thrating/file; type=string; label=Path to template partials (FE)
-		partialRootPath = EXT:th_rating/Resources/Private/Partials/
-		 # cat=plugin.tx_thrating/file; type=string; label=Path to template layouts (FE)
-		layoutRootPath = EXT:th_rating/Resources/Private/Layouts/
-	}
 }

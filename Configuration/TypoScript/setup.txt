@@ -75,9 +75,18 @@ plugin.tx_thrating {
 		}
 	}
 	view {
-		templateRootPath = {$plugin.tx_thrating.view.templateRootPath}
-		partialRootPath = {$plugin.tx_thrating.view.partialRootPath}
-		layoutRootPath = {$plugin.tx_thrating.view.layoutRootPath}
+		templateRootPath >
+		templateRootPaths {
+			0 = EXT:th_rating/Resources/Private/Templates/
+		}
+		partialRootPath >
+		partialRootPaths {
+			0 = EXT:th_rating/Resources/Private/Partials/
+		}
+		layoutRootPath >
+		layoutRootPaths {
+			0 = EXT:th_rating/Resources/Private/Layouts/
+		}
 	}
 	
 	# This is an example how to modify the translation
