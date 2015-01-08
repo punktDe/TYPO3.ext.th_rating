@@ -12,14 +12,18 @@
 	background-color: #a7a7a7;
 	border:0px solid black;
 }
+
+/* TODO: Remove .message-header when support for TYPO3 6.2 has dropped */
 .tx-thrating-singleton-message h4,
 .tx-thrating-singleton-message .message-header{
 	padding:3px;
+	margin:0;
 	background-color: #f87575;
     border: 1px dotted grey;
 	padding:1px;
 	font-weight:bold;
 }
+/* TODO: Remove .message-body when support for TYPO3 6.2 has dropped */
 .tx-thrating-singleton-message .alert-body,
 .tx-thrating-singleton-message .message-body{
 	padding:3px;
@@ -161,10 +165,12 @@ div.tx-thrating-ratinglinks ul{
     -moz-border-radius:0.5em;
     box-shadow: 6px 6px 4px #6B6A6A;
 }
+/* TODO: Remove .message-header when support for TYPO3 6.2 has dropped */
 .tx-thrating-flash-message h4,
 .tx-thrating-flash-message .message-header{
     border: 1px dotted grey;
 	padding:1px;
+	margin:0;
 	font-weight:bold;
     -webkit-border-top-left-radius:0.4em;
     -webkit-border-top-right-radius:0.4em;
@@ -179,34 +185,43 @@ div.tx-thrating-ratinglinks ul{
     border-bottom-right-radius: 0.2em;
     border-bottom-left-radius: 0.2em;
 }
+/* TODO: Remove .message-header when support for TYPO3 6.2 has dropped */
 .tx-thrating-flash-message .alert-danger h4,
 .tx-thrating-flash-message .message-error .message-header {
 	background-color: #f87575;
     border: 1px dotted grey;
 	padding:1px;
+	margin:0;
 	font-weight:bold;
 }
+/* TODO: Remove .message-header when support for TYPO3 6.2 has dropped */
 .tx-thrating-flash-message .alert-warning h4,
 .tx-thrating-flash-message .message-warning .message-header{
 	background-color: #ffff00;
     border: 1px dotted grey;
 	padding:1px;
+	margin:0;
 	font-weight:bold;
 }
+/* TODO: Remove .message-header when support for TYPO3 6.2 has dropped */
 .tx-thrating-flash-message .alert-notice h4,
 .tx-thrating-flash-message .message-notice .message-header{
 	background-color: #62aeff;
     border: 1px dotted blue;
 	padding:1px;
+	margin:0;
 	font-weight:bold;
 }
+/* TODO: Remove .message-header when support for TYPO3 6.2 has dropped */
 .tx-thrating-flash-message .alert-success h4,
 .tx-thrating-flash-message .message-ok .message-header{
 	background-color: #1bee1b;
     border: 1px dotted grey;
 	padding:1px;
+	margin:0;
 	font-weight:bold;
 }
+/* TODO: Remove .message-body when support for TYPO3 6.2 has dropped */
 .tx-thrating-flash-message .alert-body,
 .tx-thrating-flash-message .message-body{
 	padding-top:3px;
