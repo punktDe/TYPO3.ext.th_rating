@@ -52,7 +52,7 @@ class RatingImage extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	 */
 	protected $conf;
 	/**
-	 * @var \TYPO3\CMS\Frontend\Imaging\GifBuilder $gifBuilder
+	 * @var \TYPO3\CMS\Frontend\Imaging\GifBuilder
 	 */
 	protected $gifBuilder;
 	/**
@@ -80,7 +80,6 @@ class RatingImage extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	 * @return void
 	 */
 	 public function initializeObject() {
-		parent::initializeObject();
 		if ( empty($this->gifBuilder) ) {
 			$this->injectGifBuilder(\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\Imaging\\GifBuilder'));
 		}

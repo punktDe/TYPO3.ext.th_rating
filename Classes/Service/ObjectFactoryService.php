@@ -187,7 +187,7 @@ class ObjectFactoryService extends \Thucke\ThRating\Service\AbstractExtensionSer
 		if ( !empty($settings['rating']) ) {
 			//fetch rating when it is configured
 			$rating = $this->ratingRepository->findByUid($settings['rating']);
-		} elseif ( $this->objectManager->get('Thucke\\ThRating\\Domain\\Validator\\RatingobjectValidator')->isValid($ratingobject) && $settings['ratedobjectuid'] ) {
+		} elseif ( !$this->objectManager->get('Thucke\\ThRating\\Domain\\Validator\\RatingobjectValidator')->validate($ratingobject)->hasErrors() && $settings['ratedobjectuid'] ) {
 			//get rating according to given row
 			$rating = $this->ratingRepository->findMatchingObjectAndUid($ratingobject, $settings['ratedobjectuid'], \Thucke\ThRating\Domain\Repository\RatingRepository::addIfNotFound);
 		} else {
@@ -227,9 +227,11 @@ class ObjectFactoryService extends \Thucke\ThRating\Service\AbstractExtensionSer
 			}
 		}
 		//voting not found in database or anonymous vote? - create new one
-		if ( !$this->objectManager->get('Thucke\\ThRating\\Domain\\Validator\\VoteValidator')->isValid($vote) ) {
+		$voteValidator = $this->objectManager->get('Thucke\\ThRating\\Domain\\Validator\\VoteValidator');
+		if ( !$voteValidator->isObjSet($vote) || $voteValidator->validate($vote)->hasErrors() ) {
 			$vote = $this->objectManager->get('Thucke\\ThRating\\Domain\\Model\\Vote');
-			if ( $this->objectManager->get('Thucke\\ThRating\\Domain\\Validator\\RatingValidator')->isValid($rating) ) {
+			$ratingValidator = $this->objectManager->get('Thucke\\ThRating\\Domain\\Validator\\RatingValidator');
+			if ( $ratingValidator->isObjSet($rating) && !$ratingValidator->validate($rating)->hasErrors() ) {
 				$vote->setRating($rating);
 			}
 			if ($voter instanceof \Thucke\ThRating\Domain\Model\Voter) {

@@ -1,4 +1,5 @@
-<div class="tx-thrating-pi1-content {settings.ratingContext}" id='tx-thrating-pi1-{ajaxRef}'>
+<f:if condition="{ajaxRef}"><f:then>
+<div class="tx-thrating-pi1-content {settings.ratingContext}" id='{ajaxRef}'>
 <f:if condition="{staticPreContent}"><f:then>
 	<div class='tx-thrating-staticPreContent'><f:format.raw>{staticPreContent}</f:format.raw></div>
 </f:then></f:if>
@@ -52,6 +53,7 @@
 		<f:flashMessages renderMode="div" />
 	</div>
 </div>
+</f:then></f:if>
 <f:comment><!--
 Rating: <f:format.number decimals="1" decimalSeparator="," thousandsSeparator=".">{currentRates}</f:format.number> of {stepCount}. <f:count>{rating.votes}</f:count> vote(s).
 *************************************************************************************************

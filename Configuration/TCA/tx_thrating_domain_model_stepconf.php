@@ -75,6 +75,7 @@ $GLOBALS['TCA']['tx_thrating_domain_model_stepconf'] =  array(
 				'type' => 'inline',
 				'foreign_table' => 'tx_thrating_domain_model_stepname',
 				'foreign_field' => 'stepconf',
+				'foreign_unique' => 'sys_language_uid',
 				'foreign_default_sortby' => 'sys_language_uid',
 				'maxitems'      => 999999,
 				'appearance' => array(
@@ -90,6 +91,7 @@ $GLOBALS['TCA']['tx_thrating_domain_model_stepconf'] =  array(
 				),
 				'behaviour' => array(
 					'localizationMode' => 'select',
+					'enableCascadingDelete' => TRUE,
 				),
 			),
 		),

@@ -36,7 +36,7 @@ class Stepconf extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 
 	
 	/**
-	 * @var \Thucke\ThRating\Domain\Model\Ratingobject	The ratingobject this rating belongs to
+	 * @var \Thucke\ThRating\Domain\Model\Ratingobject
 	 * @validate \Thucke\ThRating\Domain\Validator\RatingobjectValidator
 	 */
 	protected $ratingobject;
@@ -63,6 +63,7 @@ class Stepconf extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	 *
 	 * @var \Thucke\ThRating\Domain\Model\Stepname
 	 * @validate \Thucke\ThRating\Domain\Validator\StepnameValidator
+	 * @lazy
 	 * @cascade remove
 	 */
 	protected $stepname;
@@ -72,7 +73,6 @@ class Stepconf extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	 * The ratings of this object
 	 *
 	 * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Thucke\ThRating\Domain\Model\Vote>
-	 * @validate \Thucke\ThRating\Domain\Validator\VoteValidator
 	 * @lazy
 	 * @cascade remove
 	 */
@@ -130,8 +130,6 @@ class Stepconf extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	 * @return void
 	 */
 	public function initializeObject() {
-		parent::initializeObject();
-
 		//Initialize vote storage if rating is new
 		if (!is_object($this->votes)) {
 			$this->votes = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
@@ -153,7 +151,7 @@ class Stepconf extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	/**
 	 * Returns the ratingobject this rating is part of
 	 *
-	 * @return	\Thucke\ThRating\Domain\Model\Ratingobject The ratingobject this rating is part of
+	 * @return \Thucke\ThRating\Domain\Model\Ratingobject The ratingobject this rating is part of
 	 */
 	public function getRatingobject() {
 		return $this->ratingobject;
@@ -220,8 +218,8 @@ class Stepconf extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 			
 			}
 			$this->stepnameRepository->add($stepname);
-			$this->objectFactoryService->persistRepository('\Thucke\ThRating\Domain\Repository\StepnameRepository', $stepname);
-			$this->objectFactoryService->persistRepository('\Thucke\ThRating\Domain\Repository\StepconfRepository', $this);
+			$this->objectFactoryService->persistRepository('Thucke\ThRating\Domain\Repository\StepnameRepository', $stepname);
+			$this->objectFactoryService->persistRepository('Thucke\ThRating\Domain\Repository\StepconfRepository', $this);
 		} else {
 			//warning - existing stepname entry for a language will not be overwritten
 			$success = FALSE;
@@ -232,9 +230,12 @@ class Stepconf extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	/**
 	 * Returns the localized stepname object of this stepconf
 	 * 
-	 * @return string
+	 * @return \Thucke\ThRating\Domain\Model\Stepname
 	 */
 	public function getStepname() {
+		if ( $this->stepname instanceOf \TYPO3\CMS\Extbase\Persistence\Generic\LazyLoadingProxy ) {
+			$stepname = $this->stepname->_loadRealInstance();
+		}
 		return $this->stepname;
 	}
 	
@@ -263,8 +264,8 @@ class Stepconf extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	 * @return string
 	 */
 	public function __toString() {
-		if ( $this->stepname instanceOf \Thucke\ThRating\Domain\Model\Stepname ) {
-			$stepname = $this->getStepname();
+		$stepname = $this->getStepname();
+		if ( $stepname ) {
 		} else {
 			$stepname = $this->getSteporder();
 		}

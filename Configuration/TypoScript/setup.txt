@@ -102,6 +102,7 @@ plugin.tx_thrating {
 # Static extension configuration - do not override!!					#
 #########################################################################
 plugin.tx_thrating {
+	persistence.enhancedLazyLoadingStrategy = 0
 	settings {
 		showNoFEUser = {$plugin.tx_thrating.config.showNoFEUser}
 		mapAnonymous = {$plugin.tx_thrating.config.mapAnonymous}
@@ -243,7 +244,9 @@ page.includeJSFooterlibs {
 page {
 	includeJSFooter {
 		jQueryFormPlugin = EXT:th_rating/Resources/Public/JavaScript/jquery.form.js
+		jQueryFormPlugin.async = 0
 		actions = EXT:th_rating/Resources/Public/JavaScript/actions.js
+		actions.async = 0
 	}
 	includeCSS {
 		thRatingdyn = typo3temp/thratingDyn.css

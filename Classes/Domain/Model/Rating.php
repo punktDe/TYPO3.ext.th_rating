@@ -37,7 +37,7 @@ class Rating extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	//TODO check deleted referenced records
 	
 	/**
-	 * @var \Thucke\ThRating\Domain\Model\Ratingobject	The ratingobject this rating belongs to
+	 * @var \Thucke\ThRating\Domain\Model\Ratingobject
 	 * @validate \Thucke\ThRating\Domain\Validator\RatingobjectValidator
 	 */
 	protected $ratingobject;
@@ -60,7 +60,7 @@ class Rating extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	protected $votes;
 
 	/**
-	 * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface	$objectManager
+	 * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface
 	 */
 	protected $objectManager;
 	/**
@@ -72,7 +72,7 @@ class Rating extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	}
 
 	/**
-	 * @var \Thucke\ThRating\Domain\Repository\VoteRepository	$voteRepository
+	 * @var \Thucke\ThRating\Domain\Repository\VoteRepository
 	 */
 	protected $voteRepository;
 	/**
@@ -84,7 +84,7 @@ class Rating extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	}
 
 	/**
-	 * @var \Thucke\ThRating\Service\ObjectFactoryService $objectFactoryService
+	 * @var \Thucke\ThRating\Service\ObjectFactoryService
 	 */
 	protected $objectFactoryService;
 	/**
@@ -107,8 +107,7 @@ class Rating extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	 *	currentrate = (  sum of all ( stepweight(n) * votecounts(n) ) ) / number of all votes
 	 *	currentwidth = round (currentrate * 100 / number of ratingsteps, 1)
 	 *
-	 * @var string	JSON encoded rating summary
-	 * @lazy
+	 * @var string
 	 */
 	protected $currentrates;
 	
@@ -133,7 +132,6 @@ class Rating extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	 * @return void
 	 */
 	public function initializeObject() {
-		parent::initializeObject();
 		
 		if ( empty($this->objectManager) ) {
 			$this->objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
@@ -194,7 +192,7 @@ class Rating extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	public function addVote(\Thucke\ThRating\Domain\Model\Vote $vote) {
 		$this->votes->attach($vote);
 		$this->addCurrentrate($vote);
-		$this->objectFactoryService->persistRepository('\Thucke\ThRating\Domain\Repository\VoteRepository', $vote);
+		$this->objectFactoryService->persistRepository('Thucke\ThRating\Domain\Repository\VoteRepository', $vote);
 	}
 
 	/**
@@ -208,7 +206,7 @@ class Rating extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 		$this->removeCurrentrate($existingVote);
 		$existingVote->setVote($newVote->getVote());
 		$this->addCurrentrate($existingVote);
-		$this->objectFactoryService->persistRepository('\Thucke\ThRating\Domain\Repository\VoteRepository', $existingVote);
+		$this->objectFactoryService->persistRepository('Thucke\ThRating\Domain\Repository\VoteRepository', $existingVote);
 	}
 
 	/**

@@ -72,11 +72,10 @@ class RatingobjectRepository extends \TYPO3\CMS\Extbase\Persistence\Repository {
 				$foundRow = $this->objectManager->get('Thucke\\ThRating\\Domain\\Model\\Ratingobject');
 				$foundRow->setRatetable($ratetable);
 				$foundRow->setRatefield($ratefield);
-				$validator = $this->objectManager->get('Thucke\\ThRating\\Domain\\Validator\\RatingobjectValidator');
-				if ($validator->isValid($foundRow)) {
+				if (!$this->objectManager->get('Thucke\\ThRating\\Domain\\Validator\\RatingobjectValidator')->validate($foundRow)->hasErrors()) {
 					$this->add($foundRow);
 				}
-				$this->objectFactoryService->persistRepository('Thucke\\ThRating\\Domain\\Repository\\RatingobjectRepository', $foundRow);
+				$this->objectFactoryService->persistRepository('Thucke\ThRating\Domain\Repository\RatingobjectRepository', $foundRow);
 				$foundRow = $this->findMatchingTableAndField($ratetable, $ratefield);
 			} else {
 				unset($foundRow);

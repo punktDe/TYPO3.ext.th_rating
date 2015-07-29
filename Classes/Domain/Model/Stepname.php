@@ -35,7 +35,7 @@ namespace Thucke\ThRating\Domain\Model;
 class Stepname extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 
 	/**
-	 * @var \Thucke\ThRating\Domain\Model\Stepconf	The Stepconf this name belongs to
+	 * @var \Thucke\ThRating\Domain\Model\Stepconf
 	 * @validate \Thucke\ThRating\Domain\Validator\StepconfValidator
 	 */
 	protected $stepconf;
@@ -78,7 +78,7 @@ class Stepname extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	 * @return void
 	 */
 	public function initializeObject() {
-		parent::initializeObject();
+		//\TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump($this,get_class($this).' initializeObject');
 	}
 	
 	

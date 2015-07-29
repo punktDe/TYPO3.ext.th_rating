@@ -36,32 +36,43 @@ namespace Thucke\ThRating\Domain\Validator;
 class VoteValidator extends \TYPO3\CMS\Extbase\Validation\Validator\AbstractValidator {
 
 	/**
+	 * This contains the supported options, their default values, types and descriptions.
+	 *
+	 * @var array
+	 */
+	protected $supportedOptions = array();
+
+	/**
 	 * If the given Vote is valid
 	 *
 	 * @param \Thucke\ThRating\Domain\Model\Vote $vote The vote
-	 * @return boolean true
+	 * @return void
 	 */
 	public function isValid($vote) {
-		//a vote object must be given
-		if (!$vote instanceof \Thucke\ThRating\Domain\Model\Vote) {
-			return FALSE;
-		} 
 		//a vote object must have a vote
 		if (!$vote->getVote() instanceof \Thucke\ThRating\Domain\Model\Stepconf) {
 			$this->addError(\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('error.validator.vote.vote', 'ThRating'), 1283537235);
-			return FALSE;
+		} else {
+			//a vote must have a valid voter
+			if (!$vote->getVoter() instanceof \Thucke\ThRating\Domain\Model\Voter) {
+				$this->addError(\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('error.validator.vote.voter', 'ThRating'), 1283540684);
+			}
+			//check if the given vote is a valid step for this ratingobject
+			if (!$vote->getRating()->getRatingobject()->getStepconfs()->contains($vote->getVote())) {
+				$this->addError(\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('error.validator.vote.stepconf', 'ThRating'), 1283612492);
+			}
 		}
-		//a vote must have a valid voter
-		if (!$vote->getVoter() instanceof \Thucke\ThRating\Domain\Model\Voter) {
-			$this->addError(\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('error.validator.vote.voter', 'ThRating'), 1283540684);
-			return FALSE;
-		}
-		//check if the given vote is a valid step for this ratingobject
-		if (!$vote->getRating()->getRatingobject()->getStepconfs()->contains($vote->getVote())) {
-			$this->addError(\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('error.validator.vote.stepconf', 'ThRating'), 1283612492);
-			return FALSE;
-		}
-		return TRUE;
+	}
+	
+	/**
+	 * If the given Vote is set
+	 *
+	 * @param \Thucke\ThRating\Domain\Model\Vote $vote The vote
+	 * @return boolean
+	 */
+	public function isObjSet($vote) {
+		return (!$this->isEmpty($vote) && 
+				$vote instanceof \Thucke\ThRating\Domain\Model\Vote);
 	}
 }
 ?>

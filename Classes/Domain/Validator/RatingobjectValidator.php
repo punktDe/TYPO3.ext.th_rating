@@ -39,20 +39,17 @@ class RatingobjectValidator extends \TYPO3\CMS\Extbase\Validation\Validator\Abst
 	 * If the given Ratingobject is valid
 	 *
 	 * @param \Thucke\ThRating\Domain\Model\Ratingobject $ratingobject The ratingobject
-	 * @return boolean true
+	 * @return void
 	 */
 	public function isValid($ratingobject) {
 		$ratetable = $ratingobject->getRatetable();
 		$ratefield = $ratingobject->getRatefield();
 		if (empty($ratetable)) {
 			$this->addError(\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('error.validator.ratingobject_table_extbase', 'ThRating'), 1283528638);
-			return FALSE;
 		}
 		if (empty($ratefield)) {
 			$this->addError(\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('error.validator.ratingobject_field_extbase', 'ThRating'), 1283536038);
-			return FALSE;
 		}
-		return TRUE;
 	}
 }
 ?>

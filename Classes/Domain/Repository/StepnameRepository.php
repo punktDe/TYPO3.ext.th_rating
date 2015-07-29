@@ -35,8 +35,8 @@ class StepnameRepository extends \TYPO3\CMS\Extbase\Persistence\Repository {
 	 * Initialze this repository
 	 */
 	public function initializeObject() {
-		$configurationManager = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Configuration\\ConfigurationManager');
-		$settings = $configurationManager->getConfiguration('Settings', 'thRating', 'pi1');
+		/*$configurationManager = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Configuration\\ConfigurationManager');
+		$settings = $configurationManager->getConfiguration('Settings', 'thRating', 'pi1'); */
 	}
 
 
@@ -183,10 +183,10 @@ class StepnameRepository extends \TYPO3\CMS\Extbase\Persistence\Repository {
 	 * @return	void
 	 */
 	public function clearQuerySettings() {
-		$this->defaultQuerySettings = $this->objectManager->create('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Typo3QuerySettings');
-		$this->defaultQuerySettings->setRespectSysLanguage(FALSE);
-		$this->defaultQuerySettings->setIgnoreEnableFields(TRUE);
+		$querySettings = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Typo3QuerySettings');
+		$querySettings->setRespectSysLanguage(FALSE);
+		$querySettings->setIgnoreEnableFields(TRUE);
+		$this->setDefaultQuerySettings($querySettings);
 	}
-	
 }
 ?>

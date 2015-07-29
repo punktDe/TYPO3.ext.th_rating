@@ -72,7 +72,7 @@ class Ratingobject extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	protected $ratings;
 	
 	/**
-	 * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface	$objectManager
+	 * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface
 	 */
 	protected $objectManager;
 	/**
@@ -84,7 +84,7 @@ class Ratingobject extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	}
 
 	/**
-	 * @var \Thucke\ThRating\Domain\Repository\StepconfRepository	$stepconfRepository
+	 * @var \Thucke\ThRating\Domain\Repository\StepconfRepository
 	 */
 	protected $stepconfRepository;
 	/**
@@ -96,7 +96,7 @@ class Ratingobject extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	}
 
 	/**
-	 * @var \Thucke\ThRating\Service\ObjectFactoryService $objectFactoryService
+	 * @var \Thucke\ThRating\Service\ObjectFactoryService
 	 */
 	protected $objectFactoryService;
 	/**
@@ -126,7 +126,6 @@ class Ratingobject extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	 * @return void
 	 */
 	public function initializeObject() {
-		parent::initializeObject();
 
 		//Initialize rating storage if ratingobject is new
 		if (!is_object($this->ratings)) {
@@ -184,7 +183,7 @@ class Ratingobject extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	 */
 	public function addRating(\Thucke\ThRating\Domain\Model\Rating $rating) {
 		$this->ratings->attach($rating);
-		$this->objectFactoryService->persistRepository('\Thucke\ThRating\Domain\Repository\RatingRepository', $rating);
+		$this->objectFactoryService->persistRepository('Thucke\ThRating\Domain\Repository\RatingRepository', $rating);
 	}
 
 	/**
@@ -215,7 +214,7 @@ class Ratingobject extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	public function addStepconf(\Thucke\ThRating\Domain\Model\Stepconf $stepconf) {
 		If (!$this->stepconfRepository->existStepconf($stepconf)) {
 			$this->stepconfs->attach( $stepconf );
-			$this->objectFactoryService->persistRepository('\Thucke\ThRating\Domain\Repository\StepconfRepository', $stepconf);
+			$this->objectFactoryService->persistRepository('Thucke\ThRating\Domain\Repository\StepconfRepository', $stepconf);
 		}
 	}
 

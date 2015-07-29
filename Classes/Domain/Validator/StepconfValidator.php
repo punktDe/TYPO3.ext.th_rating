@@ -64,7 +64,7 @@ class StepconfValidator extends \TYPO3\CMS\Extbase\Validation\Validator\Abstract
 	 * If the given step is valid
 	 *
 	 * @param \Thucke\ThRating\Domain\Model\Stepconf $stepconf
-	 * @return boolean
+	 * @return void
 	 */
 	public function isValid($stepconf) {
 		//a stepconf object must have a ratingobject
@@ -117,7 +117,16 @@ class StepconfValidator extends \TYPO3\CMS\Extbase\Validation\Validator\Abstract
 				return FALSE;
 			}		
 		}
-		return TRUE;
+	}
+	
+	/**
+	 * If the given step is set
+	 *
+	 * @param \Thucke\ThRating\Domain\Model\Stepconf $stepconf
+	 * @return boolean
+	 */
+	public function isObjSet($stepconf) {
+		return (!$this->isEmpty($stepconf) && $stepconf instanceof \Thucke\ThRating\Domain\Model\Stepconf);
 	}
 }
 ?>

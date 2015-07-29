@@ -61,7 +61,7 @@ class Vote extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	protected $settings;
 
 	/**
-	 * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface	$objectManager
+	 * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface
 	 */
 	protected $objectManager;
 	/**
@@ -93,11 +93,11 @@ class Vote extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	 * @return void
 	 */
 	 public function initializeObject() {
-		parent::initializeObject();
 		if ( empty($this->objectManager) ) {
 			$this->objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
 		}
 		$this->settings = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Configuration\\ConfigurationManager')->getConfiguration('Settings', 'thRating', 'pi1');
+		//\TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump($this,get_class($this).' initializeObject');
 	 }
 	 
 

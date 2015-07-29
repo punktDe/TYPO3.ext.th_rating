@@ -39,13 +39,9 @@ class RatingValidator extends \TYPO3\CMS\Extbase\Validation\Validator\AbstractVa
 	 * If the given Rating is valid
 	 *
 	 * @param \Thucke\ThRating\Domain\Model\Rating $rating The rating
-	 * @return boolean true
+	 * @return void
 	 */
 	public function isValid($rating) {
-		//a rating object must be given
-		if (!$rating instanceof \Thucke\ThRating\Domain\Model\Rating) {
-			return FALSE;
-		} 
 		$ratedobjectuid = $rating->getRatedobjectuid();
 		if (empty($ratedobjectuid)) {
 			$this->addError(\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('error.validator.rating.ratedobjectuid', 'ThRating'), 1283536994);
@@ -56,6 +52,16 @@ class RatingValidator extends \TYPO3\CMS\Extbase\Validation\Validator\AbstractVa
 			return FALSE;
 		}
 		return TRUE;
+	}
+	
+	/**
+	 * If the given Rating is set
+	 *
+	 * @param \Thucke\ThRating\Domain\Model\Rating $rating The rating
+	 * @return boolean
+	 */
+	public function isObjSet($rating) {
+		return (!$this->isEmpty($rating) && $rating instanceof \Thucke\ThRating\Domain\Model\Rating);
 	}
 }
 ?>
