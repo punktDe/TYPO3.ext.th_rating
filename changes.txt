@@ -1,4 +1,5 @@
+- beta for TYPO3 7.4.x - choose version 1.0.2 if you want a stable one
 - fixed some deprecation logs
 - removed method addFlashMessage from VoteController
 - templateRootPaths, partialRootPaths and layoutRootPaths are now used in the new way instead of the old options
-- set compatibility to TYPO3 7.3.x
+- set compatibility to TYPO3 7.4.x
