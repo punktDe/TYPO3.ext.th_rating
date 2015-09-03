@@ -127,7 +127,8 @@ class ObjectFactoryService extends \Thucke\ThRating\Service\AbstractExtensionSer
 		} else {
 			if ( empty($settings['ratetable']) || empty($settings['ratefield']) ) {
 				//fallback to default configuration
-				$settings = array_merge($settings, $settings['defaultObject']);
+				//TODO delete deprected $settings = array_merge($settings, $settings['defaultObject']);
+				$settings = $settings['defaultObject'] + $settings;
 			}
 			$settings = $this->completeConfigurationSettings( $settings );		
 			$ratingobject = $this->ratingobjectRepository->findMatchingTableAndField($settings['ratetable'], $settings['ratefield'], \Thucke\ThRating\Domain\Repository\RatingobjectRepository::addIfNotFound);

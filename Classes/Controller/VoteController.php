@@ -379,7 +379,8 @@ class VoteController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 		
 		//Send signal to connected slots
 		$this->initSignalSlotDispatcher( 'afterCreateAction' );
-		$newArguments = \TYPO3\CMS\Core\Utility\GeneralUtility::array_merge($newArguments, array('signalSlotHandlerContent' => $this->signalSlotHandlerContent));
+		//TODO delete deprecated $newArguments = \TYPO3\CMS\Core\Utility\GeneralUtility::array_merge($newArguments, array('signalSlotHandlerContent' => $this->signalSlotHandlerContent));
+		$newArguments = array('signalSlotHandlerContent' => $this->signalSlotHandlerContent) + $newArguments;
 
 		$this->logger->log(	\TYPO3\CMS\Core\Log\LogLevel::DEBUG, 'Exit createAction - forwarding request',
 							array(
@@ -1050,7 +1051,8 @@ class VoteController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 										$messageTitle, 
 										$severity, 
 										array $additionalInfo) {
-		$additionalInfo = \TYPO3\CMS\Core\Utility\GeneralUtility::array_merge($additionalInfo, array('messageTitle' => $messageTitle));
+		//TODO delete deprecated $additionalInfo = \TYPO3\CMS\Core\Utility\GeneralUtility::array_merge($additionalInfo, array('messageTitle' => $messageTitle));
+		$additionalInfo = array('messageTitle' => $messageTitle) + $additionalInfo;
 		$severity = strtoupper($severity);
 		switch ($severity) {
 			case 'DEBUG' :
