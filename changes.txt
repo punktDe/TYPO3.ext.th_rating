@@ -1,5 +1,3 @@
-- beta for TYPO3 7.4.x - choose version 1.0.2 if you want a stable one
-- fixed some deprecation logs
-- removed method addFlashMessage from VoteController
-- templateRootPaths, partialRootPaths and layoutRootPaths are now used in the new way instead of the old options
-- set compatibility to TYPO3 7.4.x
+- beta for TYPO3 7.5.x - choose version 1.0.2 if you want a stable one
+- Feature #69902: Add composer.json according to https://github.com/helhum/ext_scaffold
+- Bug #69901: Exception "TYPO3\CMS\Core\Error\ErrorHandler::handleError(8192, "Non-static method Thucke\ThRating\Utility\TCALabel…atically, assuming $this from incompatible context" ...)
