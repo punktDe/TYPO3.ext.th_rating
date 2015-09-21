@@ -952,7 +952,7 @@ class VoteController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 					continue;
 				}
 				$subURI = substr(PATH_site, strlen($_SERVER['DOCUMENT_ROOT'])+1);
-				$basePath = $GLOBALS['TSFE']->baseUrl ? $GLOBALS['TSFE']->baseUrl : 'http://'.$_SERVER['HTTP_HOST'].'/'.$subURI;
+				$basePath = $GLOBALS['TSFE']->baseUrl ? $GLOBALS['TSFE']->baseUrl : '//'.$_SERVER['HTTP_HOST'].'/'.$subURI;
 
 				$this->ratingImage = $this->objectManager->get('Thucke\\ThRating\\Domain\\Model\\RatingImage',$ratingConfig['imagefile']);
 				$filename = $this->ratingImage->getImageFile();
