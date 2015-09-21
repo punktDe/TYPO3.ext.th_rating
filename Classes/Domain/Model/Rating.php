@@ -246,6 +246,8 @@ class Rating extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	 * @return void
 	 */
 	public function checkCurrentrates() {
+		$currentratesDecoded['weightedVotes'] = array();
+		$currentratesDecoded['sumWeightedVotes'] = array();
 		foreach ( $this->getRatingobject()->getStepconfs() as $stepConf ) {
 			$stepOrder = $stepConf->getSteporder();
 			$voteCount = $this->voteRepository->countByMatchingRatingAndVote($this, $stepConf);
