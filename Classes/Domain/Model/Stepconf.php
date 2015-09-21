@@ -38,6 +38,7 @@ class Stepconf extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	/**
 	 * @var \Thucke\ThRating\Domain\Model\Ratingobject
 	 * @validate \Thucke\ThRating\Domain\Validator\RatingobjectValidator
+	 * @validate NotEmpty
 	 */
 	protected $ratingobject;
 	
@@ -46,6 +47,7 @@ class Stepconf extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	 *
 	 * @var int discrete order of ratingsteps
 	 * @validate NumberRange(minimum = 1)
+	 * @validate NotEmpty
 	 */
 	protected $steporder;
 	
@@ -239,16 +241,6 @@ class Stepconf extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 		return $this->stepname;
 	}
 	
-	/**
-	 * Returns the localized stepname of this stepconf
-	 * 
-	 * @return \Thucke\ThRating\Domain\Model\Stepname
-	 * @deprecated
-	 */
-	public function getAllStepnames() {
-		return $this->getStepname();
-	}
-
 	/**
 	 * Returns all votes in this rating
 	 *

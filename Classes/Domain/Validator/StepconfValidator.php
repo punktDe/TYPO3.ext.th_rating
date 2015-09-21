@@ -93,9 +93,9 @@ class StepconfValidator extends \TYPO3\CMS\Extbase\Validation\Validator\Abstract
 			return FALSE;
 		}
 		
-		//check if a stepname is given that at least the default language exists
+		//check if a stepname is given that at least has the default language definition
 		//TODO move to query on stepname repository
-		$stepname = $stepconf->getAllStepnames();
+		$stepname = $stepconf->getStepname();
 		If ($stepname instanceof \TYPO3\CMS\Extbase\Persistence\ObjectStorage) {
 			$countNames = $stepname->count();
 		}
