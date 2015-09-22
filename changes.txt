@@ -1,3 +1,8 @@
 - beta for TYPO3 7.5.x - choose version 1.0.2 if you want a stable one
 - Feature #69902: Add composer.json according to https://github.com/helhum/ext_scaffold
 - Bug #69901: Exception "TYPO3\CMS\Core\Error\ErrorHandler::handleError(8192, "Non-static method Thucke\ThRating\Utility\TCALabel…atically, assuming $this from incompatible context" ...)
+- Bug #69988: Dynamic CSS file does not work under https
+- Bug #69900: Exception "array_sum() expects parameter 1 to be array, null given in /home/www/p270164/html/typo3/typo3conf/ext/th_rating/Classes/Domain/Model/Rating.php line 329"
+- Task #69903: Stepconf.php: Remove deprecated function getAllStepnames()
+- Task #70004: Update jQuery form plugin to latest version and switch to MIN
+- Bug #70007: Break in AJAX handling when polling is used
