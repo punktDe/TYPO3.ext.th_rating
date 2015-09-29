@@ -165,7 +165,7 @@ class VoteController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 	   * 
 	   */
 	  public function initializeObject() {
-		 $this->databaseConnection = $GLOBALS['TYPO3_DB'];
+		 $this->databaseConnection = $this->getDatabaseConnection();
 		 //uncomment the following lines to get SQL DEBUG information of this extension
 		 /*
 		 $this->databaseConnection->explainOutput = 2;
@@ -809,7 +809,7 @@ class VoteController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 	 * @return void
 	 */
 	protected function setStoragePids() {
-		$siteRootPids = $GLOBALS['TSFE']->getStorageSiterootPids();
+		$siteRootPids = $this->getTypoScriptFrontendController()->getStorageSiterootPids();
 		$siteRoot = $siteRootPids['_SITEROOT'];
 		$storagePid = $siteRootPids['_STORAGE_PID'];
 		$frameworkConfiguration = $this->configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
@@ -952,7 +952,7 @@ class VoteController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 					continue;
 				}
 				$subURI = substr(PATH_site, strlen($_SERVER['DOCUMENT_ROOT'])+1);
-				$basePath = $GLOBALS['TSFE']->baseUrl ? $GLOBALS['TSFE']->baseUrl : '//'.$_SERVER['HTTP_HOST'].'/'.$subURI;
+				$basePath = $this->getTypoScriptFrontendController()->baseUrl ? $this->getTypoScriptFrontendController()->baseUrl : '//'.$_SERVER['HTTP_HOST'].'/'.$subURI;
 
 				$this->ratingImage = $this->objectManager->get('Thucke\\ThRating\\Domain\\Model\\RatingImage',$ratingConfig['imagefile']);
 				$filename = $this->ratingImage->getImageFile();
@@ -1156,58 +1156,25 @@ class VoteController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 	}
 
 	/**
-	 * Emits a signal before the current action is called
-	 *
-	 * @param array $preparedArguments
-	 *
-	protected function emitBeforeCallActionMethodSignal(array $preparedArguments) {
-		parent::emitBeforeCallActionMethodSignal($preparedArguments);
-
-		/**
-		 * Checks all storagePid settings and
-		 * sets them to SITEROOT if zero or empty
-		 *
-		$siteRootPids = $GLOBALS['TSFE']->getStorageSiterootPids();
-		$siteRoot = $siteRootPids['_SITEROOT'];
-		$storagePid = $siteRootPids['_STORAGE_PID'];
-		$frameworkConfiguration = $this->configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
-		$storagePids = \TYPO3\CMS\Extbase\Utility\ArrayUtility::integerExplode(',', $frameworkConfiguration['persistence']['storagePid'], TRUE);
-		foreach ($storagePids as $i => $value) {
-			if ( !is_null($value) && (empty($value) || $value==$siteRoot) ) {
-				unset($storagePids[$i]);		//cleanup invalid values
-			}
-		}
-		$storagePids = array_values($storagePids); 	//re-index array
-		if ( count($storagePids)<2 && !is_null($storagePid) && !(empty($storagePid) || $storagePid==$siteRoot) ) {
-			array_unshift($storagePids, $storagePid);	//append the page storagePid if it is assumed to be missed and is valid
-		}
-
-		foreach ( $frameworkConfiguration['persistence']['pluginCheckHelper'] as $x => $y) {
-			if (intval($y)==0) {
-				$frameworkConfiguration['persistence']['pluginCheckHelper'][$x] = 0;
-			}
-		}
-		if (empty($storagePids[0])) {
-			$this->logFlashMessage(	\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('flash.vote.general.invalidStoragePid', 'ThRating', array (1=>$storagePid)),
-									\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('flash.heading.error', 'ThRating'),
-									"ERROR", array('errorCode' => 1403203519));
-		} 
-		if ( empty($frameworkConfiguration['persistence']['pluginCheckHelper']['pluginStoragePid']) ) {
-			$frameworkConfiguration['persistence']['classes']['Thucke\ThRating\Domain\Model\Ratingobject']['newRecordStoragePid'] = $storagePid;
-			$this->logFlashMessage(	\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('flash.pluginConfiguration.missing.pluginStoragePid', 'ThRating', array(1=>$storagePid)),
-									\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('flash.configuration.error', 'ThRating'),
-									"WARNING", array('errorCode' => 1403203529,
-													 '_STORAGE_PID' => $storagePid));
-		}
-		if ( empty($frameworkConfiguration['persistence']['pluginCheckHelper']['feUserStoragePid']) ) {
-			$this->logFlashMessage(	\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('flash.pluginConfiguration.missing.feUserStoragePid', 'ThRating', array()),
-									\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('flash.configuration.error', 'ThRating'),
-									"ERROR", array('errorCode' => 1403190539));
-		}
-		$frameworkConfiguration['persistence']['storagePid'] = implode(',', $storagePids);
-		$this->setFrameworkConfiguration($frameworkConfiguration);
+	 * @return \TYPO3\CMS\Core\Database\DatabaseConnection
+	 */
+	protected function getDatabaseConnection() {
+		/** @var \TYPO3\CMS\Core\Database\DatabaseConnection $TYPO3_DB */
+		global $TYPO3_DB;
+		
+		return $TYPO3_DB;
 	}
-	
+
+	/**
+	 * @return \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController
+	 */
+	protected function getTypoScriptFrontendController() {
+		/** @var \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController $TSFE */
+		global $TSFE;
+
+		return $TSFE;
+	}
+
 	/**
 	 * Demo slotHandler for slot 'afterRatinglinkAction'
 	 *

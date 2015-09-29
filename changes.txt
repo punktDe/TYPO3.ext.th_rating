@@ -1,3 +1,4 @@
 - Task #69487: Raise compatibility to TYPO3 7.5
 - Suggestion #70190: TCA: Switch from foreign_sortby to foreign_default_sortby
+- Task #70191: VoteController: Better handling with $TYPO3_DB and $TSFE
 
