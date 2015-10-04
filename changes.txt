@@ -1,6 +1,6 @@
+- Bug #70335: #1438183881: TCA table tx_thrating_domain_model_stepname ctrl['type'] is set to 1, but this field does not exist in the database of this table
 - Task #69487: Raise compatibility to TYPO3 7.5
 - Task #70191: VoteController: Better handling with $TYPO3_DB and $TSFE
 - Suggestion #70190: TCA: Switch from foreign_sortby to foreign_default_sortby
 - Feature #69486: Add JSON response to CREATE action
   Thanks to http://preloaders.net providing such great AJAX wait animations
-

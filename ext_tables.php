@@ -1,4 +1,5 @@
 <?php
+//TODO: whole file is deprecated since TYPO3 7.3. Move content to <your_extension>/Configuration/TCA/Overrides/pages.php
 if (!defined ('TYPO3_MODE')) die ('Access denied.');
 
 \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerPlugin(

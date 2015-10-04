@@ -6,7 +6,6 @@ $GLOBALS['TCA']['tx_thrating_domain_model_stepname'] = array(
 		'label'						=> 'uid',
 		'label_alt' 				=> 'stepconf,sys_language_uid',
  		'label_userFunc' 			=> 'Thucke\\ThRating\\Utility\\TCALabelUserFuncUtility->getStepnameRecordTitle',
-		'type'						=> '1',
 		'tstamp'					=> 'tstamp',
 		'crdate'					=> 'crdate',
 		'cruser_id'					=> 'cruser_id',
