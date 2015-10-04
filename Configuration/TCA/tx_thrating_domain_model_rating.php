@@ -22,9 +22,9 @@ $GLOBALS['TCA']['tx_thrating_domain_model_rating'] = array(
 		'showRecordFieldList' => 'hidden, ratedobjectuid, votes'
 	),
 	'columns' => array(
-		'pid' => Array (  
+		'pid' => array(
 			'exclude' => 1,
-			'config' => Array (
+			'config' => array(
 				'type' => 'none',
 			)
 		),
@@ -35,20 +35,20 @@ $GLOBALS['TCA']['tx_thrating_domain_model_rating'] = array(
 				'type' => 'check'
 			)
 		),
-		'ratingobject' => Array (		
-			'exclude' => 1,		
+		'ratingobject' => array(
+			'exclude' => 1,
 			'label'   => 'LLL:EXT:th_rating/Resources/Private/Language/locallang.xlf:tca.model.rating.ratingobject',
-			'config' => Array (
+			'config' => array(
 				'type' => 'select',
 				'foreign_table' => 'tx_thrating_domain_model_ratingobject',
 				'maxitems' => 1,
 				'minitems' => 1,
 				'disableNoMatchingValueElement' => 1
 			)
-		),		
-		'ratedobjectuid' => Array (
+		),
+		'ratedobjectuid' => array(
 			'label'   => 'LLL:EXT:th_rating/Resources/Private/Language/locallang.xlf:tca.model.rating.ratedobjectuid',
-			'config' => Array (
+			'config' => array(
 				'type' => 'input',
 				'size' => '8',
 				'max' => '12',
@@ -72,13 +72,13 @@ $GLOBALS['TCA']['tx_thrating_domain_model_rating'] = array(
 				),
 			),
 		),
-		'currentrates' => Array (
+		'currentrates' => array(
 			'label'   => 'LLL:EXT:th_rating/Resources/Private/Language/locallang.xlf:tca.model.rating.currentrates',
-			'config' => Array (
+			'config' => array(
 				'type'		=> 'none',
 				'size'		=> '30',
 			)
-		),		
+		),
 		'uid' => array(
 			'label'   => 'LLL:EXT:th_rating/Resources/Private/Language/locallang.xlf:tca.model.rating.uid',
 		),

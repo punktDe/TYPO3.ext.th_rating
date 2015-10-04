@@ -19,9 +19,9 @@ $GLOBALS['TCA']['tx_thrating_domain_model_ratingobject'] = array(
 		'showRecordFieldList' => 'hidden, ratetable, ratefield'
 	),
 	'columns' => array(
-		'pid' => Array (  
+		'pid' => array(
 			'exclude' => 1,
-			'config' => Array (
+			'config' => array(
 				'type' => 'none',
 			)
 		),

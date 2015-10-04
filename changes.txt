@@ -1,4 +1,5 @@
 - Bug #70335: #1438183881: TCA table tx_thrating_domain_model_stepname ctrl['type'] is set to 1, but this field does not exist in the database of this table
+- Bug #70336: Display and handling of localized stepnames in BE - will be fixed in TYPO3 7 LTS
 - Task #69487: Raise compatibility to TYPO3 7.5
 - Task #70191: VoteController: Better handling with $TYPO3_DB and $TSFE
 - Suggestion #70190: TCA: Switch from foreign_sortby to foreign_default_sortby

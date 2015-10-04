@@ -21,7 +21,7 @@ $GLOBALS['TCA']['tx_thrating_domain_model_stepname'] = array(
 		'iconfile'					=> \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('th_rating') . 'Resources/Public/Icons/tx_thrating_domain_model_stepname.gif',
 	),
 	'interface' => array(
-		'showRecordFieldList' => 'hidden, stepconf, stepname'
+		'showRecordFieldList' => 'hidden, stepconf, stepname, stepconf'
 	),
 	'columns' => array(
 		'pid' => Array (  
@@ -46,8 +46,8 @@ $GLOBALS['TCA']['tx_thrating_domain_model_stepname'] = array(
 		),
 		'stepname' => Array (
 			'label'  		=> 'LLL:EXT:th_rating/Resources/Private/Language/locallang.xlf:tca.model.stepname.stepname',
-			'l10n_mode'		=> 'prefixLangTitle ',
-			'l10n_display'	=> 'hideDiff ',
+			'l10n_mode'		=> 'prefixLangTitle',
+			'l10n_display'	=> 'hideDiff',
 			'config' => Array (
 				'type'		=> 'input',
 				'size'		=> '15',
@@ -58,14 +58,14 @@ $GLOBALS['TCA']['tx_thrating_domain_model_stepname'] = array(
 		'uid' => array(
 			'label'   => 'LLL:EXT:th_rating/Resources/Private/Language/locallang.xlf:tca.model.stepname.uid',
 			'config' => array(
-				'type' => 'passthrough',
+				'type' => 'none',
 			),
 		),
 		'sys_language_uid' => array (
 			'exclude' => 1,
 			'label'  => 'LLL:EXT:lang/locallang_general.xml:LGL.language',
 			'config' => array (
-				'readOnly'				=> FALSE,
+				'readOnly'				=> TRUE,
 				'type'                	=> 'select',
 				'foreign_table'       	=> 'sys_language',
 				'foreign_table_where' 	=> 'ORDER BY sys_language.title',
@@ -95,7 +95,7 @@ $GLOBALS['TCA']['tx_thrating_domain_model_stepname'] = array(
 		),
 	),
 	'types' => array(
-		'0' => Array('showitem' => 'hidden,sys_language_uid,stepname'),
+		'0' => Array('showitem' => 'hidden, sys_language_uid, stepname, stepconf'),
 	),
 	'palettes' => array(
 		'1' => array('showitem' => ''),

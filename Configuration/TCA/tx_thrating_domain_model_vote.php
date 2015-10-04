@@ -22,9 +22,9 @@ $GLOBALS['TCA']['tx_thrating_domain_model_vote'] = array(
 		'showRecordFieldList' => 'hidden, rating, voter, vote'
 	),
 	'columns' => array(
-		'pid' => Array (  
+		'pid' => array(
 			'exclude' => 1,
-			'config' => Array (
+			'config' => array(
 				'type' => 'none',
 			)
 		),
@@ -35,28 +35,28 @@ $GLOBALS['TCA']['tx_thrating_domain_model_vote'] = array(
 				'type' 		=> 'check'
 			)
 		),
-		'rating' => Array (		
-			'exclude' 	=> 1,		
+		'rating' => array(
+			'exclude' 	=> 1,
 			'label'		=> 'LLL:EXT:th_rating/Resources/Private/Language/locallang.xlf:tca.model.vote.rating',
-			'config' 	=> Array (
+			'config' 	=> array(
 				'type' 			=> 'select',
 				'foreign_table' => 'tx_thrating_domain_model_rating',
 				'maxitems' 		=> 1,
 				'minitems' 		=> 1,
 				'disableNoMatchingValueElement' => 1
 			)
-		),		
-		'voter' => Array (
-			'exclude' => 1,		
+		),
+		'voter' => array(
+			'exclude' => 1,
 			'label'		=> 'LLL:EXT:th_rating/Resources/Private/Language/locallang.xlf:tca.model.vote.voter',
-			'config' => Array (
+			'config' => array(
 				'type' => 'select',
 				'foreign_table' => 'fe_users',
 				//'foreign_table_where' => 'AND fe_users.pid=###CURRENT_PID###',
 				//'foreign_table_where' => 'AND fe_users.disable=0 AND fe_users.deleted=0 ORDER BY username',
 				'foreign_table_where' => 'ORDER BY username',
-				'items'	=> Array (
-					Array ('--div--',0),
+				'items'	=> array(
+					array('--div--',0),
 				),
 				'wizards' => Array(
 		             '_PADDING' => 1,
@@ -84,9 +84,9 @@ $GLOBALS['TCA']['tx_thrating_domain_model_vote'] = array(
 			),
 		),
 		//TODO	Prio 3: only provide valid references from foreign table
-		'vote' => Array (
+		'vote' => array(
 			'label'		=> 'LLL:EXT:th_rating/Resources/Private/Language/locallang.xlf:tca.model.vote.vote',
-			'config' => Array (
+			'config' => array(
 				'type' => 'select',
 				'foreign_table' => 'tx_thrating_domain_model_stepconf',
 				'maxitems' => 1,

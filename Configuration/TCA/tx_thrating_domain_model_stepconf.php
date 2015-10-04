@@ -1,7 +1,7 @@
 <?php
 if (!defined ('TYPO3_MODE')) 	die ('Access denied.');
 $GLOBALS['TCA']['tx_thrating_domain_model_stepconf'] =  array(
-	'ctrl' => array (
+	'ctrl' => array(
 		'title'						=> 'LLL:EXT:th_rating/Resources/Private/Language/locallang.xlf:tca.model.stepconf.title',
 		'label'						=> 'uid',
 		'label_alt' 				=> 'ratingobject,steporder',
@@ -21,9 +21,9 @@ $GLOBALS['TCA']['tx_thrating_domain_model_stepconf'] =  array(
 		'showRecordFieldList' => 'hidden, ratingobject, steporder, stepweight, stepname'
 	),
 	'columns' => array(
-		'pid' => Array (  
+		'pid' => array(
 			'exclude' => 1,
-			'config' => Array (
+			'config' => array(
 				'type' => 'none',
 			),
 		),
@@ -35,18 +35,18 @@ $GLOBALS['TCA']['tx_thrating_domain_model_stepconf'] =  array(
 				'default' => 0,
 			),
 		),
-		'ratingobject' 	=> Array (		
-			'exclude'	=> 1,		
+		'ratingobject' 	=> array(
+			'exclude'	=> 1,
 			'label'  	=> 'LLL:EXT:th_rating/Resources/Private/Language/locallang.xlf:tca.model.stepconf.ratingobject',
-			'config' 	=> Array (
+			'config' 	=> array(
 				'type'		=> 'passthrough',
 			),
-		),		
-		'steporder' => Array (
+		),
+		'steporder' => array(
 			'label'   		=> 'LLL:EXT:th_rating/Resources/Private/Language/locallang.xlf:tca.model.stepconf.steporder',
 			'l10n_display'	=> 'defaultAsReadonly',
 			//'l10n_cat'		=> 'media',
-			'config'=> Array (
+			'config'=> array(
 				'type'		=> 'input',
 				'size'		=> '8',
 				'max'		=> '12',
@@ -55,11 +55,11 @@ $GLOBALS['TCA']['tx_thrating_domain_model_stepconf'] =  array(
 				'range'		=> array('lower' => 1)
 			),
 		),
-		'stepweight' => Array (
+		'stepweight' => array(
 			'label'   		=> 'LLL:EXT:th_rating/Resources/Private/Language/locallang.xlf:tca.model.stepconf.stepweight',
 			'l10n_display'	=> 'defaultAsReadonly',
 			//'l10n_cat'		=> 'media',
-			'config' 		=> Array (
+			'config' 		=> array(
 				'type'		=> 'input',
 				'size'		=> '8',
 				'max'		=> '12',
@@ -67,7 +67,7 @@ $GLOBALS['TCA']['tx_thrating_domain_model_stepconf'] =  array(
 				'default'	=> '1',
 			),
 		),
-		'stepname' => Array (
+		'stepname' => array(
 			'exclude' => 1,
 			'label'  		=> 'LLL:EXT:th_rating/Resources/Private/Language/locallang.xlf:tca.model.stepconf.stepname',
 			'config' => array(
@@ -82,11 +82,16 @@ $GLOBALS['TCA']['tx_thrating_domain_model_stepconf'] =  array(
 					'collapseAll' 			=> TRUE,
 					'expandSingle' 			=> TRUE,
 					'newRecordLinkAddTitle' => TRUE,
-					//'newRecordLinkPosition' => 'both',
-					//'showSynchronizationLink' => TRUE,
-					//'showAllLocalizationLink' => TRUE,
-					//'showPossibleLocalizationRecords' => 1,
-					//'showRemovedLocalizationRecords' => 1,
+					'enabledControls' => array(
+						 'info'		=> TRUE,
+						 'delete'	=> TRUE,
+						 'localize'	=> TRUE,
+					),
+					'showPossibleLocalizationRecords' => TRUE,
+					'showSynchronizationLink' => TRUE,
+					'newRecordLinkPosition' => 'both',
+					'showAllLocalizationLink' => TRUE,
+					'showRemovedLocalizationRecords' => 1,
 				),
 				'behaviour' => array(
 					'localizationMode' => 'select',
@@ -121,7 +126,7 @@ $GLOBALS['TCA']['tx_thrating_domain_model_stepconf'] =  array(
 		),
 	),
 	'types' => array(
-		'0' => Array('showitem' => 'hidden, steporder, stepweight, stepname, votes'),
+		'0' => array('showitem' => 'hidden, steporder, stepweight, stepname, votes'),
 	),
 	'palettes' => array(
 		'1' => array('showitem' => ''),
