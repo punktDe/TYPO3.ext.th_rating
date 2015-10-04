@@ -1,19 +1,23 @@
 <f:if condition="{ratingName}"><f:then>
 	<div class='tx-thrating-ratinglinks'>
-		<ul class='thRating thRating-{ratingClass} thRating-RObj{ratingobject.uid}-{ratingName}'>
+		<ul class='thRating thRating-{ratingClass} thRating-RObj{rating.ratingobject.uid}-{ratingName}'>
+			<div class="ajaxWait"></div>
 			<f:if condition="{settings.fluid.templates.ratinglinks.likesMode}">
 			<f:then><f:comment><!-- display no current rating if in likesMode --></f:comment></f:then>
 			<f:else>
-			<f:if condition="{calculatedRate}"><f:then>
-			<li class='current-rating {barimage}' style="{f:if(condition: '{0: ratingClass} == {0: \'tilt\'}', then: 'height:{calculatedRate}', else: 'width:{calculatedRate}')}" title="<f:translate key='fluid.template.ratinglinks.currentRating' default='fluid.template.ratinglinks.currentRating' arguments='{1:currentRates, 2:stepCount}'/>">
+			<li class="current-rating {barimage} {f:if(condition: '{0: ratingClass} == {0: \'tilt\'}', then: 'tx_thrating_ajax-ratingCalculatedRateHeight', else: 'tx_thrating_ajax-ratingCalculatedRateWidth')}"
+				style="{f:if(condition: '{0: ratingClass} == {0: \'tilt\'}', then: 'height:{rating.calculatedRate}%;', else: 'width:{rating.calculatedRate}%;')} {f:if(condition: '{rating.calculatedRate}', then: '', else: 'display:none;')}"
+				title="<f:translate key='fluid.template.ratinglinks.currentRating' default='fluid.template.ratinglinks.currentRating' arguments='{1:currentRates, 2:stepCount}'/>">
 				<f:translate key='fluid.template.ratinglinks.currentRating' default='fluid.template.ratinglinks.currentRating' arguments='{1:currentRates, 2:stepCount}'/>
 			</li>
-			</f:then></f:if>
 			</f:else></f:if>
 			<f:comment><!-- Only generate links if a  FE user is logged on --></f:comment>
 			<f:if condition="{ajaxSelections}"><f:then>
 				<f:for each="{ajaxSelections}" as="ajaxSelection">
-				<li><span class="ajaxLink RObj{ratingobject.uid}-StpOdr{ajaxSelection.step.steporder}-ratingstep-{ratingClass} {barimage}" title='{ajaxSelection.step}' tabindex='-1' ><input type="hidden" name="ajaxSelect" value="{ajaxSelection.ajaxvalue}" />{ajaxSelection.step.steporder}</span></li>
+				<li><span class="ajaxLink RObj{rating.ratingobject.uid}-StpOdr{ajaxSelection.step.steporder}-ratingstep-{ratingClass} {barimage} tx_thrating_ajax-votingRated-Off" title='{ajaxSelection.step}' tabindex='-1' ><input type="hidden" name="ajaxSelect" value="{ajaxSelection.ajaxvalue}" />
+						{ajaxSelection.step.steporder}
+					</span>
+				</li>
 				</f:for>
 			</f:then></f:if>
 		</ul>
@@ -31,9 +35,8 @@
 * --------------------
 * {ratingClass}		-	tilt / normal
 * {ratingName}		-	Name of the ratinglink
-* {ratingobject}	- 	Domain object: ratingabject
+* {rating}			-	the ratingObject
 * {barimage}		-	ratingbar / noratingbar
-* {calculatedRate}	-	style definition for current rating in percent
 * {ajaxSelections}	-	associative array of possible ratingsteps consisting of
 *						[order of ratingstep]
 *							['step'] 		- Domain object: stepconf

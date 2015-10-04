@@ -1,11 +1,7 @@
 <f:layout name="DefaultLayout" />
 
 <f:section name="content">
-	<div class="tx-thrating-showVote">
-	<f:if condition="{voting}"><f:then>
-			<p style="white-space:nowrap;">{voter.username} has voted '{voting}' on {ratingobject.ratetable}:{ratingobject.ratefield}:{rating.ratedobjectuid}</p>
-	</f:then></f:if>
-	</div>
+<f:render partial="showVote" arguments="{voting:voting, ratingobject:rating.ratingobject, rating:rating, voter:voter}"/>
 </f:section>
 <!--
 ******************************************************************************************

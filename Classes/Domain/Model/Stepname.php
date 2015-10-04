@@ -37,6 +37,7 @@ class Stepname extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	/**
 	 * @var \Thucke\ThRating\Domain\Model\Stepconf
 	 * @validate \Thucke\ThRating\Domain\Validator\StepconfValidator
+	 * @validate NotEmpty
 	 */
 	protected $stepconf;
 	

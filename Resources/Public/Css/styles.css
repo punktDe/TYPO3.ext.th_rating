@@ -1,3 +1,31 @@
+.hidden {
+	display:none;
+}
+
+/* Start by setting display:none to make this hidden.
+   Then we position it in relation to the viewport window
+   with position:fixed. Width, height, top and left speak
+   speak for themselves. Background we set to 80% white with
+   our animation centered, and no-repeating */
+.ajaxWait {
+    display:    none;
+    position:   relative;
+    z-index:    1000;
+    top:        0;
+    left:       0;
+    height:     100%;
+    width:      100%;
+    background: rgba( 255, 255, 255, .8 ) 
+                url('ajaxWait.gif') 
+                50% 50% 
+                no-repeat;
+}
+/* Anytime the DIV has the loading class, our
+   modal element will be visible */
+.tx-thrating-pi1-content.loading .ajaxWait {
+    display: block;
+}
+
 #formResult {height: 20px; }
 #tx-thrating-pi1-singleton{
 	visibility:hidden;

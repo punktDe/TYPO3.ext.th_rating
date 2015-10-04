@@ -37,6 +37,7 @@ class Vote extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	/**
 	 * @var 		\Thucke\ThRating\Domain\Model\Rating
 	 * @validate 	\Thucke\ThRating\Domain\Validator\RatingValidator
+	 * @validate 	NotEmpty
 	 */
 	protected $rating;
 	
@@ -44,6 +45,7 @@ class Vote extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	 * The voter of this object
 	 *
 	 * @var 	\Thucke\ThRating\Domain\Model\Voter
+	 * @validate NotEmpty
 	 */
 	protected $voter;
 	
@@ -52,6 +54,7 @@ class Vote extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	 *
 	 * @var 		\Thucke\ThRating\Domain\Model\Stepconf
 	 * @validate	\Thucke\ThRating\Domain\Validator\StepconfValidator
+	 * @validate 	NotEmpty
 	 */
 	protected $vote;
 
@@ -172,7 +175,7 @@ class Vote extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	/**
 	 * Checks if vote is done by anonymous user
 	 * 
-	 * @return booelan
+	 * @return boolean
 	 */
 	public function isAnonymous() {
 		if ( $this->getVoter() instanceof \Thucke\ThRating\Domain\Model\Voter ) {
@@ -187,10 +190,10 @@ class Vote extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	 * Checks cookie if anonymous vote is already done
 	 * always FALSE if cookie checks is deactivated
 	 * 
-	 * @param	string	$prefixId	Extension prefix to identify cookie
+	 * @param String $prefixId Extension prefix to identify cookie
 	 * @return 	booelan
 	 */
-	public function hasAnonymousVote($prefixId) {
+	public function hasAnonymousVote($prefixId = 'DummyPrefix') {
 		$anonymousRating = json_decode($_COOKIE[$prefixId.'_AnonymousRating_'.$this->getRating()->getUid()], TRUE);
 		$retVal = !empty($anonymousRating['voteUid']);
 		return $retVal;

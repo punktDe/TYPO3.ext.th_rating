@@ -39,6 +39,7 @@ class Rating extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	/**
 	 * @var \Thucke\ThRating\Domain\Model\Ratingobject
 	 * @validate \Thucke\ThRating\Domain\Validator\RatingobjectValidator
+	 * @validate NotEmpty
 	 */
 	protected $ratingobject;
 	
@@ -47,6 +48,7 @@ class Rating extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	 *
 	 * @var int
 	 * @validate NumberRange(minimum = 1)
+	 * @validate NotEmpty
 	 */
 	protected $ratedobjectuid;
 	

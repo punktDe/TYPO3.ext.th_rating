@@ -41,6 +41,7 @@ class Ratingobject extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	 *
 	 * @var string
 	 * @validate StringLength(minimum = 3, maximum = 60)
+	 * @validate NotEmpty
 	 */
 	protected $ratetable;
 	
@@ -50,6 +51,7 @@ class Ratingobject extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	 *
 	 * @var string
 	 * @validate StringLength(minimum = 3, maximum = 60)
+	 * @validate NotEmpty
 	 */
 	protected $ratefield;
 	

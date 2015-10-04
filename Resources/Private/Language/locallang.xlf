@@ -289,6 +289,7 @@
 				<source>Incompatible version - please upgrade to at least TYPO3 6.2.1</source>
 			</trans-unit>
 			<trans-unit id="flash.vote.create.updateExistingVote" xml:space="preserve">
+				<note>Forwarded arguments: 1:steporder, 2:stepname</note>
 				<source>Your vote has been updated. It was step %1$d - '%2$s'.</source>
 			</trans-unit>
 			<trans-unit id="flash.vote.create.noUpdateSameVote" xml:space="preserve">
@@ -304,16 +305,16 @@
 				<source>Update of foreign field has failed.</source>
 			</trans-unit>
 			<trans-unit id="fluid.template.ratinglinks.currentRating" xml:space="preserve" approved="yes">
-				<note>Forwarded arguments: 1:currentRates, 2:stepCount</note>
-				<source>Current rating is %1.1f out of %2$d</source>
+				<note>Forwarded arguments: 1:currentRate, 2:stepCount</note>
+				<source><![CDATA[Current rating is <span class='tx_thrating_ajax-ratingCurrentratesCurrentrate'>%1.1f</span> out of <span class='tx_thrating_ajax-stepCount'>%2$d</span>]]></source>
 			</trans-unit>
 			<trans-unit id="fluid.layout.default.currentRating" xml:space="preserve" approved="yes">
-				<note>Forwarded arguments: 1:currentRates, 2:number of rating.votes</note>
-				<source>Rating: %1.1f. %2$d vote(s).</source>
+				<note>Forwarded arguments: 1:currentRate, 2:number of rating.votes</note>
+				<source><![CDATA[Rating: <span class='tx_thrating_ajax-ratingCurrentratesCurrentrate'>%1.1f</span>. <span class='tx_thrating_ajax-ratingCurrentratesNumAllVotes'>%2$d</span> vote(s).]]></source>
 			</trans-unit>
 			<trans-unit id="fluid.layout.default.anonymousVotes" xml:space="preserve" approved="yes">
 				<note>Forwarded arguments: 1:anonymousVotes</note>
-				<source>%1$d anonymous votes</source>
+				<source><![CDATA[<span class='tx_thrating_ajax-ratingCurrentratesAnonymousVotes'>%1$d</span> anonymous votes]]></source>
 			</trans-unit>
 			<trans-unit id="fluid.layout.default.noRatingDone" xml:space="preserve" approved="yes">
 				<note>Forwarded arguments: None</note>
@@ -321,7 +322,7 @@
 			</trans-unit>
 			<trans-unit id="fluid.partial.usersRating.usersRate" xml:space="preserve" approved="yes">
 				<note>Forwarded arguments: 1:voting, 2:voting.vote.steporder, 3:stepCount</note>
-				<source>Your vote was '%1$s' (%2$d of %3$d)</source>
+				<source><![CDATA[Your vote was '<span class='tx_thrating_ajax-votingStepname'>%1$s</span>' (<span class='tx_thrating_ajax-votingVoteSteporder'>%2$d</span> of <span class='tx_thrating_ajax-stepCount'>%3$d</span>)]]></source>
 			</trans-unit>
 			<trans-unit id="fluid.partial.infoBlock.anonymousVoting" xml:space="preserve" approved="yes">
 				<note>Forwarded arguments: None; This entry needs "htmlEscape='false' when read by fluid</note>

@@ -2,19 +2,19 @@
 
 <f:section name="content">
 <f:comment><!-- switch according display mode --></f:comment>
-<span name="dummy4focus" tabindex="-1"></span>
 <f:if condition="{settings.fluid.templates.ratinglinks.likesMode}"><f:then>
-	<f:if condition="{voting}"><f:then>
+	{f:if(condition: '{voting}', then: '<span class="tx_thrating_ajax-voting-On">', else: '<span class="tx_thrating_ajax-voting-On hidden">')}
 		<f:comment><!-- display if any vote has be done yet --></f:comment>
-		<f:render partial="usersRating" arguments="{voting:voting, ratingClass:ratingClass, ratingobject:ratingobject, ratingName:ratingName, stepCount:stepCount, usersRate:usersRate}"/>
-	</f:then><f:else>
+		<f:render partial="usersRating" arguments="{voting:voting, ratingClass:ratingClass, ratingobject:rating.ratingobject, ratingName:ratingName, stepCount:stepCount, usersRate:usersRate}"/>
+</span>
+	{f:if(condition: '{voting}', then: '<span class="tx_thrating_ajax-voting-Off hidden">', else: '<span class="tx_thrating_ajax-voting-Off">')}
 		<f:comment><!-- display normal ratinglinkblock --></f:comment>
-		<f:render partial="ratinglinkBlock" arguments="{voting:voting, ratingClass:ratingClass, ratingobject:ratingobject, ratingName:ratingName, calculatedRate:calculatedRate, currentRates:currentRates, stepCount:stepCount, barimage:barimage, ajaxSelections:ajaxSelections}"/>
-	</f:else></f:if>	
+		<f:render partial="ratinglinkBlock" arguments="{voting:voting, ratingClass:ratingClass, ratingobject:rating.ratingobject, ratingName:ratingName, rating:rating, currentRates:rating.currentRates.currentrate, stepCount:stepCount, barimage:barimage, ajaxSelections:ajaxSelections}"/>
+</span>
 </f:then><f:else>
 	<f:if condition="{ratingName}"><f:then>
 		<f:comment><!-- display normal ratinglinkblock --></f:comment>
-		<f:render partial="ratinglinkBlock" arguments="{voting:voting, ratingClass:ratingClass, ratingobject:ratingobject, ratingName:ratingName, calculatedRate:calculatedRate, currentRates:currentRates, stepCount:stepCount, barimage:barimage, ajaxSelections:ajaxSelections}"/>
+		<f:render partial="ratinglinkBlock" arguments="{voting:voting, ratingClass:ratingClass, ratingobject:rating.ratingobject, ratingName:ratingName, rating:rating, currentRates:rating.currentRates.currentrate, stepCount:stepCount, barimage:barimage, ajaxSelections:ajaxSelections}"/>
 	</f:then></f:if>
 </f:else></f:if>
 </f:section>
@@ -25,7 +25,7 @@
 * --------------------
 * ==> all variables used in defaultLayout
 * {barimage}		-	ratingbar / noratingbar
-* {calculatedRate}	-	style definition for current rating in percent
+* {rating}			-	the ratingObject
 * {ratingName}		-	Name of the ratinglink
 * {ratingClass}		-	tilt / normal
 * {ajaxSelections}	-	associative array of possible ratingsteps consisting of

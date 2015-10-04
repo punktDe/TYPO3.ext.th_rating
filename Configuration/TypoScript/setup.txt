@@ -268,10 +268,10 @@ thrating_ajax {
 		xhtml_cleaning = 1
 		admPanel = 0
 		debug = 0
+		metaCharset = UTF-8
 	}
 	10 =< tt_content.list.20.thrating_pi1
 }
-
 
 #########################################################################
 # Include FLUID form only once per page

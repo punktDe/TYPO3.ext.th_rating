@@ -32,6 +32,13 @@ namespace Thucke\ThRating\Controller;
 class VoteController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController {
 
 	/**
+	* @var string
+	*/
+	protected $viewFormatToObjectNameMap = array(
+		'json' => \Thucke\ThRating\View\JsonView::class,
+	);
+	
+	/**
 	 * @var \Thucke\ThRating\Domain\Model\Stepconf \Thucke\ThRating\Domain\Model\Stepconf
 	 */
 	protected $vote;
@@ -194,6 +201,8 @@ class VoteController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 		
 		$frameworkConfiguration = $this->configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
 		if ( $this->request->hasArgument('ajaxRef') ) {
+			//switch to JSON respone on AJAX request
+			$this->request->setFormat('json');
 			//read unique AJAX identification on AJAX request
 			$this->ajaxSelections['ajaxRef'] = $this->request->getArgument('ajaxRef');
 			$this->settings = json_decode($this->request->getArgument('settings'), TRUE);
@@ -277,6 +286,7 @@ class VoteController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 										"NOTICE", array('errorCode' => 1403201498));
 			}
 		}
+		$this->view->assign('actionMethodName',$this->actionMethodName);
 		$this->logger->log(	\TYPO3\CMS\Core\Log\LogLevel::DEBUG, 'Exit showAction', array());
 	}
 
@@ -406,14 +416,16 @@ class VoteController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 	public function newAction(	\Thucke\ThRating\Domain\Model\Vote	$vote = NULL) {
 		$this->logger->log(	\TYPO3\CMS\Core\Log\LogLevel::DEBUG, 'Entry newAction', array());
 		//find vote using additional information
+		$this->initSettings( $vote );
 		$this->initVoting( $vote );
+		$this->view->assign('actionMethodName',$this->actionMethodName);
 		if ( !$this->vote->hasRated() || (!$this->accessControllService->isLoggedIn($this->vote->getVoter()) && $this->vote->isAnonymous()) ) {
 			$this->view->assign('ajaxSelections', $this->ajaxSelections['json']);
-			$this->fillSummaryView();
 		} else {
 			$this->logger->log(	\TYPO3\CMS\Core\Log\LogLevel::INFO, 'New rating is not possible; forwarding to showAction', array());
-			$this->forward('show');
 		}
+		$this->fillSummaryView();
+		($this->request->getFormat() == 'json') && $this->view->assign('flashMessages', $this->view->getFlashMessages());
 		$this->logger->log(	\TYPO3\CMS\Core\Log\LogLevel::DEBUG, 'Exit newAction', array());
 	}
 
@@ -438,7 +450,6 @@ class VoteController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 			);
 			$this->view->assign('actionMethodName','markAction');
 		}*/
-		
 		$this->initSignalSlotDispatcher( 'afterRatinglinkAction' );
 		$this->logger->log(	\TYPO3\CMS\Core\Log\LogLevel::DEBUG, 'Exit ratinglinksAction', array());
 	}
@@ -501,10 +512,6 @@ class VoteController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 
 		$rating = $this->vote->getRating();
 		if ( $this->ratingValidator->isObjSet($rating) && !$this->ratingValidator->validate($rating)->hasErrors() ) {
-			$calculatedRate = $rating->getCalculatedRate().'%';
-			$this->logger->log(	\TYPO3\CMS\Core\Log\LogLevel::DEBUG, 'Calculated rate', array('calculatedRate' => $calculatedRate));
-			$this->view->assign('calculatedRate', $calculatedRate);
-
 			$this->ratingImage = $this->objectManager->get('Thucke\\ThRating\\Domain\\Model\\RatingImage',$this->settings['ratingConfigurations'][$this->ratingName]['imagefile']);
 			//read dimensions of the image
 			$imageDimensions = $this->ratingImage->getImageDimensions();
@@ -535,6 +542,7 @@ class VoteController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 			$this->logger->log(	\TYPO3\CMS\Core\Log\LogLevel::INFO, 'Set ratinglink information', array('errorCode' => 1404933850, 'ajaxSelections[steporder]' => $this->ajaxSelections['steporder']));
 		}
 		$this->fillSummaryView();
+		($this->request->getFormat() == 'json') && $this->view->assign('flashMessages', $this->view->getFlashMessages());
 		$this->logger->log(	\TYPO3\CMS\Core\Log\LogLevel::DEBUG, 'Exit graphicActionHelper', array());
 	}
 
@@ -758,12 +766,12 @@ class VoteController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 	protected function fillSummaryView() {
 			$this->view->assign('settings', $this->settings);
 			$this->view->assign('ajaxRef', $this->ajaxSelections['ajaxRef']);
-			$this->view->assign('ratingobject', $this->vote->getRating()->getRatingobject());
+			//$this->view->assign('ratingobject', $this->vote->getRating()->getRatingobject()); //TODO today
 			$this->view->assign('rating', $this->vote->getRating());
 			$this->view->assign('voter', $this->vote->getVoter());
 
 			$currentrate = $this->vote->getRating()->getCurrentrates();
-			$this->view->assign('currentRates', $currentrate['currentrate']);
+			//$this->view->assign('currentRates', $currentrate['currentrate']);
 			$this->view->assign('stepCount', count($currentrate['weightedVotes']));
 			$this->view->assign('anonymousVotes', $currentrate['anonymousVotes']);
 			$this->view->assign('anonymousVoting', !empty($this->settings['mapAnonymous']) && !$this->accessControllService->getFrontendUserUid());
@@ -783,6 +791,7 @@ class VoteController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 					$this->view->assign('usersRate', $this->vote->getVote()->getSteporder()*100/count($currentrate['weightedVotes']).'%');
 				}
 			}
+			//$this->view->assign('LANG', \Thucke\ThRating\Utility\LocalizationUtility::getLangArray('ThRating'));
 	}
 
 	/**
@@ -897,7 +906,7 @@ class VoteController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 			}
 		}
 		//display an error to update TYPO3 at least to version 6.2.1
-		if ( \TYPO3\CMS\Core\Utility\VersionNumberUtility::convertVersionNumberToInteger(TYPO3_version) == 6002000 ) {
+		if ( version_compare(TYPO3_version, '6.2', '==') ) {
 				$this->logFlashMessage(	\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('flash.renderCSS.incompatible620', 'ThRating'),
 										\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('flash.configuration.error', 'ThRating'),
 										"EMERGENCY", array( 'errorCode' => 1398526413,

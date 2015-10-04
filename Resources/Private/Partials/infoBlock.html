@@ -1,18 +1,21 @@
 <f:comment><!-- display check --></f:comment>
+{f:if(condition: '{voting}', then: '<span class="tx_thrating_ajax-voting-Off hidden">', else: '<span class="tx_thrating_ajax-voting-Off">')}
 <f:if condition="{settings.fluid.partials.infoBlock.showAnonymousVotes}"><f:then>
-	<f:if condition="{anonymousVoting}"><f:then>
+	{f:if(condition: '{anonymousVoting}', then: '<span class="tx_thrating_ajax-anonymousVoting-On">', else: '<span class="tx_thrating_ajax-anonymousVoting-On hidden">')}
 		<f:translate key='fluid.partial.infoBlock.anonymousVoting' default='fluid.partial.infoBlock.anonymousVoting' htmlEscape="false" />
-	</f:then></f:if>
+</span>
 </f:then></f:if>
 <f:comment><!-- Check if a  FE user is logged on --></f:comment>
-<f:if condition="{voter}"><f:then>
+{f:if(condition: '{voting.hasrated}', then: '<span class="tx_thrating_ajax-voter-On">', else: '<span class="tx_thrating_ajax-voter-On hidden">')}
 	<f:if condition="{ratingName}"><f:then>
 		<f:comment><!--This is a special entry for the ratinglink action --></f:comment>
 		<f:translate key='fluid.partial.infoBlock.clickRatingBar' default='fluid.partial.infoBlock.clickRatingBar'/>
 	</f:then></f:if>
-</f:then><f:else>
+	</span>
+{f:if(condition: '{voter}', then: '<span class="tx_thrating_ajax-voter-Off hidden">', else: '<span class="tx_thrating_ajax-voter-Off">')}
 	<f:translate key='fluid.partial.infoBlock.logonForRatings' default='fluid.partial.infoBlock.logonForRatings'/>
-</f:else></f:if>	
+	</span>
+</span>
 <f:comment>
 <!--
 ******************************************************************************************
@@ -20,6 +23,7 @@
 ******************************************************************************************
 * Needed variables
 * --------------------
+* {voting}			-	the current handled votex
 * {anonymousVoting}	-	true/false if anonymous voting is enabled
 * {voter}			-	Domain object: voter (anonymous voter if enabled an nobody is logged on)
 * {ratingName}		-	Name of the ratinglink (set only on ratinglink action)
