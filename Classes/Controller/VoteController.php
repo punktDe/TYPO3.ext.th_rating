@@ -1082,6 +1082,7 @@ class VoteController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 		if ( intval($additionalInfo['errorCode']) ) {
 			$messageText = $messageText.' ('.$additionalInfo['errorCode'].')';
 		}
+		//TODO: locally enqueue flashmessages of setStoragePids when controllerContext has not been set yet
 		if (is_object($this->controllerContext)) {
 			$this->addFlashMessage( $messageText,
 									$messageTitle,
