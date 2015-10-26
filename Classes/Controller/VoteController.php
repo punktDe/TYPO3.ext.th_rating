@@ -1082,9 +1082,11 @@ class VoteController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 		if ( intval($additionalInfo['errorCode']) ) {
 			$messageText = $messageText.' ('.$additionalInfo['errorCode'].')';
 		}
-		$this->addFlashMessage( $messageText,
-								$messageTitle,
-								constant('\TYPO3\CMS\Core\Messaging\AbstractMessage::'.$flashSeverity));
+		if (is_object($this->controllerContext)) {
+			$this->addFlashMessage( $messageText,
+									$messageTitle,
+									constant('\TYPO3\CMS\Core\Messaging\AbstractMessage::'.$flashSeverity));
+		}
 		$this->logger->log(	constant('\TYPO3\CMS\Core\Log\LogLevel::'.$severity),
 							$messageText,
 							$additionalInfo );
