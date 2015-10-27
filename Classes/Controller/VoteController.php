@@ -241,11 +241,11 @@ class VoteController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 		$this->view->assign('ratingobjects', $this->ratingobjectRepository->findAll() );
 		
 		//initialize ratingobject and autocreate four ratingsteps
-		$ratingobject = $this->objectManager->get('Thucke\\ThRating\\Utility\\ExtensionManagementUtility')->makeRatable('TestTable', 'TestField', 4);
+		$ratingobject = $this->objectManager->get('Thucke\\ThRating\\Service\\ExtensionManagementService')->makeRatable('TestTable', 'TestField', 4);
 		//add descriptions in default language to each stepconf
-		$this->objectManager->get('Thucke\\ThRating\\Utility\\ExtensionManagementUtility')->setStepname($ratingobject->getStepconfs()->current(), 'Automatic generated entry ', 0, TRUE);		
+		$this->objectManager->get('Thucke\\ThRating\\Service\\ExtensionManagementService')->setStepname($ratingobject->getStepconfs()->current(), 'Automatic generated entry ', 0, TRUE);		
 		//add descriptions in german language to each stepconf
-		$this->objectManager->get('Thucke\\ThRating\\Utility\\ExtensionManagementUtility')->setStepname($ratingobject->getStepconfs()->current(), 'Automatischer Eintrag ', 43, TRUE);		
+		$this->objectManager->get('Thucke\\ThRating\\Service\\ExtensionManagementService')->setStepname($ratingobject->getStepconfs()->current(), 'Automatischer Eintrag ', 43, TRUE);		
 	}
 
 

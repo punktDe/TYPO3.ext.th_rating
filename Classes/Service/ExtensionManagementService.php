@@ -1,5 +1,5 @@
 <?php
-namespace Thucke\ThRating\Utility;
+namespace Thucke\ThRating\Service;
 /***************************************************************
 *  Copyright notice
 *
@@ -29,7 +29,7 @@ namespace Thucke\ThRating\Utility;
  * @version $Id:$
  * @license http://opensource.org/licenses/gpl-license.php GNU protected License, version 2
  */
-class ExtensionManagementUtility extends \Thucke\ThRating\Utility\AbstractExtensionUtility {
+class ExtensionManagementService extends \Thucke\ThRating\Service\AbstractExtensionService {
 
 	/**
 	 * @var \Thucke\ThRating\Service\ObjectFactoryService $objectFactoryService
