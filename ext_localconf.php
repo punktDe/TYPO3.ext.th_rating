@@ -20,7 +20,7 @@ if (!defined ('TYPO3_MODE')) 	die ('Access denied.');
 // here we register "tx_thrating_unlinkDynCss_eval" to remove the dynamic CSS file when values are modified in the BE
 $TYPO3_CONF_VARS['SC_OPTIONS']['tce']['formevals']['tx_thrating_unlinkDynCss_eval'] = 'EXT:th_rating/Classes/Utility/BE.tx_thrating_unlinkDynCss_eval.php';
 //add hook to remove the dynamic CSS file when cache is cleared
-$TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['clearCachePostProc'][]='EXT:th_rating/Classes/Utility/TCALabelUserFuncUtility.php:&Thucke\\ThRating\\Utility\\TCALabelUserFuncUtility->clearCachePostProc';
+$TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['clearCachePostProc'][]='EXT:th_rating/Classes/Service/TCALabelUserFuncService.php:&Thucke\\ThRating\\Service\\TCALabelUserFuncService::clearCachePostProc';
 
 /**
  * Base configuration of logging events.

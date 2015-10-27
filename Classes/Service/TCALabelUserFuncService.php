@@ -1,5 +1,5 @@
 <?php
-namespace Thucke\ThRating\Utility;
+namespace Thucke\ThRating\Service;
 /***************************************************************
 *  Copyright notice
 *
@@ -29,7 +29,7 @@ namespace Thucke\ThRating\Utility;
  * @version $Id:$
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License, version 2
  */
-class TCALabelUserFuncUtility {
+class TCALabelUserFuncService {
 
 	/**
 	 * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface	$objectManager

@@ -286,7 +286,7 @@ class ObjectFactoryService extends \Thucke\ThRating\Service\AbstractExtensionSer
 			$this->objectManager->get($repository)->update($objectToPersist);
 		}
 		$this->objectManager->get('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\PersistenceManager')->persistAll();
-		$this->objectManager->get('Thucke\\ThRating\\Utility\\TCALabelUserFuncUtility')->clearCachePostProc(NULL, NULL, NULL);  //Delete the file 'typo3temp/thratingDyn.css'
+		$this->objectManager->get('Thucke\\ThRating\\Service\\TCALabelUserFuncService')->clearCachePostProc(NULL, NULL, NULL);  //Delete the file 'typo3temp/thratingDyn.css'
 	}
 }
 ?>
