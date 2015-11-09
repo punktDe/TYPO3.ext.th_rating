@@ -26,7 +26,6 @@ return array(
 	'tx_thrating_service_accessexception' => $extensionClassesPath . 'Service/AccessException.php',
 	'tx_thrating_service_cookieservice' => $extensionClassesPath . 'Service/CookieService.php',
 	'tx_thrating_service_objectfactoryservice' => $extensionClassesPath . 'Service/ObjectFactoryService.php',
-	'tx_thrating_unlinkDynCss_eval' => $extensionClassesPath . 'Utility/BE.tx_thrating_unlinkDynCss_eval.php',
 	'tx_thrating_utility_tcalabeluserfuncservice' => $extensionClassesPath . 'Service/TCALabelUserFuncService.php',
 	'tx_thrating_viewhelpers_ratingviewhelper' => $extensionClassesPath . 'ViewHelpers/RatingViewHelper.php',
 	'tx_thrating_viewhelpers_selectviewhelper' => $extensionClassesPath . 'ViewHelpers/SelectViewHelper.php',

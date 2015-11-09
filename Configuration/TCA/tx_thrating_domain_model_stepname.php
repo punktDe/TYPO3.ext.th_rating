@@ -52,7 +52,7 @@ $GLOBALS['TCA']['tx_thrating_domain_model_stepname'] = array(
 				'type'		=> 'input',
 				'size'		=> '15',
 				'max'		=> '64',
-				'eval'		=> 'tx_thrating_unlinkDynCss_eval,trim',
+				'eval'		=> '\Thucke\ThRating\Evaluation\DynamicCssEvaluator::class,trim',
 			),
 		),
 		'uid' => array(

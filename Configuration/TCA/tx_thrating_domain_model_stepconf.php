@@ -50,7 +50,7 @@ $GLOBALS['TCA']['tx_thrating_domain_model_stepconf'] =  array(
 				'type'		=> 'input',
 				'size'		=> '8',
 				'max'		=> '12',
-				'eval'		=> 'tx_thrating_unlinkDynCss_eval,int,required',
+				'eval'		=> '\Thucke\ThRating\Evaluation\DynamicCssEvaluator::class,int,required',
 				'default'	=> '1',
 				'range'		=> array('lower' => 1)
 			),
@@ -63,7 +63,7 @@ $GLOBALS['TCA']['tx_thrating_domain_model_stepconf'] =  array(
 				'type'		=> 'input',
 				'size'		=> '8',
 				'max'		=> '12',
-				'eval'		=> 'tx_thrating_unlinkDynCss_eval,int',
+				'eval'		=> '\Thucke\ThRating\Evaluation\DynamicCssEvaluator::class,int',
 				'default'	=> '1',
 			),
 		),
