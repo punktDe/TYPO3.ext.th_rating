@@ -1,7 +1,6 @@
-- Bug #70335: #1438183881: TCA table tx_thrating_domain_model_stepname ctrl['type'] is set to 1, but this field does not exist in the database of this table
-- Bug #70336: Display and handling of localized stepnames in BE - will be fixed in TYPO3 7 LTS
-- Task #69487: Raise compatibility to TYPO3 7.5
-- Task #70191: VoteController: Better handling with $TYPO3_DB and $TSFE
-- Suggestion #70190: TCA: Switch from foreign_sortby to foreign_default_sortby
-- Feature #69486: Add JSON response to CREATE action
-  Thanks to http://preloaders.net providing such great AJAX wait animations
+- Bug #70933: PHP Fatal error: Call to a member function getFlashMessageQueue() on a non-object
+- Task #71078: Move ExtensionManagementUtility to ExtensionManagementService
+- Task #71079: Move TCALabelUserFuncUtility to TCALabelUserFuncService
+- Task #71443: Change PHP compatibility from 5.5 to 5.6
+- Task #71444: Move $TYPO3_CONF_VARS['SC_OPTIONS']['tce']['formevals'] to support namespaces and autoloader
+- Feature #71758: Raise compatibility to TYPO3 7.6
