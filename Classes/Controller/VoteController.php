@@ -86,6 +86,16 @@ class VoteController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 		$this->accessControllService = $accessControllService;
 	}
 	/**
+	 * @var \Thucke\ThRating\Service\RichSnippetService
+	 */
+	protected $richSnippetService;
+	/**
+	 * @param \Thucke\ThRating\Service\RichSnippetService $richSnippetService
+	 */
+	public function injectRichSnippetService(\Thucke\ThRating\Service\RichSnippetService $richSnippetService) {
+		$this->richSnippetService = $richSnippetService;
+	}
+	/**
 	 * @var \Thucke\ThRating\Domain\Repository\VoteRepository
 	 */
 	protected $voteRepository;
@@ -766,12 +776,18 @@ class VoteController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 	protected function fillSummaryView() {
 			$this->view->assign('settings', $this->settings);
 			$this->view->assign('ajaxRef', $this->ajaxSelections['ajaxRef']);
-			//$this->view->assign('ratingobject', $this->vote->getRating()->getRatingobject()); //TODO today
 			$this->view->assign('rating', $this->vote->getRating());
 			$this->view->assign('voter', $this->vote->getVoter());
 
+			if ($this->richSnippetService->setRichSnippetConfig($this->settings)) {
+				$richSnippetObject = $this->richSnippetService->getRichSnippetObject($this->vote->getRating()->getRatedobjectuid());
+				if (empty($richSnippetObject->getName())) {
+					$richSnippetObject->setName('Rating AX '.$this->vote->getRating()->getRatingobject()->getUid().'_'.$this->vote->getRating()->getRatedobjectuid());
+				}
+				$this->view->assign('richSnippetObject', $richSnippetObject);
+			}
+
 			$currentrate = $this->vote->getRating()->getCurrentrates();
-			//$this->view->assign('currentRates', $currentrate['currentrate']);
 			$this->view->assign('stepCount', count($currentrate['weightedVotes']));
 			$this->view->assign('anonymousVotes', $currentrate['anonymousVotes']);
 			$this->view->assign('anonymousVoting', !empty($this->settings['mapAnonymous']) && !$this->accessControllService->getFrontendUserUid());

@@ -4,22 +4,26 @@
 	<div class='tx-thrating-staticPreContent'><f:format.raw>{staticPreContent}</f:format.raw></div>
 	<div class='tx-thrating-content' aria-life="polite" aria-atomic="false" aria-relevant="text">
 		<div class='tx-thrating-preContent'><f:format.raw>{preContent}</f:format.raw></div>
-	<f:if condition="{stepCount} > 0">
-	  <f:then>
+	<f:if condition="{stepCount} > 0"><f:then>
 		<span class="dummy4focus" tabindex="-1"></span>
 		<f:comment><!-- display check regarding section 'content' of view action--></f:comment>
 		<f:if condition="{settings.fluid.layouts.default.showSectionContent}"><f:then>
 			<f:render section="content" />
 		</f:then></f:if>
 		<f:if condition="{settings.fluid.layouts.default.showSummary}"><f:then>
-		<div class='tx-thrating-summary'>
+		<div class='tx-thrating-summary' itemscope itemtype="http://schema.org/Thing">
 			<f:comment><!-- display check regarding rating summary information --></f:comment>
 			<f:if condition="{settings.fluid.layouts.default.showCurrentRates}"><f:then>
-				{f:if(condition: '{rating.currentRates.currentrate}', then: '<span class="tx_thrating_ajax-currentRates-On">', else: '<span class="tx_thrating_ajax-currentRates-On hidden">')}
+				<meta itemprop="name" content="{richSnippetObject.name}"/>
+				<meta itemprop="description" content="{richSnippetObject.description}"/>
+				<meta itemprop="url" content="{richSnippetObject.url}"/>
+				{f:if(condition: '{rating.currentRates.currentrate}', then: '<span class="tx_thrating_ajax-currentRates-On" itemprop="aggregateRating" itemscope itemtype="http://schema.org/AggregateRating">', else: '<span class="tx_thrating_ajax-currentRates-On hidden" itemprop="aggregateRating" itemscope itemtype="http://schema.org/AggregateRating">')}
 					<f:translate key='fluid.layout.default.currentRating' default='fluid.layout.default.currentRating' arguments="{1:rating.currentRates.currentrate, 2:'{f:count(subject:\"{rating.votes}\")}'}"/>
 					<f:if condition="{anonymousVotes}"><f:then>
 					<br/><f:translate key='fluid.layout.default.anonymousVotes' default='fluid.layout.default.anonymousVotes' arguments='{1:anonymousVotes}'/>
 					</f:then></f:if>
+				<meta itemprop="bestRating" content="{stepCount}"/>
+				<meta itemprop="worstRating" content="1"/>
 			</span>
 				{f:if(condition: '{rating.currentRates.currentrate}', then: '<span class="tx_thrating_ajax-currentRates-Off hidden">', else: '<span class="tx_thrating_ajax-currentRates-Off">')}
 					<f:translate key='fluid.layout.default.noRatingDone' default='fluid.layout.default.noRatingDone'/>
@@ -66,5 +70,6 @@ Rating: <f:format.number decimals="1" decimalSeparator="," thousandsSeparator=".
 * {staticPostContent}	- 	HTML formatted content that will be includes AFTER extension content (NOT changed by AJAX)
 * {preContent}			- 	HTML formatted content that will be includes IN FRONT OF extension content (changed by AJAX)
 * {postContent}			- 	HTML formatted content that will be includes AFTER extension content (changed by AJAX)
+* {richSnippetObject}	- 	schema.org object supporting properties [name, description, url]
 *************************************************************************************************
 --></f:comment>

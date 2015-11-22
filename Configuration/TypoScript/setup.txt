@@ -158,6 +158,10 @@ plugin.tx_thrating {
 		defaultObject {
 			ratetable = tt_content
 			ratefield = uid
+			richSnippetFields {
+				name = header
+				description = bodytext
+			}
 			#this is similar to
 			#ratingobject = 1
 		}

@@ -306,11 +306,11 @@
 			</trans-unit>
 			<trans-unit id="fluid.template.ratinglinks.currentRating" xml:space="preserve" approved="yes">
 				<note>Forwarded arguments: 1:currentRate, 2:stepCount</note>
-				<source><![CDATA[Current rating is <span class='tx_thrating_ajax-ratingCurrentratesCurrentrate'>%1.1f</span> out of <span class='tx_thrating_ajax-stepCount'>%2$d</span>]]></source>
+				<source><![CDATA[Current rating is <span class='tx_thrating_ajax-ratingCurrentratesCurrentrate' itemprop='ratingValue'>%1.1f</span> out of <span class='tx_thrating_ajax-stepCount' itemprop='bestRating'>%2$d</span>]]></source>
 			</trans-unit>
 			<trans-unit id="fluid.layout.default.currentRating" xml:space="preserve" approved="yes">
 				<note>Forwarded arguments: 1:currentRate, 2:number of rating.votes</note>
-				<source><![CDATA[Rating: <span class='tx_thrating_ajax-ratingCurrentratesCurrentrate'>%1.1f</span>. <span class='tx_thrating_ajax-ratingCurrentratesNumAllVotes'>%2$d</span> vote(s).]]></source>
+				<source><![CDATA[Rating: <span class='tx_thrating_ajax-ratingCurrentratesCurrentrate' itemprop='ratingValue'>%1.1f</span>. <span class='tx_thrating_ajax-ratingCurrentratesNumAllVotes' itemprop='ratingCount'>%2$d</span> vote(s).]]></source>
 			</trans-unit>
 			<trans-unit id="fluid.layout.default.anonymousVotes" xml:space="preserve" approved="yes">
 				<note>Forwarded arguments: 1:anonymousVotes</note>

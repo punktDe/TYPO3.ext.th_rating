@@ -98,8 +98,8 @@ class AccessControlService extends \Thucke\ThRating\Service\AbstractExtensionSer
 	/**
 	 * Loads objects from repositories
 	 *
-	 * @param	mixed									$voter 
-	 * @return	\TYPO3\CMS\Extbase\Domain\Model\FrontendUser 
+	 * @param mixed $voter 
+	 * @return \TYPO3\CMS\Extbase\Domain\Model\FrontendUser 
 	 */
 	public function getFrontendUser($voter = NULL) {
 		//set userobject
@@ -118,8 +118,8 @@ class AccessControlService extends \Thucke\ThRating\Service\AbstractExtensionSer
 	/**
 	 * Loads objects from repositories
 	 *
-	 * @param	mixed							$voter 
-	 * @return	\Thucke\ThRating\Domain\Model\Voter 
+	 * @param mixed $voter 
+	 * @return \Thucke\ThRating\Domain\Model\Voter 
 	 */
 	public function getFrontendVoter($voter = NULL) {
 		//set userobject

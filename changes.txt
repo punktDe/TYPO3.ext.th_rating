@@ -1,6 +1,1 @@
-- Bug #70933: PHP Fatal error: Call to a member function getFlashMessageQueue() on a non-object
-- Task #71078: Move ExtensionManagementUtility to ExtensionManagementService
-- Task #71079: Move TCALabelUserFuncUtility to TCALabelUserFuncService
-- Task #71443: Change PHP compatibility from 5.5 to 5.6
-- Task #71444: Move $TYPO3_CONF_VARS['SC_OPTIONS']['tce']['formevals'] to support namespaces and autoloader
-- Feature #71758: Raise compatibility to TYPO3 7.6
+- Feature #70829: google rich snippet
