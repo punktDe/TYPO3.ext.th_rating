@@ -3,14 +3,14 @@
 <f:section name="content">
 <f:comment><!-- switch according display mode --></f:comment>
 <f:if condition="{settings.fluid.templates.ratinglinks.likesMode}"><f:then>
-	{f:if(condition: '{voting}', then: '<span class="tx_thrating_ajax-voting-On">', else: '<span class="tx_thrating_ajax-voting-On hidden">')}
+	<span class="tx_thrating_ajax-voting-On	{f:if(condition: voting, then: '', else: 'hidden')}">
 		<f:comment><!-- display if any vote has be done yet --></f:comment>
 		<f:render partial="usersRating" arguments="{voting:voting, ratingClass:ratingClass, ratingobject:rating.ratingobject, ratingName:ratingName, stepCount:stepCount, usersRate:usersRate}"/>
-</span>
-	{f:if(condition: '{voting}', then: '<span class="tx_thrating_ajax-voting-Off hidden">', else: '<span class="tx_thrating_ajax-voting-Off">')}
+	</span>
+	<span class="tx_thrating_ajax-voting-Off {f:if(condition: voting, then: 'hidden', else: '')}">
 		<f:comment><!-- display normal ratinglinkblock --></f:comment>
 		<f:render partial="ratinglinkBlock" arguments="{voting:voting, ratingClass:ratingClass, ratingobject:rating.ratingobject, ratingName:ratingName, rating:rating, currentRates:rating.currentRates.currentrate, stepCount:stepCount, barimage:barimage, ajaxSelections:ajaxSelections}"/>
-</span>
+	</span>
 </f:then><f:else>
 	<f:if condition="{ratingName}"><f:then>
 		<f:comment><!-- display normal ratinglinkblock --></f:comment>

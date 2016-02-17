@@ -12,14 +12,14 @@
 		<div class='tx-thrating-summary'>
 			<f:comment><!-- display check regarding rating summary information --></f:comment>
 			<f:if condition="{settings.fluid.layouts.polling.showCurrentPolls}"><f:then>
-				{f:if(condition: '{rating.currentRates.currentrate}', then: '<span class="tx_thrating_ajax-currentRates-On">', else: '<span class="tx_thrating_ajax-currentRates-On hidden">')}
-					<f:translate key='fluid.layout.polling.currentRating' default='fluid.layout.polling.currentRating' arguments="{1:rating.currentRates.currentrate, 2:'{f:count(subject:\"{rating.votes}\")}'}"/>
-					<f:if condition="{anonymousVotes}"><f:then>
-					<br/><f:translate key='fluid.layout.polling.anonymousVotes' default='fluid.layout.polling.anonymousVotes' arguments='{1:anonymousVotes}'/>
-					</f:then></f:if>
+			<span class="tx_thrating_ajax-currentRates-On {f:if(condition: rating.currentRates.currentrate, then: '', else: 'hidden')}">
+				<f:translate key='fluid.layout.polling.currentRating' default='fluid.layout.polling.currentRating' arguments="{1:rating.currentRates.currentrate, 2:'{f:count(subject:\"{rating.votes}\")}'}"/>
+				<f:if condition="{anonymousVotes}"><f:then>
+				<br/><f:translate key='fluid.layout.polling.anonymousVotes' default='fluid.layout.polling.anonymousVotes' arguments='{1:anonymousVotes}'/>
+				</f:then></f:if>
 			</span>
-				{f:if(condition: '{rating.currentRates.currentrate}', then: '<span class="tx_thrating_ajax-currentRates-Off hidden">', else: '<span class="tx_thrating_ajax-currentRates-Off">')}
-					<f:translate key='fluid.layout.polling.noRatingDone' default='fluid.layout.polling.noRatingDone'/>
+			<span class="tx_thrating_ajax-currentRates-Off {f:if(condition: rating.currentRates.currentrate, then: 'hidden', else: '')}">
+				<f:translate key='fluid.layout.polling.noRatingDone' default='fluid.layout.polling.noRatingDone'/>
 			</span>
 			<br/>
 			</f:then></f:if>

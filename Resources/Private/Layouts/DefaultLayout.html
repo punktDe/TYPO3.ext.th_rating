@@ -17,18 +17,18 @@
 				<meta itemprop="name" content="{richSnippetObject.name}"/>
 				<meta itemprop="description" content="{richSnippetObject.description}"/>
 				<meta itemprop="url" content="{richSnippetObject.url}"/>
-				{f:if(condition: '{rating.currentRates.currentrate}', then: '<span class="tx_thrating_ajax-currentRates-On" itemprop="aggregateRating" itemscope itemtype="http://schema.org/AggregateRating">', else: '<span class="tx_thrating_ajax-currentRates-On hidden" itemprop="aggregateRating" itemscope itemtype="http://schema.org/AggregateRating">')}
+				<span class="tx_thrating_ajax-currentRates-On {f:if(condition: rating.currentRates.currentrate, then: '', else: 'hidden')}" itemprop="aggregateRating" itemscope itemtype="http://schema.org/AggregateRating">
 					<f:translate key='fluid.layout.default.currentRating' default='fluid.layout.default.currentRating' arguments="{1:rating.currentRates.currentrate, 2:'{f:count(subject:\"{rating.votes}\")}'}"/>
 					<f:if condition="{anonymousVotes}"><f:then>
 					<br/><f:translate key='fluid.layout.default.anonymousVotes' default='fluid.layout.default.anonymousVotes' arguments='{1:anonymousVotes}'/>
 					</f:then></f:if>
-				<meta itemprop="bestRating" content="{stepCount}"/>
-				<meta itemprop="worstRating" content="1"/>
-			</span>
-				{f:if(condition: '{rating.currentRates.currentrate}', then: '<span class="tx_thrating_ajax-currentRates-Off hidden">', else: '<span class="tx_thrating_ajax-currentRates-Off">')}
+					<meta itemprop="bestRating" content="{stepCount}"/>
+					<meta itemprop="worstRating" content="1"/>
+				</span>
+				<span class="tx_thrating_ajax-currentRates-Off {f:if(condition: rating.currentRates.currentrate, then: 'hidden', else: '')}">
 					<f:translate key='fluid.layout.default.noRatingDone' default='fluid.layout.default.noRatingDone'/>
-			</span>
-			<br/>
+				</span>
+				<br/>
 			</f:then></f:if>
 			<f:if condition="{actionMethodName}=='MarkAction'"><f:then>
 				<f:comment>Display nothing if we are in likesMode - Users rating is already shown in content section</f:comment>

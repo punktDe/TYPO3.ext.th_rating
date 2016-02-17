@@ -1,19 +1,19 @@
 <f:comment><!-- display check --></f:comment>
-{f:if(condition: '{voting}', then: '<span class="tx_thrating_ajax-voting-On">', else: '<span class="tx_thrating_ajax-voting-On hidden">')}
-<f:if condition="{settings.fluid.partials.usersRating.showTextInfo}"><f:then>
-	<f:translate key='fluid.partial.usersRating.usersRate' default='fluid.partial.usersRating.usersRate' arguments='{1:voting, 2:voting.vote.steporder, 3:stepCount}'/>
-</f:then></f:if>
-<f:comment><!-- display check --></f:comment>
-<f:if condition="{settings.fluid.partials.usersRating.showGraphicInfo}"><f:then>
-	<div class='tx-thrating-ratinglinks'>
-		<ul class='thRating thRating-{ratingClass} thRating-RObj{ratingobject.uid}-{ratingName}'>
-			<li class="current-rating {f:if(condition: '{0: ratingClass} == {0: \'tilt\'}', then: 'tx_thrating_ajax-usersRateHeight', else: 'tx_thrating_ajax-usersRateWidth')}" 
-				style="{f:if(condition: '{0: ratingClass} == {0: \'tilt\'}', then: 'height:{usersRate}', else: 'width:{usersRate}')}" title="<f:translate key='fluid.partial.usersRating.usersRate' default='fluid.partial.usersRating.usersRate' arguments='{1:voting, 2:voting.vote.steporder, 3:stepCount}'/>">
-				<f:translate key='fluid.partial.usersRating.usersRate' default='fluid.partial.usersRating.usersRate' arguments='{1:voting, 2:voting.vote.steporder, 3:stepCount}'/>
-			</li>
-		</ul>	
-	</div>
-</f:then></f:if>
+<span class="tx_thrating_ajax-voting-On {f:if(condition: voting, then: '', else: 'hidden')}">
+	<f:if condition="{settings.fluid.partials.usersRating.showTextInfo}"><f:then>
+		<f:translate key='fluid.partial.usersRating.usersRate' default='fluid.partial.usersRating.usersRate' arguments='{1:voting, 2:voting.vote.steporder, 3:stepCount}'/>
+	</f:then></f:if>
+	<f:comment><!-- display check --></f:comment>
+	<f:if condition="{settings.fluid.partials.usersRating.showGraphicInfo}"><f:then>
+		<div class='tx-thrating-ratinglinks'>
+			<ul class='thRating thRating-{ratingClass} thRating-RObj{ratingobject.uid}-{ratingName}'>
+				<li class="current-rating {f:if(condition: '{0: ratingClass} == {0: \'tilt\'}', then: 'tx_thrating_ajax-usersRateHeight', else: 'tx_thrating_ajax-usersRateWidth')}" 
+					style="{f:if(condition: '{0: ratingClass} == {0: \'tilt\'}', then: 'height:{usersRate}', else: 'width:{usersRate}')}" title="<f:translate key='fluid.partial.usersRating.usersRate' default='fluid.partial.usersRating.usersRate' arguments='{1:voting, 2:voting.vote.steporder, 3:stepCount}'/>">
+					<f:translate key='fluid.partial.usersRating.usersRate' default='fluid.partial.usersRating.usersRate' arguments='{1:voting, 2:voting.vote.steporder, 3:stepCount}'/>
+				</li>
+			</ul>	
+		</div>
+	</f:then></f:if>
 </span>
 <f:comment>
 <!--
