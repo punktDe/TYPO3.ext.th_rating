@@ -17,7 +17,7 @@
 				<meta itemprop="name" content="{richSnippetObject.name}"/>
 				<meta itemprop="description" content="{richSnippetObject.description}"/>
 				<meta itemprop="url" content="{richSnippetObject.url}"/>
-				<span class="tx_thrating_ajax-currentRates-On {f:if(condition: rating.currentRates.currentrate, then: '', else: 'hidden')}" itemprop="aggregateRating" itemscope itemtype="http://schema.org/AggregateRating">
+				<span data-role="onCurrentRateActive" style="{f:if(condition: rating.currentRates.currentrate, then: '', else: 'display:none;')}" itemprop="aggregateRating" itemscope itemtype="http://schema.org/AggregateRating">
 					<f:translate key='fluid.layout.default.currentRating' default='fluid.layout.default.currentRating' arguments="{1:rating.currentRates.currentrate, 2:'{f:count(subject:\"{rating.votes}\")}'}"/>
 					<f:if condition="{anonymousVotes}"><f:then>
 					<br/><f:translate key='fluid.layout.default.anonymousVotes' default='fluid.layout.default.anonymousVotes' arguments='{1:anonymousVotes}'/>
@@ -25,7 +25,7 @@
 					<meta itemprop="bestRating" content="{stepCount}"/>
 					<meta itemprop="worstRating" content="1"/>
 				</span>
-				<span class="tx_thrating_ajax-currentRates-Off {f:if(condition: rating.currentRates.currentrate, then: 'hidden', else: '')}">
+				<span data-role="onCurrentRateHidden" style="{f:if(condition: rating.currentRates.currentrate, then: 'display:none;', else: '')}">
 					<f:translate key='fluid.layout.default.noRatingDone' default='fluid.layout.default.noRatingDone'/>
 				</span>
 				<br/>

@@ -1,5 +1,5 @@
 <f:comment><!-- display check --></f:comment>
-<span class="tx_thrating_ajax-voting-On {f:if(condition: voting, then: '', else: 'hidden')}">
+<span data-role="onVotingActive" style="{f:if(condition: voting, then: '', else: 'display:none;')}">
 	<f:if condition="{settings.fluid.partials.usersRating.showTextInfo}"><f:then>
 		<f:translate key='fluid.partial.usersRating.usersRate' default='fluid.partial.usersRating.usersRate' arguments='{1:voting, 2:voting.vote.steporder, 3:stepCount}'/>
 	</f:then></f:if>

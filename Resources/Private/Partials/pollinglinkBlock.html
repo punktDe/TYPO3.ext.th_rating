@@ -12,7 +12,7 @@
 			<f:comment><!-- Only generate links if rating is allowed user is logged on --></f:comment>
 			<f:if condition="{ajaxSelections}"><f:then>
 				<f:for each="{ajaxSelections}" as="ajaxSelection">
-				<li><span class="ajaxLink RObj{ratingobject.uid}-StpOdr{ajaxSelection.step.steporder}-ratingpoll-{ratingClass} {barimage} tx_thrating_ajax-votingRated-Off" title='{ajaxSelection.step}' tabindex='-1' >
+				<li><span data-role="onRatedHidden" class="ajaxLink RObj{ratingobject.uid}-StpOdr{ajaxSelection.step.steporder}-ratingpoll-{ratingClass} {barimage}" title='{ajaxSelection.step}' tabindex='-1' >
 						<input type="hidden" name="ajaxSelect" value="{ajaxSelection.ajaxvalue}" />
 					</span>
 				</li>

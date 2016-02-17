@@ -1,18 +1,18 @@
 <f:comment><!-- display check --></f:comment>
-<span class="tx_thrating_ajax-voting-Off {f:if(condition: voting, then: 'hidden', else: '')}">
+<span data-role="onVotingHidden" style="{f:if(condition: voting, then: 'display:none;', else: '')}">
 	<f:if condition="{settings.fluid.partials.infoBlock.showAnonymousVotes}"><f:then>
-	<span class="tx_thrating_ajax-anonymousVoting-On {f:if(condition: anonymousVoting, then: '', else: 'hidden')}">
+	<span data-role="onAnonymousVotingActive" style="{f:if(condition: anonymousVoting, then: '', else: 'display:none;')}">
 		<f:translate key='fluid.partial.infoBlock.anonymousVoting' default='fluid.partial.infoBlock.anonymousVoting' htmlEscape="false" />
 	</span>
 	</f:then></f:if>
 	<f:comment><!-- Check if a  FE user is logged on --></f:comment>
-	<span class="tx_thrating_ajax-voter-On {f:if(condition: voting.hasrated, then: '', else: 'hidden')}">
+	<span data-role="onHasRatedActive" style="{f:if(condition: voting.hasrated, then: '', else: 'display:none;')}">
 		<f:if condition="{ratingName}"><f:then>
 			<f:comment><!--This is a special entry for the ratinglink action --></f:comment>
 			<f:translate key='fluid.partial.infoBlock.clickRatingBar' default='fluid.partial.infoBlock.clickRatingBar'/>
 		</f:then></f:if>	
 	</span>
-	<span class="tx_thrating_ajax-voter-Off {f:if(condition: voter, then: 'hidden', else: '')}">
+	<span data-role="onVoterHidden" style="{f:if(condition: voter, then: 'display:none;', else: '')}">
 		<f:translate key='fluid.partial.infoBlock.logonForRatings' default='fluid.partial.infoBlock.logonForRatings'/>
 	</span>
 </span>

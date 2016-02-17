@@ -14,7 +14,8 @@
 			<f:comment><!-- Only generate links if a  FE user is logged on --></f:comment>
 			<f:if condition="{ajaxSelections}"><f:then>
 				<f:for each="{ajaxSelections}" as="ajaxSelection">
-				<li><span class="ajaxLink RObj{rating.ratingobject.uid}-StpOdr{ajaxSelection.step.steporder}-ratingstep-{ratingClass} {barimage} tx_thrating_ajax-votingRated-Off" title='{ajaxSelection.step}' tabindex='-1' ><input type="hidden" name="ajaxSelect" value="{ajaxSelection.ajaxvalue}" />
+				<li><span data-role="onRatedHidden" class="ajaxLink RObj{rating.ratingobject.uid}-StpOdr{ajaxSelection.step.steporder}-ratingstep-{ratingClass} {barimage}" title='{ajaxSelection.step}' tabindex='-1' >
+						<input type="hidden" name="ajaxSelect" value="{ajaxSelection.ajaxvalue}" />
 						{ajaxSelection.step.steporder}
 					</span>
 				</li>
