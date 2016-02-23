@@ -1,1 +1,3 @@
 - Feature #70829: google rich snippet
+- Suggestion #72162: Refactoring Fluid Templates
+- Suggestion #72163: use data-attributes for jquery logic
