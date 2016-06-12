@@ -39,7 +39,7 @@ class SelectViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\SelectViewHelpe
 	 * @author Thomas Hucke <thucke@web.de>
 	 */	public function initializeArguments() {
 		parent::initializeArguments();
-		$this->registerArgument('additionalOptions', 'array', 'Associative array with values to prepend', FALSE);
+		$this->registerArgument('additionalOptions', 'array', 'Associative array with values to prepend', false);
 		$this->registerTagAttribute('onchange', 'string', 'Optional event handler');
 	}
 		

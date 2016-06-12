@@ -76,7 +76,7 @@ class ExtensionManagementService extends \Thucke\ThRating\Service\AbstractExtens
 	 * @param	bool	$allStepconfs	Take stepname for all steps and add steporder number at the end
 	 * @return	void
 	 */
-	public function setStepname( \Thucke\ThRating\Domain\Model\Stepconf $stepconf, $stepname, $languageIso2Code=0, $allStepconfs=FALSE ) {
+	public function setStepname( \Thucke\ThRating\Domain\Model\Stepconf $stepconf, $stepname, $languageIso2Code=0, $allStepconfs=false ) {
 		$this->logger->log(	\TYPO3\CMS\Core\Log\LogLevel::INFO,
 							'setStepname called',
 							array(
@@ -85,7 +85,7 @@ class ExtensionManagementService extends \Thucke\ThRating\Service\AbstractExtens
 								'stepname' => $stepname,
 								'languageIso2Code' => $languageIso2Code,
 								'allStepconfs' => $allStepconfs));
-		$success = TRUE;
+		$success = true;
 		If ( !$allStepconfs ) {
 			//only add the one specific stepname
 			$stepnameArray = array(
@@ -102,7 +102,7 @@ class ExtensionManagementService extends \Thucke\ThRating\Service\AbstractExtens
 										'languageIso2Code' => $languageIso2Code,
 										'errorCode' => 1398972827
 									));
-				$success = FALSE;
+				$success = false;
 			}
 		} else {
 			$ratingobject = $stepconf->getRatingobject();
@@ -122,7 +122,7 @@ class ExtensionManagementService extends \Thucke\ThRating\Service\AbstractExtens
 											'languageIso2Code' => $languageIso2Code,
 											'errorCode' => 1398972331
 										));
-					$success = FALSE;
+					$success = false;
 				}
 			}
 		}

@@ -43,13 +43,17 @@
 									</numIndex>
 								</items>
 						  </config>
-					</TCEforms>
+						</TCEforms>
 					</switchableControllerActions>
 					<settings.display>
 						<TCEforms>
-							<displayCond>FIELD:switchableControllerActions:=:Vote->ratinglinks</displayCond>
-							<displayCond>FIELD:switchableControllerActions:=:Vote->polling</displayCond>
-							<displayCond>FIELD:switchableControllerActions:=:Vote->mark</displayCond>
+							<displayCond>
+								<OR>
+									<numIndex index="0">FIELD:switchableControllerActions:=:Vote->ratinglinks</numIndex>
+									<numIndex index="1">FIELD:switchableControllerActions:=:Vote->polling</numIndex>
+									<numIndex index="2">FIELD:switchableControllerActions:=:Vote->mark</numIndex>
+								</OR>
+							</displayCond>
 							<label>LLL:EXT:th_rating/Resources/Private/Language/locallang.xlf:flexform.general_display</label>
 							<config>
 								<type>select</type>

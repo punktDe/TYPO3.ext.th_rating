@@ -1,3 +1,5 @@
-- Feature #70829: google rich snippet
-- Suggestion #72162: Refactoring Fluid Templates
-- Suggestion #72163: use data-attributes for jquery logic
+- Bug #76591: Compatibility fix for TYPO3 7.6
+- Bug #75951: Core: Error handler (BE): PHP Warning: Invalid argument supplied for foreach() in ..../th_rating/Classes/Service/TCALabelUserFuncService.php line 168
+- Suggestion #76593: Add cookieLifetime to global constant settings
+- Bug #76592: Cookieprotection not working when configured in plugin.tx_thrating.ratings
+- Task #76602: TYPO3 7.6 Deprecation: #69822 - Deprecate TCA settings of select fields

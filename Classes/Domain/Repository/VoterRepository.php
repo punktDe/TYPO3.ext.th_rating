@@ -36,7 +36,7 @@ class VoterRepository extends \TYPO3\CMS\Extbase\Domain\Repository\FrontendUserR
 		$settings = $configurationManager->getConfiguration('Settings', 'thRating', 'pi1');
 		//Even hidden or deleted FE Users  should be found
 		$this->defaultQuerySettings = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Typo3QuerySettings');
-		$this->defaultQuerySettings->setIgnoreEnableFields(TRUE);
+		$this->defaultQuerySettings->setIgnoreEnableFields(true);
 	}
 }
 

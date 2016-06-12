@@ -5,12 +5,10 @@
    our animation centered, and no-repeating */
 .ajaxWait {
     display:    none;
-    position:   relative;
+    position:   absolute;
     z-index:    1000;
-    top:        0;
-    left:       0;
-    height:     100%;
-    width:      100%;
+    height:     inherit;
+    width:      inherit;
     background: rgba( 255, 255, 255, .8 ) 
                 url('ajaxWait.gif') 
                 50% 50% 
@@ -19,7 +17,7 @@
 /* Anytime the DIV has the loading class, our
    modal element will be visible */
 .tx-thrating-pi1-content.loading .ajaxWait {
-    display: block;
+    display: inline;
 }
 
 #formResult {height: 20px; }
@@ -52,10 +50,6 @@
 .tx-thrating-singleton-message .message-body{
 	padding:3px;
 }
-div.tx-thrating-ratinglinks > div{
-    float:left;
-    display:inline-block;
-}
 div.tx-thrating-ratinglinks > div.stepnameTooltip{
     display:none;
     visibility:hidden;
@@ -84,6 +78,8 @@ div.tx-thrating-ratinglinks ul{
     list-style:none;
     margin:0px;
     padding:0px;
+    height:     inherit;
+    width:      inherit;
 }
 .thrating-normal {
     background-position:left top;

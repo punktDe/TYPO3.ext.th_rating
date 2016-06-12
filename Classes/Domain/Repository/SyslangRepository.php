@@ -33,9 +33,9 @@ class SyslangRepository extends \TYPO3\CMS\Extbase\Persistence\Repository {
 	 */
 	public function initializeObject() {
 		$this->defaultQuerySettings = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Typo3QuerySettings');
-		$this->defaultQuerySettings->setRespectStoragePage(FALSE);
-		$this->defaultQuerySettings->setRespectSysLanguage(FALSE);
-		$this->defaultQuerySettings->setIgnoreEnableFields(TRUE);
+		$this->defaultQuerySettings->setRespectStoragePage(false);
+		$this->defaultQuerySettings->setRespectSysLanguage(false);
+		$this->defaultQuerySettings->setIgnoreEnableFields(true);
 	}
 }
 

@@ -58,7 +58,7 @@ class AccessControlService extends \Thucke\ThRating\Service\AbstractExtensionSer
 	 * Tests, if the given person is logged into the frontend
 	 *
 	 * @param	\TYPO3\CMS\Extbase\Domain\Model\FrontendUser	$person	The person 
-	 * @return	bool 											The result; TRUE if the given person is logged in; otherwise FALSE
+	 * @return	bool 											The result; true if the given person is logged in; otherwise false
 	 */
 	public function isLoggedIn(\TYPO3\CMS\Extbase\Domain\Model\FrontendUser $person = NULL) {
 		if ($person instanceof \TYPO3\CMS\Extbase\Persistence\Generic\LazyObjectStorage) {
@@ -67,14 +67,14 @@ class AccessControlService extends \Thucke\ThRating\Service\AbstractExtensionSer
 		if (is_object($person)) {
 			if ( 	 $person->getUid() &&
 					($person->getUid() === $this->getFrontendUserUid()) ) {
-				return TRUE;	//treat anonymous user also as logged in
+				return true;	//treat anonymous user also as logged in
 			}
 		}
-		return FALSE;
+		return false;
 	}	
 		
 	public function backendAdminIsLoggedIn() {
-		return $GLOBALS['TSFE']->beUserLogin === 1 ? TRUE : FALSE;
+		return $GLOBALS['TSFE']->beUserLogin === 1 ? true : false;
 	}
 	
 	public function hasLoggedInFrontendUser() {

@@ -37,7 +37,7 @@ class StepconfRepository extends \TYPO3\CMS\Extbase\Persistence\Repository {
 	public function initializeObject() {
 		//disable RespectStoragePage as pid is always bound to parent objects pid
 		$defaultQuerySettings = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Typo3QuerySettings');
-		$defaultQuerySettings->setRespectStoragePage(FALSE);
+		$defaultQuerySettings->setRespectStoragePage(false);
 		$this->setDefaultQuerySettings($defaultQuerySettings);
 		
 		$configurationManager = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Configuration\\ConfigurationManager');
@@ -72,14 +72,14 @@ class StepconfRepository extends \TYPO3\CMS\Extbase\Persistence\Repository {
 	 * Finds the ratingstep entry by giving ratingobjectUid
 	 *
 	 * @param 	\Thucke\ThRating\Domain\Model\Stepconf	$stepconf 	The uid of the ratingobject
-	 * @return	bool												TRUE if stepconf object exists in repository
+	 * @return	bool												true if stepconf object exists in repository
 	 */
 	public function existStepconf(\Thucke\ThRating\Domain\Model\Stepconf $stepconf) {
 		$lookForStepconf = $this->findStepconfObject($stepconf);
 		if ( $lookForStepconf instanceof \Thucke\ThRating\Domain\Model\Stepconf ) {
-			return TRUE;
+			return true;
 		} 
-		return FALSE;
+		return false;
 	}
 }
 ?>

@@ -10,13 +10,13 @@ $GLOBALS['TCA']['tx_thrating_domain_model_rating'] = array(
 		'crdate'			=> 'crdate',
 		'cruser_id'			=> 'cruser_id',
 		'delete'			=> 'deleted',
-		'adminOnly'			=> TRUE,
-		'hideTable'			=> TRUE,
+		'adminOnly'			=> true,
+		'hideTable'			=> true,
 		'editlock'			=> 'ratedobjectuid',
 		'enablecolumns'		=> array(
 			'disabled'	=> 'hidden'
 		),
-		'iconfile'			=> \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('th_rating') . 'Resources/Public/Icons/tx_thrating_domain_model_rating.gif'
+		'iconfile'			=> 'EXT:th_rating/Resources/Public/Icons/tx_thrating_domain_model_rating.gif'
 	),
 	'interface' => array(
 		'showRecordFieldList' => 'hidden, ratedobjectuid, votes'
@@ -40,6 +40,7 @@ $GLOBALS['TCA']['tx_thrating_domain_model_rating'] = array(
 			'label'   => 'LLL:EXT:th_rating/Resources/Private/Language/locallang.xlf:tca.model.rating.ratingobject',
 			'config' => array(
 				'type' => 'select',
+				'renderType' => 'selectSingle',
 				'foreign_table' => 'tx_thrating_domain_model_ratingobject',
 				'maxitems' => 1,
 				'minitems' => 1,

@@ -32,7 +32,7 @@ class VoteRepository extends \TYPO3\CMS\Extbase\Persistence\Repository {
 	 * Defines name for function parameter
 	 *
 	 */
-	const addIfNotFound = TRUE;
+	const addIfNotFound = true;
 
 	/**
 	 * Initialze this repository

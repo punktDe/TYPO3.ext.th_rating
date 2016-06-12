@@ -186,7 +186,7 @@ class VoteController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 		 //uncomment the following lines to get SQL DEBUG information of this extension
 		 /*
 		 $this->databaseConnection->explainOutput = 2;
-		 $this->databaseConnection->store_lastBuiltQuery = TRUE;
+		 $this->databaseConnection->store_lastBuiltQuery = true;
 		 $this->databaseConnection->debugOutput = 2;
 		 */
 	 }
@@ -215,8 +215,9 @@ class VoteController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 			$this->request->setFormat('json');
 			//read unique AJAX identification on AJAX request
 			$this->ajaxSelections['ajaxRef'] = $this->request->getArgument('ajaxRef');
-			$this->settings = json_decode($this->request->getArgument('settings'), TRUE);
+			$this->settings = json_decode($this->request->getArgument('settings'), true);
 			$frameworkConfiguration['settings'] = $this->settings;
+			$this->initSettings();
 			$this->logger->log(	\TYPO3\CMS\Core\Log\LogLevel::INFO, 'AJAX request detected - set new frameworkConfiguration', $frameworkConfiguration);
 		} else { 
 			//set unique AJAX identification
@@ -253,9 +254,9 @@ class VoteController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 		//initialize ratingobject and autocreate four ratingsteps
 		$ratingobject = $this->objectManager->get('Thucke\\ThRating\\Service\\ExtensionManagementService')->makeRatable('TestTable', 'TestField', 4);
 		//add descriptions in default language to each stepconf
-		$this->objectManager->get('Thucke\\ThRating\\Service\\ExtensionManagementService')->setStepname($ratingobject->getStepconfs()->current(), 'Automatic generated entry ', 0, TRUE);		
+		$this->objectManager->get('Thucke\\ThRating\\Service\\ExtensionManagementService')->setStepname($ratingobject->getStepconfs()->current(), 'Automatic generated entry ', 0, true);		
 		//add descriptions in german language to each stepconf
-		$this->objectManager->get('Thucke\\ThRating\\Service\\ExtensionManagementService')->setStepname($ratingobject->getStepconfs()->current(), 'Automatischer Eintrag ', 43, TRUE);		
+		$this->objectManager->get('Thucke\\ThRating\\Service\\ExtensionManagementService')->setStepname($ratingobject->getStepconfs()->current(), 'Automatischer Eintrag ', 43, true);		
 	}
 
 
@@ -426,7 +427,7 @@ class VoteController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 	public function newAction(	\Thucke\ThRating\Domain\Model\Vote	$vote = NULL) {
 		$this->logger->log(	\TYPO3\CMS\Core\Log\LogLevel::DEBUG, 'Entry newAction', array());
 		//find vote using additional information
-		$this->initSettings( $vote );
+		$this->initSettings();
 		$this->initVoting( $vote );
 		$this->view->assign('actionMethodName',$this->actionMethodName);
 		if ( !$this->vote->hasRated() || (!$this->accessControllService->isLoggedIn($this->vote->getVoter()) && $this->vote->isAnonymous()) ) {
@@ -516,7 +517,7 @@ class VoteController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 	//http://localhost:8503/index.php?id=71&tx_thrating_pi1[controller]=Vote&tx_thrating_pi1[action]=ratinglinks
 	public function graphicActionHelper(\Thucke\ThRating\Domain\Model\Vote	$vote = NULL) {
 		$this->logger->log(	\TYPO3\CMS\Core\Log\LogLevel::DEBUG, 'Entry graphicActionHelper', array());
-		$this->initSettings( $vote );
+		$this->initSettings();
 		$this->initVoting( $vote );
 		$this->view->assign('actionMethodName',$this->actionMethodName);
 
@@ -698,7 +699,7 @@ class VoteController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 			if ( !is_array($ratingConfiguration['ratings'] )) {
 				$ratingConfiguration['ratings'] = array();
 			}	
-            \TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule($this->settings, $ratingConfiguration['ratings']);
+            \TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule($this->settings, $ratingConfiguration['settings']);
 			$this->logger->log(	\TYPO3\CMS\Core\Log\LogLevel::DEBUG, 
 								'Override extension settings with rating configuration settings', 
 								array("Original setting" => $this->settings, "Overruling settings" => $ratingConfiguration['settings']));
@@ -711,11 +712,13 @@ class VoteController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 		$this->logger->log(	\TYPO3\CMS\Core\Log\LogLevel::INFO, 'Final extension configuration',
 							array('settings' => $this->settings));
 		
-		//distinguish between bar and no-bar rating
-		$this->view->assign('barimage', 'noratingbar');
-		if ( $ratingConfiguration['barimage']) {
-			$this->view->assign('barimage', 'ratingbar');
-			$this->logger->log(	\TYPO3\CMS\Core\Log\LogLevel::DEBUG, 'Set ratingbar config', array());
+		if ($this->view) {
+			//distinguish between bar and no-bar rating
+			$this->view->assign('barimage', 'noratingbar');
+			if ( $ratingConfiguration['barimage']) {
+				$this->view->assign('barimage', 'ratingbar');
+				$this->logger->log(	\TYPO3\CMS\Core\Log\LogLevel::DEBUG, 'Set ratingbar config', array());
+			}
 		}
 
 		//set tilt or normal rating direction
@@ -838,7 +841,7 @@ class VoteController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 		$siteRoot = $siteRootPids['_SITEROOT'];
 		$storagePid = $siteRootPids['_STORAGE_PID'];
 		$frameworkConfiguration = $this->configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
-		$storagePids = \TYPO3\CMS\Extbase\Utility\ArrayUtility::integerExplode(',', $frameworkConfiguration['persistence']['storagePid'], TRUE);
+		$storagePids = \TYPO3\CMS\Extbase\Utility\ArrayUtility::integerExplode(',', $frameworkConfiguration['persistence']['storagePid'], true);
 		foreach ($storagePids as $i => $value) {
 			if ( !is_null($value) && (empty($value) || $value==$siteRoot) ) {
 				unset($storagePids[$i]);		//cleanup invalid values
@@ -895,10 +898,11 @@ class VoteController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 	protected function setFrameworkConfiguration(array $frameworkConfiguration) {
 		$this->configurationManager->setConfiguration($frameworkConfiguration);
 		$this->cookieLifetime = abs(intval($this->settings['cookieLifetime']));
+		$this->logger->log(	\TYPO3\CMS\Core\Log\LogLevel::DEBUG, 'Cookielifetime set to ' . $this->cookieLifetime . " days", array('errorCode' => 1465728751));
 		if ( empty($this->cookieLifetime) ) {
-			$this->cookieProtection = FALSE;
+			$this->cookieProtection = false;
 		} else {
-			$this->cookieProtection = TRUE;
+			$this->cookieProtection = true;
 		}
 	}
 
@@ -931,7 +935,7 @@ class VoteController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 		}
 
 		//now walk through all ratingobjects to calculate stepwidths
-		$allRatingobjects = $this->ratingobjectRepository->findAll(TRUE);
+		$allRatingobjects = $this->ratingobjectRepository->findAll(true);
 		foreach ( $allRatingobjects as $ratingobject) {
 			$ratingobjectUid = $ratingobject->getUid();
 			$stepconfObjects = $ratingobject->getStepconfs();
@@ -1142,7 +1146,7 @@ class VoteController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 									'ratingobject UID' => $rating->getRatingobject()->getUid(),
 									'ratetable' => $rating->getRatingobject()->getRatetable(),
 									'ratefield' => $rating->getRatingobject()->getRatefield()));
-			return TRUE;
+			return true;
 		}
 	}
 	
@@ -1156,7 +1160,7 @@ class VoteController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 	 */
 	protected function getLockedfieldnames( $table ) {
 		$TCA = &$GLOBALS['TCA'][$table]['ctrl']; // Set private TCA var
-		$lockedFields = \TYPO3\CMS\Extbase\Utility\ArrayUtility::trimExplode(',', $TCA['label_alt'], TRUE);
+		$lockedFields = \TYPO3\CMS\Extbase\Utility\ArrayUtility::trimExplode(',', $TCA['label_alt'], true);
 		$lockedFields[] .= 'pid';
 		$lockedFields[] .= 'uid';
 		$lockedFields[] .= $TCA['label'];

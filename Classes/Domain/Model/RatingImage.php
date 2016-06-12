@@ -37,7 +37,7 @@ class RatingImage extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	/**
 	 * @var boolean
 	 */
-	protected $isBuilderObject=FALSE;
+	protected $isBuilderObject=false;
 	/**
 	 * The filename of the final image
 	 *
@@ -123,7 +123,7 @@ class RatingImage extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 		$fullImagePath = PATH_site.$imageFile;
 		if ( file_exists($fullImagePath) ) {
 			$this->imageFile = $imageFile;
-			$this->isBuilderObject = FALSE;
+			$this->isBuilderObject = false;
 		} else {
 			//clear path if given file is invalid
 			unset($this->imageFile);
@@ -137,7 +137,7 @@ class RatingImage extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	 * @var boolean $fullPath	switch if absolute path should be returned
 	 * @return string
 	 */
-	public function getImageFile($fullPath = FALSE) {
+	public function getImageFile($fullPath = false) {
 		$checkedFile = $this->gifBuilder->checkFile($this->imageFile);
 		If (empty($checkedFile)) {
 			//clear image if file doe not exist
@@ -148,7 +148,7 @@ class RatingImage extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	/**
 	 * Generates the image using the given typoscript
 	 *
-	 * @return	bool			The result; TRUE if the given the image has been created successfully; otherwise FALSE
+	 * @return	bool			The result; true if the given the image has been created successfully; otherwise false
 	 */
 	public function generateImage() {
 		If (!empty($this->conf)) {
@@ -156,13 +156,13 @@ class RatingImage extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 			$genImageFile = $this->gifBuilder->gifBuild();
 			If (!file_exists($genImageFile)) {
 				//TODO: error handling
-				return FALSE;
+				return false;
 			}
 			$this->setImageFile($genImageFile);
-			$this->isBuilderObject = TRUE;
-			return TRUE;
+			$this->isBuilderObject = true;
+			return true;
 		} else {
-			return FALSE;
+			return false;
 		}
 	}
 
@@ -176,7 +176,7 @@ class RatingImage extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 		If ($this->isBuilderObject) {
 			list($width, $height) = $this->gifBuilder->getImageDimensions($this->imageFile);
 		} else {
-			list($width, $height) = getimagesize($this->getImageFile(TRUE));
+			list($width, $height) = getimagesize($this->getImageFile(true));
 		}
 		return array('width'=>$width, 'height'=>$height, 'builderObject'=>$this->isBuilderObject);
 	}

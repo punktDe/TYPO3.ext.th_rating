@@ -214,7 +214,7 @@ class ObjectFactoryService extends \Thucke\ThRating\Service\AbstractExtensionSer
 		if ( !empty($settings['mapAnonymous']) && !$frontendUserUid ) {
 			//set anonymous vote
 			$voter =  $this->accessControllService->getFrontendVoter($settings['mapAnonymous']);
-			$anonymousRating = json_decode($_COOKIE[$prefixId.'_AnonymousRating_'.$rating->getUid()], TRUE);
+			$anonymousRating = json_decode($_COOKIE[$prefixId.'_AnonymousRating_'.$rating->getUid()], true);
 			if ( !empty($anonymousRating['voteUid']) ) {
 				$vote = $this->voteRepository->findByUid($anonymousRating['voteUid']);
 			}

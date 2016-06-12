@@ -1,7 +1,7 @@
 <f:if condition="{ratingName}"><f:then>
-	<div class='tx-thrating-ratinglinks'>
-		<ul class='thRating thRating-{ratingClass} thRating-RObj{rating.ratingobject.uid}-{ratingName}'>
-			<div class="ajaxWait"></div>
+	<div class='tx-thrating-ratinglinks thRating-RObj{rating.ratingobject.uid}-{ratingName}'>
+		<div class="ajaxWait"></div>
+		<ul class='thRating thRating-{ratingClass}'>
 			<f:if condition="{settings.fluid.templates.ratinglinks.likesMode}">
 			<f:then><f:comment><!-- display no current rating if in likesMode --></f:comment></f:then>
 			<f:else>
@@ -33,7 +33,7 @@
 * This partial displays the vote that the current user has placed
 ******************************************************************************************
 * Needed variables
-* --------------------
+* ********************
 * {ratingClass}		-	tilt / normal
 * {ratingName}		-	Name of the ratinglink
 * {rating}			-	the ratingObject

@@ -275,7 +275,7 @@ class Rating extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 		if ( empty($this->currentrates) ) {
 			$this->checkCurrentrates(); //initialize entry
 		}
-		$currentratesDecoded = json_decode($this->currentrates, TRUE);
+		$currentratesDecoded = json_decode($this->currentrates, true);
 		$currentratesDecoded['numAllVotes']++;
 		if ( $voting->isAnonymous() ) {
 			$currentratesDecoded['anonymousVotes']++;
@@ -298,7 +298,7 @@ class Rating extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 		if ( empty($this->currentrates) ) {
 			$this->checkCurrentrates(); //initialize entry
 		}
-		$currentratesDecoded = json_decode($this->currentrates, TRUE);
+		$currentratesDecoded = json_decode($this->currentrates, true);
 		$currentratesDecoded['numAllVotes']--;
 		if ( $voting->isAnonymous() ) {
 			$currentratesDecoded['anonymousVotes']--;
@@ -317,10 +317,10 @@ class Rating extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	 * @return array
 	 */
 	public function getCurrentrates() {
-		$currentratesDecoded = json_decode($this->currentrates, TRUE);
+		$currentratesDecoded = json_decode($this->currentrates, true);
 		if (empty($currentratesDecoded['numAllVotes'])) {
 			$this->checkCurrentrates();
-			$currentratesDecoded = json_decode($this->currentrates, TRUE);
+			$currentratesDecoded = json_decode($this->currentrates, true);
 		}
 		$numAllVotes = $currentratesDecoded['numAllVotes'];
 		if (!empty($numAllVotes)) {

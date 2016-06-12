@@ -10,13 +10,13 @@ $GLOBALS['TCA']['tx_thrating_domain_model_vote'] = array(
 		'crdate'			=> 'crdate',
 		'cruser_id'			=> 'cruser_id',
 		'delete'			=> 'deleted',
-		'adminOnly'			=> TRUE,
-		'hideTable'			=> TRUE,
+		'adminOnly'			=> true,
+		'hideTable'			=> true,
 		'editlock'			=> 'rating',
 		'enablecolumns'	=> array(
 			'disabled'		=> 'hidden'
 			),
-		'iconfile'			=> \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('th_rating') . 'Resources/Public/Icons/tx_thrating_domain_model_vote.gif'
+		'iconfile'			=> 'EXT:th_rating/Resources/Public/Icons/tx_thrating_domain_model_vote.gif'
 	),
 	'interface' => array(
 		'showRecordFieldList' => 'hidden, rating, voter, vote'
@@ -40,6 +40,7 @@ $GLOBALS['TCA']['tx_thrating_domain_model_vote'] = array(
 			'label'		=> 'LLL:EXT:th_rating/Resources/Private/Language/locallang.xlf:tca.model.vote.rating',
 			'config' 	=> array(
 				'type' 			=> 'select',
+				'renderType' 	=> 'selectSingle',
 				'foreign_table' => 'tx_thrating_domain_model_rating',
 				'maxitems' 		=> 1,
 				'minitems' 		=> 1,
@@ -51,6 +52,7 @@ $GLOBALS['TCA']['tx_thrating_domain_model_vote'] = array(
 			'label'		=> 'LLL:EXT:th_rating/Resources/Private/Language/locallang.xlf:tca.model.vote.voter',
 			'config' => array(
 				'type' => 'select',
+				'renderType' 	=> 'selectSingle',
 				'foreign_table' => 'fe_users',
 				//'foreign_table_where' => 'AND fe_users.pid=###CURRENT_PID###',
 				//'foreign_table_where' => 'AND fe_users.disable=0 AND fe_users.deleted=0 ORDER BY username',
@@ -88,6 +90,7 @@ $GLOBALS['TCA']['tx_thrating_domain_model_vote'] = array(
 			'label'		=> 'LLL:EXT:th_rating/Resources/Private/Language/locallang.xlf:tca.model.vote.vote',
 			'config' => array(
 				'type' => 'select',
+				'renderType' 	=> 'selectSingle',
 				'foreign_table' => 'tx_thrating_domain_model_stepconf',
 				'maxitems' => 1,
 				'minitems' => 1,

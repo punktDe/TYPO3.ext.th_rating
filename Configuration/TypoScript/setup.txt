@@ -6,16 +6,19 @@ plugin.tx_thrating {
 	userFunc = TYPO3\CMS\Extbase\Core\Bootstrap->run
 	pluginName = Pi1
 	extensionName = ThRating
+	vendorName = Thucke
 	controller = Vote
-	action = ratinglinks
-	#action = show
-	#action = new
 	mvc.callDefaultActionIfActionCantBeResolved = 1
 	switchableControllerActions {
 		Vote {
 			1 = ratinglinks
-			#1 = show
-			#1 = new
+			2 = polling
+			3 = mark
+			4 = index
+			5 = show
+			6 = create
+			7 = new
+			8 = singleton
 		}
 	}
 	settings {
@@ -106,6 +109,7 @@ plugin.tx_thrating {
 	settings {
 		showNoFEUser = {$plugin.tx_thrating.config.showNoFEUser}
 		mapAnonymous = {$plugin.tx_thrating.config.mapAnonymous}
+		cookieLifetime = {$plugin.tx_thrating.config.cookieLifetime}
 		ratingContext = defaultContext
 		logging {
 			emergency {
@@ -269,12 +273,11 @@ thrating_ajax {
 	config {
 		disableAllHeaderCode = 1 
         no_cache = 1
-		xhtml_cleaning = 1
 		admPanel = 0
 		debug = 0
 		metaCharset = UTF-8
 	}
-	10 =< tt_content.list.20.thrating_pi1
+	10 < plugin.tx_thrating
 }
 
 #########################################################################

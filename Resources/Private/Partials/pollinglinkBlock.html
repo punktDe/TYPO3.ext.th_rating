@@ -1,7 +1,7 @@
 <f:if condition="{ratingName}"><f:then>
-	<div class='tx-thrating-ratinglinks'>
-		<ul class='thRating thRating-{ratingClass} thRating-RObj{ratingobject.uid}-{ratingName}'>
-			<div class="ajaxWait"></div>
+	<div class='tx-thrating-ratinglinks thRating-RObj{ratingobject.uid}-{ratingName}'>
+		<div class="ajaxWait"></div>
+		<ul class='thRating thRating-{ratingClass}'>
 			<f:for each="{currentPollDimensions}" as="currentPollDimension">
 			<li class="current-poll RObj{ratingobject.uid}-StpOdr{currentPollDimension.steporder}-currentpoll-{ratingClass} {barimage}" tabindex='-1'>
 				<span class="currentPollText {currentPollDimension.steporder}">{currentPollDimension.pctValue}%</span>
@@ -30,7 +30,7 @@
 * This partial displays the vote that the current user has placed
 ******************************************************************************************
 * Needed variables
-* --------------------
+* ********************
 * {ratingobject}			- 	Domain object: ratingabject
 * {barimage}				-	ratingbar / noratingbar
 * {ratingClass}				-	tilt / normal

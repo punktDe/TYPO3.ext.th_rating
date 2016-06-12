@@ -70,19 +70,19 @@ class StepconfValidator extends \TYPO3\CMS\Extbase\Validation\Validator\Abstract
 		//a stepconf object must have a ratingobject
 		if (!$stepconf->getRatingobject() instanceof \Thucke\ThRating\Domain\Model\Ratingobject) {
 			$this->addError(\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('error.validator.stepconf.ratingobject', 'ThRating'), 1284700846);
-			return FALSE;
+			return false;
 		}
 		//at least a steporder value must be set
 		$steporder = $stepconf->getSteporder();
 		if (empty($steporder)) {
 			$this->addError(\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('error.validator.stepconf.steps', 'ThRating'), 1284700903);
-			return FALSE;
+			return false;
 		}
 
 		//steporder must be positive integer ( >0 )
 		If ( !is_int($stepconf->getSteporder()) or $stepconf->getSteporder()<1 ) {
 			$this->addError(\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('error.validator.stepconf.invalidSteporderNumber', 'ThRating'), 1368123953);
-			return FALSE;
+			return false;
 		}
 
 		//check if given steporder is valid (integer, maximum +1)
@@ -90,7 +90,7 @@ class StepconfValidator extends \TYPO3\CMS\Extbase\Validation\Validator\Abstract
 		$maxSteporder = $maxSteporderStepconfobject[$maxSteporderStepconfobject->count()-1]->getSteporder();
 		If ( $stepconf->getSteporder() > $maxSteporder+1 ) {
 			$this->addError(\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('error.validator.stepconf.maxSteporder', 'ThRating'), 1368123970);
-			return FALSE;
+			return false;
 		}
 		
 		//check if a stepname is given that at least has the default language definition
@@ -104,17 +104,17 @@ class StepconfValidator extends \TYPO3\CMS\Extbase\Validation\Validator\Abstract
 			$defaultName = $this->stepnameRepository->findDefaultStepname($firstStepname);
 			If (empty($defaultName)) {
 				$this->addError(\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('error.validator.stepconf.defaultStepname', 'ThRating', array($firstStepname->getStepconf()->getUid())), 1384374165);
-				return FALSE;
+				return false;
 			}
 			//Finally check on language constistency
 			$checkConsistency = $this->stepnameRepository->checkConsistency($firstStepname);
 			If ($checkConsistency['doubleLang']) {
 				$this->addError(\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('error.validator.stepconf.doubleLangEntry', 'ThRating', array($firstStepname->getStepconf()->getUid())), 1384374589);
-				return FALSE;
+				return false;
 			}		
 			If ($checkConsistency['existLang']) {
 				$this->addError(\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('error.validator.stepconf.notExistingLanguage', 'ThRating', array($firstStepname->getUid())), 1384374589);
-				return FALSE;
+				return false;
 			}		
 		}
 	}

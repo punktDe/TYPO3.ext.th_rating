@@ -29,7 +29,7 @@ class LocalizationUtility extends \TYPO3\CMS\Extbase\Utility\LocalizationUtility
 	 * @param array $arguments the arguments of the extension, being passed over to vsprintf
 	 * @return string|NULL The value from LOCAL_LANG or NULL if no translation was found.
 	 * @api
-	 * @todo : If vsprintf gets a malformed string, it returns FALSE! Should we throw an exception there?
+	 * @todo : If vsprintf gets a malformed string, it returns false! Should we throw an exception there?
 	 */
 	static public function getLangArray($extensionName) {
 		self::initializeLocalization($extensionName);

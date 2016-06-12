@@ -181,20 +181,20 @@ class Vote extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 		if ( $this->getVoter() instanceof \Thucke\ThRating\Domain\Model\Voter ) {
 			$retVal = $this->getVoter()->getUid() == $this->settings['mapAnonymous'] && !empty($this->settings['mapAnonymous']);
 		} else {
-			$retVal = FALSE;
+			$retVal = false;
 		}
 		return $retVal;
 	}	
 
 	/**
 	 * Checks cookie if anonymous vote is already done
-	 * always FALSE if cookie checks is deactivated
+	 * always false if cookie checks is deactivated
 	 * 
 	 * @param String $prefixId Extension prefix to identify cookie
 	 * @return 	booelan
 	 */
 	public function hasAnonymousVote($prefixId = 'DummyPrefix') {
-		$anonymousRating = json_decode($_COOKIE[$prefixId.'_AnonymousRating_'.$this->getRating()->getUid()], TRUE);
+		$anonymousRating = json_decode($_COOKIE[$prefixId.'_AnonymousRating_'.$this->getRating()->getUid()], true);
 		$retVal = !empty($anonymousRating['voteUid']);
 		return $retVal;
 	}	

@@ -207,7 +207,7 @@ class Stepconf extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	 * @return boolean
 	 */
 	public function addStepname(\Thucke\ThRating\Domain\Model\Stepname $stepname) {
-		$success = TRUE;
+		$success = true;
 		$stepname->setStepconf($this);
 		If (!$this->stepnameRepository->existStepname($stepname)) {
 			$defaultLanguageObject = $this->stepnameRepository->findDefaultStepname($stepname);
@@ -224,7 +224,7 @@ class Stepconf extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 			$this->objectFactoryService->persistRepository('Thucke\ThRating\Domain\Repository\StepconfRepository', $this);
 		} else {
 			//warning - existing stepname entry for a language will not be overwritten
-			$success = FALSE;
+			$success = false;
 		}
 		return $success;
 	}

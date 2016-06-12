@@ -50,11 +50,11 @@ class RatingTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 		$this->ratingobject = \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase::getMock('Thucke\\ThRating\\Domain\\Model\\Ratingobject', array(), array('tt_news', 'uid'));
 		$this->stepconf = \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase::getMock('Thucke\\ThRating\\Domain\\Model\\Stepconf', array(), array($this->ratingobject, 1));
 		$this->stepconf->setStepweight(2);
-		$mockStepconfRepository = \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase::getMock('Thucke\\ThRating\\Domain\\Repository\\StepconfRepository', array(), array(), '', FALSE);
+		$mockStepconfRepository = \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase::getMock('Thucke\\ThRating\\Domain\\Repository\\StepconfRepository', array(), array(), '', false);
 		$this->ratingobject->injectStepconfRepository($mockStepconfRepository);
 		$this->ratingobject->addStepconf($this->stepconf);
 		$this->fixture = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Thucke\\ThRating\\Domain\\Model\\Rating', $this->ratingobject, 1);
-		$mockVoteRepository = \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase::getMock('Thucke\\ThRating\\Domain\\Repository\\VoteRepository', array(), array(), '', FALSE);
+		$mockVoteRepository = \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase::getMock('Thucke\\ThRating\\Domain\\Repository\\VoteRepository', array(), array(), '', false);
 		$this->fixture->injectVoteRepository($mockVoteRepository);
     }
 
@@ -94,7 +94,7 @@ class RatingTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
 	 * @test
 	 */
 	public function aVoteCanBeAdded() {
-		$vote = $this->getMock('Thucke\\ThRating\\Domain\\Model\\Vote',  array(), array(), '', FALSE);
+		$vote = $this->getMock('Thucke\\ThRating\\Domain\\Model\\Vote',  array(), array(), '', false);
 		//$vote = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Thucke\\ThRating\\Domain\\Model\\Vote');
 		$vote->setVote(3);
 		$this->fixture->addVote($vote);

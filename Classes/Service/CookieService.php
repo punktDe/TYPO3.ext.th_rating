@@ -50,7 +50,7 @@ class CookieService extends \Thucke\ThRating\Service\AbstractExtensionService {
 			if ($cookieDomain{0} == '/') {
 				$match = array();
 				$matchCnt = @preg_match($cookieDomain, \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_HOST_ONLY'), $match);
-				if ($matchCnt === FALSE) {
+				if ($matchCnt === false) {
 					$this->logger->log(	\TYPO3\CMS\Core\Log\LogLevel::ERROR,
 										'getCookieDomain: The regular expression for the cookie domain contains errors. The session is not shared across sub-domains.',
 										array(

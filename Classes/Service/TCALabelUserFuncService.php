@@ -159,8 +159,13 @@ class TCALabelUserFuncService {
 	 * @return 	array	ratinglink configurations
 	 */
 	public function dynFlexRatinglinkConfig($config) {
-		//\TYPO3\CMS\Core\Utility\DebugUtility::debug($config,'config');		
-		$settings = $this->loadTypoScriptForBEModule('tx_thrating', $config['row']['pid']);
+		//\TYPO3\CMS\Core\Utility\DebugUtility::debug($config,'config');
+		if ( \TYPO3\CMS\Core\Utility\VersionNumberUtility::convertVersionNumberToInteger(TYPO3_version) < 7006000 ) {
+			$flexFormPid = $config['row']['pid'];
+		} else {
+			$flexFormPid = $config['flexParentDatabaseRow']['pid'];
+		}
+		$settings = $this->loadTypoScriptForBEModule('tx_thrating', $flexFormPid);
 		$ratingconfigs = $settings['settings.']['ratingConfigurations.'];
 		$optionList = array();
 		// add first option

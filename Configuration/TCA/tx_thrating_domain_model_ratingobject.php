@@ -13,7 +13,7 @@ $GLOBALS['TCA']['tx_thrating_domain_model_ratingobject'] = array(
 		'enablecolumns'		=> array(
 			'disabled'	=> 'hidden'
 			),
-		'iconfile' 			=> \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extRelPath('th_rating') . 'Resources/Public/Icons/tx_thrating_domain_model_ratingobject.gif'
+		'iconfile' 			=> 'EXT:th_rating/Resources/Public/Icons/tx_thrating_domain_model_ratingobject.gif'
 	),
 	'interface' => array(
 		'showRecordFieldList' => 'hidden, ratetable, ratefield'
@@ -66,12 +66,12 @@ $GLOBALS['TCA']['tx_thrating_domain_model_ratingobject'] = array(
 				'maxitems'      => 999999,
 				'appearance' => array(
 					'levelLinksPosition' 	=> 'bottom',
-					'collapseAll' 			=> TRUE,
-					'expandSingle' 			=> TRUE,
-					'newRecordLinkAddTitle' => TRUE,
+					'collapseAll' 			=> true,
+					'expandSingle' 			=> true,
+					'newRecordLinkAddTitle' => true,
 					//'newRecordLinkPosition' => 'both',
-					//'showSynchronizationLink' => TRUE,
-					//'showAllLocalizationLink' => TRUE,
+					//'showSynchronizationLink' => true,
+					//'showAllLocalizationLink' => true,
 					//'showPossibleLocalizationRecords' => 1,
 					//'showRemovedLocalizationRecords' => 1,
 				),

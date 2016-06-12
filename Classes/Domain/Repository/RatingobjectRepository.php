@@ -32,7 +32,7 @@ class RatingobjectRepository extends \TYPO3\CMS\Extbase\Persistence\Repository {
 	 * Defines name for function parameter
 	 *
 	 */
-	const addIfNotFound = TRUE;
+	const addIfNotFound = true;
 
 	/**
 	 * @var \Thucke\ThRating\Service\ObjectFactoryService $objectFactoryService
@@ -54,7 +54,7 @@ class RatingobjectRepository extends \TYPO3\CMS\Extbase\Persistence\Repository {
 	 * @param bool 	$addIfNotFound Set to true if new objects should instantly be added
 	 * @return \Thucke\ThRating\Domain\Model\Ratingobject The ratingobject
 	 */
-	public function findMatchingTableAndField($ratetable, $ratefield, $addIfNotFound = FALSE ) {
+	public function findMatchingTableAndField($ratetable, $ratefield, $addIfNotFound = false ) {
 		$query = $this->createQuery();
 		$query	->matching(
 						$query->logicalAnd(
@@ -90,10 +90,10 @@ class RatingobjectRepository extends \TYPO3\CMS\Extbase\Persistence\Repository {
 	 * @param bool 	$respectStoragePage Set to true if storagepage should be ignored
 	 * @return \Thucke\ThRating\Domain\Model\Ratingobject All ratingobjects of the site
 	 */
-	public function findAll($respectStoragePage = FALSE ) {
+	public function findAll($respectStoragePage = false ) {
 		$query = $this->createQuery();
 		if ($respectStoragePage) {
-			$query->getQuerySettings()->setRespectStoragePage(FALSE);
+			$query->getQuerySettings()->setRespectStoragePage(false);
 		}
 		return $query->execute();
 	}

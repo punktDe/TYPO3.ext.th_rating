@@ -53,14 +53,14 @@ class StepnameRepository extends \TYPO3\CMS\Extbase\Persistence\Repository {
 			$queryResult = $this->objectManager->get('Thucke\\ThRating\\Domain\\Repository\\SyslangRepository')->findByUid($stepnameLang);
 			if (!empty($queryResult)) {
 				//language code found -> OK
-				return TRUE;
+				return true;
 			} else {
 				//invalid language code -> NOK
-				return FALSE;
+				return false;
 			}
 		} else {
 			//default language is always OK
-			return TRUE;
+			return true;
 		}
 	}
 
@@ -72,7 +72,7 @@ class StepnameRepository extends \TYPO3\CMS\Extbase\Persistence\Repository {
 	 */
 	public function findDefaultStepname($stepname) {
 		$query = $this->createQuery();
-		$query	->getQuerySettings()->setRespectSysLanguage(FALSE);
+		$query	->getQuerySettings()->setRespectSysLanguage(false);
 		$query	->matching(
 						$query->logicalAnd(
 							$query->equals('stepconf', $stepname->getStepconf()->getUid()),
@@ -97,7 +97,7 @@ class StepnameRepository extends \TYPO3\CMS\Extbase\Persistence\Repository {
 	 */
 	public function findStepnameObject(\Thucke\ThRating\Domain\Model\Stepname $stepname) {
 		$query = $this->createQuery();
-		$query	->getQuerySettings()->setRespectSysLanguage(FALSE);
+		$query	->getQuerySettings()->setRespectSysLanguage(false);
 		$query	->matching(
 						$query->logicalAnd(
 							$query->equals('stepconf', $stepname->getStepconf()->getUid()),
@@ -118,11 +118,11 @@ class StepnameRepository extends \TYPO3\CMS\Extbase\Persistence\Repository {
 	 * Check on double language entries
 	 *
 	 * @param 	\Thucke\ThRating\Domain\Model\Stepname	$stepname 	The ratingname to look for
-	 * @return	array	return values FALSE says OK
+	 * @return	array	return values false says OK
 	 */
 	public function checkConsistency(\Thucke\ThRating\Domain\Model\Stepname $stepname) {
 		//TODO - remove workaround when bug #47192 is solved
-		/* Bug #47192 - setRespectSysLanguage(FALSE) doesn't prevent language overlay when fetching localized objects
+		/* Bug #47192 - setRespectSysLanguage(false) doesn't prevent language overlay when fetching localized objects
 		 * Here we need all active stepname entries for a specific stepconf to check if
 		 * - one language is configured multiple times
 		 * - a language entriy does not exist in this website
@@ -130,11 +130,11 @@ class StepnameRepository extends \TYPO3\CMS\Extbase\Persistence\Repository {
 		 * normal query
 		 ********************************************************************************************************
 		$query = $this->createQuery();
-		$query	->getQuerySettings()->setRespectSysLanguage(FALSE);
+		$query	->getQuerySettings()->setRespectSysLanguage(false);
 		$query	->matching(
 						$query->equals('stepconf', $stepname->getStepconf()->getUid())
 					);
-		$queryResult = $query->execute(TRUE)->toArray();  //instead of setReturnRawQueryResult(TRUE); */
+		$queryResult = $query->execute(true)->toArray();  //instead of setReturnRawQueryResult(true); */
 		$where = 'stepconf='.$stepname->getStepconf()->getUid() . \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::enableFields('tx_thrating_domain_model_stepname');
 		$databaseConnection = $this->objectManager->get('TYPO3\\CMS\\Dbal\\Database\\DatabaseConnection');
 		//old way disabled  $queryResult = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('*', 'tx_thrating_domain_model_stepname', $where);
@@ -148,13 +148,13 @@ class StepnameRepository extends \TYPO3\CMS\Extbase\Persistence\Repository {
 				$languageUid=$value['sys_language_uid'];
 				$languageCounter[$languageUid]++;
 				If ($languageCounter[$languageUid] > 1) {
-					$checkConsistency['doubleLang'] = TRUE;
+					$checkConsistency['doubleLang'] = true;
 				}
 
 				//check if language flag exists in current website
 				If ($languageUid > 0) {
-					if ( array_search($languageUid, $websiteLanguagesArray) === FALSE ) {
-						$checkConsistency['existLang'] = TRUE;
+					if ( array_search($languageUid, $websiteLanguagesArray) === false ) {
+						$checkConsistency['existLang'] = true;
 					}
 				}
 			}
@@ -167,14 +167,14 @@ class StepnameRepository extends \TYPO3\CMS\Extbase\Persistence\Repository {
 	 * Finds the localized ratingstep entry by giving ratingobjectUid
 	 *
 	 * @param 	\Thucke\ThRating\Domain\Model\Stepname	$stepconf 	The ratingname to look for
-	 * @return	bool											TRUE if stepconf having same steporder and _languageUid exists
+	 * @return	bool											true if stepconf having same steporder and _languageUid exists
 	 */
 	public function existStepname(\Thucke\ThRating\Domain\Model\Stepname $stepname) {
 		$lookForStepname = $this->findStepnameObject($stepname);
 		if ( $lookForStepname instanceof \Thucke\ThRating\Domain\Model\Stepname ) {
-			return TRUE;
+			return true;
 		} 
-		return FALSE;
+		return false;
 	}
 
 	/**
@@ -184,8 +184,8 @@ class StepnameRepository extends \TYPO3\CMS\Extbase\Persistence\Repository {
 	 */
 	public function clearQuerySettings() {
 		$querySettings = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Typo3QuerySettings');
-		$querySettings->setRespectSysLanguage(FALSE);
-		$querySettings->setIgnoreEnableFields(TRUE);
+		$querySettings->setRespectSysLanguage(false);
+		$querySettings->setIgnoreEnableFields(true);
 		$this->setDefaultQuerySettings($querySettings);
 	}
 }
