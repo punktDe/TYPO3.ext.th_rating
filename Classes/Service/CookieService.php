@@ -32,6 +32,12 @@ namespace Thucke\ThRating\Service;
 class CookieService extends \Thucke\ThRating\Service\AbstractExtensionService {
 
 	/**
+	 * Indicator for cookieProtection has been set
+	 * @var boolean
+	 */
+	protected $cookieProtection = false;
+	
+	/**
 	 * Gets the domain to be used on setting cookies.
 	 * The information is taken from the value in $GLOBALS['TYPO3_CONF_VARS']['SYS']['cookieDomain'].
 	 * Protected function taken from t3lib_userAuth (t3 4.7.7)
@@ -103,6 +109,7 @@ class CookieService extends \Thucke\ThRating\Service\AbstractExtensionService {
 					$cookieSecure,
 					$cookieHttpOnly
 				);
+				$this->cookieProtection = true;
 				$this->logger->log(	\TYPO3\CMS\Core\Log\LogLevel::INFO,
 									'setVoteCookie: Cookie set',
 									array(
@@ -121,6 +128,15 @@ class CookieService extends \Thucke\ThRating\Service\AbstractExtensionService {
 				);
 			}
 		}
+	}
+	
+	/**
+	 * Return if cookie protection has been set
+	 *
+	 * @return	void
+	 */
+	public function isProtected() {
+		return $this->cookieProtection;
 	}
 }
 ?>

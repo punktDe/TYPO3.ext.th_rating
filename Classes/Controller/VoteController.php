@@ -96,6 +96,16 @@ class VoteController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 		$this->richSnippetService = $richSnippetService;
 	}
 	/**
+	 * @var \Thucke\ThRating\Service\CookieService
+	 */
+	protected $cookieService;
+	/**
+	 * @param \Thucke\ThRating\Service\CookieService $cookieService
+	 */
+	public function injectCookieService(\Thucke\ThRating\Service\CookieService $cookieService) {
+		$this->cookieService = $cookieService;
+	}
+	/**
 	 * @var \Thucke\ThRating\Domain\Repository\VoteRepository
 	 */
 	protected $voteRepository;
@@ -329,7 +339,7 @@ class VoteController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 					$anonymousRating['voteUid']=$vote->getUid();
 					$lifeTime = time() + 60 * 60 * 24 * $this->cookieLifetime;
 					//set cookie to prevent multiple anonymous ratings
-					$this->objectManager->get('Thucke\\ThRating\\Service\\CookieService')->setVoteCookie($this->prefixId.'_AnonymousRating_'.$vote->getRating()->getUid(), json_encode($anonymousRating), $lifeTime );
+					$this->cookieService->setVoteCookie($this->prefixId.'_AnonymousRating_'.$vote->getRating()->getUid(), json_encode($anonymousRating), $lifeTime );
 				}
 				$setResult = $this->setForeignRatingValues($vote->getRating());
 				if (!$setResult) {
@@ -802,10 +812,11 @@ class VoteController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 			if ( $this->voteValidator->isObjSet($this->vote) && !$this->voteValidator->validate($this->vote)->hasErrors() ) {
 				if ( ( !$this->vote->isAnonymous() && $this->vote->getVoter()->getUid() == $this->accessControllService->getFrontendUserUid()) ||
 						( $this->vote->isAnonymous() &&
-							( $this->vote->hasAnonymousVote($this->prefixId) || $this->cookieProtection )
+							( $this->vote->hasAnonymousVote($this->prefixId) || $this->cookieProtection || $this->cookieService->isProtected() )
 						)
 					)
 				{
+					$this->view->assign('protected', $this->cookieService->isProtected());
 					$this->view->assign('voting', $this->vote);
 					$this->view->assign('usersRate', $this->vote->getVote()->getSteporder()*100/count($currentrate['weightedVotes']).'%');
 				}

@@ -58,6 +58,7 @@ class JsonView extends \TYPO3\CMS\Extbase\Mvc\View\JsonView {
 		//'anonymousVotes',
 		'stepCount',
 		'anonymousVoting',
+		'protected',
 		'voting',
 		'usersRate',
 		'ratingobjects',
