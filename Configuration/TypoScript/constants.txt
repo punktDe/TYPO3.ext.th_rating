@@ -12,7 +12,5 @@ plugin.tx_thrating {
 	settings {
 		# cat=plugin.tx_thrating//a; type=int; label=General storage page where all records are stored
 		pluginStoragePid = 0
-		# cat=plugin.tx_thrating//a; type=int; label=FE Users and Groups [pid]: Enter the PID where website users and groups are stored
-		feUserStoragePid = 0
 	}
 }

@@ -187,8 +187,11 @@
 				<source>Votings</source>
 			</trans-unit>
 			<trans-unit id="flash.vote.general.invalidStoragePid" xml:space="preserve">
-				<source>Invalid storage page</source>
-			<target></target></trans-unit>
+				<source>"plugin.tx_thrating.storagePid" not set.</source>
+			</trans-unit>
+			<trans-unit id="flash.pluginConfiguration.missing.feUserStoragePid" xml:space="preserve">
+				<source>"plugin.tx_felogin.storagePid" not set.</source>
+			</trans-unit>
 			<trans-unit id="error.validator.ratingobject_table_extbase" xml:space="preserve">
 				<source>Missing table name in ratingobject.</source>
 			</trans-unit>
@@ -278,12 +281,6 @@
 			</trans-unit>
 			<trans-unit id="flash.renderCSS.noStepconf" xml:space="preserve">
 				<source>Stepconf missing in ratingobject configuration of UID %1$s - check PID %2$s.</source>
-			</trans-unit>
-			<trans-unit id="flash.pluginConfiguration.missing.pluginStoragePid" xml:space="preserve">
-				<source>Constant pluginStoragePid not set using default %1$s.</source>
-			</trans-unit>
-			<trans-unit id="flash.pluginConfiguration.missing.feUserStoragePid" xml:space="preserve">
-				<source>Constant "plugin.tx_thrating.settings.feUserStoragePid" not set.</source>
 			</trans-unit>
 			<trans-unit id="flash.renderCSS.incompatible620" xml:space="preserve">
 				<source>Incompatible version - please upgrade to at least TYPO3 6.2.1</source>

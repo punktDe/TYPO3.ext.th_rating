@@ -9,6 +9,7 @@ plugin.tx_thrating {
 	vendorName = Thucke
 	controller = Vote
 	mvc.callDefaultActionIfActionCantBeResolved = 1
+	storagePid = {$plugin.tx_thrating.settings.pluginStoragePid}
 	switchableControllerActions {
 		Vote {
 			1 = ratinglinks
@@ -66,14 +67,9 @@ plugin.tx_thrating {
 		}
 	}
 	persistence {
-		pluginCheckHelper {
-			pluginStoragePid = {$plugin.tx_thrating.settings.pluginStoragePid}
-			feUserStoragePid = {$plugin.tx_thrating.settings.feUserStoragePid}
-		}
-		storagePid = {$plugin.tx_thrating.settings.pluginStoragePid},{$plugin.tx_thrating.settings.feUserStoragePid}
 		classes {
 			Thucke\ThRating\Domain\Model\Ratingobject {
-				newRecordStoragePid = {$plugin.tx_thrating.settings.pluginStoragePid}
+				newRecordStoragePid < plugin.tx_thrating.storagePid
 			}
 		}
 	}

@@ -845,47 +845,30 @@ class VoteController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 	 * Checks all storagePid settings and
 	 * sets them to SITEROOT if zero or empty
 	 *
+	 * @throws \Thucke\ThRating\Exception\InvalidStoragePageException if plugin.tx_thrating.storagePid has not been set
+	 * @throws \Thucke\ThRating\Exception\FeUserStoragePageException if plugin.tx_felogin.storagePid has not been set
 	 * @return void
 	 */
 	protected function setStoragePids() {
-		$siteRootPids = $this->getTypoScriptFrontendController()->getStorageSiterootPids();
-		$siteRoot = $siteRootPids['_SITEROOT'];
-		$storagePid = $siteRootPids['_STORAGE_PID'];
-		$frameworkConfiguration = $this->configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
-		$storagePids = \TYPO3\CMS\Extbase\Utility\ArrayUtility::integerExplode(',', $frameworkConfiguration['persistence']['storagePid'], true);
-		foreach ($storagePids as $i => $value) {
-			if ( !is_null($value) && (empty($value) || $value==$siteRoot) ) {
-				unset($storagePids[$i]);		//cleanup invalid values
-			}
-		}
-		$storagePids = array_values($storagePids); 	//re-index array
-		if ( count($storagePids)<2 && !is_null($storagePid) && !(empty($storagePid) || $storagePid==$siteRoot) ) {
-			array_unshift($storagePids, $storagePid);	//append the page storagePid if it is assumed to be missed and is valid
-		}
+		$frameworkConfiguration = $this->configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT);
+		$feUserStoragePid = \TYPO3\CMS\Extbase\Utility\ArrayUtility::integerExplode(',', $frameworkConfiguration['plugin.']['tx_felogin.']['storagePid'], true);
+		$frameworkConfiguration = $frameworkConfiguration['plugin.']['tx_thrating.'];
 
-		foreach ( $frameworkConfiguration['persistence']['pluginCheckHelper'] as $x => $y) {
-			if (intval($y)==0) {
-				$frameworkConfiguration['persistence']['pluginCheckHelper'][$x] = 0;
-			}
-		}
+		$storagePids = \TYPO3\CMS\Extbase\Utility\ArrayUtility::integerExplode(',', $frameworkConfiguration['storagePid'], true);
+
 		if (empty($storagePids[0])) {
-			$this->logFlashMessage(	\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('flash.vote.general.invalidStoragePid', 'ThRating', array (1=>$storagePid)),
-									\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('flash.heading.error', 'ThRating'),
-									"ERROR", array('errorCode' => 1403203519));
+			throw new \Thucke\ThRating\Exception\InvalidStoragePageException(
+				\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('flash.vote.general.invalidStoragePid', 'ThRating'), 1403203519
+			);		
 		} 
-		if ( empty($frameworkConfiguration['persistence']['pluginCheckHelper']['pluginStoragePid']) ) {
-			$frameworkConfiguration['persistence']['classes']['Thucke\ThRating\Domain\Model\Ratingobject']['newRecordStoragePid'] = $storagePid;
-			$this->logFlashMessage(	\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('flash.pluginConfiguration.missing.pluginStoragePid', 'ThRating', array(1=>$storagePid)),
-									\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('flash.configuration.error', 'ThRating'),
-									"WARNING", array('errorCode' => 1403203529,
-													 '_STORAGE_PID' => $storagePid));
+
+		if ( empty($feUserStoragePid[0]) ) {
+			throw new \Thucke\ThRating\Exception\FeUserStoragePageException(
+				\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('flash.pluginConfiguration.missing.feUserStoragePid', 'ThRating'), 1403190539
+			);		
 		}
-		if ( empty($frameworkConfiguration['persistence']['pluginCheckHelper']['feUserStoragePid']) ) {
-			$this->logFlashMessage(	\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('flash.pluginConfiguration.missing.feUserStoragePid', 'ThRating', array()),
-									\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('flash.configuration.error', 'ThRating'),
-									"ERROR", array('errorCode' => 1403190539));
-		}
-		$frameworkConfiguration['persistence']['storagePid'] = implode(',', $storagePids);
+		array_push($storagePids, $feUserStoragePid[0]);
+		$frameworkConfiguration['persistence.']['storagePid'] = implode(',', $storagePids);
 		$this->setFrameworkConfiguration($frameworkConfiguration);
 	}
 

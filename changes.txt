@@ -1,1 +1,5 @@
+- Major Feature #73635: Raise compatibility to PHP 7
 - Bug #76630: Cookie protection only working after page refresh
+- Bug #76650: First rating won't show up after AJAX response
+- Task #76597: Check for impact of "Deprecation: #65790 - Remove pages.storage_pid and logic"
+- Task #76601: Check for impact of "Feature: #68700 - Autoload definition can be provided in ext_emconf.php"
