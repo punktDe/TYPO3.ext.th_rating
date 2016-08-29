@@ -187,7 +187,7 @@
 				<source>Votings</source>
 			</trans-unit>
 			<trans-unit id="flash.vote.general.invalidStoragePid" xml:space="preserve">
-				<source>"plugin.tx_thrating.storagePid" not set.</source>
+				<source>Constant "plugin.tx_thrating.settings.pluginStoragePid" is not set.</source>
 			</trans-unit>
 			<trans-unit id="flash.pluginConfiguration.missing.feUserStoragePid" xml:space="preserve">
 				<source>"plugin.tx_felogin.storagePid" not set.</source>
