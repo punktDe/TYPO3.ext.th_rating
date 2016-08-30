@@ -851,7 +851,14 @@ class VoteController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 	 */
 	protected function setStoragePids() {
 		$frameworkConfiguration = $this->configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT);
-		$feUserStoragePid = \TYPO3\CMS\Extbase\Utility\ArrayUtility::integerExplode(',', $frameworkConfiguration['plugin.']['tx_felogin.']['storagePid'], true);
+		$feUserStoragePid = \TYPO3\CMS\Extbase\Utility\ArrayUtility::integerExplode(',', $frameworkConfiguration['plugin.']['tx_felogin_pi1.']['storagePid'], true);
+		if ( empty($feUserStoragePid[0]) ) {
+			$feUserStoragePid = \TYPO3\CMS\Extbase\Utility\ArrayUtility::integerExplode(',', $frameworkConfiguration['plugin.']['tx_felogin.']['storagePid'], true);
+			\TYPO3\CMS\Core\Utility\GeneralUtility::deprecationLog(
+				get_class($this).': Setting "plugin.tx_felogin.storagePid" is deprecated - use Setting "plugin.tx_felogin_pi1.storagePid" instead.' .
+					' Will be removed two versions after 1.4.1 - at least in version 1.5.'
+			);
+		}
 		$frameworkConfiguration = $frameworkConfiguration['plugin.']['tx_thrating.'];
 
 		$storagePids = \TYPO3\CMS\Extbase\Utility\ArrayUtility::integerExplode(',', $frameworkConfiguration['storagePid'], true);

@@ -190,7 +190,7 @@
 				<source>Constant "plugin.tx_thrating.settings.pluginStoragePid" is not set.</source>
 			</trans-unit>
 			<trans-unit id="flash.pluginConfiguration.missing.feUserStoragePid" xml:space="preserve">
-				<source>"plugin.tx_felogin.storagePid" not set.</source>
+				<source>"plugin.tx_felogin_pi1.storagePid" not set.</source>
 			</trans-unit>
 			<trans-unit id="error.validator.ratingobject_table_extbase" xml:space="preserve">
 				<source>Missing table name in ratingobject.</source>
