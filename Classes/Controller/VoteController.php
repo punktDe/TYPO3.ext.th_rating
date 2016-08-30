@@ -846,7 +846,7 @@ class VoteController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 	 * sets them to SITEROOT if zero or empty
 	 *
 	 * @throws \Thucke\ThRating\Exception\InvalidStoragePageException if plugin.tx_thrating.storagePid has not been set
-	 * @throws \Thucke\ThRating\Exception\FeUserStoragePageException if plugin.tx_felogin.storagePid has not been set
+	 * @throws \Thucke\ThRating\Exception\FeUserStoragePageException if plugin.tx_felogin_pi1.storagePid has not been set
 	 * @return void
 	 */
 	protected function setStoragePids() {
