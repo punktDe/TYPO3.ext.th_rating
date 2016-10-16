@@ -1,7 +1,7 @@
 #########################################################################
 # Basic plugin configuration added by extension "th_rating"
 #########################################################################
-plugin.tx_thrating = USER_INT
+plugin.tx_thrating = USER
 plugin.tx_thrating {
 	userFunc = TYPO3\CMS\Extbase\Core\Bootstrap->run
 	pluginName = Pi1
