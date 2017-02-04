@@ -1,3 +1,1 @@
-- Bug #77325: Oops, an error occurred! Konstante "plugin.tx_thrating.settings.feUserStoragePid" nicht gesetzt
-- "plugin.tx_felogin.storagePid" is deprecated and replaced by "plugin.tx_felogin_pi1.storagePid"
-- Feature #76920: Integrate optional no-chaching configuration option e.g. like in "powermail"
+- Feature #79627: Cut support for TYPO3 6.x

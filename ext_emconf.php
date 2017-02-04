@@ -12,7 +12,7 @@ $EM_CONF[$_EXTKEY] = array(
 	'title' => 'Rating AX',
 	'description' => 'Highly flexible AJAX rating based on extbase/fluid/jquery. Allows multiple ratings within one page. Could be used as a cObj by other extensions or included in every FLUID template using the viewhelper. Each ratingstep could be configured having a name - international localization included.',
 	'category' => 'misc',
-	'version' => '1.4.1',
+	'version' => '1.5.0',
 	'state' => 'stable',
 	'uploadfolder' => false,
 	'createDirs' => '',
@@ -23,7 +23,7 @@ $EM_CONF[$_EXTKEY] = array(
 	'constraints' => array(
 		'depends' => array(
 			'php' => '5.5.0-7.0.99',
-			'typo3' => '6.2.20-7.6.99',
+			'typo3' => '7.6.0-7.6.99',
 			'static_info_tables' => '6.0.7',
 		),
 		'conflicts' => array(
