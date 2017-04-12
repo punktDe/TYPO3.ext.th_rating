@@ -123,11 +123,17 @@ class JsonView extends \TYPO3\CMS\Extbase\Mvc\View\JsonView {
 	 * @return string
 	 */
 	protected function renderAsDiv(array $flashMessages) {
-		$content = '';
-		foreach ($flashMessages as $singleFlashMessage) {
-			$content .= $singleFlashMessage->render();
+		$markup = [];
+		foreach ($flashMessages as $flashMessage) {
+			$markup[] = '<div class="alert ' . htmlspecialchars($flashMessage->getClass()). '">';
+			$messageTitle = $flashMessage->getTitle();
+			if ($messageTitle !== '') {
+				$markup[] = '<h4 class="alert-title">' . htmlspecialchars($messageTitle) . '</h4>';
+			}
+			$markup[] = '<div class="alert-message">' . htmlspecialchars($flashMessage->getMessage()) . '</div>';
+			$markup[] = '</div>';
 		}
-		return trim($content);
+		return trim(implode('', $markup));
 	}
 }
 ?>
