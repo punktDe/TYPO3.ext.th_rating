@@ -188,7 +188,7 @@ class VoteController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 	 
 	/**
 	   * Lifecycle-Event
-	   * wird nach der Initialisierung des Objekts und nach dem Auflösen der Dependencies aufgerufen.
+	   * wird nach der Initialisierung des Objekts und nach dem Auflï¿½sen der Dependencies aufgerufen.
 	   * 
 	   */
 	  public function initializeObject() {
@@ -558,7 +558,7 @@ class VoteController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 				(($this->vote->isAnonymous() && !$this->accessControllService->isLoggedIn($this->vote->getVoter())) &&
 					((!$this->vote->hasAnonymousVote($this->prefixId) && $this->cookieProtection && !$this->request->hasArgument('settings')) || !$this->cookieProtection))
 			) {
-			//if user hasn´t voted yet then include ratinglinks
+			//if user hasnï¿½t voted yet then include ratinglinks
 			$this->view->assign('ajaxSelections', $this->ajaxSelections['steporder']);
 			$this->logger->log(	\TYPO3\CMS\Core\Log\LogLevel::INFO, 'Set ratinglink information', array('errorCode' => 1404933850, 'ajaxSelections[steporder]' => $this->ajaxSelections['steporder']));
 		}
@@ -852,13 +852,6 @@ class VoteController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 	protected function setStoragePids() {
 		$frameworkConfiguration = $this->configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT);
 		$feUserStoragePid = \TYPO3\CMS\Extbase\Utility\ArrayUtility::integerExplode(',', $frameworkConfiguration['plugin.']['tx_felogin_pi1.']['storagePid'], true);
-		if ( empty($feUserStoragePid[0]) ) {
-			$feUserStoragePid = \TYPO3\CMS\Extbase\Utility\ArrayUtility::integerExplode(',', $frameworkConfiguration['plugin.']['tx_felogin.']['storagePid'], true);
-			\TYPO3\CMS\Core\Utility\GeneralUtility::deprecationLog(
-				get_class($this).': Setting "plugin.tx_felogin.storagePid" is deprecated - use Setting "plugin.tx_felogin_pi1.storagePid" instead.' .
-					' Will be removed two versions after 1.4.1 - at least in version 1.5.'
-			);
-		}
 		$frameworkConfiguration = $frameworkConfiguration['plugin.']['tx_thrating.'];
 
 		$storagePids = \TYPO3\CMS\Extbase\Utility\ArrayUtility::integerExplode(',', $frameworkConfiguration['storagePid'], true);
@@ -911,7 +904,7 @@ class VoteController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 	/**
 	 * Render CSS-styles for ratings and ratingsteps
 	 * Only called by singeltonAction to render styles once per page.
-	 * The file 'typo3temp/thratingDyn.css' will be created if it doesn´t exist
+	 * The file 'typo3temp/thratingDyn.css' will be created if it doesnï¿½t exist
 	 * 
 	 * @throws RuntimeException
 	 * @return void
