@@ -32,7 +32,7 @@ namespace Thucke\ThRating\ViewHelpers;
 class RatingViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\CObjectViewHelper {
 	
 	/**
-	 * @var \Thucke\ThRating\Service\AccessControlService
+	 * @var \TYPO3\CMS\Core\Log\Logger	$logger
 	 */
 	protected $logger;
 	/**

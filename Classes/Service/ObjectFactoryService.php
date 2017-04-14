@@ -248,7 +248,7 @@ class ObjectFactoryService extends \Thucke\ThRating\Service\AbstractExtensionSer
 	 * The configuration of the logger is modified by extension typoscript config
 	 *
 	 * @param	string	$name the class name which this logger is for
-	 * @return void
+	 * @return 	\TYPO3\CMS\Core\Log\Logger
 	 */
 	public function getLogger( $name ) {
 		$writerConfiguration = $GLOBALS['TYPO3_CONF_VARS']['LOG']['Thucke']['ThRating']['writerConfiguration'];
