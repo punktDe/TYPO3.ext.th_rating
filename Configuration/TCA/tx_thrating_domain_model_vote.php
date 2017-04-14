@@ -67,14 +67,14 @@ $GLOBALS['TCA']['tx_thrating_domain_model_vote'] = array(
 		                 'type' => 'popup',
 		                 'title' => 'Edit',
 		                 'script' => 'wizard_edit.php',
-		                 'icon' => 'edit2.gif',
+		                 'icon' => 'EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_edit.gif',
 		                 'popup_onlyOpenIfSelected' => 1,
 		                 'JSopenParams' => 'height=650,width=650,status=0,menubar=0,scrollbars=1',
 		             ),
 		             'add' => Array(
 		                 'type' => 'script',
 		                 'title' => 'Create new',
-		                 'icon' => 'add.gif',
+		                 'icon' => 'EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_add.gif',
 		                 'params' => Array(
 		                     'table'=>'fe_users',
 		                     'pid' => '###CURRENT_PID###',
