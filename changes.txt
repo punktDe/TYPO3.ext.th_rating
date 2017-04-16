@@ -8,3 +8,4 @@
 - Bug #80829: Refactor: Convert LF to CRLF
 - Task #80850: Solve other deprecation log entries of TYPO3 7
 - Bug #80860: MarkAction got hidden after vote
+- Bug #80861: Wrong var type in Cookie protection
