@@ -4,7 +4,7 @@
 	"description" : "Highly flexible AJAX rating based on extbase/fluid/jquery. Allows multiple ratings within one page. Could be used as a cObj by other extensions or included in every FLUID template using the viewhelper. Each ratingstep could be configured having a name - international localization included.",
 	"license" : "GPL-2.0+",
 	"require" : {
-		"typo3/cms-core" : ">=6.2.2,<9.0",
+		"typo3/cms-core" : ">=7.6.0,<8.8",
 		"static_info_tables" : ">=6.0.7"
 	},
 	"autoload" : {
