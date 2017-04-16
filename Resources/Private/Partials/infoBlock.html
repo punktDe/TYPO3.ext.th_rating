@@ -2,7 +2,7 @@
 <span data-role="onVotingHidden" style="{f:if(condition: voting, then: 'display:none;', else: '')}">
 	<f:if condition="{settings.fluid.partials.infoBlock.showAnonymousVotes}"><f:then>
 	<span data-role="onAnonymousVotingActive" style="{f:if(condition: anonymousVoting, then: '', else: 'display:none;')}">
-		<f:translate key='fluid.partial.infoBlock.anonymousVoting' default='fluid.partial.infoBlock.anonymousVoting' htmlEscape="false" />
+		<f:format.raw><f:translate key='fluid.partial.infoBlock.anonymousVoting' default='fluid.partial.infoBlock.anonymousVoting' /></f:format.raw>
 	</span>
 	</f:then></f:if>
 	<f:comment><!-- Check if a  FE user is logged on --></f:comment>

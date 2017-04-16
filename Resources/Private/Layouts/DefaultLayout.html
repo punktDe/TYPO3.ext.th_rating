@@ -18,9 +18,9 @@
 				<meta itemprop="description" content="{richSnippetObject.description}"/>
 				<meta itemprop="url" content="{richSnippetObject.url}"/>
 				<span data-role="onCurrentRateActive" style="{f:if(condition: rating.currentRates.currentrate, then: '', else: 'display:none;')}" itemprop="aggregateRating" itemscope itemtype="http://schema.org/AggregateRating">
-					<f:translate key='fluid.layout.default.currentRating' default='fluid.layout.default.currentRating' arguments="{1:rating.currentRates.currentrate, 2:'{f:count(subject:\"{rating.votes}\")}'}"/>
+					<f:format.raw><f:translate key='fluid.layout.default.currentRating' default='fluid.layout.default.currentRating' arguments="{1:rating.currentRates.currentrate, 2:'{f:count(subject:\"{rating.votes}\")}'}"/></f:format.raw>
 					<f:if condition="{anonymousVotes}"><f:then>
-					<br/><f:translate key='fluid.layout.default.anonymousVotes' default='fluid.layout.default.anonymousVotes' arguments='{1:anonymousVotes}'/>
+					<br/><f:format.raw><f:translate key='fluid.layout.default.anonymousVotes' default='fluid.layout.default.anonymousVotes' arguments='{1:anonymousVotes}'/></f:format.raw>
 					</f:then></f:if>
 					<meta itemprop="bestRating" content="{stepCount}"/>
 					<meta itemprop="worstRating" content="1"/>

@@ -9,3 +9,4 @@
 - Task #80850: Solve other deprecation log entries of TYPO3 7
 - Bug #80860: MarkAction got hidden after vote
 - Bug #80861: Wrong var type in Cookie protection
+- Major Feature #80862: Add support for TYPO3 8
