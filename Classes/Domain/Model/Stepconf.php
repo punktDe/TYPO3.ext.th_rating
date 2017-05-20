@@ -222,6 +222,7 @@ class Stepconf extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 			$this->stepnameRepository->add($stepname);
 			$this->objectFactoryService->persistRepository('Thucke\ThRating\Domain\Repository\StepnameRepository', $stepname);
 			$this->objectFactoryService->persistRepository('Thucke\ThRating\Domain\Repository\StepconfRepository', $this);
+			$this->objectFactoryService->clearDynamicCssFile();
 		} else {
 			//warning - existing stepname entry for a language will not be overwritten
 			$success = false;
