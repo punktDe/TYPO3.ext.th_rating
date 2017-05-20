@@ -1,12 +1,1 @@
-- Feature #79627: Cut support for TYPO3 6.x
-- Task #76594: Check for impact of "Deprecation: #63453 - Deprecate renderMode attribute of FlashMessagesViewHelper"
-- Task #76603: Check for impact of "Deprecation: #71249 - Deprecate render method of FlashMessage class"
-- Feature #76920: Integrate optional no-chaching configuration option e.g. like in "powermail"
-- Bug #77325: Oops, an error occurred! Konstante "plugin.tx_thrating.settings.feUserStoragePid" nicht gesetzt.
-- Major Feature #79627: Cut support for TYPO3 6.x
-- Task #80828: Cut support for deprecated setting "plugin.tx_felogin.storagePid"
-- Bug #80829: Refactor: Convert LF to CRLF
-- Task #80850: Solve other deprecation log entries of TYPO3 7
-- Bug #80860: MarkAction got hidden after vote
-- Bug #80861: Wrong var type in Cookie protection
-- Major Feature #80862: Add support for TYPO3 8
+- Bug #81281: Plugin couldn't doesn't support sites using custom pagetype
