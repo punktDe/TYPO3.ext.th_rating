@@ -86,15 +86,15 @@ class Rating extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	}
 
 	/**
-	 * @var \Thucke\ThRating\Service\ObjectFactoryService
+	 * @var \Thucke\ThRating\Service\ExtensionHelperService
 	 */
-	protected $objectFactoryService;
+	protected $extensionHelperService;
 	/**
-	 * @param	\Thucke\ThRating\Service\ObjectFactoryService $objectFactoryService
+	 * @param	\Thucke\ThRating\Service\ExtensionHelperService $extensionHelperService
 	 * @return	void
 	 */
-	public function injectObjectFactoryService( \Thucke\ThRating\Service\ObjectFactoryService $objectFactoryService ) {
-		$this->objectFactoryService = $objectFactoryService;
+	public function injectExtensionHelperService( \Thucke\ThRating\Service\ExtensionHelperService $extensionHelperService ) {
+		$this->extensionHelperService = $extensionHelperService;
 	}
 
 	/**
@@ -194,7 +194,7 @@ class Rating extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	public function addVote(\Thucke\ThRating\Domain\Model\Vote $vote) {
 		$this->votes->attach($vote);
 		$this->addCurrentrate($vote);
-		$this->objectFactoryService->persistRepository('Thucke\ThRating\Domain\Repository\VoteRepository', $vote);
+		$this->extensionHelperService->persistRepository('Thucke\ThRating\Domain\Repository\VoteRepository', $vote);
 	}
 
 	/**
@@ -208,7 +208,7 @@ class Rating extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 		$this->removeCurrentrate($existingVote);
 		$existingVote->setVote($newVote->getVote());
 		$this->addCurrentrate($existingVote);
-		$this->objectFactoryService->persistRepository('Thucke\ThRating\Domain\Repository\VoteRepository', $existingVote);
+		$this->extensionHelperService->persistRepository('Thucke\ThRating\Domain\Repository\VoteRepository', $existingVote);
 	}
 
 	/**

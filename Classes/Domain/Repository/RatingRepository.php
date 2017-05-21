@@ -35,15 +35,15 @@ class RatingRepository extends \TYPO3\CMS\Extbase\Persistence\Repository {
 	const addIfNotFound = true;
 
 	/**
-	 * @var \Thucke\ThRating\Service\ObjectFactoryService $objectFactoryService
+	 * @var \Thucke\ThRating\Service\ExtensionHelperService $extensionHelperService
 	 */
-	protected $objectFactoryService;
+	protected $extensionHelperService;
 	/**
-	 * @param	\Thucke\ThRating\Service\ObjectFactoryService $objectFactoryService
+	 * @param	\Thucke\ThRating\Service\ExtensionHelperService $extensionHelperService
 	 * @return	void
 	 */
-	public function injectObjectFactoryService( \Thucke\ThRating\Service\ObjectFactoryService $objectFactoryService ) {
-		$this->objectFactoryService = $objectFactoryService;
+	public function injectExtensionHelperService( \Thucke\ThRating\Service\ExtensionHelperService $extensionHelperService ) {
+		$this->extensionHelperService = $extensionHelperService;
 	}
 
 	/**
@@ -68,7 +68,7 @@ class RatingRepository extends \TYPO3\CMS\Extbase\Persistence\Repository {
 		$queryResult = $query->execute();
 		if ($queryResult->count() != 0) {
 			$foundRow = $queryResult->getFirst();
-			//Cope with an obviuos bug in TYPO3 6.1 that $queryResult->getFirst() doesn´t return the fully loaded object
+			//Cope with an obviuos bug in TYPO3 6.1 that $queryResult->getFirst() doesnï¿½t return the fully loaded object
 			If ( \TYPO3\CMS\Core\Utility\VersionNumberUtility::convertVersionNumberToInteger(TYPO3_version) < 6002000 ) {
 				$dummy = \TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump($foundRow, 'dummy', 2, true, false, true);
 			}
@@ -81,7 +81,7 @@ class RatingRepository extends \TYPO3\CMS\Extbase\Persistence\Repository {
 				if ($validator->isObjSet($foundRow) && !$validator->validate($foundRow)->hasErrors()) {
 					$this->add($foundRow);
 				}
-				$this->objectFactoryService->persistRepository('Thucke\ThRating\Domain\Repository\RatingRepository', $foundRow);	
+				$this->extensionHelperService->persistRepository('Thucke\ThRating\Domain\Repository\RatingRepository', $foundRow);	
 				$foundRow = $this->findMatchingObjectAndUid($ratingobject, $ratedobjectuid);
 			} else {
 				unset($foundRow);

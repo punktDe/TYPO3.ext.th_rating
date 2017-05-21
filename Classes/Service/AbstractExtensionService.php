@@ -32,16 +32,9 @@ namespace Thucke\ThRating\Service;
 class AbstractExtensionService implements \TYPO3\CMS\Core\SingletonInterface {
 
 	/**
-	 * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface	$objectManager
+	 * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface
 	 */
 	protected $objectManager;
-	/**
-	 * @param \TYPO3\CMS\Extbase\Object\ObjectManagerInterface	$objectManager
-	 * @return void
-	 */
-	public function injectObjectManager(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager) {
-		$this->objectManager = $objectManager;
-	}
 	/**
 	 * @var $logger \TYPO3\CMS\Core\Log\Logger
 	 */
@@ -49,14 +42,13 @@ class AbstractExtensionService implements \TYPO3\CMS\Core\SingletonInterface {
 
 	/**
 	 * Constructor
+	 * @param \TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager
 	 * @return void
 	 */
-	public function __construct(  ) {
-		if ( empty($this->objectManager) ) {
-			$this->objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
-		}
-		//instantiate the logger
-		$this->logger = $this->objectManager->get('Thucke\\ThRating\\Service\\ObjectFactoryService')->getLogger(get_class($this));
+	public function __construct(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager) {
+		$this->objectManager = $objectManager;
+ 		//instantiate the logger
+		$this->logger = $this->objectManager->get('Thucke\\ThRating\\Service\\ExtensionHelperService')->getLogger(get_class($this));
 	}
 }
 ?>

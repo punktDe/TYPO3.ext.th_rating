@@ -106,15 +106,15 @@ class Stepconf extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	}
 
 	/**
-	 * @var \Thucke\ThRating\Service\ObjectFactoryService $objectFactoryService
+	 * @var \Thucke\ThRating\Service\ExtensionHelperService $extensionHelperService
 	 */
-	protected $objectFactoryService;
+	protected $extensionHelperService;
 	/**
-	 * @param	\Thucke\ThRating\Service\ObjectFactoryService $objectFactoryService
+	 * @param	\Thucke\ThRating\Service\ExtensionHelperService $extensionHelperService
 	 * @return	void
 	 */
-	public function injectObjectFactoryService( \Thucke\ThRating\Service\ObjectFactoryService $objectFactoryService ) {
-		$this->objectFactoryService = $objectFactoryService;
+	public function injectExtensionHelperService( \Thucke\ThRating\Service\ExtensionHelperService $extensionHelperService ) {
+		$this->extensionHelperService = $extensionHelperService;
 	}
 
 	/**
@@ -220,9 +220,9 @@ class Stepconf extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 			
 			}
 			$this->stepnameRepository->add($stepname);
-			$this->objectFactoryService->persistRepository('Thucke\ThRating\Domain\Repository\StepnameRepository', $stepname);
-			$this->objectFactoryService->persistRepository('Thucke\ThRating\Domain\Repository\StepconfRepository', $this);
-			$this->objectFactoryService->clearDynamicCssFile();
+			$this->extensionHelperService->persistRepository('Thucke\ThRating\Domain\Repository\StepnameRepository', $stepname);
+			$this->extensionHelperService->persistRepository('Thucke\ThRating\Domain\Repository\StepconfRepository', $this);
+			$this->extensionHelperService->clearDynamicCssFile();
 		} else {
 			//warning - existing stepname entry for a language will not be overwritten
 			$success = false;

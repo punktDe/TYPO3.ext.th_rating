@@ -98,15 +98,15 @@ class Ratingobject extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	}
 
 	/**
-	 * @var \Thucke\ThRating\Service\ObjectFactoryService
+	 * @var \Thucke\ThRating\Service\ExtensionHelperService
 	 */
-	protected $objectFactoryService;
+	protected $extensionHelperService;
 	/**
-	 * @param	\Thucke\ThRating\Service\ObjectFactoryService $objectFactoryService
+	 * @param	\Thucke\ThRating\Service\ExtensionHelperService $extensionHelperService
 	 * @return	void
 	 */
-	public function injectObjectFactoryService( \Thucke\ThRating\Service\ObjectFactoryService $objectFactoryService ) {
-		$this->objectFactoryService = $objectFactoryService;
+	public function injectExtensionHelperService( \Thucke\ThRating\Service\ExtensionHelperService $extensionHelperService ) {
+		$this->extensionHelperService = $extensionHelperService;
 	}
 
 	/**
@@ -185,8 +185,8 @@ class Ratingobject extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	 */
 	public function addRating(\Thucke\ThRating\Domain\Model\Rating $rating) {
 		$this->ratings->attach($rating);
-		$this->objectFactoryService->persistRepository('Thucke\ThRating\Domain\Repository\RatingRepository', $rating);
-		$this->objectFactoryService->clearDynamicCssFile();
+		$this->extensionHelperService->persistRepository('Thucke\ThRating\Domain\Repository\RatingRepository', $rating);
+		$this->extensionHelperService->clearDynamicCssFile();
 	}
 
 	/**
@@ -217,8 +217,8 @@ class Ratingobject extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	public function addStepconf(\Thucke\ThRating\Domain\Model\Stepconf $stepconf) {
 		If (!$this->stepconfRepository->existStepconf($stepconf)) {
 			$this->stepconfs->attach( $stepconf );
-			$this->objectFactoryService->persistRepository('Thucke\ThRating\Domain\Repository\StepconfRepository', $stepconf);
-			$this->objectFactoryService->clearDynamicCssFile();
+			$this->extensionHelperService->persistRepository('Thucke\ThRating\Domain\Repository\StepconfRepository', $stepconf);
+			$this->extensionHelperService->clearDynamicCssFile();
 		}
 	}
 

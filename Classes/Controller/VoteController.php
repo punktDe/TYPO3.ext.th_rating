@@ -160,7 +160,7 @@ class VoteController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 		$this->stepconfRepository = $stepconfRepository;
 	}
 	/**
-	 * @var \Thucke\ThRating\Stepconf\Domain\Validator\StepconfValidator
+	 * @var \Thucke\ThRating\Domain\Validator\StepconfValidator
 	 */
 	protected $stepconfValidator;
 	/**
@@ -171,15 +171,15 @@ class VoteController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 		$this->stepconfValidator = $stepconfValidator;
 	}
 	/**
-	 * @var \Thucke\ThRating\Service\ObjectFactoryService $objectFactoryService
+	 * @var \Thucke\ThRating\Service\ExtensionHelperService $extensionHelperService
 	 */
-	protected $objectFactoryService;
+	protected $extensionHelperService;
 	/**
-	 * @param	\Thucke\ThRating\Service\ObjectFactoryService $objectFactoryService
+	 * @param	\Thucke\ThRating\Service\ExtensionHelperService $extensionHelperService
 	 * @return	void
 	 */
-	public function injectObjectFactoryService( \Thucke\ThRating\Service\ObjectFactoryService $objectFactoryService ) {
-		$this->objectFactoryService = $objectFactoryService;
+	public function injectExtensionHelperService( \Thucke\ThRating\Service\ExtensionHelperService $extensionHelperService ) {
+		$this->extensionHelperService = $extensionHelperService;
 	}
 	/**
 	 * @var \TYPO3\CMS\Core\Database\DatabaseConnection	The TYPO3 database object
@@ -208,7 +208,7 @@ class VoteController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 	 */
 	public function initializeAction() {
 		//instantiate the logger
-		$this->logger = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager')->get('Thucke\\ThRating\\Service\\ObjectFactoryService')->getLogger(__CLASS__);
+		$this->logger = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager')->get('Thucke\\ThRating\\Service\\ExtensionHelperService')->getLogger(__CLASS__);
 		$this->logger->log(	\TYPO3\CMS\Core\Log\LogLevel::DEBUG, 'Entry point', array());
 
 		$this->prefixId = strtolower('tx_' . $this->request->getControllerExtensionName(). '_' . $this->request->getPluginName());
@@ -276,7 +276,7 @@ class VoteController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 	 */
 	public function singletonAction( ) {
 		$this->logger->log(	\TYPO3\CMS\Core\Log\LogLevel::DEBUG, 'Entry singletonAction', array());
-		$this->renderCSS();
+		$this->extensionHelperService->renderDynCSS();;
 		$this->logger->log(	\TYPO3\CMS\Core\Log\LogLevel::DEBUG, 'Exit singletonAction', array());
 	}
 
@@ -637,9 +637,9 @@ class VoteController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 			$this->logger->log(	\TYPO3\CMS\Core\Log\LogLevel::DEBUG, 'Using valid vote', array());
 		} else {
 			//first initialize parent objects for vote object
-			$ratingobject = $this->objectFactoryService->getRatingobject( $this->settings );
-			$rating = $this->objectFactoryService->getRating($this->settings, $ratingobject);
-			$this->vote = $this->objectFactoryService->getVote( $this->prefixId, $this->settings, $rating );
+			$ratingobject = $this->extensionHelperService->getRatingobject( $this->settings );
+			$rating = $this->extensionHelperService->getRating($this->settings, $ratingobject);
+			$this->vote = $this->extensionHelperService->getVote( $this->prefixId, $this->settings, $rating );
 
 			$countSteps=count( $ratingobject->getStepconfs() );
 			if ( empty($countSteps)) {
@@ -900,166 +900,6 @@ class VoteController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 		}
 	}
 
-
-	/**
-	 * Render CSS-styles for ratings and ratingsteps
-	 * Only called by singeltonAction to render styles once per page.
-	 * The file 'typo3temp/thratingDyn.css' will be created if it doesn�t exist
-	 * 
-	 * @throws RuntimeException
-	 * @return void
-	 */
-	protected function renderCSS() {
-	//create file if it does not exist
-		if (file_exists(PATH_site.'typo3temp/thratingDyn.css')) {
-			$fstat = stat (PATH_site.'typo3temp/thratingDyn.css');
-			//do not recreate file if it has greater than zero length
-			if ( $fstat[7] != 0 ) {
-				$this->logger->log(	\TYPO3\CMS\Core\Log\LogLevel::DEBUG, 'Dynamic CSS file exists - exiting', array());
-				return;
-			}
-		}
-		//display an error to update TYPO3 at least to version 6.2.1
-		if ( version_compare(TYPO3_version, '6.2', '==') ) {
-				$this->logFlashMessage(	\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('flash.renderCSS.incompatible620', 'ThRating'),
-										\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('flash.configuration.error', 'ThRating'),
-										"EMERGENCY", array( 'errorCode' => 1398526413,
-															'T3version' => TYPO3_version));
-				return;
-		}
-
-		//now walk through all ratingobjects to calculate stepwidths
-		$allRatingobjects = $this->ratingobjectRepository->findAll(true);
-		foreach ( $allRatingobjects as $ratingobject) {
-			$ratingobjectUid = $ratingobject->getUid();
-			$stepconfObjects = $ratingobject->getStepconfs();
-			$stepcount = count($stepconfObjects);
-			if (!$stepcount) {
-				$this->logFlashMessage(	\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('flash.renderCSS.noStepconf', 'ThRating', 
-																							array(1=>$ratingobject->getUid(), 2=>$ratingobject->getPid())),
-										\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('flash.configuration.error', 'ThRating'),
-										"ERROR", array( 'errorCode' => 1384705470,
-														'ratingobject UID' => $ratingobject->getUid(), 
-														'ratingobject PID' => $ratingobject->getPid()));
-				return;
-			}
-			$stepconfs = $stepconfObjects->toArray();
-			foreach ( $stepconfs as $stepconf ) {	//stepconfs are already sorted by steporder
-				//just do checks here that all steps are OK
-				if ($this->stepconfValidator->isObjSet($stepconf) && !$this->stepconfValidator->validate($stepconf)->hasErrors()) {
-					$stepWeights[] = $stepconf->getStepweight();
-					$sumStepWeights += $stepconf->getStepweight();
-				} else {
-					foreach ($this->stepconfValidator->getErrors() as $errorMessage) {
-						$this->logFlashMessage(	$errorMessage->getMessage(), 
-												\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('flash.configuration.error', 'ThRating'),
-												"ERROR", array( 'errorCode' => $errorMessage->getCode(),
-																'errorMessage' => $errorMessage->getMessage()));
-					}
-					return;
-				}
-			}
-			$this->logger->log(	\TYPO3\CMS\Core\Log\LogLevel::INFO,
-								'Ratingobject data',
-								array(
-									'ratingobject UID' => $ratingobject->getUid(), 
-									'ratingobject PID' => $ratingobject->getPid(),
-									'stepcount' => $stepcount,
-									'stepWeights' => $stepWeights,
-									'sumStepWeights' => $sumStepWeights,									
-								));
-
-			//generate CSS for all ratings out of TSConfig
-			foreach ( $this->settings['ratingConfigurations'] as $ratingName => $ratingConfig) {
-				if ( $ratingName == 'default' ) {
-					continue;
-				}
-				$subURI = substr(PATH_site, strlen($_SERVER['DOCUMENT_ROOT'])+1);
-				$basePath = $this->getTypoScriptFrontendController()->baseUrl ? $this->getTypoScriptFrontendController()->baseUrl : '//'.$_SERVER['HTTP_HOST'].'/'.$subURI;
-
-				$this->ratingImage = $this->objectManager->get('Thucke\\ThRating\\Domain\\Model\\RatingImage',$ratingConfig['imagefile']);
-				$filename = $this->ratingImage->getImageFile();
-				if ( empty($filename) ) {
-					$this->logFlashMessage(	\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('flash.vote.renderCSS.defaultImage', 'ThRating'),
-											\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('flash.heading.warning', 'ThRating'),
-											"WARNING", array( 'errorCode' => 1403192702,
-															  'ratingName' => $ratingName, 
-															  'ratingConfig' => $ratingConfig));
-					$defaultRatingName = $this->settings['ratingConfigurations']['default'];
-					$ratingConfig = $this->settings['ratingConfigurations'][$defaultRatingName];
-					$this->ratingImage->setConf($ratingConfig['imagefile']);
-					$filename = $this->ratingImage->getImageFile();
-				}
-				$filenameUri = $basePath.'/'.$filename;		//prepend host basepath if no URL is given
-
-				$imageDimensions = $this->ratingImage->getImageDimensions();
-				$height = $imageDimensions['height'];
-				$width = $imageDimensions['width'];
-				$mainId = '.thRating-RObj'.$ratingobjectUid.'-'.$ratingName;
-				$this->logger->log(	\TYPO3\CMS\Core\Log\LogLevel::DEBUG, 'Main CSS info',
-									array(
-										'mainId' => $mainId,
-										'filenameUri' => $filenameUri,
-										'image width' => $width,
-										'image height' => $height));
-
-				//calculate overall rating size depending on rating direction
-				if ( $ratingConfig['tilt'] ){
-					$width = round($width / 3,1);
-					if ( !$ratingConfig['barimage'] ) {
-						$height = $height * $sumStepWeights;
-					}
-					$cssFile .= $mainId.' { width:'.$width.'px; height:'.$height.'px; }'.CHR(10);
-					$cssFile .= $mainId.', '.$mainId.' span:hover, '.$mainId.' span:active, '.$mainId.' span:focus, '.$mainId.' .current-rating {	background:url('.$filenameUri.') 0 0 repeat-y;	}'.CHR(10);
-					$cssFile .= $mainId.' span, '.$mainId.' .current-rating { width:'.$width.'px; }'.CHR(10);
-				} else {
-					$height = round($height / 3,1);
-					if ( !$ratingConfig['barimage'] ) {
-						$width = $width * $sumStepWeights;
-					}
-					$cssFile .= $mainId.' { width:'.$width.'px; height:'.$height.'px; }'.CHR(10);
-					$cssFile .= $mainId.', '.$mainId.' span:hover, '.$mainId.' span:active, '.$mainId.' span:focus, '.$mainId.' .current-rating {	background:url('.$filenameUri.') 0 0 repeat-x;	}'.CHR(10);
-					$cssFile .= $mainId.' span, '.$mainId.' .current-rating { height:'.$height.'px; line-height:'.$height.'px; }'.CHR(10);
-					//calculate widths/heights related to stepweights
-					$i = 1;
-					$stepPart = 0;
-				}
-				$cssFile .= $mainId.', '.$mainId.' span:hover, '.$mainId.' span:active, '.$mainId.' span:focus, '.$mainId.' .current-poll {	background:url('.$filenameUri.');	}'.CHR(10);
-			}
-				
-			//calculate widths/heights related to stepweights
-			$i = 1;
-			$stepPart = 0;
-			$sumWeights = 0;
-			foreach ( $stepWeights as $stepWeight) {
-				$sumWeights +=  $stepWeight;
-				$zIndex = $stepcount-$i+2;  //add 2 to override .current-poll and .currentPollText
-				//configure rating and polling styles for steps
-				$oneStepPart =  round($stepWeight * 100 / $sumStepWeights, 1);	//calculate single width of ratingstep
-				$cssFile .= 'span.RObj'.$ratingobjectUid.'-StpOdr'.$i.'-ratingpoll-normal { width:'.$oneStepPart.'%; z-index:'.$zIndex.'; margin-left:'.$stepPart.'%;}'.CHR(10);
-				$cssFile .= 'span.RObj'.$ratingobjectUid.'-StpOdr'.$i.'-ratingpoll-tilt { height:'.$oneStepPart.'%; z-index:'.$zIndex.'; margin-bottom:'.$stepPart.'%; }'.CHR(10);
-				$cssFile .= 'li.RObj'.$ratingobjectUid.'-StpOdr'.$i.'-currentpoll-normal { width:'.$oneStepPart.'%; margin-left:'.$stepPart.'%; }'.CHR(10);
-				$cssFile .= 'li.RObj'.$ratingobjectUid.'-StpOdr'.$i.'-currentpoll-normal span { width:100%; }'.CHR(10);
-				$cssFile .= 'li.RObj'.$ratingobjectUid.'-StpOdr'.$i.'-currentpoll-tilt { height:'.$oneStepPart.'%; margin-bottom:'.$stepPart.'%; }'.CHR(10);
-				$cssFile .= 'li.RObj'.$ratingobjectUid.'-StpOdr'.$i.'-currentpoll-tilt span { height:100%; }'.CHR(10);
-				$stepPart =  round($sumWeights * 100 / $sumStepWeights, 1);	//calculate sum of widths to this ratingstep
-				$cssFile .= 'span.RObj'.$ratingobjectUid.'-StpOdr'.$i.'-ratingstep-normal { width:'.$stepPart.'%; z-index:'.$zIndex.'; }'.CHR(10);
-				$cssFile .= 'span.RObj'.$ratingobjectUid.'-StpOdr'.$i.'-ratingstep-tilt { height:'.$stepPart.'%; z-index:'.$zIndex.'; }'.CHR(10);
-				$i++;
-			}
-			//reset variables for next iteration
-			unset($stepWeights);
-			unset($sumWeights);
-			unset($sumStepWeights);
-			$this->logger->log(	\TYPO3\CMS\Core\Log\LogLevel::DEBUG, 'CSS finished for ratingobject', array());
-		}
-
-		$this->logger->log(	\TYPO3\CMS\Core\Log\LogLevel::DEBUG, 'Saving CSS file', array('cssFile' => $cssFile));
-		$fp = fopen ( PATH_site.'typo3temp/thratingDyn.css', 'w' );
-		fwrite ( $fp, $cssFile);
-		fclose ( $fp );
-		return;
-	}
 
 	/**
 	 * Sends log information to flashMessage and logging framework

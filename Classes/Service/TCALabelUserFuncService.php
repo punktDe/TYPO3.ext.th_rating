@@ -32,7 +32,7 @@ namespace Thucke\ThRating\Service;
 class TCALabelUserFuncService {
 
 	/**
-	 * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface	$objectManager
+	 * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface
 	 */
 	protected $objectManager;
 	/**
@@ -42,7 +42,7 @@ class TCALabelUserFuncService {
 	public function injectObjectManager(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager) {
 		$this->objectManager = $objectManager;
 	}
-
+	
 	/**
 	 * Constructs a new rating object
 	 * @return void

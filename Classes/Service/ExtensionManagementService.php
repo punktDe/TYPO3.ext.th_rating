@@ -32,15 +32,15 @@ namespace Thucke\ThRating\Service;
 class ExtensionManagementService extends \Thucke\ThRating\Service\AbstractExtensionService {
 
 	/**
-	 * @var \Thucke\ThRating\Service\ObjectFactoryService $objectFactoryService
+	 * @var \Thucke\ThRating\Service\ExtensionHelperService $extensionHelperService
 	 */
-	protected $objectFactoryService;
+	protected $extensionHelperService;
 	/**
-	 * @param	\Thucke\ThRating\Service\ObjectFactoryService $objectFactoryService
+	 * @param	\Thucke\ThRating\Service\ExtensionHelperService $extensionHelperService
 	 * @return	void
 	 */
-	public function injectObjectFactoryService( \Thucke\ThRating\Service\ObjectFactoryService $objectFactoryService ) {
-		$this->objectFactoryService = $objectFactoryService;
+	public function injectExtensionHelperService( \Thucke\ThRating\Service\ExtensionHelperService $extensionHelperService ) {
+		$this->extensionHelperService = $extensionHelperService;
 	}
 
 	/**
@@ -53,7 +53,7 @@ class ExtensionManagementService extends \Thucke\ThRating\Service\AbstractExtens
 	 */
 	public function makeRatable( $tablename, $fieldname, $stepcount ) {
 		$this->logger->log(\TYPO3\CMS\Core\Log\LogLevel::INFO, 'makeRatable called', array('tablename' => $tablename, 'fieldname' => $fieldname, 'stepcount' => $stepcount));
-		$ratingobject = $this->objectFactoryService->getRatingobject( array('ratetable'=>$tablename, 'ratefield'=>$fieldname) );
+		$ratingobject = $this->extensionHelperService->getRatingobject( array('ratetable'=>$tablename, 'ratefield'=>$fieldname) );
 		
 		//create a new default stepconf having stepweight 1 for each step
 		for ( $i=1; $i<=$stepcount; $i++) {
@@ -61,9 +61,13 @@ class ExtensionManagementService extends \Thucke\ThRating\Service\AbstractExtens
 				'ratingobject' 	=> $ratingobject,
 				'steporder'		=> $i,
 				'stepweight'	=> 1 );
-			$stepconf = $this->objectFactoryService->createStepconf($stepconfArray);
+			$stepconf = $this->extensionHelperService->createStepconf($stepconfArray);
 			$ratingobject->addStepconf($stepconf);
 		}
+		
+		// CREATE NEW DYNCSS FILE
+		$this->extensionHelperService->clearDynamicCssFile();
+		$this->extensionHelperService->renderDynCSS();
 		return $ratingobject;
 	}			
 
@@ -91,7 +95,7 @@ class ExtensionManagementService extends \Thucke\ThRating\Service\AbstractExtens
 			$stepnameArray = array(
 				'stepname'	=> $stepname,
 				'languageIso2Code'	=> $languageIso2Code );
-			$stepname = $this->objectFactoryService->createStepname($stepnameArray);
+			$stepname = $this->extensionHelperService->createStepname($stepnameArray);
 			If ( !$stepconf->addStepname($stepname) ) {
 				$this->logger->log(	\TYPO3\CMS\Core\Log\LogLevel::WARNING,
 									'Stepname entry for language already exists', 
@@ -111,7 +115,7 @@ class ExtensionManagementService extends \Thucke\ThRating\Service\AbstractExtens
 				$stepnameArray = array(
 					'stepname'	=> $stepname.$loopStepConf->getSteporder(),
 					'languageIso2Code'	=> $languageIso2Code );
-				$stepnameObject = $this->objectFactoryService->createStepname($stepnameArray);
+				$stepnameObject = $this->extensionHelperService->createStepname($stepnameArray);
 				If ( !$loopStepConf->addStepname($stepnameObject) && $success ) {
 					$this->logger->log(	\TYPO3\CMS\Core\Log\LogLevel::WARNING,
 										'Stepname entry for language already exists',

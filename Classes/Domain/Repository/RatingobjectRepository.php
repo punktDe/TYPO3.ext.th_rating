@@ -35,15 +35,15 @@ class RatingobjectRepository extends \TYPO3\CMS\Extbase\Persistence\Repository {
 	const addIfNotFound = true;
 
 	/**
-	 * @var \Thucke\ThRating\Service\ObjectFactoryService $objectFactoryService
+	 * @var \Thucke\ThRating\Service\ExtensionHelperService $extensionHelperService
 	 */
-	protected $objectFactoryService;
+	protected $extensionHelperService;
 	/**
-	 * @param	\Thucke\ThRating\Service\ObjectFactoryService $objectFactoryService
+	 * @param	\Thucke\ThRating\Service\ExtensionHelperService $extensionHelperService
 	 * @return	void
 	 */
-	public function injectObjectFactoryService( \Thucke\ThRating\Service\ObjectFactoryService $objectFactoryService ) {
-		$this->objectFactoryService = $objectFactoryService;
+	public function injectExtensionHelperService( \Thucke\ThRating\Service\ExtensionHelperService $extensionHelperService ) {
+		$this->extensionHelperService = $extensionHelperService;
 	}
 
 	/**
@@ -75,7 +75,7 @@ class RatingobjectRepository extends \TYPO3\CMS\Extbase\Persistence\Repository {
 				if (!$this->objectManager->get('Thucke\\ThRating\\Domain\\Validator\\RatingobjectValidator')->validate($foundRow)->hasErrors()) {
 					$this->add($foundRow);
 				}
-				$this->objectFactoryService->persistRepository('Thucke\ThRating\Domain\Repository\RatingobjectRepository', $foundRow);
+				$this->extensionHelperService->persistRepository('Thucke\ThRating\Domain\Repository\RatingobjectRepository', $foundRow);
 				$foundRow = $this->findMatchingTableAndField($ratetable, $ratefield);
 			} else {
 				unset($foundRow);
