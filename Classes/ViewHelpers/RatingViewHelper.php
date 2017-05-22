@@ -36,7 +36,7 @@ class RatingViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\CObjectViewHelper {
 	 */
 	protected $logger;
 	/**
-	 * @var \Thucke\ThRating\Service\ExtensionHelperService $extensionHelperService
+	 * @var \Thucke\ThRating\Service\ExtensionHelperService
 	 */
 	protected $extensionHelperService;
 	/**

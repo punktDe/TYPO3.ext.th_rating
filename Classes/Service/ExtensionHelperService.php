@@ -72,17 +72,29 @@ class ExtensionHelperService extends \Thucke\ThRating\Service\AbstractExtensionS
 	 */
 	public function injectAccessControlService(\Thucke\ThRating\Service\AccessControlService $accessControllService) {
 		$this->accessControllService = $accessControllService;
-	}
-	
+	}	
 	/**
-	 * @var \Thucke\ThRating\Stepconf\Domain\Validator\StepconfValidator
+	 * @var \Thucke\ThRating\Domain\Validator\StepconfValidator
 	 */
 	protected $stepconfValidator;
+	/**
+	 * @param \Thucke\ThRating\Domain\Validator\StepconfValidator $stepconfValidator
+	 */
+	public function injectStepconfValidator(\Thucke\ThRating\Domain\Validator\StepconfValidator $stepconfValidator) {
+		$this->stepconfValidator= $stepconfValidator;
+	}
+	
 	/**
 	 * @var \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface
 	 */
 	protected $configurationManager;
-
+	/**
+	 * @param \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager
+	 */
+	public function injectConfigurationManager(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager) {
+		$this->configurationManager= $configurationManager;
+	}
+	
 	/**
 	 * Contains the settings of the current extension
 	 *
@@ -96,25 +108,14 @@ class ExtensionHelperService extends \Thucke\ThRating\Service\AbstractExtensionS
 	
 	/**
 	 * Constructor
-	 * Must overrule the abstract class method to avoid self referencing
-	 * @param	\TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager
-	 * @param	\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager, 
-	 * @param	\Thucke\ThRating\Domain\Validator\StepconfValidator $stepconfValidator
+	 * @param \TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager
+	 * @param \Thucke\ThRating\Service\LoggingService $loggingService
 	 * @return void
 	 */
-	public function __construct(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager, 
-								\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager, 
-								\Thucke\ThRating\Domain\Validator\StepconfValidator $stepconfValidator) {
-		$this->objectManager = $objectManager;
-		$this->configurationManager = $configurationManager;
-		$this->stepconfValidator = $stepconfValidator;
-		//instantiate the logger
-		$this->logger = $this->getLogger(get_class($this));
-		
+	public function initializeObject() {
 		$this->settings = $this->configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_SETTINGS,'thrating','pi1');
 		$frameworkConfiguration = $this->configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK,'thrating','pi1');
 		\TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule($this->settings['ratingConfigurations'], $frameworkConfiguration['ratings']);
-		
 	}
 
 	/**
@@ -291,24 +292,7 @@ class ExtensionHelperService extends \Thucke\ThRating\Service\AbstractExtensionS
 	 * @return 	\TYPO3\CMS\Core\Log\Logger
 	 */
 	public function getLogger( $name ) {
-		$writerConfiguration = $GLOBALS['TYPO3_CONF_VARS']['LOG']['Thucke']['ThRating']['writerConfiguration'];
-		$settings = $this->configurationManager->getConfiguration('Settings', 'thRating', 'pi1');
-		If ( is_array($settings['logging']) ){
-			foreach ($settings['logging'] as $logLevel => $logConfig) {
-				$levelUppercase = strtoupper($logLevel);
-				If ( !empty($logConfig['file']) ) {
-					$writerConfiguration[constant('\TYPO3\CMS\Core\Log\LogLevel::'.$levelUppercase)]['TYPO3\\CMS\\Core\\Log\\Writer\\FileWriter'] = 
-						array('logFile' => $logConfig['file']);
-				}
-				If ( !empty($logConfig['database']) ) {
-					$writerConfiguration[constant('\TYPO3\CMS\Core\Log\LogLevel::'.$levelUppercase)]['TYPO3\\CMS\\Core\\Log\\Writer\\Database'] = 
-						array('table' => $logConfig['table']);
-				}
-			}
-		}
-		$GLOBALS['TYPO3_CONF_VARS']['LOG']['Thucke']['ThRating']['writerConfiguration'] = $writerConfiguration;
-		$logger = $this->objectManager->get('TYPO3\\CMS\\Core\\Log\\LogManager')->getLogger( $name );
-		return $logger;
+		return $this->loggingService->getLogger(__CLASS__);
 	}
 	
 	/**

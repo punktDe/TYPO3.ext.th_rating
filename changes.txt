@@ -1,3 +1,4 @@
 - Bug #81281: Plugin couldn't doesn't support sites using custom pagetype
 - Bug #81282: thratingDyn.css not recreated when page is nonCachable
-- Bug #81283: Force recreation of thratingDyn.css in ExtensionManagementService::makeRatable 
+- Bug #81283: Force recreation of thratingDyn.css in ExtensionManagementService::makeRatable
+- Suggestion #81303: Use a separete LoggingService class for injection into AbstractExtensionService
