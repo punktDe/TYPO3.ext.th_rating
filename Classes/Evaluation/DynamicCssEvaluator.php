@@ -54,8 +54,24 @@ class DynamicCssEvaluator {
 	 * @return	The new value of the field
 	 */
 	function evaluateFieldValue($value, $is_in, &$set) {
-		\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Thucke\\ThRating\\Service\\TCALabelUserFuncService')->clearCachePostProc(NULL, NULL, NULL);
+		$this->clearCachePostProc(NULL, NULL, NULL);
 		return $value;
 	}
+
+	/**
+	 * Processings when cache is cleared
+	 * 1. Delete the file 'typo3temp/thratingDyn.css'
+	 *
+	 * @return void
+	 */
+	public function clearCachePostProc($_funcRef,$params, $pObj=NULL) {
+	    if (file_exists(PATH_site.'typo3temp/thratingDyn.css'))
+	        unlink( PATH_site.'typo3temp/thratingDyn.css');
+	        //recreate file with zero length - so its still included via TS
+	        $fp = fopen ( PATH_site.'typo3temp/thratingDyn.css', 'w' );
+	        fwrite ( $fp, '');
+	        fclose ( $fp );
+	}
+	
 }
 ?>

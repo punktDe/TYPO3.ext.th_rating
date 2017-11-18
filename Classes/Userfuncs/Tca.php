@@ -1,5 +1,5 @@
 <?php
-namespace Thucke\ThRating\Service;
+namespace Thucke\ThRating\Userfuncs;
 /***************************************************************
 *  Copyright notice
 *
@@ -29,7 +29,7 @@ namespace Thucke\ThRating\Service;
  * @version $Id:$
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License, version 2
  */
-class TCALabelUserFuncService {
+class Tca {
 
 	/**
 	 * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface
@@ -55,8 +55,9 @@ class TCALabelUserFuncService {
 
 	/**
 	 * Returns the record title for the rating object in BE
-	 *
-	 * @return byRef $params
+	 * Note that values of $params are modified by reference
+	 * 
+	 * @return void
 	 */
 	public function getRatingObjectRecordTitle(&$params, &$pObj) {
         $params['title'] = '#'.$params['row']['uid'].': '.$params['row']['ratetable'].' ['.$params['row']['ratefield'].']';
@@ -64,8 +65,9 @@ class TCALabelUserFuncService {
 
 	/**
 	 * Returns the record title for the step configuration in BE
-	 *
-	 * @return byRef $params
+	 * Note that values of $params are modified by reference
+	 * 
+	 * @return void
 	 */
     public function getStepconfRecordTitle(&$params, &$pObj) {
         $params['title'] = '#'.$params['row']['uid']. ': Steporder ['.$params['row']['steporder'].']';
@@ -73,8 +75,9 @@ class TCALabelUserFuncService {
 
 	/**
 	 * Returns the record title for the step configuration name in BE
-	 *
-	 * @return byRef $params
+	 * Note that values of $params are modified by reference
+	 * 
+	 * @return void
 	 */
     public function getStepnameRecordTitle(&$params, &$pObj) {
 		//look into repository to find clear text object attributes
@@ -91,7 +94,7 @@ class TCALabelUserFuncService {
 				//look for language name
 				$syslangRepository = $this->objectManager->get('Thucke\\ThRating\\Domain\\Repository\\StepnameRepository');
 				$syslangObject = $syslangRepository->findByUid($stepnameLang);
-				If ($syslangObject instanceof Thucke\ThRating\Domain\Model\Syslang) {
+				If ($syslangObject instanceof \Thucke\ThRating\Domain\Model\Syslang) {
 					$syslang=$syslangObject->getTitle();
 				} else {
 					$syslang = \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('tca.BE.unknown', 'ThRating');
@@ -121,8 +124,9 @@ class TCALabelUserFuncService {
 
 	/**
 	 * Returns the record title for the rating in BE
-	 *
-	 * @return byRef $params
+	 * Note that values of $params are modified by reference
+	 * 
+	 * @return void
 	 */
     public function getRatingRecordTitle(&$params, &$pObj) {
         $params['title'] = '#'.$params['row']['uid']. ': RowUid ['.$params['row']['ratedobjectuid'].']';
@@ -130,28 +134,14 @@ class TCALabelUserFuncService {
 
 	/**
 	 * Returns the record title for the rating in BE
-	 *
-	 * @return byRef $params
+	 * Note that values of $params are modified by reference
+	 * 
+	 * @return void
 	 */
     public function getVoteRecordTitle(&$params, &$pObj) {
         $params['title'] = 'Voteuser Uid ['.$params['row']['voter'].']';
     }
     
-	/**
-	 * Processings when cache is cleared
-	 * 1. Delete the file 'typo3temp/thratingDyn.css'
-	 *
-	 * @return void
-	 */
-    public function clearCachePostProc($_funcRef,$params, $pObj=NULL) {
-    	if (file_exists(PATH_site.'typo3temp/thratingDyn.css'))
-    		unlink( PATH_site.'typo3temp/thratingDyn.css');
-		//recreate file with zero length - so its still included via TS
-		$fp = fopen ( PATH_site.'typo3temp/thratingDyn.css', 'w' );
-		fwrite ( $fp, '');
-		fclose ( $fp );
-	}
-
 	/**
 	 * Returns all configured ratinglink display types for flexform
 	 *

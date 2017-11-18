@@ -33,7 +33,7 @@ namespace Thucke\ThRating\Tests\Unit\Domain\Model;
  * @scope 		alpha
  * @entity
  */
-class RatingobjectTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
+class RatingobjectTest extends \TYPO3\CMS\Core\Tests\BaseTestCase {
 
 	/**
      * @var \Thucke\ThRating\Domain\Model\Ratingobject

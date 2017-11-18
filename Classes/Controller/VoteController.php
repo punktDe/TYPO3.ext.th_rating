@@ -234,7 +234,7 @@ class VoteController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 			$this->ajaxSelections['ajaxRef'] = $this->prefixId.'_'.$this->getRandomId();
 			$this->logger->log(	\TYPO3\CMS\Core\Log\LogLevel::DEBUG, 'Set id for AJAX requests', $this->ajaxSelections);
 		}
-
+		
 		if ( !is_array($frameworkConfiguration['ratings']) ) {
 			$frameworkConfiguration['ratings'] = array();
 		}	
@@ -590,7 +590,7 @@ class VoteController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 	 * @return void
 	 */
 	protected function initSignalSlotDispatcher( $slotName ) {
-		$this->logger->log(	\TYPO3\CMS\Core\Log\LogLevel::DEBUG, 'Entry initSignalSlotDispatcher', array());
+	    $this->logger->log(	\TYPO3\CMS\Core\Log\LogLevel::DEBUG, 'Entry initSignalSlotDispatcher', array('slotName' => $slotName));
 		if ( $this->request->hasArgument('signalSlotHandlerContent') ) {
 			//set orginal handlerContent if action has been forwarded
 			$this->signalSlotHandlerContent = $this->request->getArgument('signalSlotHandlerContent');

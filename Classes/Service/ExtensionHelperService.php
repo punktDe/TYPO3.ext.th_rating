@@ -1,5 +1,6 @@
 <?php
 namespace Thucke\ThRating\Service;
+
 /***************************************************************
 *  Copyright notice
 *
@@ -115,9 +116,9 @@ class ExtensionHelperService extends \Thucke\ThRating\Service\AbstractExtensionS
 	public function initializeObject() {
 		$this->settings = $this->configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_SETTINGS,'thrating','pi1');
 		$frameworkConfiguration = $this->configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK,'thrating','pi1');
-		$frameworkConfiguration = $frameworkConfiguration['ratings'] ? $frameworkConfiguration['ratings'] : array(); 
-		$additionalSettingsArray = $this->settings['ratingConfigurations'] ? $this->settings['ratingConfigurations'] : array();
-		\TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule($additionalSettingsArray , $frameworkConfiguration);
+        
+		//Merge extension ratingConfigurations with customer added ones
+		\TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule($this->settings['ratingConfigurations'] , $frameworkConfiguration['ratings']);
 	}
 
 	/**
@@ -223,7 +224,7 @@ class ExtensionHelperService extends \Thucke\ThRating\Service\AbstractExtensionS
 	 * 
 	 * @param	array	$settings
  	 * @param	\Thucke\ThRating\Domain\Model\Ratingobject	$ratingobject
- 	 * @throws 	RuntimeException
+ 	 * @throws 	\TYPO3\CMS\Core\Exception
 	 * @return	\Thucke\ThRating\Domain\Model\Rating
 	 */
 	public function getRating( array $settings,	\Thucke\ThRating\Domain\Model\Ratingobject $ratingobject = NULL ) {
@@ -320,7 +321,7 @@ class ExtensionHelperService extends \Thucke\ThRating\Service\AbstractExtensionS
 	 * @return void
 	 */
 	public function clearDynamicCssFile() {
-		$this->objectManager->get('Thucke\\ThRating\\Service\\TCALabelUserFuncService')->clearCachePostProc(NULL, NULL, NULL);
+		$this->objectManager->get('Thucke\\ThRating\\Evaluation\\DynamicCssEvaluator')->clearCachePostProc(NULL, NULL, NULL);
 	}
 	
 	/**
@@ -328,7 +329,6 @@ class ExtensionHelperService extends \Thucke\ThRating\Service\AbstractExtensionS
 	 * Only called by singeltonAction to render styles once per page.
 	 * The file 'typo3temp/thratingDyn.css' will be created if it doesn�t exist
 	 *
-	 * @throws RuntimeException
 	 * @return void
 	 */
 	public function renderDynCSS() {

@@ -33,7 +33,7 @@ namespace Thucke\ThRating\Tests\Domain\Model;
  * @scope 		alpha
  * @entity
  */
-class RatingTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
+class RatingTest extends \TYPO3\CMS\Core\Tests\BaseTestCase {
 
 	/**
 	 * @var string Put the extension name here
@@ -47,14 +47,14 @@ class RatingTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
     protected $fixture = NULL;
 
     public function setUp() {
-		$this->ratingobject = \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase::getMock('Thucke\\ThRating\\Domain\\Model\\Ratingobject', array(), array('tt_news', 'uid'));
-		$this->stepconf = \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase::getMock('Thucke\\ThRating\\Domain\\Model\\Stepconf', array(), array($this->ratingobject, 1));
+        $this->ratingobject = \TYPO3\CMS\Core\Tests\BaseTestCase::getMock('Thucke\\ThRating\\Domain\\Model\\Ratingobject', array(), array('tt_news', 'uid'));
+        $this->stepconf = \TYPO3\CMS\Core\Tests\BaseTestCase::getMock('Thucke\\ThRating\\Domain\\Model\\Stepconf', array(), array($this->ratingobject, 1));
 		$this->stepconf->setStepweight(2);
-		$mockStepconfRepository = \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase::getMock('Thucke\\ThRating\\Domain\\Repository\\StepconfRepository', array(), array(), '', false);
+		$mockStepconfRepository = \TYPO3\CMS\Core\Tests\BaseTestCase::getMock('Thucke\\ThRating\\Domain\\Repository\\StepconfRepository', array(), array(), '', false);
 		$this->ratingobject->injectStepconfRepository($mockStepconfRepository);
 		$this->ratingobject->addStepconf($this->stepconf);
 		$this->fixture = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Thucke\\ThRating\\Domain\\Model\\Rating', $this->ratingobject, 1);
-		$mockVoteRepository = \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase::getMock('Thucke\\ThRating\\Domain\\Repository\\VoteRepository', array(), array(), '', false);
+		$mockVoteRepository = \TYPO3\CMS\Core\Tests\BaseTestCase::getMock('Thucke\\ThRating\\Domain\\Repository\\VoteRepository', array(), array(), '', false);
 		$this->fixture->injectVoteRepository($mockVoteRepository);
     }
 

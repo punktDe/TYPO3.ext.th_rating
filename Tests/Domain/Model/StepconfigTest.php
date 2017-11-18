@@ -33,7 +33,7 @@ namespace Thucke\ThRating\Tests\Domain\Model;
  * @scope 		alpha
  * @entity
  */
-class StepconfigTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
+class StepconfigTest extends \TYPO3\CMS\Core\Tests\BaseTestCase {
 
 	/**
 	 * @var string Put the extension name here
@@ -43,13 +43,13 @@ class StepconfigTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
  
     public function setUp() {
         //$this->ratingobject = $this->getMock('Thucke\\ThRating\\Domain\\Model\\Ratingobject');
-		$this->ratingobject = \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase::getAccessibleMock('Thucke\\ThRating\\Domain\\Model\\Ratingobject', array(), array('tt_news', 'uid'));
+        $this->ratingobject = \TYPO3\CMS\Core\Tests\BaseTestCase::getAccessibleMock('Thucke\\ThRating\\Domain\\Model\\Ratingobject', array(), array('tt_news', 'uid'));
         $this->stepconf = $this->objectManager->get('Thucke\\ThRating\\Domain\\Model\\Stepconf');
 		$this->stepconf->setRatingobject($this->ratingobject);
 		$this->stepconf->setSteporder(1);
 		$this->stepconf->setStepweight(2);
-		$this->stepname = \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase::getAccessibleMock('Thucke\\ThRating\\Domain\\Model\\Stepname', array(), array($this->stepconf, 'Step1'));
-		$mockRepository = \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase::getAccessibleMock('Thucke\\ThRating\\Domain\\Repository\\StepnameRepository');
+		$this->stepname = \TYPO3\CMS\Core\Tests\BaseTestCase::getAccessibleMock('Thucke\\ThRating\\Domain\\Model\\Stepname', array(), array($this->stepconf, 'Step1'));
+		$mockRepository = \TYPO3\CMS\Core\Tests\BaseTestCase::getAccessibleMock('Thucke\\ThRating\\Domain\\Repository\\StepnameRepository');
 		$this->stepconf->injectStepnameRepository($mockRepository);
     }
 

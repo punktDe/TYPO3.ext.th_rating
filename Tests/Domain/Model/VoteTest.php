@@ -33,7 +33,7 @@ namespace Thucke\ThRating\Tests\Domain\Model;
  * @scope 		alpha
  * @entity
  */
-class VoteTest extends \TYPO3\CMS\Extbase\Tests\Unit\BaseTestCase {
+class VoteTest extends \TYPO3\CMS\Core\Tests\BaseTestCase {
 
 	/**
 	 * Checks construction of a new vote object
