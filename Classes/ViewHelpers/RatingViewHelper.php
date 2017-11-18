@@ -29,12 +29,26 @@ namespace Thucke\ThRating\ViewHelpers;
  * @version $Id:$
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License, version 2
  */
-class RatingViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\CObjectViewHelper {
+class RatingViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
 	
 	/**
 	 * @var \TYPO3\CMS\Core\Log\Logger	$logger
 	 */
 	protected $logger;
+	/**
+	 * @var \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface
+	 */
+	protected $configurationManager;
+	
+	/**
+	 * @param \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager
+	 * @return void
+	 */
+	public function injectConfigurationManager(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager)
+	{
+	    $this->configurationManager = $configurationManager;
+	    $this->typoScriptSetup = $this->configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT);
+	}
 	/**
 	 * @var \Thucke\ThRating\Service\ExtensionHelperService
 	 */
@@ -50,16 +64,16 @@ class RatingViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\CObjectViewHelper {
 	/**
 	 * Renders the rating object
 	 *
+	 * @param integer $ratedobjectuid
 	 * @param string $action the controller action that should be used (ratinglinks, show, new )
 	 * @param integer $ratingobject
 	 * @param string $ratetable
 	 * @param string $ratefield
-	 * @param integer $ratedobjectuid
 	 * @param string $display
 	 * @return string the content of the rendered TypoScript object
 	 * @author Thomas Hucke <thucke@web.de>
 	 */
-	public function render($action = NULL, $ratingobject = NULL, $ratetable = NULL, $ratefield = NULL, $ratedobjectuid = NULL, $display = NULL) {
+	public function render($ratedobjectuid, $action = NULL, $ratingobject = NULL, $ratetable = NULL, $ratefield = NULL, $display = NULL) {
 		//instantiate the logger
 		$this->logger = $this->extensionHelperService->getLogger(__CLASS__);
 		$this->logger->log(	\TYPO3\CMS\Core\Log\LogLevel::DEBUG,
@@ -76,7 +90,7 @@ class RatingViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\CObjectViewHelper {
 								'typoscript' => $this->configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT),
 							));
 
-		$typoscriptObjectPath = 'plugin.tx_thrating';
+// 		$typoscriptObjectPath = 'plugin.tx_thrating';
 		if (TYPO3_MODE === 'BE') {
 			$this->logger->log(	\TYPO3\CMS\Core\Log\LogLevel::DEBUG, 'TYPO3_MODE is BE => simulateFrontendEnvironment', array());
 			$this->simulateFrontendEnvironment();
