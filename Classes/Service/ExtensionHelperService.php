@@ -116,9 +116,11 @@ class ExtensionHelperService extends \Thucke\ThRating\Service\AbstractExtensionS
 	public function initializeObject() {
 		$this->settings = $this->configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_SETTINGS,'thrating','pi1');
 		$frameworkConfiguration = $this->configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK,'thrating','pi1');
-        
-		//Merge extension ratingConfigurations with customer added ones
-		\TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule($this->settings['ratingConfigurations'] , $frameworkConfiguration['ratings']);
+
+		if (!empty($frameworkConfiguration['ratings'])) {
+    		//Merge extension ratingConfigurations with customer added ones
+	       	\TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule($this->settings['ratingConfigurations'] , $frameworkConfiguration['ratings']);
+		}
 	}
 
 	/**
