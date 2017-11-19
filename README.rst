@@ -9,7 +9,7 @@
 .. |img-1|      image:: Documentation/Images/hr.gif
 .. :align: left
 
-.. |img-2|      image:: Documentation/Images/TYPO3.png
+.. |img-2|      image:: Documentation/Images/typo3-200px-transparent.png
    :height: 21
    :width: 87
 .. :border: 0
