@@ -95,6 +95,7 @@
 							<label>LLL:EXT:th_rating/Resources/Private/Language/locallang.xlf:flexform.fluid.layoutConfig_showSectionContent</label>
 							<config>
 								<type>check</type>
+								<default>true</default>
 							</config>							
 						</TCEforms>
 					</settings.fluid.layouts.default.showSectionContent>
