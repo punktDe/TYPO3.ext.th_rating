@@ -107,6 +107,11 @@ plugin.tx_thrating {
 		mapAnonymous = {$plugin.tx_thrating.config.mapAnonymous}
 		cookieLifetime = {$plugin.tx_thrating.config.cookieLifetime}
 		ratingContext = defaultContext
+		defaultRatingConfiguration {
+			ratinglinks = stars
+			polling = polling
+			mark = smileyLikes
+		}
 		logging {
 			emergency {
 				file = typo3temp/logs/ThRating.log
@@ -168,9 +173,6 @@ plugin.tx_thrating {
 		#make configured ratings avaiable to the extension 
 		ratingConfigurations < plugin.tx_thrating.ratings
 		ratingConfigurations {
-			#default = stars		- default setting for ratinglinks action
-			#default = polling		- default setting for polling action
-			#default = smileyLikes	- default setting for mark action
 			stars {
 				imagefile = typo3conf/ext/th_rating/Resources/Public/Css/stars.gif
 				barimage = 0

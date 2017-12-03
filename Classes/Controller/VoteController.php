@@ -276,7 +276,17 @@ class VoteController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 	 */
 	public function singletonAction( ) {
 		$this->logger->log(	\TYPO3\CMS\Core\Log\LogLevel::DEBUG, 'Entry singletonAction', array());
-		$this->extensionHelperService->renderDynCSS();;
+		
+		$messageArray = $this->extensionHelperService->renderDynCSS();
+		//generate dynamic CSS file and add messages to flashMessageQueue
+		foreach ( $messageArray as $message) {
+		    $this->logFlashMessage(
+		        $message['messageText'],
+		        $message['messageTitle'],
+		        $message['severity'],
+		        $message['additionalInfo']
+	        );		        
+		}
 		$this->logger->log(	\TYPO3\CMS\Core\Log\LogLevel::DEBUG, 'Exit singletonAction', array());
 	}
 
@@ -410,7 +420,6 @@ class VoteController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 		
 		//Send signal to connected slots
 		$this->initSignalSlotDispatcher( 'afterCreateAction' );
-		//TODO delete deprecated $newArguments = \TYPO3\CMS\Core\Utility\GeneralUtility::array_merge($newArguments, array('signalSlotHandlerContent' => $this->signalSlotHandlerContent));
 		$newArguments = array('signalSlotHandlerContent' => $this->signalSlotHandlerContent) + $newArguments;
 
 		$this->logger->log(	\TYPO3\CMS\Core\Log\LogLevel::DEBUG, 'Exit createAction - forwarding request',
@@ -462,7 +471,7 @@ class VoteController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 	public function ratinglinksAction( \Thucke\ThRating\Domain\Model\Vote $vote = NULL) {
 		//\TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump($this->view,get_class($this).' ratinglinksAction');
 		$this->logger->log(	\TYPO3\CMS\Core\Log\LogLevel::DEBUG, 'Entry ratinglinksAction', array());
-		$this->settings['ratingConfigurations']['default'] = 'stars';
+		$this->settings['ratingConfigurations']['default'] = $this->settings['defaultRatingConfiguration']['ratinglinks'];
 		$this->graphicActionHelper($vote);
 		/*if ( $this->settings['fluid']['templates']['ratinglinks']['likesMode'] ) {
 			\TYPO3\CMS\Core\Utility\GeneralUtility::deprecationLog(
@@ -488,8 +497,8 @@ class VoteController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 	public function pollingAction( \Thucke\ThRating\Domain\Model\Vote $vote = NULL) {
 		//\TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump($this->view,get_class($this).' pollingAction');
 		$this->logger->log(	\TYPO3\CMS\Core\Log\LogLevel::DEBUG, 'Entry pollingAction', array());
-		$this->settings['ratingConfigurations']['default'] = 'polling';
-
+		$this->settings['ratingConfigurations']['default'] = $this->settings['defaultRatingConfiguration']['polling'];
+		
 		$this->graphicActionHelper($vote);
 
 		$this->initSignalSlotDispatcher( 'afterPollingAction' );
@@ -507,8 +516,8 @@ class VoteController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 	 */
 	public function markAction( \Thucke\ThRating\Domain\Model\Vote $vote = NULL) {
 		$this->logger->log(	\TYPO3\CMS\Core\Log\LogLevel::DEBUG, 'Entry markAction', array());
-		$this->settings['ratingConfigurations']['default'] = 'smileyLikes';
-
+		$this->settings['ratingConfigurations']['default'] = $this->settings['defaultRatingConfiguration']['mark'];
+		
 		$this->graphicActionHelper($vote);
 		
 		$this->initSignalSlotDispatcher( 'afterMarkAction' );
@@ -542,6 +551,7 @@ class VoteController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 			//calculate concrete values for polling display
 			$currentRates = $rating->getCurrentrates();
 			$currentPollDimensions = $currentRates['currentPollDimensions'];
+
 			foreach ( $currentPollDimensions as $step => $currentPollDimension ) {
 				$currentPollDimensions[$step]['steporder'] = $step;
 				$currentPollDimensions[$step]['backgroundPos'] = round( $height/3 * ( ($currentPollDimension['pctValue'] / 100) - 2 ),1);
@@ -631,7 +641,7 @@ class VoteController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 	 * @return void
 	 */
 	protected function initVoting(	\Thucke\ThRating\Domain\Model\Vote $vote = NULL ) {
-		$this->logger->log(	\TYPO3\CMS\Core\Log\LogLevel::DEBUG, 'Entry initVoting', array());
+	    $this->logger->log(	\TYPO3\CMS\Core\Log\LogLevel::DEBUG, 'Entry initVoting', array());
 		if ( $this->voteValidator->isObjSet($vote) && !$this->voteValidator->validate($vote)->hasErrors() ) {
 			$this->vote = $vote;
 			$this->logger->log(	\TYPO3\CMS\Core\Log\LogLevel::DEBUG, 'Using valid vote', array());
@@ -680,9 +690,14 @@ class VoteController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 	 */
 	protected function initSettings() {
 		$this->logger->log(	\TYPO3\CMS\Core\Log\LogLevel::DEBUG, 'Entry initSettings', array());
-
+		
+        //switch display mode to correct config if nothing is set
+		if ( empty($this->settings['display']) ) {
+		    $this->settings['display'] = $this->settings['ratingConfigurations']['default'];
+		}
+		
 		//set display configuration
-		if ( !empty($this->settings['display'] ) ) {
+		if ( !empty($this->settings['display']) ) {
 			if ( isset($this->settings['ratingConfigurations'][$this->settings['display']]) ) {
 				$this->ratingName = $this->settings['display'];
 			} else {
@@ -701,7 +716,7 @@ class VoteController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 								array('default display' => $this->ratingName));
 		}
 		$ratingConfiguration = $this->settings['ratingConfigurations'][$this->ratingName];
-
+		
 		//override extension settings with rating configuration settings
 		if ( is_array($ratingConfiguration['settings']) ) {
 			unset($ratingConfiguration['settings']['defaultObject']);
@@ -741,7 +756,7 @@ class VoteController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 		$frameworkConfiguration = $this->configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
 		$frameworkConfiguration['settings'] = $this->settings;
 		$this->setFrameworkConfiguration($frameworkConfiguration);
-
+		
 		$this->logger->log(	\TYPO3\CMS\Core\Log\LogLevel::DEBUG, 'Exit initSettings', array());
 	}
 	
@@ -914,7 +929,6 @@ class VoteController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 										$messageTitle, 
 										$severity, 
 										array $additionalInfo) {
-		//TODO delete deprecated $additionalInfo = \TYPO3\CMS\Core\Utility\GeneralUtility::array_merge($additionalInfo, array('messageTitle' => $messageTitle));
 		$additionalInfo = array('messageTitle' => $messageTitle) + $additionalInfo;
 		$severity = strtoupper($severity);
 		switch ($severity) {
@@ -936,6 +950,7 @@ class VoteController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 		if ( intval($additionalInfo['errorCode']) ) {
 			$messageText = $messageText.' ('.$additionalInfo['errorCode'].')';
 		}
+
 		//TODO: locally enqueue flashmessages of setStoragePids when controllerContext has not been set yet
 		if (is_object($this->controllerContext)) {
 			$this->addFlashMessage( $messageText,

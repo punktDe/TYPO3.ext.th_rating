@@ -331,6 +331,10 @@ class Rating extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 		}
 		
 		$sumAllWeightedVotes = array_sum($currentratesDecoded['weightedVotes']);
+
+        //initialize array to handle missing stepconfs correctly
+		$currentPollDimensions = array();		
+		
 		foreach ( $this->getRatingobject()->getStepconfs() as $stepConf ) {
 			if ( empty($sumAllWeightedVotes) ) {
 				//set current polling styles to zero percent and prevent division by zero error in lower formula

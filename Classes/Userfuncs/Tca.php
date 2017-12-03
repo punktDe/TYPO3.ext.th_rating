@@ -150,16 +150,14 @@ class Tca {
 	 */
 	public function dynFlexRatinglinkConfig($config) {
 		//\TYPO3\CMS\Core\Utility\DebugUtility::debug($config,'config');
-		if ( \TYPO3\CMS\Core\Utility\VersionNumberUtility::convertVersionNumberToInteger(TYPO3_version) < 7006000 ) {
-			$flexFormPid = $config['row']['pid'];
-		} else {
-			$flexFormPid = $config['flexParentDatabaseRow']['pid'];
-		}
+		$flexFormPid = $config['flexParentDatabaseRow']['pid'];
 		$settings = $this->loadTypoScriptForBEModule('tx_thrating', $flexFormPid);
 		$ratingconfigs = $settings['settings.']['ratingConfigurations.'];
+
 		$optionList = array();
-		// add first option
-		$optionList[0] = array(0 => 'Default', 1 => $ratingconfigs['default']);
+		
+		// add first option - Default
+		$optionList[0] = array(0 => 'Default', 1 => '');
 		foreach ( $ratingconfigs as $configKey => $configValue ) {
 			$lastDot = strrpos( $configKey, '.' );
 			if ( $lastDot ) {
@@ -168,11 +166,10 @@ class Tca {
 				$optionList[] = array(0 => $name, 1 => $name);
 			}
 		}
-		$config['items'] = array_merge($config['items'], $optionList);		
+		$config['items'] = $config['items'] + $optionList;		
 		return $config;
 	}
-	
-	
+
 	/**
 	 * Loads the TypoScript for the given extension prefix, e.g. tx_cspuppyfunctions_pi1, for use in a backend module.
 	 *

@@ -331,25 +331,18 @@ class ExtensionHelperService extends \Thucke\ThRating\Service\AbstractExtensionS
 	 * Only called by singeltonAction to render styles once per page.
 	 * The file 'typo3temp/thratingDyn.css' will be created if it doesn�t exist
 	 *
-	 * @return void
+	 * @return array
 	 */
 	public function renderDynCSS() {
+	    $messageArray = array(); 
 		//create file if it does not exist
 		if (file_exists(PATH_site.'typo3temp/thratingDyn.css')) {
 			$fstat = stat (PATH_site.'typo3temp/thratingDyn.css');
 			//do not recreate file if it has greater than zero length
 			if ( $fstat[7] != 0 ) {
 				$this->logger->log(	\TYPO3\CMS\Core\Log\LogLevel::DEBUG, 'Dynamic CSS file exists - exiting', array());
-				return;
+				return $messageArray;
 			}
-		}
-		//display an error to update TYPO3 at least to version 6.2.1
-		if ( version_compare(TYPO3_version, '6.2', '==') ) {
-			$this->logFlashMessage(	\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('flash.renderCSS.incompatible620', 'ThRating'),
-					\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('flash.configuration.error', 'ThRating'),
-					"EMERGENCY", array( 'errorCode' => 1398526413,
-							'T3version' => TYPO3_version));
-					return;
 		}
 		
 		//now walk through all ratingobjects to calculate stepwidths
@@ -359,13 +352,17 @@ class ExtensionHelperService extends \Thucke\ThRating\Service\AbstractExtensionS
 			$stepconfObjects = $ratingobject->getStepconfs();
 			$stepcount = count($stepconfObjects);
 			if (!$stepcount) {
-				$this->logFlashMessage(	\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('flash.renderCSS.noStepconf', 'ThRating',
-						array(1=>$ratingobject->getUid(), 2=>$ratingobject->getPid())),
-						\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('flash.configuration.error', 'ThRating'),
-						"ERROR", array( 'errorCode' => 1384705470,
-								'ratingobject UID' => $ratingobject->getUid(),
-								'ratingobject PID' => $ratingobject->getPid()));
-						return;
+			    $messageArray[] = array(
+			        'messageText' => \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('flash.renderCSS.noStepconf', 'ThRating',
+			            array(1=>$ratingobject->getUid(), 2=>$ratingobject->getPid())),
+			        'messageTitle' => \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('flash.configuration.error', 'ThRating'),
+			        'severity' => "ERROR",
+			        'additionalInfo' => array( 'errorCode' => 1384705470,
+			            'ratingobject UID' => $ratingobject->getUid(),
+			            'ratingobject PID' => $ratingobject->getPid()
+			        )
+			    );
+			    return $messageArray;
 			}
 			$stepconfs = $stepconfObjects->toArray();
 			foreach ( $stepconfs as $stepconf ) {	//stepconfs are already sorted by steporder
@@ -375,12 +372,16 @@ class ExtensionHelperService extends \Thucke\ThRating\Service\AbstractExtensionS
 					$sumStepWeights += $stepconf->getStepweight();
 				} else {
 					foreach ($this->stepconfValidator->getErrors() as $errorMessage) {
-						$this->logFlashMessage(	$errorMessage->getMessage(),
-								\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('flash.configuration.error', 'ThRating'),
-								"ERROR", array( 'errorCode' => $errorMessage->getCode(),
-										'errorMessage' => $errorMessage->getMessage()));
+						$messageArray[] = array(
+						    'messageText' => $errorMessage->getMessage(),
+					        'messageTitle' => \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('flash.configuration.error', 'ThRating'),
+						    'severity' => "ERROR",
+						    'additionalInfo' => array( 'errorCode' => $errorMessage->getCode(),
+					                                  'errorMessage' => $errorMessage->getMessage()
+                            )
+						);
 					}
-					return;
+					return $messageArray;
 				}
 			}
 			$this->logger->log(	\TYPO3\CMS\Core\Log\LogLevel::INFO,
@@ -404,15 +405,19 @@ class ExtensionHelperService extends \Thucke\ThRating\Service\AbstractExtensionS
 				$this->ratingImage = $this->objectManager->get('Thucke\\ThRating\\Domain\\Model\\RatingImage',$ratingConfig['imagefile']);
 				$filename = $this->ratingImage->getImageFile();
 				if ( empty($filename) ) {
-					$this->logFlashMessage(	\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('flash.vote.renderCSS.defaultImage', 'ThRating'),
-							\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('flash.heading.warning', 'ThRating'),
-							"WARNING", array( 'errorCode' => 1403192702,
+                    $messageArray[] = array(
+                        'messageText' => \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('flash.vote.renderCSS.defaultImage', 'ThRating'),
+                        'messageTitle' => \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('flash.heading.warning', 'ThRating'),
+                        'severity' => "WARNING", 
+                        'additionalInfo' => array( 'errorCode' => 1403192702,
 									'ratingName' => $ratingName,
-									'ratingConfig' => $ratingConfig));
-							$defaultRatingName = $this->settings['ratingConfigurations']['default'];
-							$ratingConfig = $this->settings['ratingConfigurations'][$defaultRatingName];
-							$this->ratingImage->setConf($ratingConfig['imagefile']);
-							$filename = $this->ratingImage->getImageFile();
+									'ratingConfig' => $ratingConfig
+                        )
+                    );
+					$defaultRatingName = $this->settings['ratingConfigurations']['default'];
+					$ratingConfig = $this->settings['ratingConfigurations'][$defaultRatingName];
+					$this->ratingImage->setConf($ratingConfig['imagefile']);
+					$filename = $this->ratingImage->getImageFile();
 				}
 				$filenameUri = $basePath.'/'.$filename;		//prepend host basepath if no URL is given
 				
@@ -482,7 +487,7 @@ class ExtensionHelperService extends \Thucke\ThRating\Service\AbstractExtensionS
 		$fp = fopen ( PATH_site.'typo3temp/thratingDyn.css', 'w' );
 		fwrite ( $fp, $cssFile);
 		fclose ( $fp );
-		return;
+		return $messageArray;
 	}
 }
 ?>
