@@ -5,16 +5,16 @@
 <f:if condition="{settings.fluid.templates.ratinglinks.likesMode}"><f:then>
 	<span data-role="onVotingActive" style="{f:if(condition: voting, then: '', else: 'display:none;')}">
 		<f:comment><!-- display if any vote has be done yet --></f:comment>
-		<f:render partial="usersRating" arguments="{voting:voting, ratingClass:ratingClass, ratingobject:rating.ratingobject, ratingName:ratingName, stepCount:stepCount, usersRate:usersRate}"/>
+		<f:render partial="UsersRating" arguments="{voting:voting, ratingClass:ratingClass, ratingobject:rating.ratingobject, ratingName:ratingName, stepCount:stepCount, usersRate:usersRate}"/>
 	</span>
 	<span data-role="onVotingHidden" style="{f:if(condition: voting, then: 'display:none;', else: '')}">
 		<f:comment><!-- display normal ratinglinkblock --></f:comment>
-		<f:render partial="ratinglinkBlock" arguments="{voting:voting, ratingClass:ratingClass, ratingobject:rating.ratingobject, ratingName:ratingName, rating:rating, currentRates:rating.currentRates.currentrate, stepCount:stepCount, barimage:barimage, ajaxSelections:ajaxSelections}"/>
+		<f:render partial="RatinglinkBlock" arguments="{voting:voting, ratingClass:ratingClass, ratingobject:rating.ratingobject, ratingName:ratingName, rating:rating, currentRates:rating.currentRates.currentrate, stepCount:stepCount, barimage:barimage, ajaxSelections:ajaxSelections}"/>
 	</span>
 </f:then><f:else>
 	<f:if condition="{ratingName}"><f:then>
 		<f:comment><!-- display normal ratinglinkblock --></f:comment>
-		<f:render partial="ratinglinkBlock" arguments="{voting:voting, ratingClass:ratingClass, ratingobject:rating.ratingobject, ratingName:ratingName, rating:rating, currentRates:rating.currentRates.currentrate, stepCount:stepCount, barimage:barimage, ajaxSelections:ajaxSelections}"/>
+		<f:render partial="RatinglinkBlock" arguments="{voting:voting, ratingClass:ratingClass, ratingobject:rating.ratingobject, ratingName:ratingName, rating:rating, currentRates:rating.currentRates.currentrate, stepCount:stepCount, barimage:barimage, ajaxSelections:ajaxSelections}"/>
 	</f:then></f:if>
 </f:else></f:if>
 </f:section>

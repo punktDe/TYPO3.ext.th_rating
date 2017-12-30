@@ -33,8 +33,8 @@
 			<f:if condition="{actionMethodName}=='MarkAction'"><f:then>
 				<f:comment>Display nothing if we are in likesMode - Users rating is already shown in content section</f:comment>
 			</f:then><f:else>
-				<f:render partial="usersRating" arguments="{voting:voting, ratingClass:ratingClass, ratingobject:rating.ratingobject, ratingName:ratingName, stepCount:stepCount, usersRate:usersRate}"/>
-				<f:render partial="infoBlock" arguments="{voting:voting, anonymousVoting:anonymousVoting, voter:voter, ratingName:ratingName}"/>
+				<f:render partial="UsersRating" arguments="{voting:voting, ratingClass:ratingClass, ratingobject:rating.ratingobject, ratingName:ratingName, stepCount:stepCount, usersRate:usersRate}"/>
+				<f:render partial="InfoBlock" arguments="{voting:voting, anonymousVoting:anonymousVoting, voter:voter, ratingName:ratingName}"/>
 			</f:else></f:if>
 		</div>
 		</f:then></f:if>	
