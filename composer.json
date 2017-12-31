@@ -21,5 +21,10 @@
 	"replace" : {
 		"th-rating" : "self.version",
 		"typo3-ter/th-rating" : "self.version"
+	},
+	"extra" : {
+		"thucke/th-rating" : {
+			"installer-name" : "th_rating"
+		}
 	}
 }
