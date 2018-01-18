@@ -3,6 +3,9 @@
 	"type" : "typo3-cms-extension",
 	"description" : "Highly flexible AJAX rating based on extbase/fluid/jquery. Allows multiple ratings within one page. Could be used as a cObj by other extensions or included in every FLUID template using the viewhelper. Each ratingstep could be configured having a name - international localization included.",
 	"license" : "GPL-2.0+",
+	"extra" : {
+		"installer-name" : "th_rating"
+	},
 	"require" : {
 		"typo3/cms-core" : ">=7.6.0,<8.8",
 		"static_info_tables" : ">=6.0.7"
@@ -21,10 +24,5 @@
 	"replace" : {
 		"th-rating" : "self.version",
 		"typo3-ter/th-rating" : "self.version"
-	},
-	"extra" : {
-		"thucke/th-rating" : {
-			"installer-name" : "th_rating"
-		}
 	}
 }
