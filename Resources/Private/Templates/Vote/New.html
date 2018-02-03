@@ -3,10 +3,8 @@
 
 <f:section name="content">
 <div class='tx-thrating-newVote'>
-	<span class="tx_thrating_ajax-voting-Off {f:if(condition: voting, then: 'hidden', else: '')}">
-		<thr:select class="ajaxLink" name="ajaxSelect" options="{ajaxSelections}" additionalOptions="{0 : '-- choose one --'}" >
-			<select><option>dummy</option></select>
-		</thr:select>
+	<span data-role="onVotingHidden" style="{f:if(condition: voting, then: 'display:none;', else: '')}">
+		<thr:select class="ajaxLink" name="ajaxSelect" options="{ajaxSelections}" additionalOptions="{0 : '-- choose one --'}" />
 	</span>
 </div>
 <f:render partial="ShowVote" arguments="{voting:voting, ratingobject:rating.ratingobject, rating:rating, voter:voter}"/>
