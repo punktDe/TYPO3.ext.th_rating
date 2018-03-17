@@ -35,9 +35,7 @@
 	border:0px solid black;
 }
 
-/* TODO: Remove .message-header when support for TYPO3 6.2 has dropped */
-.tx-thrating-singleton-message h4,
-.tx-thrating-singleton-message .message-header{
+.tx-thrating-singleton-message h4 {
 	padding:3px;
 	margin:0;
 	background-color: #f87575;
@@ -45,9 +43,8 @@
 	padding:1px;
 	font-weight:bold;
 }
-/* TODO: Remove .message-body when support for TYPO3 6.2 has dropped */
-.tx-thrating-singleton-message .alert-body,
-.tx-thrating-singleton-message .message-body{
+
+.tx-thrating-singleton-message .alert-body {
 	padding:3px;
 }
 div.tx-thrating-ratinglinks > div.stepnameTooltip{
@@ -185,9 +182,7 @@ div.tx-thrating-ratinglinks ul{
     -moz-border-radius:0.5em;
     box-shadow: 6px 6px 4px #6B6A6A;
 }
-/* TODO: Remove .message-header when support for TYPO3 6.2 has dropped */
-.tx-thrating-flash-message h4,
-.tx-thrating-flash-message .message-header{
+.tx-thrating-flash-message h4{
     border: 1px dotted grey;
 	padding:1px;
 	margin:0;
@@ -205,45 +200,43 @@ div.tx-thrating-ratinglinks ul{
     border-bottom-right-radius: 0.2em;
     border-bottom-left-radius: 0.2em;
 }
-/* TODO: Remove .message-header when support for TYPO3 6.2 has dropped */
-.tx-thrating-flash-message .alert-danger h4,
-.tx-thrating-flash-message .message-error .message-header {
-	background-color: #f87575;
+.tx-thrating-flash-message .alert-danger h4 {
+	background-color: #c8453c;
     border: 1px dotted grey;
 	padding:1px;
 	margin:0;
 	font-weight:bold;
 }
-/* TODO: Remove .message-header when support for TYPO3 6.2 has dropped */
-.tx-thrating-flash-message .alert-warning h4,
-.tx-thrating-flash-message .message-warning .message-header{
-	background-color: #ffff00;
+.tx-thrating-flash-message .alert-warning h4 {
+	background-color: #e8a13d;
     border: 1px dotted grey;
 	padding:1px;
 	margin:0;
 	font-weight:bold;
 }
-/* TODO: Remove .message-header when support for TYPO3 6.2 has dropped */
-.tx-thrating-flash-message .alert-notice h4,
-.tx-thrating-flash-message .message-notice .message-header{
-	background-color: #62aeff;
+.tx-thrating-flash-message .alert-notice h4 {
+	background-color: #363636;
     border: 1px dotted blue;
 	padding:1px;
 	margin:0;
 	font-weight:bold;
 }
-/* TODO: Remove .message-header when support for TYPO3 6.2 has dropped */
-.tx-thrating-flash-message .alert-success h4,
-.tx-thrating-flash-message .message-ok .message-header{
-	background-color: #1bee1b;
+.tx-thrating-flash-message .alert-info h4 {
+	background-color: #6ba9df;
+    border: 1px dotted blue;
+	padding:1px;
+	margin:0;
+	font-weight:bold;
+}
+.tx-thrating-flash-message .alert-success h4 {
+	background-color: #75a049;
     border: 1px dotted grey;
 	padding:1px;
 	margin:0;
 	font-weight:bold;
 }
-/* TODO: Remove .message-body when support for TYPO3 6.2 has dropped */
 .tx-thrating-flash-message .alert-body,
-.tx-thrating-flash-message .message-body{
+.tx-thrating-flash-message {
 	padding-top:3px;
 }
 .tx-thrating-flash-message li{

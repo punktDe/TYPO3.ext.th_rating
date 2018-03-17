@@ -321,9 +321,13 @@
 				<note>Forwarded arguments: 1:voting, 2:voting.vote.steporder, 3:stepCount; This entry must be embedded into >f:format.raw> when read by fluid</note>
 				<source><![CDATA[Your vote was '<span class='tx_thrating_ajax-votingStepname'>%1$s</span>' (<span class='tx_thrating_ajax-votingVoteSteporder'>%2$d</span> of <span class='tx_thrating_ajax-stepCount'>%3$d</span>)]]></source>
 			</trans-unit>
+			<trans-unit id="fluid.partial.usersRating.noRating" xml:space="preserve" approved="yes">
+				<note>Forwarded arguments: None</note>
+				<source>No rating done yet.</source>
+			</trans-unit>
 			<trans-unit id="fluid.partial.infoBlock.anonymousVoting" xml:space="preserve" approved="yes">
 				<note>Forwarded arguments: None; This entry must be embedded into >f:format.raw> when read by fluid</note>
-				<source><![CDATA[Your are an anonymous user.<br/>You may log on to do personalized votings<br/>]]></source>
+				<source><![CDATA[You are an anonymous user.<br/>You may log on to do personalized votings<br/>]]></source>
 			</trans-unit>
 			<trans-unit id="fluid.partial.infoBlock.logonForRatings" xml:space="preserve" approved="yes">
 				<note>Forwarded arguments: None</note>

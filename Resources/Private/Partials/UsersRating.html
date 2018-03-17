@@ -1,6 +1,8 @@
 <f:comment><!-- display check --></f:comment>
 <f:if condition="{settings.fluid.partials.usersRating.showTextInfo}"><f:then>
-	<f:format.raw><f:translate key='fluid.partial.usersRating.usersRate' default='fluid.partial.usersRating.usersRate' arguments='{1:voting, 2:voting.vote.steporder, 3:stepCount}'/></f:format.raw>
+	<span data-role="onVotingActive" style="{f:if(condition: voting, then: '', else: 'display:none;')}">
+		<f:format.raw><f:translate key='fluid.partial.usersRating.usersRate' default='fluid.partial.usersRating.usersRate' arguments='{1:voting, 2:voting.vote.steporder, 3:stepCount}'/></f:format.raw>
+	</span>
 </f:then></f:if>
 <f:comment><!-- display check --></f:comment>
 <f:if condition="{settings.fluid.partials.usersRating.showGraphicInfo}"><f:then>

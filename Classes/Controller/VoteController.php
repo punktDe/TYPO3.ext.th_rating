@@ -287,6 +287,7 @@ class VoteController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 		        $message['additionalInfo']
 	        );		        
 		}
+		$this->controllerContext->getFlashMessageQueue()->clear();
 		$this->logger->log(	\TYPO3\CMS\Core\Log\LogLevel::DEBUG, 'Exit singletonAction', array());
 	}
 
@@ -302,19 +303,13 @@ class VoteController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 		//is_object($vote) && \TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump($vote->getUid(),'showAction');
 		$this->initVoting( $vote );  //just to set all properties
 
+		$this->fillSummaryView();
 		if ($this->voteValidator->isObjSet($this->vote) && !$this->voteValidator->validate($this->vote)->hasErrors()) {
 		    if ($this->accessControllService->isLoggedIn($this->vote->getVoter()) || $this->vote->isAnonymous()) {
-				$this->fillSummaryView();
 			} else {
-				$this->logFlashMessage(	\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('flash.vote.create.noPermission', 'ThRating'),
+			    $this->logFlashMessage(	\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('flash.vote.create.noPermission', 'ThRating'),
 										\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('flash.heading.error', 'ThRating'),
 										"ERROR", array('errorCode' => 1403201246));
-			}
-		} else {
-			if ($this->settings['showNotRated']) {
-				$this->logFlashMessage(	\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('flash.vote.show.notRated', 'ThRating'), 
-										\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('flash.heading.notice', 'ThRating'),
-										"NOTICE", array('errorCode' => 1403201498));
 			}
 		}
 		$this->view->assign('actionMethodName',$this->actionMethodName);
@@ -823,8 +818,8 @@ class VoteController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 			$this->view->assign('anonymousVoting', !empty($this->settings['mapAnonymous']) && !$this->accessControllService->getFrontendUserUid());
 			if ( $this->settings['showNotRated'] && empty($currentrate['currentrate']) ) {
 				$this->logFlashMessage(	\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('flash.vote.show.notRated', 'ThRating'), 
-										\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('flash.heading.notice', 'ThRating'),
-										"NOTICE", array('errorCode' => 1403203414));
+										\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('flash.heading.info', 'ThRating'),
+										"INFO", array('errorCode' => 1403203414));
 			}
 			if ( $this->voteValidator->isObjSet($this->vote) && !$this->voteValidator->validate($this->vote)->hasErrors() ) {
 				if ( ( !$this->vote->isAnonymous() && $this->vote->getVoter()->getUid() == $this->accessControllService->getFrontendUserUid()) ||
@@ -938,10 +933,10 @@ class VoteController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 				$flashSeverity = 'OK';
 				break;
 			case 'INFO' :
-				$flashSeverity = 'NOTICE';
+				$flashSeverity = 'INFO';
 				break;
 			case 'NOTICE' :
-				$flashSeverity = 'INFO';
+				$flashSeverity = 'NOTICE';
 				break;
 			case 'WARNING' :
 				$flashSeverity = 'WARNING';

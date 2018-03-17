@@ -2,6 +2,11 @@
 		<span data-role="onVotingActive" style="{f:if(condition: voting, then: '', else: 'display:none;')}">
 			<p style="white-space:nowrap;"><span class="tx_thrating_ajax-voterUsername">{voter.username}</span> has voted '<span class="tx_thrating_ajax-votingStepname">{voting}</span>' on <span class="tx_thrating_ajax-ratingRatingobjectRatetable">{ratingobject.ratetable}</span>:<span class="tx_thrating_ajax-ratingRatingobjectRatefield">{ratingobject.ratefield}</span>:<span class="tx_thrating_ajax-ratingRatedobjectuid">{rating.ratedobjectuid}</span></p>
 		</span>
+		<span data-role="onVotingHidden" style="{f:if(condition: voting, then: 'display:none;', else: '')}">
+			<p style="white-space:nowrap;">
+				<f:translate key='fluid.partial.usersRating.noRating' default='fluid.partial.usersRating.noRating'/>
+			</p>
+		</span>
 	</div>
 <!--
 ******************************************************************************************
