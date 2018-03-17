@@ -303,7 +303,7 @@ class VoteController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 		$this->initVoting( $vote );  //just to set all properties
 
 		if ($this->voteValidator->isObjSet($this->vote) && !$this->voteValidator->validate($this->vote)->hasErrors()) {
-			if ($this->accessControllService->isLoggedIn($this->vote->getVoter())) {
+		    if ($this->accessControllService->isLoggedIn($this->vote->getVoter()) || $this->vote->isAnonymous()) {
 				$this->fillSummaryView();
 			} else {
 				$this->logFlashMessage(	\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('flash.vote.create.noPermission', 'ThRating'),
@@ -691,7 +691,7 @@ class VoteController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 	protected function initSettings() {
 		$this->logger->log(	\TYPO3\CMS\Core\Log\LogLevel::DEBUG, 'Entry initSettings', array());
 		
-        //switch display mode to correct config if nothing is set
+		//switch display mode to correct config if nothing is set
 		if ( empty($this->settings['display']) ) {
 		    $this->settings['display'] = $this->settings['ratingConfigurations']['default'];
 		}
@@ -716,6 +716,8 @@ class VoteController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 								array('default display' => $this->ratingName));
 		}
 		$ratingConfiguration = $this->settings['ratingConfigurations'][$this->ratingName];
+		//\TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump($this->settings,get_class($this).' settings '.$this->ratingName);		
+		//\TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump($this->settings['ratingConfigurations'],get_class($this).' ratingConfigurations '.$this->ratingName);
 		
 		//override extension settings with rating configuration settings
 		if ( is_array($ratingConfiguration['settings']) ) {
