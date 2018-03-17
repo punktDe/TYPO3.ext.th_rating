@@ -74,6 +74,7 @@ class RatingViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelp
 	 * @author Thomas Hucke <thucke@web.de>
 	 */
 	public function render($ratedobjectuid, $action = NULL, $ratingobject = NULL, $ratetable = NULL, $ratefield = NULL, $display = NULL) {
+	    $typoscriptObjectPath = 'plugin.tx_thrating';
 		//instantiate the logger
 		$this->logger = $this->extensionHelperService->getLogger(__CLASS__);
 		$this->logger->log(	\TYPO3\CMS\Core\Log\LogLevel::DEBUG,
