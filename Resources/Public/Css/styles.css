@@ -146,6 +146,11 @@ div.tx-thrating-ratinglinks ul{
 .thRating-tilt li.noratingbar {
     background-position: center top !important;
 }
+.thRating-tilt span.ratingbar:hover,
+.thRating-tilt span.ratingbar:active,
+.thRating-tilt span.ratingbar:focus{
+    background-position: left bottom;
+}
 
 .thRating-tilt .current-rating{
     z-index:1;

@@ -439,7 +439,7 @@ class ExtensionHelperService extends \Thucke\ThRating\Service\AbstractExtensionS
 								$height = $height * $sumStepWeights;
 							}
 							$cssFile .= $mainId.' { width:'.$width.'px; height:'.$height.'px; }'.CHR(10);
-							$cssFile .= $mainId.', '.$mainId.' span:hover, '.$mainId.' span:active, '.$mainId.' span:focus, '.$mainId.' .current-rating {	background:url('.$filenameUri.') right repeat-y;	}'.CHR(10);
+							$cssFile .= $mainId.', '.$mainId.' span:hover, '.$mainId.' span:active, '.$mainId.' span:focus, '.$mainId.' .current-rating {	background:url('.$filenameUri.') right bottom repeat-y;	}'.CHR(10);
 							$cssFile .= $mainId.' span, '.$mainId.' .current-rating { width:'.$width.'px; }'.CHR(10);
 						} else {
 							$height = round($height / 3,1);
