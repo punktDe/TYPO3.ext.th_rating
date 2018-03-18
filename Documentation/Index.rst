@@ -3,8 +3,6 @@
 .. --------------------------------------------------
 .. -*- coding: utf-8 -*- with BOM.
 
-.. _this link:	http://wiki.typo3.org/EXT/Rating_AX
-
 .. include:: /Includes.txt
 
 .. _start:
@@ -59,5 +57,3 @@ EXT: Flexible Rating
    AdministratorManual/Index
    DeveloperInformation/Index
    Tutorial/Index
-
-You'll find the old documentation of this extension in the TYPO3 wiki following `this link`_.

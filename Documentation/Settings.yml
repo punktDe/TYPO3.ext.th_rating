@@ -7,8 +7,8 @@
 conf.py:
   copyright: 2018, Thomas Hucke
   project: Rating AX
-  version: '1.5'
-  release: '1.5.0'
+  version: '1.6'
+  release: '1.6.0'
   latex_documents:
   - - Index
     - RatingAx.tex
