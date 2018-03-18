@@ -265,6 +265,8 @@ Example content objects
 Example 1
 #########
 
+|example1|
+
 .. code-block:: typoscript
    :linenos:
 
@@ -294,6 +296,8 @@ Example 1
 
 Example 2
 #########
+
+|example2|
 
 .. code-block:: typoscript
    :linenos:
@@ -325,6 +329,8 @@ Example 2
 Example 3
 #########
 
+|example3|
+
 .. code-block:: typoscript
    :linenos:
 
@@ -355,6 +361,8 @@ Example 3
 Example 4
 #########
 
+|example4|
+
 .. code-block:: typoscript
    :linenos:
 
@@ -384,6 +392,8 @@ Example 4
 
 Example 5
 #########
+
+|example5|
 
 .. code-block:: typoscript
    :linenos:
@@ -429,6 +439,8 @@ Example 5
 Example 6
 #########
 
+|example6|
+
 .. code-block:: typoscript
    :linenos:
 
@@ -459,6 +471,8 @@ Example 6
 
 Example 7
 #########
+
+|example7|
 
 .. code-block:: typoscript
    :linenos:
@@ -503,6 +517,8 @@ Example 7
 Example 8
 #########
 
+|example8|
+
 .. code-block:: typoscript
    :linenos:
 
@@ -533,6 +549,8 @@ Example 8
 Example 9
 #########
 
+|example9|
+
 .. code-block:: typoscript
    :linenos:
 
@@ -561,5 +579,3 @@ Example 9
       }
    }
 
-
-asdfasdf
