@@ -806,6 +806,7 @@ class VoteController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController 
 
 			if ($this->richSnippetService->setRichSnippetConfig($this->settings)) {
 				$richSnippetObject = $this->richSnippetService->getRichSnippetObject($this->vote->getRating()->getRatedobjectuid());
+				$richSnippetObject->setAnchor('RatingAX_'.$this->vote->getRating()->getRatingobject()->getUid().'_'.$this->vote->getRating()->getRatedobjectuid());
 				if (empty($richSnippetObject->getName())) {
 					$richSnippetObject->setName('Rating AX '.$this->vote->getRating()->getRatingobject()->getUid().'_'.$this->vote->getRating()->getRatedobjectuid());
 				}

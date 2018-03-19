@@ -234,6 +234,16 @@ plugin.tx_thrating {
 		}
 	}
 }
+lib.thrating.ratingInstanceUrl = COA
+lib.thrating.ratingInstanceUrl {
+	1 = TEXT
+	1.data = getIndpEnv:TYPO3_REQUEST_SCRIPT
+	2 = TEXT
+	2.value = ?id=
+	3 = TEXT
+	3.data=TSFE:id
+}
+
 #########################################################################
 # Include all needed javascript and CSS styles
 #########################################################################
