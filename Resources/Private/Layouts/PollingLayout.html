@@ -1,11 +1,10 @@
 {namespace thr=Thucke\ThRating\ViewHelpers}
 <f:if condition="{ajaxRef}"><f:then>
 <div class="tx-thrating-pi1-content {settings.ratingContext}" id='{ajaxRef}'>
-	<div class='tx-thrating-staticPreContent'><f:format.raw>{staticPreContent}</f:format.raw></div>
+	<div id='{richSnippetObject.anchor}' class='tx-thrating-staticPreContent'><f:format.raw>{staticPreContent}</f:format.raw></div>
 	<div class='tx-thrating-content' aria-life="polite" aria-atomic="false" aria-relevant="text">
 		<div class='tx-thrating-preContent'><f:format.raw>{preContent}</f:format.raw></div>
-	<f:if condition="{stepCount} > 0">
-	  <f:then>
+	<f:if condition="{stepCount} > 0"><f:then>
 		<span class="dummy4focus" tabindex="-1"></span>
 		<f:render section="content" />
 		<f:if condition="{settings.fluid.layouts.polling.showSummary}"><f:then>
@@ -13,9 +12,9 @@
 			<f:comment><!-- display check regarding rating summary information --></f:comment>
 			<f:if condition="{settings.fluid.layouts.polling.showCurrentPolls}"><f:then>
 			<span data-role="onCurrentRateActive" style="{f:if(condition: rating.currentRates.currentrate, then: '', else: 'display:none;')}">
-				<f:translate key='fluid.layout.polling.currentRating' default='fluid.layout.polling.currentRating' arguments="{1:rating.currentRates.currentrate, 2:'{f:count(subject:\"{rating.votes}\")}'}"/>
+				<f:format.raw><f:translate key='fluid.layout.polling.currentRating' default='fluid.layout.polling.currentRating' arguments="{1:rating.currentRates.currentrate, 2:'{f:count(subject:\"{rating.votes}\")}'}"/></f:format.raw>
 				<f:if condition="{anonymousVotes}"><f:then>
-				<br/><f:translate key='fluid.layout.polling.anonymousVotes' default='fluid.layout.polling.anonymousVotes' arguments='{1:anonymousVotes}'/>
+				<br/><f:format.raw><f:translate key='fluid.layout.polling.anonymousVotes' default='fluid.layout.polling.anonymousVotes' arguments='{1:anonymousVotes}'/></f:format.raw>
 				</f:then></f:if>
 			</span>
 			<span data-role="onCurrentRateHidden" style="{f:if(condition: rating.currentRates.currentrate, then: 'display:none;', else: '')}">
