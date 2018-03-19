@@ -19,6 +19,7 @@ Please scan the following sections to find out what is configurable by using Typ
    :titlesonly:
 
    Ratings.name
+   RichSnippetLibs
    settings/Index
 
    

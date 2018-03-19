@@ -243,6 +243,10 @@
 			<trans-unit id="error.validator.stepname.defaultLang" xml:space="preserve">
 				<source>Missing entry for default language</source>
 			</trans-unit>
+			<trans-unit id="error.richSnippetConfiguration.AggregateRatingPropertySchema" xml:space="preserve" approved="yes">
+				<note>An invalid schema has been configured. Usage of aggregateRating property is limited.</note>
+				<source>An invalid schema has been configured. Usage of aggregateRating property is limited. Check http://schema.org/aggregateRating for valid types.</source>
+			</trans-unit>
 			<trans-unit id="flash.ratingobject.noRatingsteps" xml:space="preserve">
 				<source>No ratingsteps configured!</source>
 			</trans-unit>

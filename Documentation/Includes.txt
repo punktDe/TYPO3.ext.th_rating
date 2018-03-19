@@ -21,6 +21,16 @@
 
 
 .. ==================================================
+.. DEFINE some global HREFs
+.. --------------------------------------------------
+
+.. _Google rich snippets: https://developers.google.com/structured-data/rich-snippets/
+.. _Schema.org aggregateRating: https://schema.org/aggregateRating
+
+
+
+
+.. ==================================================
 .. DEFINE Image aliases
 .. --------------------------------------------------
 
