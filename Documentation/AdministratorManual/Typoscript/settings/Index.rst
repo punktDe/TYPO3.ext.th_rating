@@ -3,7 +3,7 @@
 .. --------------------------------------------------
 .. -*- coding: utf-8 -*- with BOM.
 
-.. include:: /Documentation/Includes.txt
+.. include:: ../../../Includes.txt
 
 
 .. _ts-pluginThRatingSettings:
@@ -76,7 +76,7 @@ display
 
    Default
       different depending on action
- 
+
 
 .. _tsRatetable:
 
@@ -96,7 +96,7 @@ ratetable
 
    Default
       :ts:`tt_content`
- 
+
 
 .. _tsRatefield:
 
@@ -116,7 +116,7 @@ ratefield
 
    Default
       :ts:`uid`
- 
+
 
 .. _tsRatingContext:
 
@@ -136,7 +136,7 @@ ratingContext
 
    Default
       :ts:`defaultContext`
- 
+
 
 .. _tsRatingobject:
 
@@ -155,8 +155,8 @@ ratingobject
       UID of the ratingobject. Could be helpful to increase performance instead of using ratetable/ratefield combination.
 
    Default
-      \ 
- 
+      \
+
 .. _tsRatedobjectuid:
 
 ratedobjectuid
@@ -174,8 +174,8 @@ ratedobjectuid
       UID of the rated row in the table
 
    Default
-      
- 
+
+
 .. _tsMapAnonymous:
 
 mapAnonymous
@@ -194,7 +194,7 @@ mapAnonymous
 
    Default
       see constant :ref:`constMapAnonymous`
- 
+
 .. _tsCookieLifetime:
 
 cookieLifetime
@@ -214,7 +214,7 @@ cookieLifetime
    Default
       :ts:`0`
 
- 
+
 .. _tsShowNoFEUser:
 
 showNoFEUser
@@ -254,7 +254,7 @@ showNotRated
    Default
       :ts:`0`
 
- 
+
 .. _tsDisplayOnly:
 
 displayOnly
@@ -274,7 +274,7 @@ displayOnly
    Default
       :ts:`0`
 
- 
+
 .. _tsEnableReVote:
 
 enableReVote
@@ -294,7 +294,7 @@ enableReVote
    Default
       :ts:`0`
 
- 
+
 .. _tsForeignFieldArrayUpdate:
 
 foreignFieldArrayUpdate
@@ -309,12 +309,12 @@ foreignFieldArrayUpdate
       :ref:`t3tsref:data-type-boolean`
 
    Description
-      Update foreign ratetable in ratefield using the whole getCurrentRates array or double value (default) 
+      Update foreign ratetable in ratefield using the whole getCurrentRates array or double value (default)
 
    Default
       :ts:`0`
 
- 
+
 .. _tsStoragePid:
 
 storagePid
@@ -329,12 +329,12 @@ storagePid
       :ref:`t3tsref:data-type-integer`
 
    Description
-      General storage page where all records are stored. 
+      General storage page where all records are stored.
 
    Default
       value of constant :ref:`constPluginStoragePid`
 
- 
+
 **Example**
 
 Here an example which is also included in one of the default configurations:

@@ -3,7 +3,7 @@
 .. --------------------------------------------------
 .. -*- coding: utf-8 -*- with BOM.
 
-.. include:: /Documentation/Includes.txt
+.. include:: ../../../../Includes.txt
 
 
 .. _ts-pluginThRatingSettingsFluid:
@@ -11,8 +11,8 @@
 ~.fluid
 =======
 
-The layout of the extension could be manipulated using this section. 
-All settings here could be overridden by the configuration set in :ref:`ts-pluginThRatingsName`. 
+The layout of the extension could be manipulated using this section.
+All settings here could be overridden by the configuration set in :ref:`ts-pluginThRatingsName`.
 The section is deeply divided in subsections:
 
 .. toctree::

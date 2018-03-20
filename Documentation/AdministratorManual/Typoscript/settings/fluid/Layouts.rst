@@ -3,7 +3,7 @@
 .. --------------------------------------------------
 .. -*- coding: utf-8 -*- with BOM.
 
-.. include:: /Documentation/Includes.txt
+.. include:: ../../../../Includes.txt
 
 .. _ts-pluginThRatingSettingsFluidLayouts:
 
@@ -16,7 +16,7 @@ At this point of time the extension uses two layouts:
 #. ``PollingLayout`` only for action handler :ts:`polling`
 
 You may take a look at the file for better understanding the following options.
- 
+
 .. only:: html
 
    .. contents::
@@ -58,7 +58,7 @@ showSummary
 
    Default
       :ts:`1`
- 
+
 
 .. _tsShowCurrentRatesDefault:
 
@@ -78,7 +78,7 @@ showCurrentRates
 
    Default
       :ts:`1`
- 
+
 
 .. _tsShowSectionContentDefault:
 
@@ -98,8 +98,8 @@ showSectionContent
 
    Default
       :ts:`1`
- 
- 
+
+
 Reference PollingLayout
 -----------------------
 
@@ -133,8 +133,8 @@ showSummary
 
    Default
       :ts:`0`
- 
- 
+
+
 .. _tsShowCurrentRatesPoll:
 
 showCurrentRates

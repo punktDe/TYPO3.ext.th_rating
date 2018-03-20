@@ -3,7 +3,7 @@
 .. --------------------------------------------------
 .. -*- coding: utf-8 -*- with BOM.
 
-.. include:: /Documentation/Includes.txt
+.. include:: ../Includes.txt
 
 .. _users-manual:
 
@@ -24,11 +24,11 @@ on pages as a content element.
 
 #. Configure your rating
 
-   The concerned ratingobject in that mode uses ``tt_content`` as tablename and ``uid`` as fieldname. You may first configure the ratingsteps you 
+   The concerned ratingobject in that mode uses ``tt_content`` as tablename and ``uid`` as fieldname. You may first configure the ratingsteps you
    like to have. Be aware using ongoing positive integer ratingorder numbers.
 
    |ManualContentElementObject.png|
-      
+
    If you are working on multilanguage websites you may add translations of your ratingsteps as usual:
 
    |ManualRatingstepMultilang.png|

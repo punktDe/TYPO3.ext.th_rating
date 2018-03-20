@@ -3,7 +3,7 @@
 .. --------------------------------------------------
 .. -*- coding: utf-8 -*- with BOM.
 
-.. include:: /Documentation/Includes.txt
+.. include:: ../Includes.txt
 
 .. _tutorial-viewhelper:
 
@@ -34,4 +34,4 @@ Modify your FLUID template and include the extension viewhelper, e.g.:
 
 .. important::
 
-   CObject viewhelpers like those of Rating AX must be embedded in a ``<f:format.raw>`` viewhelper.  
+   CObject viewhelpers like those of Rating AX must be embedded in a ``<f:format.raw>`` viewhelper.

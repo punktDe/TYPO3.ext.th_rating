@@ -3,16 +3,16 @@
 .. --------------------------------------------------
 .. -*- coding: utf-8 -*- with BOM.
 
-.. include:: /Documentation/Includes.txt
+.. include:: ../Includes.txt
 
 .. _extensionManagementService:
 
 ExtensionManagement Service
 ===========================
 
-This service object provides developers support for generating 
-ratingobjects, stepconfs and localized stepnames automatically. 
-This could be an easy to use alternative to manually creating them via backend. 
+This service object provides developers support for generating
+ratingobjects, stepconfs and localized stepnames automatically.
+This could be an easy to use alternative to manually creating them via backend.
 
 Two methods are avaiable:
 
@@ -20,7 +20,7 @@ Two methods are avaiable:
 - ``setStepname``
 
 
-This section describes the mentioned methoed and tries to give you an example how to cope with them. 
+This section describes the mentioned methoed and tries to give you an example how to cope with them.
 
 .. only:: html
 
@@ -58,8 +58,8 @@ This function has to be called providing three parameters:
    +------------------+--------------------------------------------------------------------------------------+-------------+
 
    ``[makeRatable]``
-   
-   
+
+
 
 
 setStepname
@@ -110,7 +110,7 @@ Parameter $stepconf
       The stepconf object which has to be described
 
    Default
-      \ 
+      \
 
 
 .. _$stepname:
@@ -126,10 +126,10 @@ Parameter $stepname
       ``String``
 
    Description
-      The localized description text 
+      The localized description text
 
    Default
-      \ 
+      \
 
 
 .. _$languageIso2Code:
@@ -145,7 +145,7 @@ Parameter $languageIso2Code
       ``Integer``
 
    Description
-      The ISO2 language code (e.g. ``43`` = German) 
+      The ISO2 language code (e.g. ``43`` = German)
 
    Default
       ``0``
@@ -164,10 +164,10 @@ Parameter $allStepconfs
       ``Boolean``
 
    Description
-      Switch to initialize all stepnames with the same value. 
-      On ``TRUE`` all stepconfs of the ratingobject will be configured with this text. 
+      Switch to initialize all stepnames with the same value.
+      On ``TRUE`` all stepconfs of the ratingobject will be configured with this text.
       The steporder number will be appended to the stepname.
-      
+
    Default
       ``FALSE``
 
@@ -175,15 +175,15 @@ Parameter $allStepconfs
 .. important::
 
    If an entry for the stepname already exists nothing will be changed.
-   
-   
+
+
 Example
 -------
 
 1. Create initial rating config
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Let´s try to create an initial rating configuration for the field ``Testfield`` in table ``Testtable``. 
+Let´s try to create an initial rating configuration for the field ``Testfield`` in table ``Testtable``.
 We need 4 ratingsteps even weighted.
 This example assumes that we´re in an extbase controller context.
 Basically it could be also a guide for "old" pi_based extensions.
@@ -201,8 +201,8 @@ We store the reference on the generated new ratingobject in a variable.
 2. Add stepnames
 ^^^^^^^^^^^^^^^^
 
-Next the rating stepnames could be added according to our extension needs. 
-In this example we assume any default language and an additional 
+Next the rating stepnames could be added according to our extension needs.
+In this example we assume any default language and an additional
 website language ``German`` (``UID 43`` in the table ``static_languages``):
 
 .. code:: php
@@ -211,38 +211,38 @@ website language ``German`` (``UID 43`` in the table ``static_languages``):
     $this->objectManager
       ->get('Thucke\\ThRating\\Service\\ExtensionManagementService')
       ->setStepname($ratingobject->getStepconfs()->current(), 'Automatic generated entry ', 0, TRUE);
-      
+
     //add descriptions in german language to each stepconf
     $this->objectManager
       ->get('Thucke\\ThRating\\Service\\ExtensionManagementService')
-      ->setStepname($ratingobject->getStepconfs()->current(), 'Automatischer Eintrag ', 43, TRUE);      
+      ->setStepname($ratingobject->getStepconfs()->current(), 'Automatischer Eintrag ', 43, TRUE);
 
 
-Among others the table ``static_languages`` will be installed by the extension `static_info_tables`_ 
+Among others the table ``static_languages`` will be installed by the extension `static_info_tables`_
 Find the row of the language you need and write down the value of ``UID`` - which is ``43`` for German.
-If we like to add other languages to our stepconfs we just have to find out the correct language ISO2 code 
+If we like to add other languages to our stepconfs we just have to find out the correct language ISO2 code
 e.g. by checking the table ``static_languages``.
 
-You may also use 
+You may also use
 
 .. code:: php
-  
+
    \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate
 
-for fetching the concrete text. 
+for fetching the concrete text.
 Then it is recommended that all possible language entries for the stepnames have to reside
-in the default language XLF of your extension. 
+in the default language XLF of your extension.
 
-The following example assumes that the file ``locallang.xlf`` of the extension ``MyExtenion`` 
+The following example assumes that the file ``locallang.xlf`` of the extension ``MyExtenion``
 stores its text in ``rating.<ratingfield>.stepconf.step<steporder>.<ISO2Code>``:
 
 .. code:: php
 
     //add descriptions in default language to each stepconf
-    $this->objectManager->get('Thucke\\ThRating\\Service\\ExtensionManagementService')->setStepname($ratingobject->getStepconfs()->current(), 
+    $this->objectManager->get('Thucke\\ThRating\\Service\\ExtensionManagementService')->setStepname($ratingobject->getStepconfs()->current(),
        \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('rating.testfield.stepconf.step1.30', 'MyExtension'), 0, TRUE);
     //add descriptions in german language to each stepconf
-    $this->objectManager->get('Thucke\\ThRating\\Service\\ExtensionManagementService')->setStepname($ratingobject->getStepconfs()->current(), 
+    $this->objectManager->get('Thucke\\ThRating\\Service\\ExtensionManagementService')->setStepname($ratingobject->getStepconfs()->current(),
        \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('rating.testfield.stepconf.step1.43', 'MyExtension'), 43, TRUE);
 
 

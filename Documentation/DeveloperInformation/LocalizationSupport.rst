@@ -3,7 +3,7 @@
 .. --------------------------------------------------
 .. -*- coding: utf-8 -*- with BOM.
 
-.. include:: /Documentation/Includes.txt
+.. include:: ../Includes.txt
 
 .. _localization-support:
 
@@ -17,13 +17,13 @@ Localization support
 
 The extension currently covers localizations for the following languages
 
-- German 
+- German
 - English
 
-Translations could be easily added and maintained via the `official localization server`_. 
+Translations could be easily added and maintained via the `official localization server`_.
 
 .. important::
 
-   Everone is encouraged providing translation support. 
+   Everone is encouraged providing translation support.
 
 .. _official localization server: http://translation.typo3.org/projects/TYPO3.ext.th_rating/

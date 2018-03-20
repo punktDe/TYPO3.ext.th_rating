@@ -3,7 +3,7 @@
 .. --------------------------------------------------
 .. -*- coding: utf-8 -*- with BOM.
 
-.. include:: /Documentation/Includes.txt
+.. include:: ../../Includes.txt
 
 .. _ts-settings:
 
@@ -22,7 +22,7 @@ Please scan the following sections to find out what is configurable by using Typ
    RichSnippetLibs
    settings/Index
 
-   
+
 :ts:`plugin.tx_thrating`
 ************************
 
@@ -62,7 +62,7 @@ action
 
    Description
       MVC-Action to activa. Possible values:
-      
+
       - :typoscript:`ratinglinks`
          Graphical presentation to do and to display ratings
 
@@ -76,26 +76,26 @@ action
          Display the actual vote of the currently logged on FE user in plain text
 
       -  :typoscript:`new`
-         Generate a classic form element (default: drop-drown select field) for voting. 
+         Generate a classic form element (default: drop-drown select field) for voting.
          If the user has already voted action :typoscript:`show` is used.
-      
+
       .. important::
-      
+
          Whatever value is configured here it must also be set in :typoscript:`plugin.tx_thrating.switchableControllerActions.Vote`:
-      
+
          .. code-block:: typoscript
-         
+
             plugin.tx_thrating.switchableControllerActions {
                Vote {
                   1 = ratinglinks
                }
             }
-      
+
    Default
       :ts:`ratinglinks`
 
-      
-      
+
+
 Example
 -------
 
@@ -110,4 +110,3 @@ Example
             1 = polling
          }
       }
-      

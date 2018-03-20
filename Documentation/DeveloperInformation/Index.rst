@@ -3,7 +3,7 @@
 .. --------------------------------------------------
 .. -*- coding: utf-8 -*- with BOM.
 
-.. include:: /Documentation/Includes.txt
+.. include:: ../Includes.txt
 
 .. _dev-information:
 
@@ -12,7 +12,7 @@ Developer Information
 
 Target group: **Developers**
 
-The extension provides some features supporting developers embedding Rating AX into their extensions.  
+The extension provides some features supporting developers embedding Rating AX into their extensions.
 
 .. toctree::
    :maxdepth: 3
