@@ -4,7 +4,7 @@
 .. --------------------------------------------------
 .. -*- coding: utf-8 -*- with BOM.
 
-.. include:: /Includes.txt
+.. include:: /Documentation/Includes.txt
 
 .. _introduction:
 

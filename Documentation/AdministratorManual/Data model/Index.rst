@@ -3,7 +3,7 @@
 .. --------------------------------------------------
 .. -*- coding: utf-8 -*- with BOM.
 
-.. include:: /Includes.txt
+.. include:: /Documentation/Includes.txt
 
 .. _data-model:
 
@@ -13,7 +13,7 @@ Data model
 This extension is based upon the new framework of extbase / fluid included in TYPO3 4.7 (and later)
 The following graphic shows the extension model
 
-.. figure:: /Images/AdministratorManual/extension_model.png
+.. figure:: /Documentation/Images/AdministratorManual/extension_model.png
    :alt: extension_model.png
    :align: left
    :width: 710

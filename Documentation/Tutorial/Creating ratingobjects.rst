@@ -3,9 +3,9 @@
 .. --------------------------------------------------
 .. -*- coding: utf-8 -*- with BOM.
 
-.. include:: /Includes.txt
+.. include:: /Documentation/Includes.txt
 
-.. _dev-information:
+.. _tutorial-create-ratingobjects:
 
 Creating ratingobjects
 ======================
