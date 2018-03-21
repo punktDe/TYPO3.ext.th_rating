@@ -3,7 +3,7 @@
 .. --------------------------------------------------
 .. -*- coding: utf-8 -*- with BOM.
 
-.. include:: /Documentation/Includes.txt
+.. include:: ../Includes.txt
 
 .. _tutorial-signal-slot-handler:
 
@@ -25,9 +25,9 @@ Second you may create the file e.g. with the following content:
 
    <?
    if (!defined ('TYPO3_MODE'))    die ('Access denied.');
-   
+
    class tx_f4missions_main_signalHandler {
-   
+
       /**
        * Signal handler after a rating has bee created
        * Do timestamp update on changed entry and

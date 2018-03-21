@@ -34,112 +34,112 @@
 .. DEFINE Image aliases
 .. --------------------------------------------------
 
-.. |img-1| image:: /Documentation/Images/manual_html_22ebf792.gif
+.. |img-1| image:: Images/manual_html_22ebf792.gif
    :align: middle
 
-.. |img-2| image:: /Documentation/Images/manual_html_3c9c2593.png
+.. |img-2| image:: Images/manual_html_3c9c2593.png
    :height: 21
    :width: 87
 
-.. |example1| image:: /Documentation/Images/th_rating_example1.png
+.. |example1| image:: Images/th_rating_example1.png
    :alt: Example 1 - classic starrating
-   :align: top      
+   :align: top
 
-.. |example2| image:: /Documentation/Images/th_rating_example2.png
+.. |example2| image:: Images/th_rating_example2.png
    :alt: Example 2 - barrating
-   :align: top      
+   :align: top
 
-.. |example3| image:: /Documentation/Images/th_rating_example3.png
+.. |example3| image:: Images/th_rating_example3.png
    :alt: Example 3 - vertical classic starrating
-   :align: top      
+   :align: top
 
-.. |example4| image:: /Documentation/Images/th_rating_example4.png
+.. |example4| image:: Images/th_rating_example4.png
    :alt: Example 4 - current rating (text)
-   :align: top      
+   :align: top
    :width: 350
 
-.. |example5| image:: /Documentation/Images/th_rating_example5.png
-   :alt: Example 5 - current rating (classic starrating) 
-   :align: top      
+.. |example5| image:: Images/th_rating_example5.png
+   :alt: Example 5 - current rating (classic starrating)
+   :align: top
    :width: 350
 
-.. |example6| image:: /Documentation/Images/th_rating_example6.png
+.. |example6| image:: Images/th_rating_example6.png
    :alt: Example 6 - vote form
-   :align: top      
+   :align: top
    :width: 350
 
-.. |example7| image:: /Documentation/Images/th_rating_example7.png
+.. |example7| image:: Images/th_rating_example7.png
    :alt: Example 7 - vertical rating
-   :align: top      
+   :align: top
 
-.. |example8| image:: /Documentation/Images/th_rating_example8.png
+.. |example8| image:: Images/th_rating_example8.png
    :alt: Example 8 - polling mode
-   :align: top      
-   
-.. |example9| image:: /Documentation/Images/th_rating_example9.gif
-   :alt: Example 8 - polling mode
-   :align: top      
+   :align: top
 
-.. |ManualNewContentElement.png| 	image:: /Documentation/Images/UsersManual/ManualNewContentElement.png
+.. |example9| image:: Images/th_rating_example9.gif
+   :alt: Example 8 - polling mode
+   :align: top
+
+.. |ManualNewContentElement.png|    image:: Images/UsersManual/ManualNewContentElement.png
    :alt: Create new content element in BE
-   :align: top      
+   :align: top
    :width: 450
 
-.. |ManualContentElementPlugin.png| image:: /Documentation/Images/UsersManual/ManualContentElementPlugin.png
+.. |ManualContentElementPlugin.png| image:: Images/UsersManual/ManualContentElementPlugin.png
    :alt: Choose the extension “Rating AX” in the dropdownbox
-   :align: top      
+   :align: top
    :width: 450
 
-.. |ManualContentElementObject.png| image:: /Documentation/Images/UsersManual/ManualContentElementObject.png
+.. |ManualContentElementObject.png| image:: Images/UsersManual/ManualContentElementObject.png
    :alt: Edit ratingobject
-   :align: top      
+   :align: top
    :width: 450
 
-.. |ManualRatingstepMultilang.png| 	image:: /Documentation/Images/UsersManual/ManualRatingstepMultilang.png
+.. |ManualRatingstepMultilang.png|    image:: Images/UsersManual/ManualRatingstepMultilang.png
    :alt: Edit ratingstep names (multilingual)
-   :align: top      
+   :align: top
    :width: 450
 
-.. |Install_EM| 					image:: /Documentation/Images/AdministratorManual/Install_EM.png
+.. |Install_EM|                image:: Images/AdministratorManual/Install_EM.png
    :alt: Extension installation in EM
-   :align: top      
+   :align: top
    :width: 600
 
-.. |Install_InclTemplate| 			image:: /Documentation/Images/AdministratorManual/Install_InclTemplate.png
+.. |Install_InclTemplate|          image:: Images/AdministratorManual/Install_InclTemplate.png
    :alt: Include the template
-   :align: top      
+   :align: top
    :width: 450
 
-.. |Install_Constants| 				image:: /Documentation/Images/AdministratorManual/Install_Constants.png
+.. |Install_Constants|             image:: Images/AdministratorManual/Install_Constants.png
    :alt: Set needed constants
-   :align: top      
+   :align: top
    :width: 450
 
 .. _`http://openiconlibrary.sourceforge.net/`: http://openiconlibrary.sourceforge.net/
 
-.. |File_Req_nr.png| 				image:: /Documentation/Images/AdministratorManual/Typoscript/File_Req_nr.png
-.. |File_Req_r.png| 				image:: /Documentation/Images/AdministratorManual/Typoscript/File_Req_r.png
-.. |File_Req_cr.png|				image:: /Documentation/Images/AdministratorManual/Typoscript/File_Req_cr.png
-.. |File_Req_classic_starrating|	image:: /Documentation/Images/AdministratorManual/Typoscript/File_Req_classic_starrating.png
-.. |File_Req_barrating|				image:: /Documentation/Images/AdministratorManual/Typoscript/File_Req_barrating.png
-.. |File_Req_smiley|				image:: /Documentation/Images/AdministratorManual/Typoscript/File_Req_smiley.png
-.. |File_Req_tilt_barrating|		image:: /Documentation/Images/AdministratorManual/Typoscript/File_Req_tilt_barrating.png
-.. |File_Req_tilt_starrating|		image:: /Documentation/Images/AdministratorManual/Typoscript/File_Req_tilt_starrating.png
-.. |Typoscript_Ratinglink_tooltip|	image:: /Documentation/Images/AdministratorManual/Typoscript/Ratinglink_tooltip_example.png
-.. |ThRating_defaultLayout|		    image:: /Documentation/Images/DeveloperInformation/ThRating_defaultLayout.gif
-.. |BE_RatingObjects.png| 			image:: /Documentation/Images/Tutorial/BE_RatingObjects.png
+.. |File_Req_nr.png|                image:: Images/AdministratorManual/Typoscript/File_Req_nr.png
+.. |File_Req_r.png|                 image:: Images/AdministratorManual/Typoscript/File_Req_r.png
+.. |File_Req_cr.png|                image:: Images/AdministratorManual/Typoscript/File_Req_cr.png
+.. |File_Req_classic_starrating|    image:: Images/AdministratorManual/Typoscript/File_Req_classic_starrating.png
+.. |File_Req_barrating|             image:: Images/AdministratorManual/Typoscript/File_Req_barrating.png
+.. |File_Req_smiley|                image:: Images/AdministratorManual/Typoscript/File_Req_smiley.png
+.. |File_Req_tilt_barrating|        image:: Images/AdministratorManual/Typoscript/File_Req_tilt_barrating.png
+.. |File_Req_tilt_starrating|       image:: Images/AdministratorManual/Typoscript/File_Req_tilt_starrating.png
+.. |Typoscript_Ratinglink_tooltip|  image:: Images/AdministratorManual/Typoscript/Ratinglink_tooltip_example.png
+.. |ThRating_defaultLayout|         image:: Images/DeveloperInformation/ThRating_defaultLayout.gif
+.. |BE_RatingObjects.png|           image:: Images/Tutorial/BE_RatingObjects.png
    :alt: Ratingobjects
-   :align: top      
+   :align: top
    :width: 650
-.. |BE_createRatingObjects.png| 	image:: /Documentation/Images/Tutorial/BE_createRatingObjects.png
+.. |BE_createRatingObjects.png|     image:: Images/Tutorial/BE_createRatingObjects.png
    :alt: Create ratingobjects
-   :align: top      
+   :align: top
    :width: 465
-.. |BE_createRatingSteps.png| 		image:: /Documentation/Images/Tutorial/BE_createRatingSteps.png
+.. |BE_createRatingSteps.png|       image:: Images/Tutorial/BE_createRatingSteps.png
    :alt: Create ratingsteps
-   :align: top      
+   :align: top
    :width: 465
-.. |BE_createRatingStepname.png| 	image:: /Documentation/Images/Tutorial/BE_createRatingStepname.png
+.. |BE_createRatingStepname.png|    image:: Images/Tutorial/BE_createRatingStepname.png
    :alt: Create stepnames
-   :align: top      
+   :align: top
    :width: 465

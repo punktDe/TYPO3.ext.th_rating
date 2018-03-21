@@ -3,7 +3,7 @@
 .. --------------------------------------------------
 .. -*- coding: utf-8 -*- with BOM.
 
-.. include:: /Documentation/Includes.txt
+.. include:: ../Includes.txt
 
 .. _tutorial-examples:
 
@@ -59,18 +59,18 @@ CSS-file (fileadmin/templates/fullSize.css)
       padding:0px;
       margin:0px;
       line-height:125%;
-      font-family:verdana, arial, sans-serif; 
-      background-color:#FFFF; font-size:0.9em; 
+      font-family:verdana, arial, sans-serif;
+      background-color:#FFFF; font-size:0.9em;
    }
    .example {
       padding:20px;
       font-size:1.1em;
    }
-   .exampleBlock h2 {   
+   .exampleBlock h2 {
       color:#FF8700;
       font-weight:bold; font-size:1.0em;
       margin-bottom:0.5em; margin-top:1.3em;
-      white-space:nowrap; 
+      white-space:nowrap;
    }
 
 
@@ -83,7 +83,7 @@ The following seperates different template files for better structure.
 Main
 ^^^^
 
-This template must be activated as the root template of your TYPO3 installation. 
+This template must be activated as the root template of your TYPO3 installation.
 It should include all other template definitions.
 
 .. code-block:: typoscript
@@ -91,7 +91,7 @@ It should include all other template definitions.
 
    #replace this uid with the one on your site
    plugin.tx_felogin_pi1.storagePid = 3
-   
+
    config {
       no_cache = true
       removeDefaultJS = external
@@ -101,14 +101,14 @@ It should include all other template definitions.
       sys_language_mode = content_fallback;0
       sys_language_overlay = 1
       # Setting up the language variable "L" to be passed along with links
-      linkVars = L    
+      linkVars = L
 
       // configure default language
       sys_language_uid = 2
       language = en
       locale_all = en_GB.utf8
    }
-   
+
    # German language, sys_language.uid = 1
    [globalVar = GP:L = 1]
    config {
@@ -119,7 +119,7 @@ It should include all other template definitions.
       dateFormat = %x
       timeFormat = %X
    }
-   
+
    # English language, sys_language.uid = 2
    [globalVar = GP:L = 0]
    config {
@@ -130,7 +130,7 @@ It should include all other template definitions.
       dateFormat = %x
       timeFormat = %X
    }
-   
+
    [global]
 
 
@@ -143,7 +143,7 @@ Page definition
    page = PAGE
    page.typeNum = 0
    page.includeCSS.file = fileadmin/templates/fullSize.css
-   
+
    # Create a Fluid Template
    page.10 = FLUIDTEMPLATE
    page.10 {
@@ -246,17 +246,17 @@ Example content objects
 .. container::
 
    ==================================== ============================================
-   Example                              Description                                 
+   Example                              Description
    ==================================== ============================================
-   :ref:`tutEx1`                        Classic starrating       
-   :ref:`tutEx2`                        Smiley rating       
-   :ref:`tutEx3`                        Barrating       
-   :ref:`tutEx4`                        Vertical classic starrating       
-   :ref:`tutEx5`                        Current rating (text)       
-   :ref:`tutEx6`                        Current rating (classic starrating)       
-   :ref:`tutEx7`                        Vote form       
-   :ref:`tutEx8`                        Vertical rating       
-   :ref:`tutEx9`                        Polling mode       
+   :ref:`tutEx1`                        Classic starrating
+   :ref:`tutEx2`                        Smiley rating
+   :ref:`tutEx3`                        Barrating
+   :ref:`tutEx4`                        Vertical classic starrating
+   :ref:`tutEx5`                        Current rating (text)
+   :ref:`tutEx6`                        Current rating (classic starrating)
+   :ref:`tutEx7`                        Vote form
+   :ref:`tutEx8`                        Vertical rating
+   :ref:`tutEx9`                        Polling mode
    ==================================== ============================================
 
 

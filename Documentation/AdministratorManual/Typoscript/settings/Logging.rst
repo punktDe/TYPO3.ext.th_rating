@@ -3,7 +3,7 @@
 .. --------------------------------------------------
 .. -*- coding: utf-8 -*- with BOM.
 
-.. include:: /Documentation/Includes.txt
+.. include:: ../../../Includes.txt
 
 .. _ts-pluginThRatingSettingsLogging:
 
@@ -17,8 +17,8 @@
         :depth: 3
 
 
-This extension makes use of the logging framework which was newly introduced in TYPO3 6.1. 
-For more information on this look at `Logging with TYPO3`_ in the TYPO3 Core API. 
+This extension makes use of the logging framework which was newly introduced in TYPO3 6.1.
+For more information on this look at `Logging with TYPO3`_ in the TYPO3 Core API.
 For each log level as there are
 
 -  :ts:`emergency`
@@ -66,8 +66,8 @@ file
       Filename to store log messages.
 
    Default
-      \ 
- 
+      \
+
 
 .. _tsLoggingTable:
 
@@ -86,9 +86,9 @@ table
       Tablename to store log messages
 
    Default
-      \ 
+      \
 
-      
+
 Example
 -------
 
@@ -101,4 +101,3 @@ Example
          table = sys_log
       }
    }
-   

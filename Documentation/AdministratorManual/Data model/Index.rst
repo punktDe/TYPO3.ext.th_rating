@@ -3,7 +3,7 @@
 .. --------------------------------------------------
 .. -*- coding: utf-8 -*- with BOM.
 
-.. include:: /Documentation/Includes.txt
+.. include:: ../../Includes.txt
 
 .. _data-model:
 
@@ -28,9 +28,9 @@ Except the objecttype ``Tx_Extbase_Domain_Model_FrontendUser`` which is build in
 .. container::
 
    ====================================== ======================================
-   Property                               Title                                 
+   Property                               Title
    ====================================== ======================================
-   Tx_ThRating_Domain_Model_Ratingobject_ Root entity holds rating objects                 
+   Tx_ThRating_Domain_Model_Ratingobject_ Root entity holds rating objects
    Tx_ThRating_Domain_Model_Stepconf_     Storing the step configuration
    Tx_ThRating_Domain_Model_Stepname_     Language aware names of the steps
    Tx_ThRating_Domain_Model_Rating_       Concrete instances of ratingobects
@@ -52,8 +52,8 @@ Holds the basic information on anything you´d like to rate
    Tx_ThRating_Domain_Model_Stepconf)
 -  ratings: To do ratings on each row of a table this link is
    required (see Tx_ThRating_Domain_Model_Rating)
-      
-      
+
+
 
 Tx_ThRating_Domain_Model_Stepconf
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^

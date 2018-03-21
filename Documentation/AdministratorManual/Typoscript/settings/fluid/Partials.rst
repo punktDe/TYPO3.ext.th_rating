@@ -3,7 +3,7 @@
 .. --------------------------------------------------
 .. -*- coding: utf-8 -*- with BOM.
 
-.. include:: /Documentation/Includes.txt
+.. include:: ../../../../Includes.txt
 
 .. _ts-pluginThRatingSettingsFluidPartials:
 
@@ -52,7 +52,7 @@ showTextInfo
 
    Default
       :ts:`1`
- 
+
 
 .. _tsShowGraphicInfo:
 
@@ -72,9 +72,9 @@ showGraphicInfo
 
    Default
       :ts:`0`
- 
 
- 
+
+
 Reference ~.infoBlock
 ---------------------
 

@@ -3,7 +3,7 @@
 .. --------------------------------------------------
 .. -*- coding: utf-8 -*- with BOM.
 
-.. include:: /Documentation/Includes.txt
+.. include:: ../Includes.txt
 
 .. _signal-slot-support:
 
@@ -15,7 +15,7 @@ Signal / Slot support
    :titlesonly:
 
 
-Rating AX provides support for the signal / slot messaging feature of extbase. 
+Rating AX provides support for the signal / slot messaging feature of extbase.
 Currently the extension will "listen" for two signals:
 
 -  ``afterRatinglinkAction``
@@ -41,7 +41,7 @@ signalSlotMessage
 This hashtable provides the registered signalslot with some data upon the actual handled ratedobject.
 The keys are described in the following tables.
 
-   
+
 .. container:: table-row
 
    Property
@@ -49,11 +49,11 @@ The keys are described in the following tables.
 
    Data type
       ``String``
-         
+
    Description
       The tablename of the rated object
 
-         
+
 .. container:: table-row
 
    Property
@@ -61,10 +61,10 @@ The keys are described in the following tables.
 
    Data type
       ``String``
-         
+
    Description
       The fieldname of the rated object
-         
+
 
 .. container:: table-row
 
@@ -73,7 +73,7 @@ The keys are described in the following tables.
 
    Data type
       ``Integer``
-         
+
    Description
       The uid of the rated object
 
@@ -85,16 +85,16 @@ The keys are described in the following tables.
 
    Data type
       ``Array``
-         
+
    Description
       Contains information representing the actual rating statistics
-      
+
       .. _currentRatesKeys:
-      
+
       .. container::
 
          ``[Keys of hashtable currentRates]``
-      
+
          +-----------------------------------+---------------------------------------------------------------+---------------+
          | Key                               | Description                                                   | Type          |
          +===================================+===============================================================+===============+
@@ -128,11 +128,11 @@ The keys are described in the following tables.
       |
 
       .. _currentPollDimensionsKeys:
-      
+
       .. container::
-      
+
          ``[Keys of hashtable currentPollDimensions]``
-         
+
          ==================================== ============================================================= ================
          Key                                  Description                                                   Type
          ==================================== ============================================================= ================
@@ -151,7 +151,7 @@ The  registered slothandler could fill this array with pure HTML code wich will 
 .. container::
 
    ==================================== ====================================================================================
-   Parameter                            Description                                   
+   Parameter                            Description
    ==================================== ====================================================================================
    ``staticPreContent``                 this content will be included in front of the extension output (NOT changed by AJAX)
    ``staticPostContent``                this content will be included after the extension output (NOT changed by AJAX)
@@ -159,10 +159,10 @@ The  registered slothandler could fill this array with pure HTML code wich will 
    ``postContent``                      this content will be included after the extension output (changed by AJAX)
    ==================================== ====================================================================================
 
- 
+
 The following picture will help you understand the different sections of the extension output.
-  
+
 |ThRating_defaultLayout|
-  
+
 Using the right CSS formattings it would be easy to arrange the different sections for your specific needs.
 

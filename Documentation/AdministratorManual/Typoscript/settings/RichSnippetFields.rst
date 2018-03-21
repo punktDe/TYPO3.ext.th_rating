@@ -3,17 +3,17 @@
 .. --------------------------------------------------
 .. -*- coding: utf-8 -*- with BOM.
 
-.. include:: /Documentation/Includes.txt
+.. include:: ../../../Includes.txt
 
 
 .. _ts-richSnippetFields:
 
 ~.richSnippetFields
 ===================
-      
-This extension provides support for `Google rich snippets`_. 
+
+This extension provides support for `Google rich snippets`_.
 Setting the following options some meta information could be configured which is being read from the database for each rated item.
-The configured options must be field descriptors in the rated table. 
+The configured options must be field descriptors in the rated table.
 
 .. container:: ts-properties
 
@@ -43,7 +43,7 @@ name
 
    Description
       Fieldname to fetch the item name from.
-      If no or an invalid name is given, the default value consists of the constant text "Rating AX" 
+      If no or an invalid name is given, the default value consists of the constant text "Rating AX"
       appendixed by the UID values of the ratingobject and the rated object.
       (e.g. "``Rating AX 2_30``" meaning ratingobject #2 / ratedobject #30).
 
@@ -64,12 +64,12 @@ description
       :ref:`t3tsref:data-type-string`
 
    Description
-      Fieldname to fetch the item description from 
+      Fieldname to fetch the item description from
 
    Default
-      \       
-      
-      
+      \
+
+
 Example
 -------
 
@@ -86,7 +86,7 @@ Example
          }
       }
    }
-   
+
 
 .. _rsfAggregateRatingSchemaType:
 
@@ -113,7 +113,7 @@ aggregateRatingSchemaType
          - ``Service``
 
       .. warning::
-      
+
          Any other value will cause an exception during frontend rendering.
 
    Default

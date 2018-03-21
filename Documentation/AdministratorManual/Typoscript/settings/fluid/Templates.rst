@@ -3,7 +3,7 @@
 .. --------------------------------------------------
 .. -*- coding: utf-8 -*- with BOM.
 
-.. include:: /Documentation/Includes.txt
+.. include:: ../../../../Includes.txt
 
 .. _ts-pluginThRatingSettingsFluidTemplates:
 
@@ -48,9 +48,9 @@ tooltips
 
    Description
       Activate HTML tooltips on hover over ratinglinks.
-      
+
       |Typoscript_Ratinglink_tooltip|
-      
+
 
    Default
       :ts:`1`

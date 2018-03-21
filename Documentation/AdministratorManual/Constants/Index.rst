@@ -3,7 +3,7 @@
 .. --------------------------------------------------
 .. -*- coding: utf-8 -*- with BOM.
 
-.. include:: /Documentation/Includes.txt
+.. include:: ../../Includes.txt
 
 .. _ts-constants:
 
@@ -11,7 +11,7 @@ Constants
 =========
 
 This page is divided into the following sections which are all configurable by using TypoScript or the constant editor:
-All constants could be configured once per site. 
+All constants could be configured once per site.
 
 .. only:: html
 
@@ -45,10 +45,10 @@ pluginStoragePid
       :ref:`t3tsref:data-type-integer`
 
    Description
-      General storage page where all records are stored. 
+      General storage page where all records are stored.
 
    Default
-      \ 
+      \
 
 plugin.tx_thrating.config
 -------------------------
@@ -63,7 +63,7 @@ plugin.tx_thrating.config
    cookieLifetime_                      Cookie protection lifetime             int
    mapAnonymous_                        Map UID to anonymous user              int
    ==================================== ====================================== ===============
-   
+
 
 .. _constLoadJQuery:
 
@@ -83,8 +83,8 @@ loadJQuery
 
    Default
       :ts:`1`
-      
-      
+
+
 .. _constShowNoFEUser:
 
 showNoFEUser
@@ -159,8 +159,8 @@ plugin.tx_thrating.view
    partialRootPath_                     path directive                         string
    layoutRootPath_                      path directive                         string
    ==================================== ====================================== ===============
-   
-   
+
+
 .. _constTemplateRootPath:
 
 templateRootPath
@@ -181,7 +181,7 @@ templateRootPath
       :ts:`EXT:th_rating/Resources/Private/Templates/`
 
 
-      
+
 .. _constPartialRootPath:
 
 partialRootPath

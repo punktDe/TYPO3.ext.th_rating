@@ -3,7 +3,7 @@
 .. --------------------------------------------------
 .. -*- coding: utf-8 -*- with BOM.
 
-.. include:: /Documentation/Includes.txt
+.. include:: ../../Includes.txt
 
 
 .. _ts-pluginThRatingsName:
@@ -19,7 +19,7 @@ This page is divided into the following sections:
         :local:
         :depth: 2
 
-Each rating could have a special graphical configuration. Use this section to configure it. 
+Each rating could have a special graphical configuration. Use this section to configure it.
 The configurations are seperated into subsections identified by a distinct name.
 
 Within each you could do all typoscript settings described in :ref:`ts-pluginThRatingSettings`
@@ -27,10 +27,10 @@ and :ref:`ts-pluginThRatingSettingsFluid` (see :ref:`ts-pluginThRatingsNameExamp
 
 Best practice would be to include such configuration in your own template.
 It is recommended to use distinct names for your ratingconfigurations.
-Additionally - if you'd like to adjust the default given configurations - remember that your settings 
-will override or enhance the default settings. But it is not possible to delete settings of the default. 
+Additionally - if you'd like to adjust the default given configurations - remember that your settings
+will override or enhance the default settings. But it is not possible to delete settings of the default.
 It is recommended to just copy the configuration you want from the file ``EXT:th_rating/Configuration/TypoScript/setup.txt``
-or take one from the examples in this documentation. Then choose a different name and make your adjustments as you want. 
+or take one from the examples in this documentation. Then choose a different name and make your adjustments as you want.
 
 
 Reference
@@ -62,10 +62,10 @@ imagefile
 
    Description
       Imagename of the graphical representation including path.
-      Path must be given relative to SITE_ROOT (e.g. ``typo3conf/ext/th_rating/Resources/Public/Css/stars.gif``) 
+      Path must be given relative to SITE_ROOT (e.g. ``typo3conf/ext/th_rating/Resources/Public/Css/stars.gif``)
 
    Default
-      \ 
+      \
 
 .. _tsBarimage:
 
@@ -87,7 +87,7 @@ barimage
       :ts:`0`
 
 
-   
+
 .. _tsTilt:
 
 tilt
@@ -186,6 +186,6 @@ the imagetype in a manner as follows:
 
 The table shows all preconfigured rating configuration and their names.
 
-All icons (except those of the type barrating) are taken from `http://openiconlibrary.sourceforge.net/`_. 
+All icons (except those of the type barrating) are taken from `http://openiconlibrary.sourceforge.net/`_.
 All upper listed icons are licensed by GPL2 or PD. I appreciate the great work of those authors.
 Anyway, if the usage of any icon hits the copyright of any person I´d ask this person to drop me a mail if he/she want me to remove it.
