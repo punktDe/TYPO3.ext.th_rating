@@ -13,8 +13,8 @@ Data model
 This extension is based upon the new framework of extbase / fluid included in TYPO3 4.7 (and later)
 The following graphic shows the extension model
 
-.. figure:: /Documentation/Images/AdministratorManual/extension_model.png
-   :alt: extension_model.png
+.. figure:: Extension_model.png
+   :alt: Extension model
    :align: left
    :width: 710
 

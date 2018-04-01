@@ -162,7 +162,11 @@ The  registered slothandler could fill this array with pure HTML code wich will 
 
 The following picture will help you understand the different sections of the extension output.
 
-|ThRating_defaultLayout|
+.. figure:: ThRating_defaultLayout.gif
+   :alt: Rating AX template structure
+   :align: left
+
+   Rating AX HTML template structure
 
 Using the right CSS formattings it would be easy to arrange the different sections for your specific needs.
 

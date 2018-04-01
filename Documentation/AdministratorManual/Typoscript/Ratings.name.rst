@@ -189,3 +189,19 @@ The table shows all preconfigured rating configuration and their names.
 All icons (except those of the type barrating) are taken from `http://openiconlibrary.sourceforge.net/`_.
 All upper listed icons are licensed by GPL2 or PD. I appreciate the great work of those authors.
 Anyway, if the usage of any icon hits the copyright of any person I´d ask this person to drop me a mail if he/she want me to remove it.
+
+
+.. ==================================================
+.. Image definitions
+.. --------------------------------------------------
+
+.. |File_Req_nr.png|                image:: Images/File_Req_nr.png
+.. |File_Req_r.png|                 image:: Images/File_Req_r.png
+.. |File_Req_cr.png|                image:: Images/File_Req_cr.png
+.. |File_Req_classic_starrating|    image:: Images/File_Req_classic_starrating.png
+.. |File_Req_barrating|             image:: Images/File_Req_barrating.png
+.. |File_Req_smiley|                image:: Images/File_Req_smiley.png
+.. |File_Req_tilt_barrating|        image:: Images/File_Req_tilt_barrating.png
+.. |File_Req_tilt_starrating|       image:: Images/File_Req_tilt_starrating.png
+
+.. _`http://openiconlibrary.sourceforge.net/`: http://openiconlibrary.sourceforge.net/

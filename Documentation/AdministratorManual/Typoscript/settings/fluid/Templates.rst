@@ -54,3 +54,12 @@ tooltips
 
    Default
       :ts:`1`
+
+      
+
+
+.. ==================================================
+.. Image definitions
+.. --------------------------------------------------
+
+.. |Typoscript_Ratinglink_tooltip|  image:: Ratinglink_tooltip_example.png

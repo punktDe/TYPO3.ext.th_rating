@@ -118,3 +118,10 @@ aggregateRatingSchemaType
 
    Default
       :ts:`Product`
+
+      
+.. ==================================================
+.. Image definitions
+.. --------------------------------------------------
+
+.. _Schema.org aggregateRating: https://schema.org/aggregateRating

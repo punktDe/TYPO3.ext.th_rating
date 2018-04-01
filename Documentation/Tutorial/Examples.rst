@@ -579,3 +579,46 @@ Example 9
       }
    }
 
+
+.. ==================================================
+.. Image definitions
+.. --------------------------------------------------
+
+.. |example1| image:: Images/Th_rating_example1.png
+   :alt: Example 1 - classic starrating
+   :align: top
+
+.. |example2| image:: Images/Th_rating_example2.png
+   :alt: Example 2 - barrating
+   :align: top
+
+.. |example3| image:: Images/Th_rating_example3.png
+   :alt: Example 3 - vertical classic starrating
+   :align: top
+
+.. |example4| image:: Images/Th_rating_example4.png
+   :alt: Example 4 - current rating (text)
+   :align: top
+   :width: 350
+
+.. |example5| image:: Images/Th_rating_example5.png
+   :alt: Example 5 - current rating (classic starrating)
+   :align: top
+   :width: 350
+
+.. |example6| image:: Images/Th_rating_example6.png
+   :alt: Example 6 - vote form
+   :align: top
+   :width: 350
+
+.. |example7| image:: Images/Th_rating_example7.png
+   :alt: Example 7 - vertical rating
+   :align: top
+
+.. |example8| image:: Images/Th_rating_example8.png
+   :alt: Example 8 - polling mode
+   :align: top
+
+.. |example9| image:: Images/Th_rating_example9.gif
+   :alt: Example 8 - polling mode
+   :align: top

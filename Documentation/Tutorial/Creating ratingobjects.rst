@@ -33,3 +33,25 @@ In multilanguage sites you could also configure language specific ratingstep nam
 If you want to do so please add the wanted site language to the storage page.
 
 |BE_createRatingStepname.png|
+
+
+.. ==================================================
+.. Image definitions
+.. --------------------------------------------------
+
+.. |BE_RatingObjects.png|           image:: Images/BE_RatingObjects.png
+   :alt: Ratingobjects
+   :align: top
+   :width: 650
+.. |BE_createRatingObjects.png|     image:: Images/BE_createRatingObjects.png
+   :alt: Create ratingobjects
+   :align: top
+   :width: 465
+.. |BE_createRatingSteps.png|       image:: Images/BE_createRatingSteps.png
+   :alt: Create ratingsteps
+   :align: top
+   :width: 465
+.. |BE_createRatingStepname.png|    image:: Images/BE_createRatingStepname.png
+   :alt: Create stepnames
+   :align: top
+   :width: 465

@@ -41,3 +41,29 @@ FAQ
 ~~~
 
 -  Nothing so far
+
+
+.. ==================================================
+.. Image definitions
+.. --------------------------------------------------
+
+.. |ManualNewContentElement.png|    image:: ManualNewContentElement.png
+   :alt: Create new content element in BE
+   :align: top
+   :width: 450
+
+.. |ManualContentElementPlugin.png| image:: ManualContentElementPlugin.png
+   :alt: Choose the extension “Rating AX” in the dropdownbox
+   :align: top
+   :width: 450
+
+.. |ManualContentElementObject.png| image:: ManualContentElementObject.png
+   :alt: Edit ratingobject
+   :align: top
+   :width: 450
+
+.. |ManualRatingstepMultilang.png|    image:: ManualRatingstepMultilang.png
+   :alt: Edit ratingstep names (multilingual)
+   :align: top
+   :width: 450
+

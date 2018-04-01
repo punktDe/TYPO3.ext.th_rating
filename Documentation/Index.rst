@@ -37,4 +37,3 @@ EXT: Flexible Rating
    AdministratorManual/Index
    DeveloperInformation/Index
    Tutorial/Index
-   Linktargets/Index

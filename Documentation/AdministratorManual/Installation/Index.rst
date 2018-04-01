@@ -32,3 +32,25 @@ Installation
    Create another folder designated as a container for Website Users and again write down the PID.
    Now open your website template and add the following configuration setup:
    :ts:`plugin.tx_felogin_pi1.storagePid = <PID of the website users container>`
+   
+   
+   
+.. ==================================================
+.. Image definitions
+.. --------------------------------------------------
+
+.. |Install_EM| image:: Install_EM.png
+   :alt: Extension installation in EM
+   :align: top
+   :width: 600
+
+.. |Install_InclTemplate| image:: Install_InclTemplate.png
+   :alt: Include the template
+   :align: top
+   :width: 450
+
+.. |Install_Constants| image:: Install_Constants.png
+   :alt: Set needed constants
+   :align: top
+   :width: 450
+
