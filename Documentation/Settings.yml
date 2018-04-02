@@ -1,14 +1,26 @@
-﻿# This is the project specific Settings.yml file.
-# Place Sphinx specific build information here.
-# Settings given here will replace the settings of 'conf.py'.
+﻿# Settings.yml
+# -*- coding: utf-8 -*- with BOM. Umlaut-check: ÄÖÜäöüß
 
 ---
 
+
+
+
 conf.py:
-  copyright: 2018, Thomas Hucke
+
+  # ====================================================================
+  # This is the project specific Settings.yml file.
+  # Place Sphinx specific build information here.
+  # Settings given here will replace the settings of 'conf.py'.
+  # --------------------------------------------------------------------
+  
+  # include content of ".. todo::" directives in output?
+  todo_include_todos: True
+
+  copyright: 2011-2018, Thomas Hucke
   project: Rating AX
-  version: '1.6'
-  release: '1.6.0'
+  version: 1.6.1
+  release: 1.6.1
   latex_documents:
   - - Index
     - RatingAx.tex
@@ -32,5 +44,28 @@ conf.py:
     t3extbasebook:
     - https://docs.typo3.org/typo3cms/ExtbaseFluidBook/
     - null
+    restdoc:
+    - https://docs.typo3.org/typo3cms/extensions/restdoc/
+    - null
+    t3cmsapi:
+    - https://typo3.org/api/typo3cms/
+    - null
+  html_theme_options:
+    github_repository: thucke/TYPO3.ext.th_rating
+    github_branch: master
+    project_contact: thucke@web.de
+    project_home: https://github.com/thucke/TYPO3.ext.th_rating
+    project_issues: https://github.com/thucke/TYPO3.ext.th_rating/issues
     
-
+  extensions:
+  - sphinx.ext.extlinks
+  - sphinx.ext.ifconfig
+  - sphinx.ext.intersphinx
+  - sphinx.ext.todo
+  - t3sphinx.ext.t3extras
+  - t3sphinx.ext.t3tablerows
+  - t3sphinx.ext.targets
+  - sphinxcontrib.googlechart
+  - sphinxcontrib.googlemaps
+  - sphinxcontrib.slide
+  - sphinxcontrib.youtube

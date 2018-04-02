@@ -23,8 +23,8 @@ Please scan the following sections to find out what is configurable by using Typ
    settings/Index
 
 
-:ts:`plugin.tx_thrating`
-************************
+plugin.tx_thrating
+******************
 
 This page is divided into the following sections:
 
@@ -64,20 +64,20 @@ action
       MVC-Action to activa. Possible values:
 
       - :typoscript:`ratinglinks`
-         Graphical presentation to do and to display ratings
+			Graphical presentation to do and to display ratings
 
-      -  :typoscript:`mark`
-         One step rating similar to FB like button
+      - :typoscript:`mark`
+			One step rating similar to FB like button
 
-      -  :typoscript:`polling`
-         ratings are presented as pollings giving percentages.
+      - :typoscript:`polling`
+			ratings are presented as pollings giving percentages.
 
-      -  :typoscript:`show`
-         Display the actual vote of the currently logged on FE user in plain text
+      - :typoscript:`show`
+			Display the actual vote of the currently logged on FE user in plain text
 
-      -  :typoscript:`new`
-         Generate a classic form element (default: drop-drown select field) for voting.
-         If the user has already voted action :typoscript:`show` is used.
+      - :typoscript:`new`
+			Generate a classic form element (default: drop-drown select field) for voting.
+			If the user has already voted action :typoscript:`show` is used.
 
       .. important::
 

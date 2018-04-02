@@ -7,25 +7,47 @@
 EXT: Flexible Rating
 ====================
 
-:Classification:  th_rating
-:Version:         |release|
-:Language:        en
+:Version:         |version|
+:Author:          Thomas Hucke <thucke@web.de>
+:Buildinfo:       `Make folder <_make>`_
+:Copyright:       2011-2018, Thomas Hucke
 :Description:
    Highly flexible AJAX rating based on extbase/fluid/jquery. Allows multiple ratings
    within one page. It could be used as a cObj by other extensions or included in every
    FLUID template using the viewhelper. Each ratingstep could be configured having a name
    - international localization included.
-
-:Keywords:        rating polling likeButton extbase fluid ajax jQuery
-:Author:          Thomas Hucke
-:Email:           thucke@web.de
+:License:         `CC BY-SA 3.0 <http://creativecommons.org/licenses/by-sa/3.0/>`_
 :Rendered:        |today|
-:License:
-   This document is published under the Open Content License available from
-   http://www.opencontent.org/
 
-   The content of this document is related to TYPO3, a GNU/GPL CMS/Framework available
-   from https://typo3.org/
+
+   
+Info
+====
+
+The content of this document is related to TYPO3, a GNU/GPL 
+CMS/Framework available from `typo3.org`__.
+
+__ http://typo3.org/
+
+
+License
+=======
+
+`CC BY-SA 3.0 <http://creativecommons.org/licenses/by-sa/3.0/>`_ 
+Creative Commons Attribution-ShareAlike 3.0 Unported.
+You are free
+
+- to share: to copy, distribute and transmit the work
+- to remix: to adapt the work
+- to make commercial use of the work
+
+
+Sources
+=======
+
+The sources of this draft are located at
+`Github <https://github.com/thucke/TYPO3.ext.th_rating>`_.
+
 
 
 .. toctree::
@@ -37,3 +59,6 @@ EXT: Flexible Rating
    AdministratorManual/Index
    DeveloperInformation/Index
    Tutorial/Index
+   Linktargets/Index
+   
+
