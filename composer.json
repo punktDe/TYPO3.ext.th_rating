@@ -8,7 +8,7 @@
 	},
 	"require" : {
 		"typo3/cms-core" : ">=7.6.0,<8.8",
-		"sjbr/static_info_tables" : ">=6.2.0,<7.0"
+		"sjbr/static-info-tables" : ">=6.2.0,<7.0"
 	},
 	"autoload" : {
 		"psr-4" : {
