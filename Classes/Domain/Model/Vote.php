@@ -169,7 +169,7 @@ class Vote extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	 * @return boolean
 	 */
 	public function hasRated() {
-		return (get_class($this->getVote()) == 'Thucke\ThRating\Domain\Model\Stepconf');
+		return (!empty($this->getVote()) && (get_class($this->getVote()) == 'Thucke\ThRating\Domain\Model\Stepconf'));
 	}
 
 	/**
@@ -191,7 +191,7 @@ class Vote extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	 * always false if cookie checks is deactivated
 	 * 
 	 * @param String $prefixId Extension prefix to identify cookie
-	 * @return 	booelan
+	 * @return 	bool
 	 */
 	public function hasAnonymousVote($prefixId = 'DummyPrefix') {
 		$anonymousRating = json_decode($_COOKIE[$prefixId.'_AnonymousRating_'.$this->getRating()->getUid()], true);
