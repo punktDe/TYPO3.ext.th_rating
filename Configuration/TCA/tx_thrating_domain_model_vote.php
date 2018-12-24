@@ -5,7 +5,7 @@ $GLOBALS['TCA']['tx_thrating_domain_model_vote'] = array(
 		'title'				=> 'LLL:EXT:th_rating/Resources/Private/Language/locallang.xlf:tca.model.vote.title',
 		'label'				=> 'uid',
 		'label_alt'			=> 'rating,fe_user,vote',
- 		'label_userFunc'	=> 'Thucke\\ThRating\\Userfuncs\\Tca->getVoteRecordTitle',
+		'label_userFunc'	=> 'Thucke\\ThRating\\Userfuncs\\Tca->getVoteRecordTitle',
 		'tstamp'			=> 'tstamp',
 		'crdate'			=> 'crdate',
 		'cruser_id'			=> 'cruser_id',
@@ -61,32 +61,32 @@ $GLOBALS['TCA']['tx_thrating_domain_model_vote'] = array(
 					array('--div--',0),
 				),
 				'wizards' => Array(
-		             '_PADDING' => 1,
-		             '_VERTICAL' => 0,
-		             'edit' => Array(
-		                 'type' => 'popup',
-		                 'title' => 'Edit',
-                         'module' => Array(
-                            'name' => 'wizard_edit',
-                          ),
-		                 'icon' => 'EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_edit.gif',
-		                 'popup_onlyOpenIfSelected' => 1,
-		                 'JSopenParams' => 'height=650,width=650,status=0,menubar=0,scrollbars=1',
-		             ),
-		             'add' => Array(
-		                 'type' => 'script',
-		                 'title' => 'Create new',
-		                 'icon' => 'EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_add.gif',
-		                 'params' => Array(
-		                     'table'=>'fe_users',
-		                     'pid' => '###CURRENT_PID###',
-		                     'setValue' => 'prepend'
-		                 ),
-                         'module' => Array(
-                             'name' => 'wizard_add',
-                         ),
-		             ),
-		         ),
+					 '_PADDING' => 1,
+					 '_VERTICAL' => 0,
+					 'edit' => Array(
+						 'type' => 'popup',
+						 'title' => 'Edit',
+						 'module' => Array(
+							'name' => 'wizard_edit',
+						  ),
+						 'icon' => 'EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_edit.gif',
+						 'popup_onlyOpenIfSelected' => 1,
+						 'JSopenParams' => 'height=650,width=650,status=0,menubar=0,scrollbars=1',
+					 ),
+					 'add' => Array(
+						 'type' => 'script',
+						 'title' => 'Create new',
+						 'icon' => 'EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_add.gif',
+						 'params' => Array(
+							 'table'=>'fe_users',
+							 'pid' => '###CURRENT_PID###',
+							 'setValue' => 'prepend'
+						 ),
+						 'module' => Array(
+							 'name' => 'wizard_add',
+						 ),
+					 ),
+				 ),
 			),
 		),
 		//TODO	Prio 3: only provide valid references from foreign table
