@@ -1,4 +1,0 @@
-# this is file .gitignore
-
-# but do not ignore this file
-!_not_versioned/.gitignore
