@@ -23,12 +23,13 @@ The extension provides some features supporting developers embedding Rating AX i
    ExtensionManagementService
 
 
-The developer is supported by Jetbrains and their great IDE PHPStorm
-
 .. figure:: phpstorm.png
    :target: https://www.jetbrains.com/?from=RatingAXTYPO3extension
    :alt: Jetbarins PHPStorm IDE
    :align: left
-   :width: 200
+   :width: 100
 
    Supported by Jetbrains PHPStorm IDE
+
+The developer is supported by Jetbrains and their great IDE PHPStorm
+
