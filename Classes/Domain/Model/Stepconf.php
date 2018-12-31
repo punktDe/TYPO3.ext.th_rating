@@ -117,11 +117,12 @@ class Stepconf extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 		$this->extensionHelperService = $extensionHelperService;
 	}
 
-	/**
-	 * Constructs a new stepconfig object
-	 * @return void
-	 */
-	public function __construct( \Thucke\ThRating\Domain\Model\Ratingobject $ratingobject = NULL, $steporder=NULL ) {
+    /**
+     * Constructs a new stepconfig object
+     * @param Ratingobject|null $ratingobject
+     * @param null $steporder
+     */
+	public function __construct( Ratingobject $ratingobject = NULL, $steporder=NULL ) {
 		if ($ratingobject) $this->setRatingobject( $ratingobject );
 		if ($steporder) $this->setSteporder( $steporder );
 		$this->initializeObject();
@@ -142,10 +143,10 @@ class Stepconf extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	/**
 	 * Sets the ratingobject this rating is part of
 	 *
-	 * @param \Thucke\ThRating\Domain\Model\Ratingobject $ratingobject The Rating
+	 * @param Ratingobject $ratingobject The Rating
 	 * @return void
 	 */
-	public function setRatingobject(\Thucke\ThRating\Domain\Model\Ratingobject $ratingobject) {
+	public function setRatingobject(Ratingobject $ratingobject) {
 		$this->ratingobject = $ratingobject;
 		$this->setPid($ratingobject->getPid());
 	}
@@ -200,13 +201,15 @@ class Stepconf extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	}
 
 
-	/**
-	 * Adds a localized stepname to this stepconf
-	 *
-	 * @param \Thucke\ThRating\Domain\Model\Stepname $stepname
-	 * @return boolean
-	 */
-	public function addStepname(\Thucke\ThRating\Domain\Model\Stepname $stepname) {
+    /**
+     * Adds a localized stepname to this stepconf
+     *
+     * @param Stepname $stepname
+     * @return boolean
+     * @throws \TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException
+     * @throws \TYPO3\CMS\Extbase\Persistence\Exception\InvalidQueryException
+     */
+	public function addStepname(Stepname $stepname) {
 		$success = true;
 		$stepname->setStepconf($this);
 		If (!$this->stepnameRepository->existStepname($stepname)) {
@@ -233,11 +236,11 @@ class Stepconf extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	/**
 	 * Returns the localized stepname object of this stepconf
 	 * 
-	 * @return \Thucke\ThRating\Domain\Model\Stepname
+	 * @return Stepname
 	 */
 	public function getStepname() {
 		if ( $this->stepname instanceOf \TYPO3\CMS\Extbase\Persistence\Generic\LazyLoadingProxy ) {
-			$stepname = $this->stepname->_loadRealInstance();
+			$this->stepname = $this->stepname->_loadRealInstance();
 		}
 		return $this->stepname;
 	}
@@ -252,6 +255,12 @@ class Stepconf extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	}
 
 	/**
+     * @return boolean
+     */
+	public function isValid() {
+	    return empty($this->steporder) && empty($this->ratingobject);
+    }
+	/**
 	 * Method to use Object as plain string
 	 * 
 	 * @return string
@@ -265,4 +274,3 @@ class Stepconf extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 		return strval($stepname);
 	}	
 }
-?>

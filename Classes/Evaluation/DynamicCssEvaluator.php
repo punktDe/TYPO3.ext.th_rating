@@ -1,4 +1,5 @@
-<?php
+<?php /** @noinspection PhpUnusedParameterInspection */
+
 namespace Thucke\ThRating\Evaluation;
 /***************************************************************
  *  Copyright notice
@@ -30,48 +31,53 @@ namespace Thucke\ThRating\Evaluation;
  * @version $Id:$
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License, version 2
  */
-class DynamicCssEvaluator {
-	
-	/**
-	 * This function needs to return JavaScript code for client side evaluation of the
-	 * field value. The JavaScript variable "value" is set to the field value in the context
-	 * of this JS snippet.
-	 * In this example we just add the string "[added by JS]" to the field value.
-	 *
-	 * @return	JavaScript code for evaluating the 
-	 */
-	function returnFieldJS() {
-		return 'return value;';
-	}
+class DynamicCssEvaluator
+{
 
-	/**
-	 * This is the server side (i.e. PHP) side of the field evaluation.
-	 * We only remove the dynamic CSS file to re-create it the next request
-	 *
-	 * @param	mixed		$value: The value that has to be checked.
-	 * @param	string		$is_in: Is-In String
-	 * @param	integer		$set: Determines if the field can be set (value correct) or not (PASSED BY REFERENCE!)
-	 * @return	The new value of the field
-	 */
-	function evaluateFieldValue($value, $is_in, &$set) {
-		$this->clearCachePostProc(NULL, NULL, NULL);
-		return $value;
-	}
+    /**
+     * This function needs to return JavaScript code for client side evaluation of the
+     * field value. The JavaScript variable "value" is set to the field value in the context
+     * of this JS snippet.
+     * In this example we just add the string "[added by JS]" to the field value.
+     *
+     * @return    string JavaScript code for evaluating the
+     */
+    function returnFieldJS()
+    {
+        return 'return value;';
+    }
 
-	/**
-	 * Processings when cache is cleared
-	 * 1. Delete the file 'typo3temp/thratingDyn.css'
-	 *
-	 * @return void
-	 */
-	public function clearCachePostProc($_funcRef,$params, $pObj=NULL) {
-	    if (file_exists(PATH_site.'typo3temp/thratingDyn.css'))
-	        unlink( PATH_site.'typo3temp/thratingDyn.css');
-	        //recreate file with zero length - so its still included via TS
-	        $fp = fopen ( PATH_site.'typo3temp/thratingDyn.css', 'w' );
-	        fwrite ( $fp, '');
-	        fclose ( $fp );
-	}
-	
+    /**
+     * This is the server side (i.e. PHP) side of the field evaluation.
+     * We only remove the dynamic CSS file to re-create it the next request
+     *
+     * @param    mixed $value : The value that has to be checked.
+     * @param    string $is_in : Is-In String
+     * @param    integer $set : Determines if the field can be set (value correct) or not (PASSED BY REFERENCE!)
+     * @return    string      The new value of the field
+     */
+    function evaluateFieldValue($value, $is_in, &$set)
+    {
+        $this->clearCachePostProc(NULL, NULL, NULL);
+        return $value;
+    }
+
+    /**
+     * Processings when cache is cleared
+     * 1. Delete the file 'typo3temp/thratingDyn.css'
+     *
+     * @param $_funcRef
+     * @param $params
+     * @param null $pObj
+     * @return void
+     */
+    public function clearCachePostProc($_funcRef, $params, $pObj = NULL)
+    {
+        if (file_exists(PATH_site . 'typo3temp/thratingDyn.css')) unlink(PATH_site . 'typo3temp/thratingDyn.css');
+        //recreate file with zero length - so its still included via TS
+        $fp = fopen(PATH_site . 'typo3temp/thratingDyn.css', 'w');
+        fwrite($fp, '');
+        fclose($fp);
+    }
+
 }
-?>

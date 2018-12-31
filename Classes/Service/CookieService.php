@@ -1,4 +1,5 @@
-<?php
+<?php /** @noinspection PhpTraditionalSyntaxArrayLiteralInspection */
+
 namespace Thucke\ThRating\Service;
 /***************************************************************
 *  Copyright notice
@@ -29,7 +30,7 @@ namespace Thucke\ThRating\Service;
  * @version $Id:$
  * @license http://opensource.org/licenses/gpl-license.php GNU protected License, version 2
  */
-class CookieService extends \Thucke\ThRating\Service\AbstractExtensionService {
+class CookieService extends AbstractExtensionService {
 
 	/**
 	 * Indicator for cookieProtection has been set
@@ -54,15 +55,15 @@ class CookieService extends \Thucke\ThRating\Service\AbstractExtensionService {
 		}
 		if ($cookieDomain) {
 			if ($cookieDomain{0} == '/') {
-				$match = array();
-				$matchCnt = @preg_match($cookieDomain, \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_HOST_ONLY'), $match);
+				$match = [];
+                /** @noinspection PhpUsageOfSilenceOperatorInspection */
+                $matchCnt = @preg_match($cookieDomain, \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_HOST_ONLY'), $match);
 				if ($matchCnt === false) {
 					$this->logger->log(	\TYPO3\CMS\Core\Log\LogLevel::ERROR,
 										'getCookieDomain: The regular expression for the cookie domain contains errors. The session is not shared across sub-domains.',
-										array(
+										[
 											'cookieDomain' => $cookieDomain,
-											'errorCode' => 1399137882,											
-										));
+											'errorCode' => 1399137882,]);
 				} elseif ($matchCnt) {
 					$result = $match[0];
 				}
@@ -71,18 +72,19 @@ class CookieService extends \Thucke\ThRating\Service\AbstractExtensionService {
 			}
 		}
 		return $result;
-	}	
+	}
 
-	/**
-	 * Sets the cookie
-	 * Protected function taken from t3lib_userAuth (t3 4.7.7)
-	 *
-	 * @param	string 	$cookieName		identifier for the cookie
-	 * @param	string 	$cookieValue	cookie value
-	 * @param	int 	$cookieExpire	expire time for the cookie
-	 *
-	 * @return	void
-	 */
+    /**
+     * Sets the cookie
+     * Protected function taken from t3lib_userAuth (t3 4.7.7)
+     *
+     * @param    string $cookieName identifier for the cookie
+     * @param    string $cookieValue cookie value
+     * @param    int $cookieExpire expire time for the cookie
+     *
+     * @return    void
+     * @throws \TYPO3\CMS\Core\Exception
+     */
 	public function setVoteCookie($cookieName, $cookieValue, $cookieExpire=0 ) {
 		// do not set session cookies
 		If ( !empty($cookieExpire) ) {
@@ -133,10 +135,9 @@ class CookieService extends \Thucke\ThRating\Service\AbstractExtensionService {
 	/**
 	 * Return if cookie protection has been set
 	 *
-	 * @return	void
+	 * @return	boolean
 	 */
 	public function isProtected() {
 		return $this->cookieProtection;
 	}
 }
-?>

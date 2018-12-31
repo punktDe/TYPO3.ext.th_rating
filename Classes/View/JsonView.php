@@ -44,7 +44,7 @@ class JsonView extends \TYPO3\CMS\Extbase\Mvc\View\JsonView {
 	 *
 	 * @var array
 	 */
-	protected $variablesToRender = array(
+	protected $variablesToRender = [
 		'actionMethodName',
 		'currentPollDimensions',
 		'ratingClass',
@@ -63,8 +63,7 @@ class JsonView extends \TYPO3\CMS\Extbase\Mvc\View\JsonView {
 		'usersRate',
 		'ratingobjects',
 		//'LANG',
-		'flashMessages',
-	);	
+		'flashMessages',];
 	/**/
 
 	/**
@@ -76,33 +75,23 @@ class JsonView extends \TYPO3\CMS\Extbase\Mvc\View\JsonView {
 	 * @api
 	 */
 	public function initializeView() {
-		$configuration = array(
-			'voter' => array(
-				'_exclude' => array('pid','uid'),
-			),
-			'rating' => array(
-				'_exclude' => array('pid','uid'),
-				'_descend' => array(
-					'currentrates' => array(),
-					'ratingobject' => array(
-						'_exclude' => array('pid','uid'),
-					),
-				),
-			),
-			'voting' => array(
-				'_exclude' => array('pid','uid'),
-				'_descend' => array(
-					'vote' => array(
-						'_exclude' => array('pid','uid'),
-						'_descend' => array(
-							'stepname' => array(
-								'_exclude' => array('pid','uid'),
-							),
-						),
-					),
-				),
-			),
-		);
+		$configuration = [
+			'voter' => [
+				'_exclude' => ['pid','uid'],],
+			'rating' => [
+				'_exclude' => ['pid','uid'],
+				'_descend' => [
+					'currentrates' => [],
+					'ratingobject' => [
+						'_exclude' => ['pid','uid'],],],],
+			'voting' => [
+				'_exclude' => ['pid','uid'],
+				'_descend' => [
+					'vote' => [
+						'_exclude' => ['pid','uid'],
+						'_descend' => [
+							'stepname' => [
+								'_exclude' => ['pid','uid'],],],],],],];
 		$this->setConfiguration($configuration);
 	}
 
@@ -136,4 +125,3 @@ class JsonView extends \TYPO3\CMS\Extbase\Mvc\View\JsonView {
 		return trim(implode('', $markup));
 	}
 }
-?>

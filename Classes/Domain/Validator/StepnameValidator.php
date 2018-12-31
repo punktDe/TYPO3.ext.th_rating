@@ -48,13 +48,14 @@ class StepnameValidator extends \TYPO3\CMS\Extbase\Validation\Validator\Abstract
         $this->stepnameRepository = $stepnameRepository;
     }
 
-	/**
-	 * If the given step is valid
-	 *
-	 * @param \Thucke\ThRating\Domain\Model\Stepname $stepname
-	 * @return void
-	 */
-	public function isValid($stepname) {
+    /**
+     * If the given step is valid
+     *
+     * @param \Thucke\ThRating\Domain\Model\Stepname $stepname
+     * @return void
+     * @throws \TYPO3\CMS\Extbase\Persistence\Exception\InvalidQueryException
+     */
+	protected function isValid($stepname) {
 		//a stepname object must have a stepconf
 		if (!$stepname->getStepconf() instanceof \Thucke\ThRating\Domain\Model\Stepconf) {
 			$this->addError(\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('error.validator.stepname.stepconf', 'ThRating'), 1382895072);
@@ -69,10 +70,9 @@ class StepnameValidator extends \TYPO3\CMS\Extbase\Validation\Validator\Abstract
 		$langUid = $stepname->get_languageUid();
 		if ( !empty($langUid) ) {
 			$defaultStepname = $this->stepnameRepository->findDefaultStepname($stepname);
-			if ( !($defaultStepname instanceof \Thucke\ThRating\Domain\Model\Stepname && $this->isValid($defaultStepname)) ) {
+            if ( !get_class($defaultStepname) == \Thucke\ThRating\Domain\Model\Stepname::class || $this->validate($defaultStepname)->hasErrors() ) {
 				$this->addError(\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('error.validator.stepname.defaultLang', 'ThRating'), 1382895097);
 			}
 		}				
 	}
 }
-?>

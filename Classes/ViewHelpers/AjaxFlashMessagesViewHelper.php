@@ -37,11 +37,12 @@ class AjaxFlashMessagesViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\Abstr
 	 * @return string similar DIV rendered flash messages as in AJAX response
 	 * @api
 	 */
-	public function render() {	
-		$jsonView = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager')->get('Thucke\\ThRating\\View\\JsonView');
+	public function render() {
+
+        /** @var \Thucke\ThRating\View\JsonView $jsonView */
+        $jsonView = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Object\ObjectManager::class)->get(\Thucke\ThRating\View\JsonView::class);
 		$jsonView->setControllerContext($this->controllerContext);
 		$result = $jsonView->getFlashMessages();
 		return $result;
 	}
 }
-?>

@@ -35,4 +35,3 @@ namespace Thucke\ThRating\Service;
 class AccessException extends \TYPO3\CMS\Extbase\Exception {
 
 }
-?>

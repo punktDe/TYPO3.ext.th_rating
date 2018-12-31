@@ -1,7 +1,7 @@
 <?php
 if (!defined ('TYPO3_MODE')) 	die ('Access denied.');
-$GLOBALS['TCA']['tx_thrating_domain_model_stepname'] = array(
-	'ctrl' => array (
+$GLOBALS['TCA']['tx_thrating_domain_model_stepname'] = [
+	'ctrl' => [
 		'title'						=> 'LLL:EXT:th_rating/Resources/Private/Language/locallang.xlf:tca.model.stepname.title',
 		'label'						=> 'uid',
 		'label_alt' 				=> 'stepconf,sys_language_uid',
@@ -17,91 +17,66 @@ $GLOBALS['TCA']['tx_thrating_domain_model_stepname'] = array(
 		'hideTable'					=> false,
 		'editlock'					=> 'sys_language_uid,stepconf',
 		'dividers2tabs'				=> true,
-		'enablecolumns'				=> array( 'disabled'	=> 'hidden' ),
-		'iconfile'					=> 'EXT:th_rating/Resources/Public/Icons/tx_thrating_domain_model_stepname.gif',
-	),
-	'interface' => array(
-		'showRecordFieldList' => 'hidden, stepconf, stepname, stepconf'
-	),
-	'columns' => array(
-		'pid' => Array (  
+		'enablecolumns'				=> ['disabled'	=> 'hidden'],
+		'iconfile'					=> 'EXT:th_rating/Resources/Public/Icons/tx_thrating_domain_model_stepname.gif',],
+	'interface' => [
+		'showRecordFieldList' => 'hidden, stepconf, stepname, stepconf'],
+	'columns' => [
+		'pid' => [
 			'exclude' => 1,
-			'config' => Array (
-				'type' => 'none',
-			),
-		),
-		'hidden' => array(
+			'config' => [
+				'type' => 'none',],],
+		'hidden' => [
 			'exclude' => 1,
 			'label'   => 'LLL:EXT:lang/locallang_general.xml:LGL.hidden',
-			'config'  => array(
+			'config'  => [
 				'type' => 'check',
-				'default' => 0,
-			),
-		),
-		'stepconf' => Array (
+				'default' => 0,],],
+		'stepconf' => [
 			'label'   		=> 'LLL:EXT:th_rating/Resources/Private/Language/locallang.xlf:tca.model.stepname.stepconf',
-			'config' 	=> Array (
-				'type'		=> 'passthrough',
-			),
-		),
-		'stepname' => Array (
+			'config' 	=> [
+				'type'		=> 'passthrough',],],
+		'stepname' => [
 			'label'  		=> 'LLL:EXT:th_rating/Resources/Private/Language/locallang.xlf:tca.model.stepname.stepname',
 			'l10n_mode'		=> 'prefixLangTitle',
 			'l10n_display'	=> 'hideDiff',
-			'config' => Array (
+			'config' => [
 				'type'		=> 'input',
 				'size'		=> '15',
 				'max'		=> '64',
-				'eval'		=> '\Thucke\ThRating\Evaluation\DynamicCssEvaluator::class,trim',
-			),
-		),
-		'uid' => array(
+				'eval'		=> '\Thucke\ThRating\Evaluation\DynamicCssEvaluator::class,trim',],],
+		'uid' => [
 			'label'   => 'LLL:EXT:th_rating/Resources/Private/Language/locallang.xlf:tca.model.stepname.uid',
-			'config' => array(
-				'type' => 'none',
-			),
-		),
-		'sys_language_uid' => array (
+			'config' => [
+				'type' => 'none',],],
+		'sys_language_uid' => [
 			'exclude' => 1,
 			'label'  => 'LLL:EXT:lang/locallang_general.xml:LGL.language',
-			'config' => array (
+			'config' => [
 				'readOnly'				=> true,
 				'type'                	=> 'select',
 				'renderType' 			=> 'selectSingle',
 				'foreign_table'       	=> 'sys_language',
 				'foreign_table_where' 	=> 'ORDER BY sys_language.title',
-				'items' => array(
-					array('LLL:EXT:lang/locallang_general.xml:LGL.allLanguages', -1),
-					array('LLL:EXT:lang/locallang_general.xml:LGL.default_value', 0)
-				),
-			),
-		),
-		'l18n_parent' => array (
+				'items' => [
+					['LLL:EXT:lang/locallang_general.xml:LGL.allLanguages', -1],
+					['LLL:EXT:lang/locallang_general.xml:LGL.default_value', 0]],],],
+		'l18n_parent' => [
 			'displayCond' => 'FIELD:sys_language_uid:>:0',
 			'exclude'     => 1,
 			'label'       => 'LLL:EXT:lang/locallang_general.xml:LGL.l18n_parent',
-			'config'      => array (
+			'config'      => [
 				'type'  => 'select',
 				'renderType' => 'selectSingle',
-				'items' => array (
-					array('', 0),
-				),
+				'items' => [
+					['', 0],],
 				'foreign_table'       => 'tx_thrating_domain_model_stepname',
-				'foreign_table_where' => 'AND tx_thrating_domain_model_stepname.uid=###REC_FIELD_l18n_parent### AND tx_thrating_domain_model_stepname.sys_language_uid IN (-1,0)',
-			),
-		),
-		'l18n_diffsource' => array (
-			'config' => array (
-				'type' => 'passthrough'
-			),
-		),
-	),
-	'types' => array(
-		'0' => Array('showitem' => 'hidden, sys_language_uid, stepname, stepconf'),
-	),
-	'palettes' => array(
-		'1' => array('showitem' => ''),
-	),
-);
+				'foreign_table_where' => 'AND tx_thrating_domain_model_stepname.uid=###REC_FIELD_l18n_parent### AND tx_thrating_domain_model_stepname.sys_language_uid IN (-1,0)',],],
+		'l18n_diffsource' => [
+			'config' => [
+				'type' => 'passthrough'],],],
+	'types' => [
+		'0' => ['showitem' => 'hidden, sys_language_uid, stepname, stepconf'],],
+	'palettes' => [
+		'1' => ['showitem' => ''],],];
 return $GLOBALS['TCA']['tx_thrating_domain_model_stepname'];
-?>

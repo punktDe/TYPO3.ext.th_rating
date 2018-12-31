@@ -117,12 +117,13 @@ class Rating extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	 * @var array
 	 */
 	protected $settings;
-	
-	/**
-	 * Constructs a new rating object
-	 * @return void
-	 */
-	public function __construct( \Thucke\ThRating\Domain\Model\Ratingobject $ratingobject = NULL, $ratedobjectuid=NULL ) {
+
+    /**
+     * Constructs a new rating object
+     * @param Ratingobject|null $ratingobject
+     * @param null $ratedobjectuid
+     */
+	public function __construct( Ratingobject $ratingobject = NULL, $ratedobjectuid=NULL ) {
 		if ($ratingobject) $this->setRatingobject( $ratingobject );
 		if ($ratedobjectuid) $this->setRatedobjectuid( $ratedobjectuid );
 		$this->initializeObject();
@@ -149,10 +150,10 @@ class Rating extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	/**
 	 * Sets the ratingobject this rating is part of
 	 *
-	 * @param \Thucke\ThRating\Domain\Model\Ratingobject $ratingobject The Rating
+	 * @param Ratingobject $ratingobject The Rating
 	 * @return void
 	 */
-	public function setRatingobject(\Thucke\ThRating\Domain\Model\Ratingobject $ratingobject) {
+	public function setRatingobject(Ratingobject $ratingobject) {
 		$this->ratingobject = $ratingobject;
 		$this->setPid($ratingobject->getPid());
 	}
@@ -191,7 +192,7 @@ class Rating extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	 * @param \Thucke\ThRating\Domain\Model\Vote $vote
 	 * @return void
 	 */
-	public function addVote(\Thucke\ThRating\Domain\Model\Vote $vote) {
+	public function addVote(Vote $vote) {
 		$this->votes->attach($vote);
 		$this->addCurrentrate($vote);
 		$this->extensionHelperService->persistRepository('Thucke\ThRating\Domain\Repository\VoteRepository', $vote);
@@ -204,7 +205,7 @@ class Rating extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	 * @param \Thucke\ThRating\Domain\Model\Vote $newVote
 	 * @return void
 	 */
-	public function updateVote(\Thucke\ThRating\Domain\Model\Vote $existingVote, \Thucke\ThRating\Domain\Model\Vote $newVote) {
+	public function updateVote(Vote $existingVote, Vote $newVote) {
 		$this->removeCurrentrate($existingVote);
 		$existingVote->setVote($newVote->getVote());
 		$this->addCurrentrate($existingVote);
@@ -217,7 +218,7 @@ class Rating extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	 * @param \Thucke\ThRating\Domain\Model\Vote $voteToRemove The vote to be removed
 	 * @return void
 	 */
-	public function removeVote(\Thucke\ThRating\Domain\Model\Vote $voteToRemove) {
+	public function removeVote(Vote $voteToRemove) {
 		$this->removeCurrentrate($voteToRemove);
 		$this->votes->detach($voteToRemove);
 	}
@@ -235,7 +236,7 @@ class Rating extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	/**
 	 * Returns all votes in this rating
 	 *
-	 * @return	TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Thucke\ThRating\Domain\Model\Vote>
+	 * @return	\TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Thucke\ThRating\Domain\Model\Vote>
 	 */
 	public function getVotes() {
 		return clone $this->votes;
@@ -248,16 +249,18 @@ class Rating extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	 * @return void
 	 */
 	public function checkCurrentrates() {
-		$currentratesDecoded['weightedVotes'] = array();
-		$currentratesDecoded['sumWeightedVotes'] = array();
-		foreach ( $this->getRatingobject()->getStepconfs() as $stepConf ) {
-			$stepOrder = $stepConf->getSteporder();
-			$voteCount = $this->voteRepository->countByMatchingRatingAndVote($this, $stepConf);
-			$anonymousCount = $this->voteRepository->countAnonymousByMatchingRatingAndVote($this, $stepConf, $this->settings['mapAnonymous']);
-			$currentratesDecoded['weightedVotes'][$stepOrder] = $voteCount * $stepConf->getStepweight();
-			$currentratesDecoded['sumWeightedVotes'][$stepOrder] = $currentratesDecoded['weightedVotes'][$stepOrder] * $stepOrder;
-			$numAllVotes += $voteCount;
-			$numAllAnonymousVotes += $anonymousCount;
+		$currentratesDecoded['weightedVotes'] = [];
+        $currentratesDecoded['sumWeightedVotes'] = [];
+        $numAllVotes = 0;
+        $numAllAnonymousVotes = 0 ;
+        foreach ( $this->getRatingobject()->getStepconfs() as $stepConf ) {
+            $stepOrder = $stepConf->getSteporder();
+            $voteCount = $this->voteRepository->countByMatchingRatingAndVote($this, $stepConf);
+            $anonymousCount = $this->voteRepository->countAnonymousByMatchingRatingAndVote($this, $stepConf, $this->settings['mapAnonymous']);
+            $currentratesDecoded['weightedVotes'][$stepOrder] = $voteCount * $stepConf->getStepweight();
+            $currentratesDecoded['sumWeightedVotes'][$stepOrder] = $currentratesDecoded['weightedVotes'][$stepOrder] * $stepOrder;
+            $numAllVotes += $voteCount;
+            $numAllAnonymousVotes += $anonymousCount;
 		}
 		$currentratesDecoded['numAllVotes'] = $numAllVotes;
 		$currentratesDecoded['anonymousVotes'] = $numAllAnonymousVotes;
@@ -271,7 +274,7 @@ class Rating extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	 * @param \Thucke\ThRating\Domain\Model\Vote $voting The vote to be added
 	 * @return void
 	 */
-	public function addCurrentrate(\Thucke\ThRating\Domain\Model\Vote $voting) {
+	public function addCurrentrate(Vote $voting) {
 		if ( empty($this->currentrates) ) {
 			$this->checkCurrentrates(); //initialize entry
 		}
@@ -294,7 +297,7 @@ class Rating extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	 * @param \Thucke\ThRating\Domain\Model\Vote $voting The vote to be removed
 	 * @return void
 	 */
-	public function removeCurrentrate(\Thucke\ThRating\Domain\Model\Vote $voting) {
+	public function removeCurrentrate(Vote $voting) {
 		if ( empty($this->currentrates) ) {
 			$this->checkCurrentrates(); //initialize entry
 		}
@@ -333,7 +336,7 @@ class Rating extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 		$sumAllWeightedVotes = array_sum($currentratesDecoded['weightedVotes']);
 
         //initialize array to handle missing stepconfs correctly
-		$currentPollDimensions = array();		
+		$currentPollDimensions = [];
 		
 		foreach ( $this->getRatingobject()->getStepconfs() as $stepConf ) {
 			if ( empty($sumAllWeightedVotes) ) {
@@ -345,12 +348,12 @@ class Rating extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 			}
 		}
 		
-		return array (	'currentrate' => $currentrate,
+		return ['currentrate' => $currentrate,
 						'weightedVotes' => $currentratesDecoded['weightedVotes'],
 						'sumWeightedVotes' => $currentratesDecoded['sumWeightedVotes'],
 						'anonymousVotes' => $currentratesDecoded['anonymousVotes'],
 						'currentPollDimensions' => $currentPollDimensions ,
-						'numAllVotes' => $numAllVotes);
+						'numAllVotes' => $numAllVotes];
 	}
 
 	/**
@@ -369,5 +372,3 @@ class Rating extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	}
 
 }
-
-?>

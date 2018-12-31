@@ -28,4 +28,3 @@ namespace Thucke\ThRating\Domain\Model;
  */
 class Voter extends \TYPO3\CMS\Extbase\Domain\Model\FrontendUser {
 }
-?>

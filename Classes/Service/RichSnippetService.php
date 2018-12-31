@@ -26,13 +26,13 @@ namespace Thucke\ThRating\Service;
 /**
  * The voter
  */
-class RichSnippetService extends \Thucke\ThRating\Service\AbstractExtensionService {
+class RichSnippetService extends AbstractExtensionService {
 
     /**
      * Instances of AggregateRating may appear as properties of the following types
      * @const array
      */
-    const VALID_AGGREGATE_RATING_SCHEMA_TYPES = array(  
+    const VALID_AGGREGATE_RATING_SCHEMA_TYPES = [
         'Brand',
         'CreativeWork',
         'Event',
@@ -40,8 +40,7 @@ class RichSnippetService extends \Thucke\ThRating\Service\AbstractExtensionServi
         'Organization',
         'Place',
         'Product',
-        'Service'
-    );
+        'Service'];
     
     /**
      * @var string
@@ -68,11 +67,10 @@ class RichSnippetService extends \Thucke\ThRating\Service\AbstractExtensionServi
 	 */
 	protected $richSnippetConfig;
 
-	/**
-	 * @param string $ajaxRef
-	 * @param array	$setting
-	 * @return boolean
-	 */
+    /**
+     * @param array $settings
+     * @return boolean
+     */
 	public function setRichSnippetConfig(array $settings) {
 		$this->logger->log(	\TYPO3\CMS\Core\Log\LogLevel::DEBUG, 'setRichSnippetConfig Entry point', $settings);
 		$this->richSnippetConfig['tablename'] = $settings['ratetable'];
@@ -82,7 +80,7 @@ class RichSnippetService extends \Thucke\ThRating\Service\AbstractExtensionServi
 			$this->logger->log(	\TYPO3\CMS\Core\Log\LogLevel::DEBUG, 'setRichSnippetConfig Exit point', $this->richSnippetConfig['richSnippetFields']);
 			return true;
 		} else {
-			$this->logger->log(	\TYPO3\CMS\Core\Log\LogLevel::DEBUG, 'setRichSnippetConfig Exit point', array());
+			$this->logger->log(	\TYPO3\CMS\Core\Log\LogLevel::DEBUG, 'setRichSnippetConfig Exit point', []);
 			return false;
 		}
 	}
@@ -168,14 +166,15 @@ class RichSnippetService extends \Thucke\ThRating\Service\AbstractExtensionServi
     }
 
     /**
-	 * @param int $uid
-	 * @return string
-	 */
+     * @param int $uid
+     * @return string
+     * @throws \Thucke\ThRating\Exception\InvalidAggregateRatingSchemaTypeException
+     */
 	public function getRichSnippetObject($uid) {
-		$this->logger->log(	\TYPO3\CMS\Core\Log\LogLevel::DEBUG, 'getRichSnippetObject Entry point', array());
-		$this->setSchema($this->richSnippetConfig['richSnippetFields']['aggregateRatingSchemaType']);
+		$this->logger->log(	\TYPO3\CMS\Core\Log\LogLevel::DEBUG, 'getRichSnippetObject Entry point', []);
+        $this->setSchema($this->richSnippetConfig['richSnippetFields']['aggregateRatingSchemaType']);
 		if (empty($this->richSnippetConfig['richSnippetFields']['name'])) {
-			$this->logger->log(	\TYPO3\CMS\Core\Log\LogLevel::DEBUG, 'No name field defined - skipping database access', $row);
+			$this->logger->log(	\TYPO3\CMS\Core\Log\LogLevel::DEBUG, 'No name field defined - skipping database access');
 			unset($this->name);
 			unset($this->description);
 		} else {
@@ -200,4 +199,3 @@ class RichSnippetService extends \Thucke\ThRating\Service\AbstractExtensionServi
 		return $TYPO3_DB;
 	}
 }
-?>

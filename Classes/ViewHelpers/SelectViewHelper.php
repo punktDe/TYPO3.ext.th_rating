@@ -28,6 +28,7 @@ namespace Thucke\ThRating\ViewHelpers;
  *
  * @version $Id:$
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License, version 2
+ * @author Thomas Hucke <thucke@web.de>
  */
 class SelectViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\SelectViewHelper {
 
@@ -35,17 +36,22 @@ class SelectViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\SelectViewHelpe
 	/**
 	 * Renders the rating select form
 	 *
-	 * @return string the content of the rendered select form object
-	 * @author Thomas Hucke <thucke@web.de>
-	 */	public function initializeArguments() {
+	 * @return void
+	 */
+	public function initializeArguments() {
 		parent::initializeArguments();
 		$this->registerArgument('additionalOptions', 'array', 'Associative array with values to prepend', false);
 		$this->registerTagAttribute('onchange', 'string', 'Optional event handler');
 	}
-		
-	protected function getOptions() {
+
+    /**
+     * Render the option tags.
+     *
+     * @return array an associative array of options, key will be the value of the option tag
+     */
+    protected function getOptions() {
 		$options = parent::getOptions();
-		$additionalOptions = array();
+		$additionalOptions = [];
 		foreach ($this->arguments['additionalOptions'] as $key => $value) {
 			$additionalOptions[utf8_encode('{"value":'.$key.'}')] = $value;
 		}
@@ -55,4 +61,3 @@ class SelectViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\SelectViewHelpe
 		return $array;
 	}
 }
-?>

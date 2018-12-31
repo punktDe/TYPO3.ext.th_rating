@@ -1,30 +1,32 @@
 <?php
 namespace Thucke\ThRating\Domain\Validator;
+use Thucke\ThRating\Domain\Model\Stepname;
+
 /***************************************************************
-*  Copyright notice
-*
-*  (c) 2010 Thomas Hucke <thucke@web.de> 
-*  All rights reserved
-*
-*  This class is a backport of the corresponding class of FLOW3.
-*  All credits go to the v5 team.
-*
-*  This script is part of the TYPO3 project. The TYPO3 project is
-*  free software; you can redistribute it and/or modify
-*  it under the terms of the GNU General Public License as published by
-*  the Free Software Foundation; either version 2 of the License, or
-*  (at your option) any later version.
-*
-*  The GNU General Public License can be found at
-*  http://www.gnu.org/copyleft/gpl.html.
-*
-*  This script is distributed in the hope that it will be useful,
-*  but WITHOUT ANY WARRANTY; without even the implied warranty of
-*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-*  GNU General Public License for more details.
-*
-*  This copyright notice MUST APPEAR in all copies of the script!
-***************************************************************/
+ *  Copyright notice
+ *
+ *  (c) 2010 Thomas Hucke <thucke@web.de>
+ *  All rights reserved
+ *
+ *  This class is a backport of the corresponding class of FLOW3.
+ *  All credits go to the v5 team.
+ *
+ *  This script is part of the TYPO3 project. The TYPO3 project is
+ *  free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
+ *
+ *  The GNU General Public License can be found at
+ *  http://www.gnu.org/copyleft/gpl.html.
+ *
+ *  This script is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  This copyright notice MUST APPEAR in all copies of the script!
+ ***************************************************************/
 
 /**
  * A validator for Ratings
@@ -59,62 +61,72 @@ class StepconfValidator extends \TYPO3\CMS\Extbase\Validation\Validator\Abstract
     public function injectStepnameRepository(\Thucke\ThRating\Domain\Repository\StepnameRepository $stepnameRepository) {
         $this->stepnameRepository = $stepnameRepository;
     }
-	
-	/**
-	 * If the given step is valid
-	 *
-	 * @param \Thucke\ThRating\Domain\Model\Stepconf $stepconf
-	 * @return void
-	 */
-	public function isValid($stepconf) {
+
+    /**
+     * If the given step is valid
+     *
+     * @param \Thucke\ThRating\Domain\Model\Stepconf $stepconf
+     * @throws \TYPO3\CMS\Extbase\Persistence\Exception\InvalidQueryException
+     * @var Stepname $stepname
+     * @var integer $countNames
+     * @var array $checkConsistency
+     */
+	protected function isValid($stepconf) {
 		//a stepconf object must have a ratingobject
 		if (!$stepconf->getRatingobject() instanceof \Thucke\ThRating\Domain\Model\Ratingobject) {
 			$this->addError(\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('error.validator.stepconf.ratingobject', 'ThRating'), 1284700846);
-			return false;
+			return;
 		}
 		//at least a steporder value must be set
 		$steporder = $stepconf->getSteporder();
 		if (empty($steporder)) {
 			$this->addError(\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('error.validator.stepconf.steps', 'ThRating'), 1284700903);
-			return false;
+			return;
 		}
 
 		//steporder must be positive integer ( >0 )
 		If ( !is_int($stepconf->getSteporder()) or $stepconf->getSteporder()<1 ) {
 			$this->addError(\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('error.validator.stepconf.invalidSteporderNumber', 'ThRating'), 1368123953);
-			return false;
+			return;
 		}
 
 		//check if given steporder is valid (integer, maximum +1)
-		$maxSteporderStepconfobject = $this->stepconfRepository->findByRatingobject($stepconf->getRatingobject());
+        /** @var object $maxSteporderStepconfobject */
+        $maxSteporderStepconfobject = $this->stepconfRepository->findByRatingobject($stepconf->getRatingobject());
 		$maxSteporder = $maxSteporderStepconfobject[$maxSteporderStepconfobject->count()-1]->getSteporder();
 		If ( $stepconf->getSteporder() > $maxSteporder+1 ) {
 			$this->addError(\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('error.validator.stepconf.maxSteporder', 'ThRating'), 1368123970);
-			return false;
+			return;
 		}
 		
 		//check if a stepname is given that at least has the default language definition
 		//TODO move to query on stepname repository
-		$stepname = $stepconf->getStepname();
-		If ($stepname instanceof \TYPO3\CMS\Extbase\Persistence\ObjectStorage) {
-			$countNames = $stepname->count();
-		}
-		If ($countNames!=0) {
-			$firstStepname = $stepname->current();
-			$defaultName = $this->stepnameRepository->findDefaultStepname($firstStepname);
-			If (empty($defaultName)) {
-				$this->addError(\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('error.validator.stepconf.defaultStepname', 'ThRating', array($firstStepname->getStepconf()->getUid())), 1384374165);
-				return false;
-			}
-			//Finally check on language constistency
-			$checkConsistency = $this->stepnameRepository->checkConsistency($firstStepname);
+
+        $stepname = $stepconf->getStepname();
+        $countNames = 0;
+        If ($stepname instanceof \TYPO3\CMS\Extbase\Persistence\ObjectStorage) {
+            $countNames = $stepname->count();
+        }
+        If ($countNames!=0) {
+            /** @var Stepname $firstStepname */
+            $firstStepname = $stepname->current();
+
+            /** @var Stepname|object $defaultName */
+            $defaultName = $this->stepnameRepository->findDefaultStepname($firstStepname);
+            If (!$defaultName->isValid()) {
+                $this->addError(\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('error.validator.stepconf.defaultStepname', 'ThRating', [$firstStepname->getStepconf()->getUid()]), 1384374165);
+                return;
+            }
+
+            //Finally check on language constistency
+            $checkConsistency = $this->stepnameRepository->checkConsistency($firstStepname);
 			If ($checkConsistency['doubleLang']) {
-				$this->addError(\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('error.validator.stepconf.doubleLangEntry', 'ThRating', array($firstStepname->getStepconf()->getUid())), 1384374589);
-				return false;
+				$this->addError(\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('error.validator.stepconf.doubleLangEntry', 'ThRating', [$firstStepname->getStepconf()->getUid()]), 1384374589);
+				return;
 			}		
 			If ($checkConsistency['existLang']) {
-				$this->addError(\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('error.validator.stepconf.notExistingLanguage', 'ThRating', array($firstStepname->getUid())), 1384374589);
-				return false;
+				$this->addError(\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('error.validator.stepconf.notExistingLanguage', 'ThRating', [$firstStepname->getUid()]), 1384374589);
+				return;
 			}		
 		}
 	}
@@ -129,4 +141,3 @@ class StepconfValidator extends \TYPO3\CMS\Extbase\Validation\Validator\Abstract
 		return (!$this->isEmpty($stepconf) && $stepconf instanceof \Thucke\ThRating\Domain\Model\Stepconf);
 	}
 }
-?>

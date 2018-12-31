@@ -19,6 +19,6 @@ namespace Thucke\ThRating\Exception;
  *
  * @api
  */
-class FeUserStoragePageException extends \Thucke\ThRating\Exception\Exception
+class FeUserStoragePageException extends Exception
 {
 }

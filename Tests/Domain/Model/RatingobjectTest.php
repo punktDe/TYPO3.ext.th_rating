@@ -58,4 +58,3 @@ class RatingobjectTest extends \TYPO3\CMS\Core\Tests\BaseTestCase {
 	}
 
 }
-?>

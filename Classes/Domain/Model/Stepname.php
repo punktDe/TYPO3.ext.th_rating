@@ -62,13 +62,14 @@ class Stepname extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	 * @validate NotEmpty
 	 */
 	protected $_languageUid;
- 
 
-	/**
-	 * Constructs a new stepconfig object
-	 * @return void
-	 */
-	public function __construct( \Thucke\ThRating\Domain\Model\Stepconf $stepconf = NULL, $stepname=NULL ) {
+
+    /**
+     * Constructs a new stepconfig object
+     * @param Stepconf|null $stepconf
+     * @param null $stepname
+     */
+	public function __construct( Stepconf $stepconf = NULL, $stepname=NULL ) {
 		if ($stepconf) $this->setStepconf( $stepconf );
 		if ($stepname) $this->setStepname( $stepname );
 		$this->initializeObject();
@@ -89,7 +90,7 @@ class Stepname extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	 * @param \Thucke\ThRating\Domain\Model\Stepconf $stepconf The Rating
 	 * @return void
 	 */
-	public function setStepconf(\Thucke\ThRating\Domain\Model\Stepconf $stepconf) {
+	public function setStepconf(Stepconf $stepconf) {
 		$this->stepconf = $stepconf;
 		$this->setPid($stepconf->getPid());
 	}
@@ -137,10 +138,11 @@ class Stepname extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	public function getL18nParent() {
 		return $this->l18nParent;
 	}
-	/**
-	 * @param int $l18n_parent
-	 * @return void
-	 */
+
+    /**
+     * @param $l18nParent
+     * @return void
+     */
 	public function setL18nParent($l18nParent) {
 		$this->l18nParent = $l18nParent;
 	}
@@ -161,6 +163,13 @@ class Stepname extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	}
 
 	/**
+     * @return boolean
+     */
+    public function isValid() {
+        return !empty($this->stepconf);
+    }
+
+	/**
 	 * Method to use Object as plain string
 	 * 
 	 * @return string
@@ -169,4 +178,3 @@ class Stepname extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 		return ($this->getStepname());
 	}	
 }
-?>

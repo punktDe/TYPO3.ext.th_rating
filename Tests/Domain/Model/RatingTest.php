@@ -47,14 +47,14 @@ class RatingTest extends \TYPO3\CMS\Core\Tests\BaseTestCase {
     protected $fixture = NULL;
 
     public function setUp() {
-        $this->ratingobject = \TYPO3\CMS\Core\Tests\BaseTestCase::getMock('Thucke\\ThRating\\Domain\\Model\\Ratingobject', array(), array('tt_news', 'uid'));
-        $this->stepconf = \TYPO3\CMS\Core\Tests\BaseTestCase::getMock('Thucke\\ThRating\\Domain\\Model\\Stepconf', array(), array($this->ratingobject, 1));
+        $this->ratingobject = \TYPO3\CMS\Core\Tests\BaseTestCase::getMock('Thucke\\ThRating\\Domain\\Model\\Ratingobject', [], ['tt_news', 'uid']);
+        $this->stepconf = \TYPO3\CMS\Core\Tests\BaseTestCase::getMock('Thucke\\ThRating\\Domain\\Model\\Stepconf', [], [$this->ratingobject, 1]);
 		$this->stepconf->setStepweight(2);
-		$mockStepconfRepository = \TYPO3\CMS\Core\Tests\BaseTestCase::getMock('Thucke\\ThRating\\Domain\\Repository\\StepconfRepository', array(), array(), '', false);
+		$mockStepconfRepository = \TYPO3\CMS\Core\Tests\BaseTestCase::getMock('Thucke\\ThRating\\Domain\\Repository\\StepconfRepository', [], [], '', false);
 		$this->ratingobject->injectStepconfRepository($mockStepconfRepository);
 		$this->ratingobject->addStepconf($this->stepconf);
 		$this->fixture = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Thucke\\ThRating\\Domain\\Model\\Rating', $this->ratingobject, 1);
-		$mockVoteRepository = \TYPO3\CMS\Core\Tests\BaseTestCase::getMock('Thucke\\ThRating\\Domain\\Repository\\VoteRepository', array(), array(), '', false);
+		$mockVoteRepository = \TYPO3\CMS\Core\Tests\BaseTestCase::getMock('Thucke\\ThRating\\Domain\\Repository\\VoteRepository', [], [], '', false);
 		$this->fixture->injectVoteRepository($mockVoteRepository);
     }
 
@@ -94,7 +94,7 @@ class RatingTest extends \TYPO3\CMS\Core\Tests\BaseTestCase {
 	 * @test
 	 */
 	public function aVoteCanBeAdded() {
-		$vote = $this->getMock('Thucke\\ThRating\\Domain\\Model\\Vote',  array(), array(), '', false);
+		$vote = $this->getMock('Thucke\\ThRating\\Domain\\Model\\Vote',  [], [], '', false);
 		//$vote = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Thucke\\ThRating\\Domain\\Model\\Vote');
 		$vote->setVote(3);
 		$this->fixture->addVote($vote);
@@ -102,4 +102,3 @@ class RatingTest extends \TYPO3\CMS\Core\Tests\BaseTestCase {
 	}
 	
 }
-?>

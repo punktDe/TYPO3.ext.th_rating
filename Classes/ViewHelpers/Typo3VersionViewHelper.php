@@ -44,4 +44,3 @@ class Typo3VersionViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractVi
 		return $result;
 	}
 }
-?>
