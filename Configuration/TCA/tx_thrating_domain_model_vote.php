@@ -47,27 +47,22 @@ $GLOBALS['TCA']['tx_thrating_domain_model_vote'] = [
 				'foreign_table_where' => 'ORDER BY {#fe_users}.{#username}',
 				'items'	=> [
 					['--div--',0],],
-				'wizards' => [
-					 '_PADDING' => 1,
-					 '_VERTICAL' => 0,
-					 'edit' => [
-						 'type' => 'popup',
-						 'title' => 'Edit',
-						 'module' => [
-							'name' => 'wizard_edit',],
-						 'icon' => 'EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_edit.gif',
-						 'popup_onlyOpenIfSelected' => 1,
-						 'JSopenParams' => 'height=650,width=650,status=0,menubar=0,scrollbars=1',],
-					 'add' => [
-						 'type' => 'script',
-						 'title' => 'Create new',
-						 'icon' => 'EXT:backend/Resources/Public/Images/FormFieldWizard/wizard_add.gif',
-						 'params' => [
-							 'table'=>'fe_users',
-							 'pid' => '###CURRENT_PID###',
-							 'setValue' => 'prepend'],
-						 'module' => [
-							 'name' => 'wizard_add',],],],],],
+                'fieldControl' => [
+                    'editPopup' => [
+                        'disabled' => false,
+                    ],
+                    'addRecord' => [
+                        'disabled' => false,
+                        'options' => [
+                            'setValue' => 'prepend',
+                        ],
+                        'listModule' => [
+                            'disabled' => false,
+                        ],
+                    ],
+                ],
+            ],
+        ],
 		//TODO	Prio 3: only provide valid references from foreign table
 		'vote' => [
 			'label'		=> 'LLL:EXT:th_rating/Resources/Private/Language/locallang.xlf:tca.model.vote.vote',
