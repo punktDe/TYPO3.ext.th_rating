@@ -54,7 +54,6 @@ $GLOBALS['TCA']['tx_thrating_domain_model_rating'] = [
 				'foreign_table' => 'tx_thrating_domain_model_vote',
 				'foreign_field' => 'rating',
 				'foreign_default_sortby' => 'uid',
-				'maxitems'      => 999999,
 				'appearance' => [
 					'levelLinksPosition' => 'bottom',
 					'collapseAll' => 1,
