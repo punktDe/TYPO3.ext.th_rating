@@ -1,5 +1,4 @@
 <?php
-if (!defined ('TYPO3_MODE')) 	die ('Access denied.');
 $GLOBALS['TCA']['tx_thrating_domain_model_stepname'] = [
 	'ctrl' => [
 		'title'						=> 'LLL:EXT:th_rating/Resources/Private/Language/locallang.xlf:tca.model.stepname.title',
@@ -57,7 +56,7 @@ $GLOBALS['TCA']['tx_thrating_domain_model_stepname'] = [
 				'type'                	=> 'select',
 				'renderType' 			=> 'selectSingle',
 				'foreign_table'       	=> 'sys_language',
-				'foreign_table_where' 	=> 'ORDER BY sys_language.title',
+				'foreign_table_where' 	=> 'ORDER BY {#sys_language}.{#title}',
 				'items' => [
 					['LLL:EXT:lang/locallang_general.xml:LGL.allLanguages', -1],
 					['LLL:EXT:lang/locallang_general.xml:LGL.default_value', 0]],],],
@@ -71,7 +70,7 @@ $GLOBALS['TCA']['tx_thrating_domain_model_stepname'] = [
 				'items' => [
 					['', 0],],
 				'foreign_table'       => 'tx_thrating_domain_model_stepname',
-				'foreign_table_where' => 'AND tx_thrating_domain_model_stepname.uid=###REC_FIELD_l18n_parent### AND tx_thrating_domain_model_stepname.sys_language_uid IN (-1,0)',],],
+				'foreign_table_where' => 'AND {#tx_thrating_domain_model_stepname}.{#uid}=###REC_FIELD_l18n_parent### AND {#tx_thrating_domain_model_stepname}.{#sys_language_uid} IN (-1,0)',],],
 		'l18n_diffsource' => [
 			'config' => [
 				'type' => 'passthrough'],],],

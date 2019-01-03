@@ -1,5 +1,4 @@
 <?php
-if (!defined ('TYPO3_MODE')) 	die ('Access denied.');
 $GLOBALS['TCA']['tx_thrating_domain_model_vote'] = [
 	'ctrl' => [
 		'title'				=> 'LLL:EXT:th_rating/Resources/Private/Language/locallang.xlf:tca.model.vote.title',
@@ -45,9 +44,7 @@ $GLOBALS['TCA']['tx_thrating_domain_model_vote'] = [
 				'type' => 'select',
 				'renderType' 	=> 'selectSingle',
 				'foreign_table' => 'fe_users',
-				//'foreign_table_where' => 'AND fe_users.pid=###CURRENT_PID###',
-				//'foreign_table_where' => 'AND fe_users.disable=0 AND fe_users.deleted=0 ORDER BY username',
-				'foreign_table_where' => 'ORDER BY username',
+				'foreign_table_where' => 'ORDER BY {#fe_users}.{#username}',
 				'items'	=> [
 					['--div--',0],],
 				'wizards' => [
