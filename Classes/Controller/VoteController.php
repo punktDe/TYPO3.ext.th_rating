@@ -1,6 +1,8 @@
 <?php
-
 namespace Thucke\ThRating\Controller;
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Query\QueryBuilder;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 /***************************************************************
  *  Copyright notice
  *
@@ -33,6 +35,8 @@ namespace Thucke\ThRating\Controller;
  */
 class VoteController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 {
+
+    protected const AJAX_REFERENCE_ID = 'ajaxRef';
 
     /**
      * @var string
@@ -213,24 +217,11 @@ class VoteController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
     }
 
     /**
-     * @var \TYPO3\CMS\Core\Database\DatabaseConnection    The TYPO3 database object
-     */
-    protected $databaseConnection;
-
-    /**
      * Lifecycle-Event
      * wird nach der Initialisierung des Objekts und nach dem Aufl�sen der Dependencies aufgerufen.
      *
      */
-    public function initializeObject()
-    {
-        $this->databaseConnection = $this->getDatabaseConnection();
-        //uncomment the following lines to get SQL DEBUG information of this extension
-        /*
-        $this->databaseConnection->explainOutput = 2;
-        $this->databaseConnection->store_lastBuiltQuery = true;
-        $this->databaseConnection->debugOutput = 2;
-        */
+    public function initializeObject() {
     }
 
     /**
@@ -245,24 +236,23 @@ class VoteController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
     protected function initializeAction()
     {
         //instantiate the logger
-        $this->logger = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager')->get('Thucke\\ThRating\\Service\\ExtensionHelperService')->getLogger(__CLASS__);
-        $this->logger->log(\TYPO3\CMS\Core\Log\LogLevel::DEBUG, 'Entry point', []);
+        $this->logger = GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Object\ObjectManager::class)
+            ->get(\Thucke\ThRating\Service\ExtensionHelperService::class)->getLogger(__CLASS__);
+
+        $this->logger->log(\TYPO3\CMS\Core\Log\LogLevel::DEBUG, 'Entry point');
 
         $this->prefixId = strtolower('tx_' . $this->request->getControllerExtensionName() . '_' . $this->request->getPluginName());
-
-        //\TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump($this->settings,get_class($this).' settings');
-        //\TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump($this,get_class($this).' initializeAction');
 
         //Set default storage pids to SITEROOT
         $this->setStoragePids();
 
         /** @var array $frameworkConfiguration */
         $frameworkConfiguration = $this->configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
-        if ($this->request->hasArgument('ajaxRef')) {
+        if ($this->request->hasArgument(self::AJAX_REFERENCE_ID)) {
             //switch to JSON respone on AJAX request
             $this->request->setFormat('json');
             //read unique AJAX identification on AJAX request
-            $this->ajaxSelections['ajaxRef'] = $this->request->getArgument('ajaxRef');
+            $this->ajaxSelections['ajaxRef'] = $this->request->getArgument(self::AJAX_REFERENCE_ID);
             $this->settings = json_decode($this->request->getArgument('settings'), true);
             $frameworkConfiguration['settings'] = $this->settings;
             $this->initSettings();
@@ -276,11 +266,7 @@ class VoteController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
         if (!is_array($frameworkConfiguration['ratings'])) {
             $frameworkConfiguration['ratings'] = [];
         }
-        if (\TYPO3\CMS\Core\Utility\VersionNumberUtility::convertVersionNumberToInteger(TYPO3_version) < 6002004) {
-            \TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule($this->settings['ratingConfigurations'], $frameworkConfiguration['ratings']);
-        } else {
-            \TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule($this->settings['ratingConfigurations'], $frameworkConfiguration['ratings']);
-        }
+        \TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule($this->settings['ratingConfigurations'], $frameworkConfiguration['ratings']);
         $this->setFrameworkConfiguration($frameworkConfiguration);
     }
 
@@ -792,7 +778,7 @@ class VoteController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
             $currentPollDimensions = $currentRates['currentPollDimensions'];
 
             foreach ($vote->getRating()->getRatingobject()->getStepconfs() as $i => $stepConf) {
-                $key = utf8_encode(json_encode(['value' => $stepConf->getUid(), 'voter' => $vote->getVoter()->getUid(), 'rating' => $vote->getRating()->getUid(), 'ratingName' => $this->ratingName, 'settings' => json_encode($this->settings), 'actionName' => strtolower($this->request->getControllerActionName()), 'ajaxRef' => $this->ajaxSelections['ajaxRef']]));
+                $key = utf8_encode(json_encode(['value' => $stepConf->getUid(), 'voter' => $vote->getVoter()->getUid(), 'rating' => $vote->getRating()->getUid(), 'ratingName' => $this->ratingName, 'settings' => json_encode($this->settings), 'actionName' => strtolower($this->request->getControllerActionName()), self::AJAX_REFERENCE_ID => $this->ajaxSelections['ajaxRef']]));
                 $this->ajaxSelections['json'][$key] = strval($stepConf);
                 $this->ajaxSelections['steporder'][$stepConf->getSteporder()]['step'] = $stepConf;
                 $this->ajaxSelections['steporder'][$stepConf->getSteporder()]['ajaxvalue'] = $key;
@@ -983,13 +969,23 @@ class VoteController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
                 //do update using whole currentrates JSON array
                 $currentRates = json_encode($currentRatesArray);
             }
+
+            /** @var QueryBuilder $queryBuilder */
+            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+                ->getQueryBuilderForTable($this->richSnippetConfig['tablename']);
+
             //do update foreign table
-            $queryResult = $this->databaseConnection->exec_UPDATEquery($rateTable, 'uid = ' . $rateUid, [$rateField => $currentRates]);
+            $queryResult = $queryBuilder
+                ->update($this->richSnippetConfig['tablename'])
+                ->where($queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($rateUid)))
+                ->set($rateField, $currentRates)
+                ->execute();
+
             return !empty($queryResult);
-        } else {
-            $this->logger->log(\TYPO3\CMS\Core\Log\LogLevel::NOTICE, 'Foreign ratefield does not exist in ratetable', ['ratingobject UID' => $rating->getRatingobject()->getUid(), 'ratetable' => $rating->getRatingobject()->getRatetable(), 'ratefield' => $rating->getRatingobject()->getRatefield()]);
-            return true;
         }
+
+        $this->logger->log(\TYPO3\CMS\Core\Log\LogLevel::NOTICE, 'Foreign ratefield does not exist in ratetable', ['ratingobject UID' => $rating->getRatingobject()->getUid(), 'ratetable' => $rating->getRatingobject()->getRatetable(), 'ratefield' => $rating->getRatingobject()->getRatefield()]);
+        return true;
     }
 
     /**
@@ -1028,17 +1024,6 @@ class VoteController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
         $lockedFields[] .= $TCA['transOrigDiffSourceField'];
         $lockedFields[] .= $TCA['transForeignTable'];
         return $lockedFields;
-    }
-
-    /**
-     * @return \TYPO3\CMS\Core\Database\DatabaseConnection
-     */
-    protected function getDatabaseConnection()
-    {
-        /** @var \TYPO3\CMS\Core\Database\DatabaseConnection $TYPO3_DB */
-        global $TYPO3_DB;
-
-        return $TYPO3_DB;
     }
 
     /**
