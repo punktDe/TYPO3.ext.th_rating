@@ -24,7 +24,7 @@ $GLOBALS['TCA']['tx_thrating_domain_model_vote'] = [
 				'type' => 'none',]],
 		'hidden' => [
 			'exclude' 	=> 1,
-			'label'   	=> 'LLL:EXT:lang/locallang_general.xml:LGL.hidden',
+			'label'   	=> 'LLL:EXT:lang/locallang_general.xlf:LGL.hidden',
 			'config'  	=> [
 				'type' 		=> 'check']],
 		'rating' => [
@@ -44,7 +44,7 @@ $GLOBALS['TCA']['tx_thrating_domain_model_vote'] = [
 				'type' => 'select',
 				'renderType' 	=> 'selectSingle',
 				'foreign_table' => 'fe_users',
-				'foreign_table_where' => 'ORDER BY {#fe_users}.{#username}',
+				'foreign_table_where' => 'ORDER BY fe_users.username',
 				'items'	=> [
 					['--div--',0],],
                 'fieldControl' => [

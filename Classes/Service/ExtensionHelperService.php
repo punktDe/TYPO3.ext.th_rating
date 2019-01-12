@@ -1,5 +1,6 @@
 <?php
 namespace Thucke\ThRating\Service;
+use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
 
 /***************************************************************
 *  Copyright notice
@@ -32,6 +33,7 @@ namespace Thucke\ThRating\Service;
  */
 class ExtensionHelperService extends AbstractExtensionService
 {
+    protected const DYN_CSS_FILENAME = 'typo3temp/thratingDyn.css';
 
 	/**
 	 * @var \Thucke\ThRating\Domain\Repository\RatingobjectRepository
@@ -174,7 +176,6 @@ class ExtensionHelperService extends AbstractExtensionService
 		} else {
 			if ( empty($settings['ratetable']) || empty($settings['ratefield']) ) {
 				//fallback to default configuration
-				//TODO delete deprected $settings = array_merge($settings, $settings['defaultObject']);
 				$settings = $settings['defaultObject'] + $settings;
 			}
 			$settings = $this->completeConfigurationSettings( $settings );		
@@ -238,7 +239,8 @@ class ExtensionHelperService extends AbstractExtensionService
 		if ( !empty($settings['rating']) ) {
 			//fetch rating when it is configured
 			$rating = $this->ratingRepository->findByUid($settings['rating']);
-		} elseif ( !$this->objectManager->get(\Thucke\ThRating\Domain\Validator\RatingobjectValidator::class)->validate($ratingobject)->hasErrors() && $settings['ratedobjectuid'] ) {
+		} elseif ( $settings['ratedobjectuid'] && !$this->objectManager->get(\Thucke\ThRating\Domain\Validator\RatingobjectValidator::class)
+                ->validate($ratingobject)->hasErrors() ) {
 			//get rating according to given row
 			$rating = $this->ratingRepository->findMatchingObjectAndUid($ratingobject, $settings['ratedobjectuid'], \Thucke\ThRating\Domain\Repository\RatingRepository::addIfNotFound);
 		} else {
@@ -263,28 +265,27 @@ class ExtensionHelperService extends AbstractExtensionService
         /** @var     \Thucke\ThRating\Domain\Model\Voter $voter */
 
         //first fetch real voter or anonymous
+        /** @var integer $frontendUserUid */
         $frontendUserUid = $this->accessControllService->getFrontendUserUid();
-        if ( !empty($settings['mapAnonymous']) && !$frontendUserUid ) {
+        if ( !$frontendUserUid && !empty($settings['mapAnonymous']) ) {
             //set anonymous vote
             $voter =  $this->accessControllService->getFrontendVoter($settings['mapAnonymous']);
             $anonymousRating = json_decode($_COOKIE[$prefixId.'_AnonymousRating_'.$rating->getUid()], true);
             if ( !empty($anonymousRating['voteUid']) ) {
                 $vote = $this->voteRepository->findByUid($anonymousRating['voteUid']);
             }
-        } else {
-            if ( $frontendUserUid ) {
-                //set FEUser if one is logged on
-                $voter =  $this->accessControllService->getFrontendVoter( $frontendUserUid );
-                if ($voter instanceof \Thucke\ThRating\Domain\Model\Voter) {
-                    $vote = $this->voteRepository->findMatchingRatingAndVoter($rating->getUid(), $voter->getUid());
-                }
+        } else if ( $frontendUserUid ) {
+            //set FEUser if one is logged on
+            $voter =  $this->accessControllService->getFrontendVoter( $frontendUserUid );
+            if ($voter instanceof \Thucke\ThRating\Domain\Model\Voter) {
+                $vote = $this->voteRepository->findMatchingRatingAndVoter($rating->getUid(), $voter->getUid());
             }
         }
         //voting not found in database or anonymous vote? - create new one
-        $voteValidator = $this->objectManager->get('Thucke\\ThRating\\Domain\\Validator\\VoteValidator');
+        $voteValidator = $this->objectManager->get(\Thucke\ThRating\Domain\Validator\VoteValidator::class);
         if ( !$voteValidator->isObjSet($vote) || $voteValidator->validate($vote)->hasErrors() ) {
-            $vote = $this->objectManager->get('Thucke\\ThRating\\Domain\\Model\\Vote');
-            $ratingValidator = $this->objectManager->get('Thucke\\ThRating\\Domain\\Validator\\RatingValidator');
+            $vote = $this->objectManager->get(\Thucke\ThRating\Domain\Model\Vote::class);
+            $ratingValidator = $this->objectManager->get(\Thucke\ThRating\Domain\Validator\RatingValidator::class);
             if ( $ratingValidator->isObjSet($rating) && !$ratingValidator->validate($rating)->hasErrors() ) {
                 $vote->setRating($rating);
             }
@@ -306,10 +307,10 @@ class ExtensionHelperService extends AbstractExtensionService
 	public function getLogger( $name = null) {
 	    if (empty($name)) {
             return $this->loggingService->getLogger(__CLASS__);
-        } else {
-            return $this->loggingService->getLogger($name);
         }
-	}
+
+        return $this->loggingService->getLogger($name);
+    }
 
     /**
 	 * Update and persist attached objects to the repository
@@ -325,7 +326,7 @@ class ExtensionHelperService extends AbstractExtensionService
 		} else {
 			$this->objectManager->get($repository)->update($objectToPersist);
 		}
-		$this->objectManager->get('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\PersistenceManager')->persistAll();
+		$this->objectManager->get(PersistenceManager::class)->persistAll();
 	}
 
 	/**
@@ -340,7 +341,7 @@ class ExtensionHelperService extends AbstractExtensionService
 	/**
 	 * Render CSS-styles for ratings and ratingsteps
 	 * Only called by singeltonAction to render styles once per page.
-	 * The file 'typo3temp/thratingDyn.css' will be created if it doesn�t exist
+	 * The file self::DYN_CSS_FILENAME will be created if it doesn�t exist
 	 *
 	 * @return array
 	 */
@@ -348,11 +349,11 @@ class ExtensionHelperService extends AbstractExtensionService
         /** @var string $cssFile */
 	    $messageArray = [];
 		//create file if it does not exist
-		if (file_exists(PATH_site.'typo3temp/thratingDyn.css')) {
-			$fstat = stat (PATH_site.'typo3temp/thratingDyn.css');
+		if (file_exists(PATH_site.self::DYN_CSS_FILENAME)) {
+			$fstat = stat (PATH_site.self::DYN_CSS_FILENAME);
 			//do not recreate file if it has greater than zero length
-			if ( $fstat[7] != 0 ) {
-				$this->logger->log(	\TYPO3\CMS\Core\Log\LogLevel::DEBUG, 'Dynamic CSS file exists - exiting', []);
+			if ( $fstat[7] !== 0 ) {
+				$this->logger->log(	\TYPO3\CMS\Core\Log\LogLevel::DEBUG, 'Dynamic CSS file exists - exiting');
 				return $messageArray;
 			}
 		}
@@ -396,7 +397,7 @@ class ExtensionHelperService extends AbstractExtensionService
 						$messageArray[] = [
 						    'messageText' => $errorMessage->getMessage(),
 					        'messageTitle' => \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('flash.configuration.error', 'ThRating'),
-						    'severity' => "ERROR",
+						    'severity' => 'ERROR',
 						    'additionalInfo' => ['errorCode' => $errorMessage->getCode(),
 					                                  'errorMessage' => $errorMessage->getMessage()]];
 					}
@@ -414,11 +415,11 @@ class ExtensionHelperService extends AbstractExtensionService
 
 			//generate CSS for all ratings out of TSConfig
 			foreach ( $this->settings['ratingConfigurations'] as $ratingName => $ratingConfig) {
-				if ( $ratingName == 'default' ) {
+				if ( $ratingName === 'default' ) {
 					continue;
 				}
 				$subURI = substr(PATH_site, strlen($_SERVER['DOCUMENT_ROOT'])+1);
-				$basePath = $this->getTypoScriptFrontendController()->baseUrl ? $this->getTypoScriptFrontendController()->baseUrl : '//'.$_SERVER['HTTP_HOST'].'/'.$subURI;
+				$basePath = $this->getTypoScriptFrontendController()->baseUrl ?: '//'.$_SERVER['HTTP_HOST'].'/'.$subURI;
 				
 				$this->ratingImage = $this->objectManager->get(\Thucke\ThRating\Domain\Model\RatingImage::class);
                 $this->ratingImage->setConf($ratingConfig['imagefile']);
@@ -427,7 +428,7 @@ class ExtensionHelperService extends AbstractExtensionService
                     $messageArray[] = [
                         'messageText' => \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('flash.vote.renderCSS.defaultImage', 'ThRating'),
                         'messageTitle' => \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('flash.heading.warning', 'ThRating'),
-                        'severity' => "WARNING", 
+                        'severity' => 'WARNING',
                         'additionalInfo' => ['errorCode' => 1403192702,
 									'ratingName' => $ratingName,
 									'ratingConfig' => $ratingConfig]];
@@ -453,7 +454,7 @@ class ExtensionHelperService extends AbstractExtensionService
                 if ( $ratingConfig['tilt'] ){
                             $width = round($width / 3,1);
                             if ( !$ratingConfig['barimage'] ) {
-                                $height = $height * $sumStepWeights;
+                                $height *= $sumStepWeights;
                             }
                             $cssFile .= $mainId.' { width:'.$width.'px; height:'.$height.'px; }'.chr(10);
 							$cssFile .= $mainId.', '.$mainId.' span:hover, '.$mainId.' span:active, '.$mainId.' span:focus, '.$mainId.' .current-rating {	background:url('.$filenameUri.') right bottom repeat-y;	}'.chr(10);
@@ -461,7 +462,7 @@ class ExtensionHelperService extends AbstractExtensionService
 						} else {
 							$height = round($height / 3,1);
 							if ( !$ratingConfig['barimage'] ) {
-								$width = $width * $sumStepWeights;
+								$width *= $sumStepWeights;
 							}
 							$cssFile .= $mainId.' { width:'.$width.'px; height:'.$height.'px; }'.chr(10);
 							$cssFile .= $mainId.', '.$mainId.' span:hover, '.$mainId.' span:active, '.$mainId.' span:focus, '.$mainId.' .current-rating {	background:url('.$filenameUri.') 0 0 repeat-x;	}'.chr(10);
@@ -492,14 +493,12 @@ class ExtensionHelperService extends AbstractExtensionService
 				$i++;
 			}
 			//reset variables for next iteration
-			unset($stepWeights);
-			unset($sumWeights);
-			unset($sumStepWeights);
-			$this->logger->log(	\TYPO3\CMS\Core\Log\LogLevel::DEBUG, 'CSS finished for ratingobject', []);
+            unset($stepWeights, $sumWeights, $sumStepWeights);
+            $this->logger->log(	\TYPO3\CMS\Core\Log\LogLevel::DEBUG, 'CSS finished for ratingobject', []);
 		}
 		
 		$this->logger->log(	\TYPO3\CMS\Core\Log\LogLevel::DEBUG, 'Saving CSS file', ['cssFile' => $cssFile]);
-		$fp = fopen ( PATH_site.'typo3temp/thratingDyn.css', 'w' );
+		$fp = fopen ( PATH_site.self::DYN_CSS_FILENAME, 'w' );
 		fwrite ( $fp, $cssFile);
 		fclose ( $fp );
 		return $messageArray;

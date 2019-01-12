@@ -72,7 +72,9 @@ class RatingImage extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	 */
 	public function __construct($conf = NULL) {
 		$this->initializeObject();
-		If (!empty($conf)) $this->setConf($conf);
+		If (!empty($conf)) {
+            $this->setConf($conf);
+        }
 	}
 
 	/**
@@ -94,10 +96,10 @@ class RatingImage extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	 */
 	public function setConf($conf) {
 		switch (gettype($conf)) {
-			case "string":
+			case 'string':
 				$this->setImageFile($conf);
 				break;
-			case "array":
+			case 'array':
 				$this->conf = $conf;
 				$this->generateImage();
 				break;
@@ -111,7 +113,9 @@ class RatingImage extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	 * @return array
 	 */
 	public function getConf() {
-		If (empty($this->conf)) return [];
+		If (empty($this->conf)) {
+            return [];
+        }
 		return $this->conf;
 	}
 	/**
@@ -127,9 +131,8 @@ class RatingImage extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 			$this->isBuilderObject = false;
 		} else {
 			//clear path if given file is invalid
-			unset($this->imageFile);
-			unset($this->isBuilderObject);
-			//TODO: error handling
+            unset($this->imageFile, $this->isBuilderObject);
+            //TODO: error handling
 		}
 	}
 	/**
@@ -162,10 +165,10 @@ class RatingImage extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 			$this->setImageFile($genImageFile);
 			$this->isBuilderObject = true;
 			return true;
-		} else {
-			return false;
 		}
-	}
+
+        return false;
+    }
 
 	/**
 	 * Returns the filename of the image
@@ -175,9 +178,9 @@ class RatingImage extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	 */
 	public function getImageDimensions() {
 		If ($this->isBuilderObject) {
-			list($width, $height) = $this->gifBuilder->getImageDimensions($this->imageFile);
+			[$width, $height] = $this->gifBuilder->getImageDimensions($this->imageFile);
 		} else {
-			list($width, $height) = getimagesize($this->getImageFile(true));
+			[$width, $height] = getimagesize($this->getImageFile(true));
 		}
 		return ['width'=>$width, 'height'=>$height, 'builderObject'=>$this->isBuilderObject];
 	}
@@ -188,7 +191,6 @@ class RatingImage extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	 * 
 	 * @return string
 	 */
-	public function __toString() {
 		return $this->imageFile;
 	}	
 }

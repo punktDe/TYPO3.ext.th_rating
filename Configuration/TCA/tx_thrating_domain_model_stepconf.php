@@ -24,10 +24,11 @@ $GLOBALS['TCA']['tx_thrating_domain_model_stepconf'] =  [
 				'type' => 'none',],],
 		'hidden' => [
 			'exclude' => 1,
-			'label'   => 'LLL:EXT:lang/locallang_general.xml:LGL.hidden',
+			'label'   => 'LLL:EXT:lang/locallang_general.xlf:LGL.hidden',
 			'config'  => [
 				'type' => 'check',
-				'default' => 0,],],
+            ],
+        ],
 		'ratingobject' 	=> [
 			'exclude'	=> 1,
 			'label'  	=> 'LLL:EXT:th_rating/Resources/Private/Language/locallang.xlf:tca.model.stepconf.ratingobject',
@@ -78,15 +79,20 @@ $GLOBALS['TCA']['tx_thrating_domain_model_stepconf'] =  [
 					'showAllLocalizationLink' => true,
 					'showRemovedLocalizationRecords' => 1,],
 				'behaviour' => [
-					'localizationMode' => 'select',
-					'enableCascadingDelete' => true,],],],
+					'allowLanguageSynchronization' => true,
+					'enableCascadingDelete' => true,
+                ],
+            ],
+        ],
 		'votes' => [
 			'exclude' 		=> 1,
 			'label'   		=> 'LLL:EXT:th_rating/Resources/Private/Language/locallang.xlf:tca.model.stepconf.votes',
-			'l10n_mode' 	=> 'exclude',
-			//'l10n_display'	=> 'hideDiff',
+			'l10n_mode' 	=> 'eclude',
 			'config' => [
 				'type' => 'inline',
+                'behaviour' => [
+                    'allowLanguageSynchronization' => true,
+                ],
 				'foreign_table' 	=> 'tx_thrating_domain_model_vote',
 				'foreign_field' 	=> 'vote',
 				'foreign_default_sortby'	=> 'uid',
@@ -94,7 +100,10 @@ $GLOBALS['TCA']['tx_thrating_domain_model_stepconf'] =  [
 					'levelLinksPosition'	=> 'bottom',
 					'collapseAll' 			=> 1,
 					'expandSingle' 			=> 1,
-					'newRecordLinkAddTitle' => true,],],],
+					'newRecordLinkAddTitle' => true,
+                ],
+            ],
+        ],
 		'uid' => [
 			'label'   => 'LLL:EXT:th_rating/Resources/Private/Language/locallang.xlf:tca.model.stepconf.uid',
 			'config' => [
