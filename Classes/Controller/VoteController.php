@@ -1002,6 +1002,8 @@ class VoteController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
         $lockedFields = \TYPO3\CMS\Core\Utility\GeneralUtility::intExplode(',', $TCA['label_alt'], true);
         $lockedFields[] .= 'pid';
         $lockedFields[] .= 'uid';
+        $lockedFields[] .= 'pages';
+        $lockedFields[] .= 'pages_language_overlay';
         $lockedFields[] .= $TCA['label'];
         $lockedFields[] .= $TCA['tstamp'];
         $lockedFields[] .= $TCA['crdate'];
@@ -1020,9 +1022,7 @@ class VoteController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
         $lockedFields[] .= $TCA['fe_admin_lock'];
         $lockedFields[] .= $TCA['languageField'];
         $lockedFields[] .= $TCA['transOrigPointerField'];
-        $lockedFields[] .= $TCA['transOrigPointerTable'];
         $lockedFields[] .= $TCA['transOrigDiffSourceField'];
-        $lockedFields[] .= $TCA['transForeignTable'];
         return $lockedFields;
     }
 
