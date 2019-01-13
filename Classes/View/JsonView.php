@@ -1,5 +1,6 @@
 <?php
 namespace Thucke\ThRating\View;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -31,13 +32,16 @@ namespace Thucke\ThRating\View;
  */
 class JsonView extends \TYPO3\CMS\Extbase\Mvc\View\JsonView {
 
+    protected const CONFIGURATION_EXCLUDE = '_exclude';
+    protected const CONFIGURATION_DESCEND = '_descend';
+
 	/**
 	 * Tag builder instance
 	 *
 	 * @var \TYPO3\CMS\Fluid\Core\ViewHelper\TagBuilder
 	 * @inject
 	 */
-	protected $tag = NULL;
+	protected $tag;
 
 	/**
 	 * Only variables whose name is contained in this array will be rendered
@@ -66,32 +70,32 @@ class JsonView extends \TYPO3\CMS\Extbase\Mvc\View\JsonView {
 		'flashMessages',];
 	/**/
 
-	/**
+    /**
 	 * Initializes this view.
 	 *
 	 * Override this method for initializing your concrete view implementation.
-	 *
 	 * @return void
 	 * @api
 	 */
-	public function initializeView() {
+    /** @noinspection PhpMissingParentCallCommonInspection */
+    public function initializeView() {
 		$configuration = [
 			'voter' => [
-				'_exclude' => ['pid','uid'],],
+				self::CONFIGURATION_EXCLUDE => ['pid','uid'],],
 			'rating' => [
-				'_exclude' => ['pid','uid'],
-				'_descend' => [
+				self::CONFIGURATION_EXCLUDE => ['pid','uid'],
+				self::CONFIGURATION_DESCEND => [
 					'currentrates' => [],
 					'ratingobject' => [
-						'_exclude' => ['pid','uid'],],],],
+						self::CONFIGURATION_EXCLUDE => ['pid','uid'],],],],
 			'voting' => [
-				'_exclude' => ['pid','uid'],
-				'_descend' => [
+				self::CONFIGURATION_EXCLUDE => ['pid','uid'],
+				self::CONFIGURATION_DESCEND => [
 					'vote' => [
-						'_exclude' => ['pid','uid'],
-						'_descend' => [
+						self::CONFIGURATION_EXCLUDE => ['pid','uid'],
+						self::CONFIGURATION_DESCEND => [
 							'stepname' => [
-								'_exclude' => ['pid','uid'],],],],],],];
+								self::CONFIGURATION_EXCLUDE => ['pid','uid'],],],],],],];
 		$this->setConfiguration($configuration);
 	}
 
@@ -101,27 +105,8 @@ class JsonView extends \TYPO3\CMS\Extbase\Mvc\View\JsonView {
 	 * @return string
 	 */
 	public function getFlashMessages() {
-		$this->tag = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager')->get('TYPO3\\CMS\\Fluid\\Core\\ViewHelper\\TagBuilder');
-		return $this->renderAsDiv($this->controllerContext->getFlashMessageQueue()->getAllMessagesAndFlush());
-	}
-
-	/**
-	 * Renders the flash messages in DIV mode like in TYPO3 6.2
-	 *
-	 * @param array $flashMessages \TYPO3\CMS\Core\Messaging\FlashMessage[]
-	 * @return string
-	 */
-	protected function renderAsDiv(array $flashMessages) {
-		$markup = [];
-		foreach ($flashMessages as $flashMessage) {
-			$markup[] = '<div class="alert ' . htmlspecialchars($flashMessage->getClass()). '">';
-			$messageTitle = $flashMessage->getTitle();
-			if ($messageTitle !== '') {
-				$markup[] = '<h4 class="alert-title">' . htmlspecialchars($messageTitle) . '</h4>';
-			}
-			$markup[] = '<div class="alert-message">' . htmlspecialchars($flashMessage->getMessage()) . '</div>';
-			$markup[] = '</div>';
-		}
-		return trim(implode('', $markup));
+        return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Messaging\FlashMessageRendererResolver::class)
+            ->resolve()
+            ->render($this->controllerContext->getFlashMessageQueue()->getAllMessagesAndFlush());
 	}
 }

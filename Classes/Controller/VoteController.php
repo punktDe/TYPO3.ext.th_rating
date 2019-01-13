@@ -894,7 +894,7 @@ class VoteController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
     protected function setFrameworkConfiguration(array $frameworkConfiguration)
     {
         $this->configurationManager->setConfiguration($frameworkConfiguration);
-        $this->cookieLifetime = abs(intval($this->settings['cookieLifetime']));
+        $this->cookieLifetime = abs((int)$this->settings['cookieLifetime']);
         $this->logger->log(\TYPO3\CMS\Core\Log\LogLevel::DEBUG, 'Cookielifetime set to ' . $this->cookieLifetime . " days", ['errorCode' => 1465728751]);
         if (empty($this->cookieLifetime)) {
             $this->cookieProtection = false;
@@ -933,7 +933,7 @@ class VoteController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
             default :
                 $flashSeverity = 'ERROR';
         }
-        if (intval($additionalInfo['errorCode'])) {
+        if ((int)$additionalInfo['errorCode']) {
             $messageText = $messageText . ' (' . $additionalInfo['errorCode'] . ')';
         }
 

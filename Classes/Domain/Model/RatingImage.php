@@ -191,6 +191,7 @@ class RatingImage extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	 * 
 	 * @return string
 	 */
+    public function __toString() {
 		return $this->imageFile;
 	}	
 }

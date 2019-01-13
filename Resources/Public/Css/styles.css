@@ -44,9 +44,6 @@
 	font-weight:bold;
 }
 
-.tx-thrating-singleton-message .alert-body {
-	padding:3px;
-}
 div.tx-thrating-ratinglinks > div.stepnameTooltip{
     display:none;
     visibility:hidden;
@@ -205,49 +202,41 @@ div.tx-thrating-ratinglinks ul{
     border-bottom-right-radius: 0.2em;
     border-bottom-left-radius: 0.2em;
 }
+.tx-thrating-flash-message .alert {
+    border: 1px dotted grey;
+    padding:1px;
+    margin:0px;
+}
+.tx-thrating-flash-message .alert p {
+    margin-top:0.15em;
+    margin-bottom: 0;
+}
+.tx-thrating-flash-message .alert-title {
+    font-weight:bold;
+}
 .tx-thrating-flash-message .alert-danger h4 {
 	background-color: #c8453c;
-    border: 1px dotted grey;
-	padding:1px;
-	margin:0;
-	font-weight:bold;
 }
 .tx-thrating-flash-message .alert-warning h4 {
 	background-color: #e8a13d;
-    border: 1px dotted grey;
-	padding:1px;
-	margin:0;
-	font-weight:bold;
 }
 .tx-thrating-flash-message .alert-notice h4 {
 	background-color: #363636;
-    border: 1px dotted blue;
-	padding:1px;
-	margin:0;
-	font-weight:bold;
 }
 .tx-thrating-flash-message .alert-info h4 {
 	background-color: #6ba9df;
-    border: 1px dotted blue;
-	padding:1px;
-	margin:0;
-	font-weight:bold;
 }
 .tx-thrating-flash-message .alert-success h4 {
 	background-color: #75a049;
-    border: 1px dotted grey;
-	padding:1px;
-	margin:0;
-	font-weight:bold;
 }
-.tx-thrating-flash-message .alert-body,
 .tx-thrating-flash-message {
 	padding-top:3px;
 }
 .tx-thrating-flash-message li{
 	display:inline;
+    float:left;
 }
 .tx-thrating-flash-message ul{
 	padding:0px;
-	margin:1px;
+	margin:0px;
 }
