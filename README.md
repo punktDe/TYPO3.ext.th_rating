@@ -1,10 +1,8 @@
 
 ---
 
-<div>
    <img src="Documentation/Images/typo3-200px-transparent.png" align="left" />
-   <p>EXT: Rating AX</p>
-</div>
+   EXT: Rating AX
    
 ---
 
