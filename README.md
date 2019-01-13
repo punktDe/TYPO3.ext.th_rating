@@ -1,7 +1,7 @@
 
 ---
 
-   <img src="Documentation/Images/typo3-200px-transparent.png"/>
+   ![Rating AX](Documentation/Images/typo3-200px-transparent.png")
    
 ---
 
