@@ -1,9 +1,11 @@
 
 ---
 
+<div>
    <img src="Documentation/Images/typo3-200px-transparent.png" align="left" />
-   <div style="height:84px;display: table-cell; vertical-align: middle;">EXT: Rating AX</div>
-
+   <p>EXT: Rating AX</p>
+</div>
+   
 ---
 
 This is the source repository of the upper mentioned TYPO3 extension.
