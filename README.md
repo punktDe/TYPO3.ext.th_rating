@@ -7,11 +7,13 @@
    <br />
    
 
-|img-1|
+![](Documentation/Images/hr.gif)
 
-|img-2| EXT: Rating AX
+![](Documentation/Images/typo3-200px-transparent.png?classes=float-left) EXT: Rating AX
 
-|img-1|
+<image href="Documentation/Images/typo3-200px-transparent.png" style="float:left;"/>
+
+![](Documentation/Images/hr.gif)
 
 This is the source repository of the upper mentioned TYPO3 extension.
 
