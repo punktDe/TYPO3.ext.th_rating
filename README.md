@@ -9,9 +9,10 @@
 
 ![](Documentation/Images/hr.gif)
 
-![](Documentation/Images/typo3-200px-transparent.png?classes=float-left) EXT: Rating AX
-
-<image href="Documentation/Images/typo3-200px-transparent.png" style="float:left;"/>
+<p>
+   <img src="Documentation/Images/typo3-200px-transparent.png" style="float:left;"/>
+   EXT: Rating AX
+</p>
 
 ![](Documentation/Images/hr.gif)
 
