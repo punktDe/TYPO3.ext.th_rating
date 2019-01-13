@@ -2,7 +2,7 @@
 <img src="Documentation/Images/hr.gif" />
 <div>
    <img src="Documentation/Images/typo3-200px-transparent.png" align="left" />
-   <p style="height:84px; vertical-align:middle; display:table-cell;">EXT: Rating AX</p>
+   <div style="height:84px;display: table-cell; vertical-align: middle;">EXT: Rating AX</div>
 </div>
 <img src="Documentation/Images/hr.gif" />
 
