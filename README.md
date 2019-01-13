@@ -1,12 +1,8 @@
 ![](Documentation/Images/hr.gif)
-
 <div>
-<div style="top:50%;">
-   <img src="Documentation/Images/typo3-200px-transparent.png" align="left" />
-   <p>EXT: Rating AX</p>
+   <img src="Documentation/Images/typo3-200px-transparent.png" style=="float:left;" />
+   <p style="height:84px; vertical-align:middle; display: table-cell;">EXT: Rating AX</p>
 </div>
-</div>
-
 ![](Documentation/Images/hr.gif)
 
 This is the source repository of the upper mentioned TYPO3 extension.
