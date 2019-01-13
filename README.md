@@ -6,8 +6,8 @@
 ![](Documentation/Images/hr.gif)
 
 <div>
-<div style="top:50%">
-   <img src="Documentation/Images/typo3-200px-transparent.png" style="float:left;"/>
+   <img src="Documentation/Images/typo3-200px-transparent.png" align="left" />
+<div style="top:50%;">
    <p>EXT: Rating AX</p>
 </div>
 </div>
@@ -24,4 +24,6 @@ Informations until version 1.5.2 could be found on ![TYPO3 Forge](https://forge.
 
 This extension is supported by Jetbrains PHPStorm IDE.
 
-<img href="https://www.jetbrains.com/?from=RatingAXTYPO3extension" src="Documentation/DeveloperInformation/phpstorm.png" width="100px" />
+<a href="https://www.jetbrains.com/?from=RatingAXTYPO3extension">
+   <img src="Documentation/DeveloperInformation/phpstorm.png" width="100px" />
+</a>
