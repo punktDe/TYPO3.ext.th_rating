@@ -1,11 +1,11 @@
-![](Documentation/Images/hr.gif)
 
+<img src="Documentation/Images/hr.gif" />
 <div>
-   <img src="Documentation/Images/typo3-200px-transparent.png" style=="float:left;" />
-   <p style="height:84px; vertical-align:middle; display: table-cell;">EXT: Rating AX</p>
+   <img src="Documentation/Images/typo3-200px-transparent.png" style="float:left;" />
+   <p style="height:84px; vertical-align:middle; display:table-cell;">EXT: Rating AX</p>
 </div>
+<img src="Documentation/Images/hr.gif" />
 
-![](Documentation/Images/hr.gif)
 
 This is the source repository of the upper mentioned TYPO3 extension.
 
