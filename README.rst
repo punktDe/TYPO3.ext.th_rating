@@ -41,7 +41,7 @@ This extension is supported by Jetbrains PHPStorm IDE.
 .. :hspace: 9
 .. :name: TYPO3Logo
 
-.. |phpstorm.png|                image:: phpstorm.png
+.. |phpstorm.png|                image:: Documentation/DeveloperInformation/phpstorm.png
 .. :target: https://www.jetbrains.com/?from=RatingAXTYPO3extension
 .. :alt: Jetbrains PHPStorm IDE
 .. :align: top
