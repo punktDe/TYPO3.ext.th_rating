@@ -14,9 +14,9 @@ if (!defined('TYPO3_MODE')) die ('Access denied.');
         'Vote' => 'new,create,ratinglinks,polling,mark',]);
 
 // here we register "DynamicCssEvaluator" to remove the dynamic CSS file when values are modified in the BE
-$TYPO3_CONF_VARS['SC_OPTIONS']['tce']['formevals'][\Thucke\ThRating\Evaluation\DynamicCssEvaluator::class] = 'EXT:th_rating/Classes/Evaluation/DynamicCssEvaluator.php';
+$TYPO3_CONF_VARS['SC_OPTIONS']['tce']['formevals'][Thucke\ThRating\Evaluation\DynamicCssEvaluator::class] = '';
 //add hook to remove the dynamic CSS file when cache is cleared
-$TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['clearCachePostProc'][] = 'EXT:th_rating/Classes/Evaluation/DynamicCssEvaluator.php:&Thucke\\ThRating\\Evaluation\\DynamicCssEvaluator->clearCachePostProc';
+$TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['clearCachePostProc'][] = 'Thucke\ThRating\Evaluation\DynamicCssEvaluator->clearCachePostProc';
 
 /**
  * Base configuration of logging events.
