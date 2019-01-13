@@ -1,8 +1,3 @@
-.. |br| raw:: html
-
-   <br />
-   
-
 ![](Documentation/Images/hr.gif)
 
 <div>
