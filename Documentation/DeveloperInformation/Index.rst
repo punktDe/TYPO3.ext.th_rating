@@ -34,7 +34,7 @@ Supported by Jetbrains PHPStorm IDE
 
 .. |phpstorm.png|                image:: phpstorm.png
    :target: https://www.jetbrains.com/?from=RatingAXTYPO3extension
-   :alt: Jetbarins PHPStorm IDE
+   :alt: Jetbrains PHPStorm IDE
    :align: top
    :width: 100
 

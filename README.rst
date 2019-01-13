@@ -42,10 +42,10 @@ This extension is supported by Jetbrains PHPStorm IDE.
 .. :name: TYPO3Logo
 
 .. |phpstorm.png|                image:: phpstorm.png
-   :target: https://www.jetbrains.com/?from=RatingAXTYPO3extension
-   :alt: Jetbarins PHPStorm IDE
-   :align: top
-   :width: 100
+.. :target: https://www.jetbrains.com/?from=RatingAXTYPO3extension
+.. :alt: Jetbrains PHPStorm IDE
+.. :align: top
+.. :width: 100
 
 
 .. _readme:
