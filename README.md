@@ -6,8 +6,8 @@
 ![](Documentation/Images/hr.gif)
 
 <div>
-   <img src="Documentation/Images/typo3-200px-transparent.png" align="left" />
 <div style="top:50%;">
+   <img src="Documentation/Images/typo3-200px-transparent.png" align="left" />
    <p>EXT: Rating AX</p>
 </div>
 </div>
