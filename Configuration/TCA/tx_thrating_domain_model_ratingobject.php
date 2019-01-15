@@ -41,7 +41,9 @@ $GLOBALS['TCA']['tx_thrating_domain_model_ratingobject'] = [
 				'eval' => 'trim,required',
 				'max'  => 64]],
 		'uid' => [
-			'label'   => 'LLL:EXT:th_rating/Resources/Private/Language/locallang.xlf:tca.model.ratingobject.uid',],
+			'label'   => 'LLL:EXT:th_rating/Resources/Private/Language/locallang.xlf:tca.model.ratingobject.uid',
+            'config' => ['type' => 'none'],
+        ],
 		'stepconfs' => [
 			'exclude' => 1,
 			'label'   => 'LLL:EXT:th_rating/Resources/Private/Language/locallang.xlf:tca.model.ratingobject.stepconfs',

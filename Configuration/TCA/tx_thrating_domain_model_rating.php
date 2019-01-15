@@ -63,7 +63,10 @@ $GLOBALS['TCA']['tx_thrating_domain_model_rating'] = [
 				'type'		=> 'none',
 				'size'		=> '30',]],
 		'uid' => [
-			'label'   => 'LLL:EXT:th_rating/Resources/Private/Language/locallang.xlf:tca.model.rating.uid',],],
+			'label'   => 'LLL:EXT:th_rating/Resources/Private/Language/locallang.xlf:tca.model.rating.uid',
+            'config' => ['type' => 'none'],
+        ],
+    ],
 	'types' => [
 		'1' => ['showitem' => 'hidden, ratedobjectuid, votes']],
 	'palettes' => [

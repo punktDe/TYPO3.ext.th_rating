@@ -74,7 +74,10 @@ $GLOBALS['TCA']['tx_thrating_domain_model_vote'] = [
 				'minitems' => 1,
 				'disableNoMatchingValueElement' => 1]],
 		'uid' => [
-			'label'		=> 'LLL:EXT:th_rating/Resources/Private/Language/locallang.xlf:tca.model.vote.uid',],],
+			'label'		=> 'LLL:EXT:th_rating/Resources/Private/Language/locallang.xlf:tca.model.vote.uid',
+            'config' => ['type' => 'none'],
+        ],
+    ],
 	'types' => [
 		'1' => ['showitem' => 'hidden, rating, voter, vote'],],
 	'palettes' => [
