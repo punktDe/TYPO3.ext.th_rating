@@ -283,7 +283,7 @@ thrating_ajax {
         no_cache = 1
 		admPanel = 0
 		debug = 0
-		metaCharset = UTF-8
+		metaCharset = utf-8
 	}
 	10 < plugin.tx_thrating
 }

@@ -30,8 +30,8 @@ namespace Thucke\ThRating\ViewHelpers;
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License, version 2
  */
 class RatingViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
-	
-	/**
+
+    /**
 	 * @var \TYPO3\CMS\Core\Log\Logger	$logger
 	 */
 	protected $logger;
@@ -65,21 +65,37 @@ class RatingViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelp
 		$this->extensionHelperService = $extensionHelperService;
 	}
 
+
+    /**
+     *
+     */
+    public function initializeArguments()
+    {
+        $this->registerArgument('action', 'string', 'The rating action');
+        $this->registerArgument('ratetable', 'string', 'The rating tablename');
+        $this->registerArgument('ratefield', 'string', 'The rating fieldname');
+        $this->registerArgument('ratedobjectuid', 'integer', 'The ratingobject uid', true);
+        $this->registerArgument('ratingobject', 'integer', 'The ratingobject');
+        $this->registerArgument('display', 'string', 'The display configuration');
+    }
+
+
     /**
      * Renders the rating object
      *
-     * @param integer $ratedobjectuid
-     * @param string $action the controller action that should be used (ratinglinks, show, new )
-     * @param integer $ratingobject
-     * @param string $ratetable
-     * @param string $ratefield
-     * @param string $display
      * @return string the content of the rendered TypoScript object
      * @author Thomas Hucke <thucke@web.de>
      * @throws Exception
      */
-	public function render($ratedobjectuid, $action = NULL, $ratingobject = NULL, $ratetable = NULL, $ratefield = NULL, $display = NULL) {
-	    $typoscriptObjectPath = 'plugin.tx_thrating';
+	public function render() {
+        $ratedobjectuid = $this->arguments['ratedobjectuid'];
+        $action = $this->arguments['action'];
+        $ratingobject = $this->arguments['ratingobject'];
+        $ratetable = $this->arguments['ratetable'];
+        $ratefield = $this->arguments['ratefield'];
+        $display = $this->arguments['display'];
+
+        $typoscriptObjectPath = 'plugin.tx_thrating';
 		//instantiate the logger
 		$this->logger = $this->extensionHelperService->getLogger(__CLASS__);
 		$this->logger->log(	\TYPO3\CMS\Core\Log\LogLevel::DEBUG,
@@ -94,7 +110,8 @@ class RatingViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelp
 									'display' => $display,],
 								'typoscript' => $this->configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT),]);
 
-        $contentObject = $this->objectManager->get(\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::class);
+        $objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Object\ObjectManager::class);
+        $contentObject = $objectManager->get(\TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer::class);
 		$this->logger->log(	\TYPO3\CMS\Core\Log\LogLevel::DEBUG, 'ContentObject to initialize', 
 							[
 								'contentObject type' => get_class($contentObject),

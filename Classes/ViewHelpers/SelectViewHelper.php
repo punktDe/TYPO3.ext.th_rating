@@ -39,9 +39,11 @@ class SelectViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\SelectViewHelpe
 	 * @return void
 	 */
 	public function initializeArguments() {
-		parent::initializeArguments();
-		$this->registerArgument('additionalOptions', 'array', 'Associative array with values to prepend', false);
-		$this->registerTagAttribute('onchange', 'string', 'Optional event handler');
+        $this->registerArgument('additionalOptions', 'array', 'Associative array with values to prepend');
+        $this->registerArgument('options', 'array', 'Associative array with internal IDs as key, and the values are displayed in the select box. Can be combined with or replaced by child f:form.select.* nodes.');
+        $this->registerTagAttribute('name', 'string', 'HTML name of this element');
+        $this->registerTagAttribute('class', 'string', 'CSS class(es) for this element');
+        $this->registerTagAttribute('onchange', 'string', 'Optional event handler');
 	}
 
     /**
