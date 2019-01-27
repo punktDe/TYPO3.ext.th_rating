@@ -74,18 +74,6 @@ class Ratingobject extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	protected $ratings;
 	
 	/**
-	 * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface
-	 */
-	protected $objectManager;
-	/**
-	 * @param \TYPO3\CMS\Extbase\Object\ObjectManagerInterface	$objectManager
-	 * @return void
-	 */
-	public function injectObjectManager(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager) {
-		$this->objectManager = $objectManager;
-	}
-
-	/**
 	 * @var \Thucke\ThRating\Domain\Repository\StepconfRepository
 	 */
 	protected $stepconfRepository;
@@ -180,10 +168,10 @@ class Ratingobject extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	/**
 	 * Adds a raiting to this object
 	 *
-	 * @param \Thucke\ThRating\Domain\Model\Rating $rating
+	 * @param Rating $rating
 	 * @return void
 	 */
-	public function addRating(\Thucke\ThRating\Domain\Model\Rating $rating) {
+	public function addRating(Rating $rating) {
 		$this->ratings->attach($rating);
 		$this->extensionHelperService->persistRepository('Thucke\ThRating\Domain\Repository\RatingRepository', $rating);
 		$this->extensionHelperService->clearDynamicCssFile();
@@ -192,10 +180,10 @@ class Ratingobject extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	/**
 	 * Remove a raiting from this object
 	 *
-	 * @param \Thucke\ThRating\Domain\Model\Rating $rating The rating to be removed
+	 * @param Rating $rating The rating to be removed
 	 * @return void
 	 */
-	public function removeRating(\Thucke\ThRating\Domain\Model\Rating $rating) {
+	public function removeRating(Rating $rating) {
 		$this->ratings->detach($rating);
 	}
 
@@ -211,10 +199,10 @@ class Ratingobject extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	/**
 	 * Adds a stepconf to this object
 	 *
-	 * @param \Thucke\ThRating\Domain\Model\Stepconf $stepconf
+	 * @param Stepconf $stepconf
 	 * @return void
 	 */
-	public function addStepconf(\Thucke\ThRating\Domain\Model\Stepconf $stepconf) {
+	public function addStepconf(Stepconf $stepconf) {
 		If (!$this->stepconfRepository->existStepconf($stepconf)) {
 			$this->stepconfs->attach( $stepconf );
 			$this->extensionHelperService->persistRepository('Thucke\ThRating\Domain\Repository\StepconfRepository', $stepconf);
@@ -260,4 +248,3 @@ class Ratingobject extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 		return clone $this->ratings;
 	}		
 }
-?>

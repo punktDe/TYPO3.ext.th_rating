@@ -21,3 +21,20 @@ The extension provides some features supporting developers embedding Rating AX i
    SignalSlotSupport
    LocalizationSupport
    ExtensionManagementService
+
+
+|phpstorm.png|
+
+Supported by Jetbrains PHPStorm IDE
+
+
+.. ==================================================
+.. Image definitions
+.. --------------------------------------------------
+
+.. |phpstorm.png|                image:: phpstorm.png
+   :target: https://www.jetbrains.com/?from=RatingAXTYPO3extension
+   :alt: Jetbrains PHPStorm IDE
+   :align: top
+   :width: 100
+

@@ -19,6 +19,6 @@ namespace Thucke\ThRating\Exception;
  *
  * @api
  */
-class InvalidAggregateRatingSchemaTypeException extends \Thucke\ThRating\Exception\Exception
+class InvalidAggregateRatingSchemaTypeException extends Exception
 {
 }

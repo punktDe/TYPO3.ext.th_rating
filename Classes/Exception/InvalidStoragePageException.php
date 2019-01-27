@@ -19,6 +19,6 @@ namespace Thucke\ThRating\Exception;
  *
  * @api
  */
-class InvalidStoragePageException extends \Thucke\ThRating\Exception\Exception
+class InvalidStoragePageException extends Exception
 {
 }

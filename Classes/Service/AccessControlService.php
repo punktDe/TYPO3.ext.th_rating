@@ -29,7 +29,7 @@ namespace Thucke\ThRating\Service;
  * @version $Id:$
  * @license http://opensource.org/licenses/gpl-license.php GNU protected License, version 2
  */
-class AccessControlService extends \Thucke\ThRating\Service\AbstractExtensionService {
+class AccessControlService extends AbstractExtensionService {
 
 	/**
 	 * @var \TYPO3\CMS\Extbase\Domain\Repository\FrontendUserRepository	$frontendUserRepository
@@ -71,24 +71,36 @@ class AccessControlService extends \Thucke\ThRating\Service\AbstractExtensionSer
 			}
 		}
 		return false;
-	}	
-		
-	public function backendAdminIsLoggedIn() {
+	}
+
+    /**
+     * @return bool
+     */
+    public function backendAdminIsLoggedIn() {
 		return $GLOBALS['TSFE']->beUserLogin === 1 ? true : false;
 	}
-	
-	public function hasLoggedInFrontendUser() {
+
+    /**
+     * @return bool
+     */
+    public function hasLoggedInFrontendUser() {
 		return !empty($GLOBALS['TSFE']->loginUser);
 	}
-	
-	public function getFrontendUserGroups() {
+
+    /**
+     * @return array
+     */
+    public function getFrontendUserGroups() {
 		if($this->hasLoggedInFrontendUser()) {
 			return $GLOBALS['TSFE']->fe_user->groupData['uid'];
 		}
-		return array();
+		return [];
 	}
-	
-	public function getFrontendUserUid() {
+
+    /**
+     * @return int|null
+     */
+    public function getFrontendUserUid() {
 		if($this->hasLoggedInFrontendUser() && !empty($GLOBALS['TSFE']->fe_user->user['uid'])) {
 			return intval($GLOBALS['TSFE']->fe_user->user['uid']);
 		}
@@ -135,4 +147,3 @@ class AccessControlService extends \Thucke\ThRating\Service\AbstractExtensionSer
 		return $voter;
 		}			
 }
-?>

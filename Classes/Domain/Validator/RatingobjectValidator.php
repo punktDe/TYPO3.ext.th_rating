@@ -41,7 +41,7 @@ class RatingobjectValidator extends \TYPO3\CMS\Extbase\Validation\Validator\Abst
 	 * @param \Thucke\ThRating\Domain\Model\Ratingobject $ratingobject The ratingobject
 	 * @return void
 	 */
-	public function isValid($ratingobject) {
+    protected function isValid($ratingobject) {
 		$ratetable = $ratingobject->getRatetable();
 		$ratefield = $ratingobject->getRatefield();
 		if (empty($ratetable)) {
@@ -52,4 +52,3 @@ class RatingobjectValidator extends \TYPO3\CMS\Extbase\Validation\Validator\Abst
 		}
 	}
 }
-?>

@@ -29,19 +29,27 @@ namespace Thucke\ThRating\ViewHelpers;
  * @version $Id:$
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License, version 2
  */
-class Typo3VersionViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper { 
+class Typo3VersionViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper {
+
+    /**
+     *
+     */
+    public function initializeArguments()
+    {
+        $this->registerArgument('testVersion', 'string', 'The version number to check against',true);
+        $this->registerArgument('testOperator', 'string', 'The operator', true);
+    }
 
 	/**
 	 * Gives the current TYPO3 version
 	 *
-	 * @param string $testVersion the version number to check against
-	 * @param string $testOperator
 	 * @return string test result
 	 * @api
 	 */
-	public function render($testVersion, $testOperator) {	
-		$result = version_compare(TYPO3_version, $testVersion, $testOperator);
+	public function render() {
+        $testVersion = $this->arguments['testVersion'];
+        $testOperator = $this->arguments['testOperator'];
+        $result = version_compare(TYPO3_version, $testVersion, $testOperator);
 		return $result;
 	}
 }
-?>

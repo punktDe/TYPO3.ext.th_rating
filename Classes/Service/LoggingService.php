@@ -68,11 +68,11 @@ class LoggingService {
 				$levelUppercase = strtoupper($logLevel);
 				If ( !empty($logConfig['file']) ) {
 					$writerConfiguration[constant('\TYPO3\CMS\Core\Log\LogLevel::'.$levelUppercase)]['TYPO3\\CMS\\Core\\Log\\Writer\\FileWriter'] = 
-						array('logFile' => $logConfig['file']);
+						['logFile' => $logConfig['file']];
 				}
 				If ( !empty($logConfig['database']) ) {
 					$writerConfiguration[constant('\TYPO3\CMS\Core\Log\LogLevel::'.$levelUppercase)]['TYPO3\\CMS\\Core\\Log\\Writer\\Database'] = 
-						array('table' => $logConfig['table']);
+						['table' => $logConfig['table']];
 				}
 			}
 		}
@@ -82,4 +82,3 @@ class LoggingService {
 	}
 	
 }
-?>

@@ -1,4 +1,4 @@
-<?php
+<?php /** @noinspection PhpUnusedParameterInspection */
 namespace Thucke\ThRating\Userfuncs;
 /***************************************************************
 *  Copyright notice
@@ -53,57 +53,65 @@ class Tca {
 		}
 	}
 
-	/**
-	 * Returns the record title for the rating object in BE
-	 * Note that values of $params are modified by reference
-	 * 
-	 * @return void
-	 */
+    /**
+     * Returns the record title for the rating object in BE
+     * Note that values of $params are modified by reference
+     *
+     * @param $params
+     * @param $pObj
+     * @return void
+     */
 	public function getRatingObjectRecordTitle(&$params, &$pObj) {
         $params['title'] = '#'.$params['row']['uid'].': '.$params['row']['ratetable'].' ['.$params['row']['ratefield'].']';
     }
 
-	/**
-	 * Returns the record title for the step configuration in BE
-	 * Note that values of $params are modified by reference
-	 * 
-	 * @return void
-	 */
+    /**
+     * Returns the record title for the step configuration in BE
+     * Note that values of $params are modified by reference
+     *
+     * @param $params
+     * @param $pObj
+     * @return void
+     */
     public function getStepconfRecordTitle(&$params, &$pObj) {
         $params['title'] = '#'.$params['row']['uid']. ': Steporder ['.$params['row']['steporder'].']';
     }
 
-	/**
-	 * Returns the record title for the step configuration name in BE
-	 * Note that values of $params are modified by reference
-	 * 
-	 * @return void
-	 */
+    /**
+     * Returns the record title for the step configuration name in BE
+     * Note that values of $params are modified by reference
+     *
+     * @param $params
+     * @param $pObj
+     * @return void
+     */
     public function getStepnameRecordTitle(&$params, &$pObj) {
 		//look into repository to find clear text object attributes
-		$stepnameRepository = $this->objectManager->get('Thucke\\ThRating\\Domain\\Repository\\StepnameRepository');
+		$stepnameRepository = $this->objectManager->get(\Thucke\ThRating\Domain\Repository\StepnameRepository::class);
         $stepnameRepository->clearQuerySettings();	//disable syslanguage and enableFields
-        $stepnameObject = $stepnameRepository->findByUid(intval($params['row']['uid']));		
-		if (is_object($stepnameObject)) {
-			$stepnameLang = $stepnameObject->get_languageUid();
-			If (empty($stepnameLang)) {
-				$syslang = \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('tca.BE.default', 'ThRating');
-			} elseif ($stepnameLang == -1) {
-				$syslang = \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('tca.BE.all', 'ThRating');
-			} else {
-				//look for language name
-				$syslangRepository = $this->objectManager->get('Thucke\\ThRating\\Domain\\Repository\\StepnameRepository');
-				$syslangObject = $syslangRepository->findByUid($stepnameLang);
-				If ($syslangObject instanceof \Thucke\ThRating\Domain\Model\Syslang) {
-					$syslang=$syslangObject->getTitle();
-				} else {
-					$syslang = \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('tca.BE.unknown', 'ThRating');
-				}
-			}
-		} else {
-			$stepnameLang = 'new';
-		}
-		$stepconfRepository = $this->objectManager->get('Thucke\\ThRating\\Domain\\Repository\\StepconfRepository');
+        $stepnameObject = $stepnameRepository->findByUid(intval($params['row']['uid']));
+        /** @var string $stepnameLang */
+        /** @var string $sysLang */
+        $syslang = '';
+        if (is_object($stepnameObject)) {
+            /** @var \Thucke\ThRating\Domain\Model\Stepname $stepnameObject */
+            $stepnameLang = $stepnameObject->get_languageUid();
+            If (empty($stepnameLang)) {
+                $syslang = \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('tca.BE.default', 'ThRating');
+            } elseif ($stepnameLang == -1) {
+                $syslang = \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('tca.BE.all', 'ThRating');
+            } else {
+                //look for language name
+                $syslangRepository = $this->objectManager->get(\Thucke\ThRating\Domain\Repository\StepnameRepository::class);
+                $syslangObject = $syslangRepository->findByUid($stepnameLang);
+                If ($syslangObject instanceof \Thucke\ThRating\Domain\Model\Syslang) {
+                    $syslang=$syslangObject->getTitle();
+                } else {
+                    $syslang = \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('tca.BE.unknown', 'ThRating');
+                }
+            }
+        }
+		$stepconfRepository = $this->objectManager->get(\Thucke\ThRating\Domain\Repository\StepconfRepository::class);
         $stepconfObject = $stepconfRepository->findByUid(intval($params['row']['stepconf']));
 		$ratetable = \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('tca.BE.new', 'ThRating');
 		$ratefield = \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('tca.BE.new', 'ThRating');
@@ -122,22 +130,26 @@ class Tca {
         $params['title'] = $ratetable.'['.$ratefield.']/Step '.$steporder.'/'.$syslang;
     }
 
-	/**
-	 * Returns the record title for the rating in BE
-	 * Note that values of $params are modified by reference
-	 * 
-	 * @return void
-	 */
+    /**
+     * Returns the record title for the rating in BE
+     * Note that values of $params are modified by reference
+     *
+     * @param $params
+     * @param $pObj
+     * @return void
+     */
     public function getRatingRecordTitle(&$params, &$pObj) {
         $params['title'] = '#'.$params['row']['uid']. ': RowUid ['.$params['row']['ratedobjectuid'].']';
     }
 
-	/**
-	 * Returns the record title for the rating in BE
-	 * Note that values of $params are modified by reference
-	 * 
-	 * @return void
-	 */
+    /**
+     * Returns the record title for the rating in BE
+     * Note that values of $params are modified by reference
+     *
+     * @param $params
+     * @param $pObj
+     * @return void
+     */
     public function getVoteRecordTitle(&$params, &$pObj) {
         $params['title'] = 'Voteuser Uid ['.$params['row']['voter'].']';
     }
@@ -154,16 +166,16 @@ class Tca {
 		$settings = $this->loadTypoScriptForBEModule('tx_thrating', $flexFormPid);
 		$ratingconfigs = $settings['settings.']['ratingConfigurations.'];
 
-		$optionList = array();
+		$optionList = [];
 		
 		// add first option - Default
-		$optionList[0] = array(0 => 'Default', 1 => '');
+		$optionList[0] = [0 => 'Default', 1 => ''];
 		foreach ( $ratingconfigs as $configKey => $configValue ) {
 			$lastDot = strrpos( $configKey, '.' );
 			if ( $lastDot ) {
 				$name = substr($configKey, 0, $lastDot);
 				// add option
-				$optionList[] = array(0 => $name, 1 => $name);
+				$optionList[] = [0 => $name, 1 => $name];
 			}
 		}
 		$config['items'] = $config['items'] + $optionList;		
@@ -188,4 +200,3 @@ class Tca {
         return $TSObj->setup['plugin.'][$extKey.'.'];
 	}
 }
-?>

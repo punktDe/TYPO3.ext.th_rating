@@ -35,7 +35,7 @@ namespace Thucke\ThRating\Domain\Model;
 class Vote extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 
 	/**
-	 * @var 		\Thucke\ThRating\Domain\Model\Rating
+	 * @var        \Thucke\ThRating\Domain\Model\Rating
 	 * @validate 	\Thucke\ThRating\Domain\Validator\RatingValidator
 	 * @validate 	NotEmpty
 	 */
@@ -44,7 +44,7 @@ class Vote extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	/**
 	 * The voter of this object
 	 *
-	 * @var 	\Thucke\ThRating\Domain\Model\Voter
+	 * @var    \Thucke\ThRating\Domain\Model\Voter
 	 * @validate NotEmpty
 	 */
 	protected $voter;
@@ -52,7 +52,7 @@ class Vote extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	/**
 	 * The actual voting of this object
 	 *
-	 * @var 		\Thucke\ThRating\Domain\Model\Stepconf
+	 * @var        \Thucke\ThRating\Domain\Model\Stepconf
 	 * @validate	\Thucke\ThRating\Domain\Validator\StepconfValidator
 	 * @validate 	NotEmpty
 	 */
@@ -75,15 +75,17 @@ class Vote extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 		$this->objectManager = $objectManager;
 	}
 
-	/**
-	 * Constructs a new rating object
-	 *
-	 * @return void
-	 */
-	public function __construct( 
-					\Thucke\ThRating\Domain\Model\Rating			$rating = NULL,
-					\Thucke\ThRating\Domain\Model\Voter			$voter = NULL, 
-					\Thucke\ThRating\Domain\Model\Stepconf		$vote  = NULL ) {
+    /**
+     * Constructs a new rating object
+     *
+     * @param Rating|null $rating
+     * @param Voter|null $voter
+     * @param Stepconf|null $vote
+     */
+	public function __construct(
+        Rating $rating = NULL,
+        Voter $voter = NULL,
+        Stepconf $vote  = NULL ) {
 		If ($rating)  $this->setRating($rating);
 		If ($voter)   $this->setVoter($voter);
 		If ($vote)    $this->setVote($vote);
@@ -107,10 +109,10 @@ class Vote extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	/**
 	 * Sets the rating this vote is part of
 	 *
-	 * @param \Thucke\ThRating\Domain\Model\Rating $rating The Rating
+	 * @param Rating $rating The Rating
 	 * @return void
 	 */
-	public function setRating(\Thucke\ThRating\Domain\Model\Rating $rating) {
+	public function setRating(Rating $rating) {
 		$this->rating = $rating;
 		$this->setPid($rating->getPid());
 	}
@@ -118,7 +120,7 @@ class Vote extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	/**
 	 * Returns the rating this vote is part of
 	 *
-	 * @return \Thucke\ThRating\Domain\Model\Rating The rating this vote is part of
+	 * @return Rating The rating this vote is part of
 	 */
 	public function getRating() {
 		return $this->rating;
@@ -127,17 +129,17 @@ class Vote extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	/**
 	 * Sets the frontenduser of this vote 
 	 *
-	 * @param \Thucke\ThRating\Domain\Model\Voter	$voter	The frontenduser
+	 * @param Voter $voter	The frontenduser
 	 * @return void
 	 */
-	public function setVoter(\Thucke\ThRating\Domain\Model\Voter $voter) {
+	public function setVoter(Voter $voter) {
 		$this->voter = $voter;
 	}
 
 	/**
 	 * Returns the frontenduser of this vote
 	 *
-	 * @return \Thucke\ThRating\Domain\Model\Voter	The frontenduser of this vote
+	 * @return Voter    The frontenduser of this vote
 	 */
 	public function getVoter() {
 		return $this->voter;
@@ -147,7 +149,7 @@ class Vote extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	/**
 	 * Sets the choosen stepconfig
 	 * 
-	 * @param \Thucke\ThRating\Domain\Model\Stepconf $vote
+	 * @param Stepconf $vote
 	 * @return void
 	 */
 	public function setVote($vote) {
@@ -157,7 +159,7 @@ class Vote extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	/**
 	 * Gets the rating object uid
 	 * 
-	 * @return \Thucke\ThRating\Domain\Model\Stepconf Reference to selected stepconfig
+	 * @return Stepconf Reference to selected stepconfig
 	 */
 	public function getVote() {
 		return $this->vote;
@@ -178,7 +180,7 @@ class Vote extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	 * @return boolean
 	 */
 	public function isAnonymous() {
-		if ( $this->getVoter() instanceof \Thucke\ThRating\Domain\Model\Voter ) {
+		if ( $this->getVoter() instanceof Voter) {
 			$retVal = $this->getVoter()->getUid() == $this->settings['mapAnonymous'] && !empty($this->settings['mapAnonymous']);
 		} else {
 			$retVal = false;
@@ -208,4 +210,3 @@ class Vote extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 		return strval($this->getVote());
 	}	
 }
-?>

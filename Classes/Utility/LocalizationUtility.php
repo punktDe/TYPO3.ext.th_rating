@@ -21,16 +21,14 @@ namespace Thucke\ThRating\Utility;
  */
 class LocalizationUtility extends \TYPO3\CMS\Extbase\Utility\LocalizationUtility {
 
-	/**
-	 * Returns the localized label of the LOCAL_LANG key, $key.
-	 *
-	 * @param string $key The key from the LOCAL_LANG array for which to return the value.
-	 * @param string $extensionName The name of the extension
-	 * @param array $arguments the arguments of the extension, being passed over to vsprintf
-	 * @return string|NULL The value from LOCAL_LANG or NULL if no translation was found.
-	 * @api
-	 * @todo : If vsprintf gets a malformed string, it returns false! Should we throw an exception there?
-	 */
+    /**
+     * Returns the localized label of the LOCAL_LANG key, $key.
+     *
+     * @param string $extensionName The name of the extension
+     * @return string|NULL The value from LOCAL_LANG or NULL if no translation was found.
+     * @api
+     * @todo : If vsprintf gets a malformed string, it returns false! Should we throw an exception there?
+     */
 	static public function getLangArray($extensionName) {
 		self::initializeLocalization($extensionName);
 		// The "from" charset of csConv() is only set for strings from TypoScript via _LOCAL_LANG

@@ -65,14 +65,16 @@ class RatingImage extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	}
 
 	/**
-	 * Constructs a new rating object
+	 * Constructs a new image object
 	 *
 	 * @param mixed	$conf	either an array consisting of GIFBUILDER typoscript or a plain string having the filename
 	 * @return void
 	 */
 	public function __construct($conf = NULL) {
 		$this->initializeObject();
-		If (!empty($conf)) $this->setConf($conf);
+		If (!empty($conf)) {
+            $this->setConf($conf);
+        }
 	}
 
 	/**
@@ -81,7 +83,8 @@ class RatingImage extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	 */
 	 public function initializeObject() {
 		if ( empty($this->gifBuilder) ) {
-			$this->injectGifBuilder(\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\Imaging\\GifBuilder'));
+            /** @noinspection PhpParamsInspection */
+            $this->injectGifBuilder(\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\Imaging\GifBuilder::class));
 		}
 	 }
 
@@ -93,12 +96,12 @@ class RatingImage extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	 */
 	public function setConf($conf) {
 		switch (gettype($conf)) {
-			case "string":
+			case 'string':
 				$this->setImageFile($conf);
 				break;
-			case "array":
+			case 'array':
 				$this->conf = $conf;
-				$this->generateImage($this->conf);
+				$this->generateImage();
 				break;
 			default:
 				//TODO: Error message
@@ -110,7 +113,9 @@ class RatingImage extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	 * @return array
 	 */
 	public function getConf() {
-		If (empty($this->conf)) return array();
+		If (empty($this->conf)) {
+            return [];
+        }
 		return $this->conf;
 	}
 	/**
@@ -126,9 +131,8 @@ class RatingImage extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 			$this->isBuilderObject = false;
 		} else {
 			//clear path if given file is invalid
-			unset($this->imageFile);
-			unset($this->isBuilderObject);
-			//TODO: error handling
+            unset($this->imageFile, $this->isBuilderObject);
+            //TODO: error handling
 		}
 	}
 	/**
@@ -152,7 +156,7 @@ class RatingImage extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	 */
 	public function generateImage() {
 		If (!empty($this->conf)) {
-			$this->gifBuilder->start($this->getConf(), array());
+			$this->gifBuilder->start($this->getConf(), []);
 			$genImageFile = $this->gifBuilder->gifBuild();
 			If (!file_exists($genImageFile)) {
 				//TODO: error handling
@@ -161,10 +165,10 @@ class RatingImage extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 			$this->setImageFile($genImageFile);
 			$this->isBuilderObject = true;
 			return true;
-		} else {
-			return false;
 		}
-	}
+
+        return false;
+    }
 
 	/**
 	 * Returns the filename of the image
@@ -174,11 +178,11 @@ class RatingImage extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	 */
 	public function getImageDimensions() {
 		If ($this->isBuilderObject) {
-			list($width, $height) = $this->gifBuilder->getImageDimensions($this->imageFile);
+			[$width, $height] = $this->gifBuilder->getImageDimensions($this->imageFile);
 		} else {
-			list($width, $height) = getimagesize($this->getImageFile(true));
+			[$width, $height] = getimagesize($this->getImageFile(true));
 		}
-		return array('width'=>$width, 'height'=>$height, 'builderObject'=>$this->isBuilderObject);
+		return ['width'=>$width, 'height'=>$height, 'builderObject'=>$this->isBuilderObject];
 	}
 	
 
@@ -187,8 +191,7 @@ class RatingImage extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	 * 
 	 * @return string
 	 */
-	public function __toString() {
-		return strval($this->getVote());
+    public function __toString() {
+		return $this->imageFile;
 	}	
 }
-?>

@@ -1,5 +1,6 @@
 <?php
 namespace Thucke\ThRating\Service;
+use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
 
 /***************************************************************
 *  Copyright notice
@@ -30,7 +31,9 @@ namespace Thucke\ThRating\Service;
  * @version $Id:$
  * @license http://opensource.org/licenses/gpl-license.php GNU protected License, version 2
  */
-class ExtensionHelperService extends \Thucke\ThRating\Service\AbstractExtensionService {
+class ExtensionHelperService extends AbstractExtensionService
+{
+    protected const DYN_CSS_FILENAME = 'typo3temp/thratingDyn.css';
 
 	/**
 	 * @var \Thucke\ThRating\Domain\Repository\RatingobjectRepository
@@ -69,9 +72,9 @@ class ExtensionHelperService extends \Thucke\ThRating\Service\AbstractExtensionS
 	 */
 	protected $accessControllService;
 	/**
-	 * @param \Thucke\ThRating\Service\AccessControlService $accessControllService
+	 * @param AccessControlService $accessControllService
 	 */
-	public function injectAccessControlService(\Thucke\ThRating\Service\AccessControlService $accessControllService) {
+	public function injectAccessControlService(AccessControlService $accessControllService) {
 		$this->accessControllService = $accessControllService;
 	}	
 	/**
@@ -106,13 +109,11 @@ class ExtensionHelperService extends \Thucke\ThRating\Service\AbstractExtensionS
 	 * @var \Thucke\ThRating\Domain\Model\RatingImage $ratingImage
 	 */
 	protected $ratingImage;
-	
-	/**
-	 * Constructor
-	 * @param \TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager
-	 * @param \Thucke\ThRating\Service\LoggingService $loggingService
-	 * @return void
-	 */
+
+    /**
+     * Constructor
+     * @return void
+     */
 	public function initializeObject() {
 		$this->settings = $this->configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_SETTINGS,'thrating','pi1');
 		$frameworkConfiguration = $this->configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK,'thrating','pi1');
@@ -141,11 +142,12 @@ class ExtensionHelperService extends \Thucke\ThRating\Service\AbstractExtensionS
 	 */
 	private function completeConfigurationSettings( array $settings ) {
 		$cObj = $this->configurationManager->getContentObject();
-		$currentRecord = array();
+
+        /** @var array $currentRecord */
 		if ( !empty($cObj->currentRecord) ) {
 			$currentRecord = explode(':', $cObj->currentRecord);	//build array [0=>cObj tablename, 1=> cObj uid] - initialize with content information (usage as normal content)
 		} else {
-			$currentRecord = array('pages',$GLOBALS['TSFE']->page['uid']);	//build array [0=>cObj tablename, 1=> cObj uid] - initialize with page info if used by typoscript
+			$currentRecord = ['pages',$GLOBALS['TSFE']->page['uid']];	//build array [0=>cObj tablename, 1=> cObj uid] - initialize with page info if used by typoscript
 		}
 		
 		if (empty($settings['ratetable'])) {
@@ -160,12 +162,13 @@ class ExtensionHelperService extends \Thucke\ThRating\Service\AbstractExtensionS
 		return $settings;
 	}
 
-	/**
-	 * Returns a new or existing ratingobject
-	 * 
-	 * @param	array	$settings
-	 * @return	\Thucke\ThRating\Domain\Model\Ratingobject
-	 */
+    /**
+     * Returns a new or existing ratingobject
+     *
+     * @param    array $settings
+     * @return    \Thucke\ThRating\Domain\Model\Ratingobject
+     * @throws \TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException
+     */
 	public function getRatingobject( array $settings ) {
 		//check whether a dedicated ratingobject is configured
 		if ( !empty($settings['ratingobject']) ) {
@@ -173,7 +176,6 @@ class ExtensionHelperService extends \Thucke\ThRating\Service\AbstractExtensionS
 		} else {
 			if ( empty($settings['ratetable']) || empty($settings['ratefield']) ) {
 				//fallback to default configuration
-				//TODO delete deprected $settings = array_merge($settings, $settings['defaultObject']);
 				$settings = $settings['defaultObject'] + $settings;
 			}
 			$settings = $this->completeConfigurationSettings( $settings );		
@@ -189,26 +191,29 @@ class ExtensionHelperService extends \Thucke\ThRating\Service\AbstractExtensionS
 	 * @return	\Thucke\ThRating\Domain\Model\Stepconf
 	 */
 	public function createStepconf( array $stepconfArray ) {
-		$stepconf = $this->objectManager->get('Thucke\\ThRating\\Domain\\Model\\Stepconf');
+        /** @var \Thucke\ThRating\Domain\Model\Stepconf $stepconf */
+        $stepconf = $this->objectManager->get(\Thucke\ThRating\Domain\Model\Stepconf::class);
 		$stepconf->setRatingobject( $stepconfArray['ratingobject'] );
 		$stepconf->setSteporder( $stepconfArray['steporder'] );
 		$stepconf->setStepweight( $stepconfArray['stepweight'] );
-		return $stepconf;
-	}			
+        return $stepconf;
+	}
 
-	/**
-	 * Returns a new or existing ratingobject
-	 * 
-	 * @param	array	$stepconfArray
-	 * @return	\Thucke\ThRating\Domain\Model\Stepconf
-	 */
+    /**
+     * Returns a new or existing ratingobject
+     *
+     * @param   array   $stepnameArray
+     * @return  \Thucke\ThRating\Domain\Model\Stepname
+     */
 	public function createStepname ( array $stepnameArray ) {
-		$stepname = $this->objectManager->get('Thucke\\ThRating\\Domain\\Model\\Stepname');
+        /** @var \Thucke\ThRating\Domain\Model\Stepname $stepname */
+		$stepname = $this->objectManager->get(\Thucke\ThRating\Domain\Model\Stepname::class);
 		$stepname->setStepname( $stepnameArray['stepname'] );
 		
 		if ( !empty($stepnameArray['languageIso2Code']) ) {
 			//check if additional language flag exists in current website
-			$languageObject = $this->objectManager->get('Thucke\\ThRating\\Domain\\Repository\\SyslangRepository')->findByStaticLangIsocode($stepnameArray['languageIso2Code']);
+            /** @var \Thucke\ThRating\Domain\Model\Syslang|\TYPO3\CMS\Extbase\Persistence\QueryResultInterface $languageObject */
+            $languageObject = $this->objectManager->get(\Thucke\ThRating\Domain\Repository\SyslangRepository::class)->findByStaticLangIsocode($stepnameArray['languageIso2Code']);
 			if ( $languageObject->count() > 0 ) {
 				$stepname->set_languageUid( $languageObject->getFirst()->getUid() );
 			} else {
@@ -218,7 +223,7 @@ class ExtensionHelperService extends \Thucke\ThRating\Service\AbstractExtensionS
 		} else {
 			$stepname->set_languageUid( 0 );
 		}
-		return $stepname;
+        return $stepname;
 	}			
 	
 	/**
@@ -234,7 +239,8 @@ class ExtensionHelperService extends \Thucke\ThRating\Service\AbstractExtensionS
 		if ( !empty($settings['rating']) ) {
 			//fetch rating when it is configured
 			$rating = $this->ratingRepository->findByUid($settings['rating']);
-		} elseif ( !$this->objectManager->get('Thucke\\ThRating\\Domain\\Validator\\RatingobjectValidator')->validate($ratingobject)->hasErrors() && $settings['ratedobjectuid'] ) {
+		} elseif ( $settings['ratedobjectuid'] && !$this->objectManager->get(\Thucke\ThRating\Domain\Validator\RatingobjectValidator::class)
+                ->validate($ratingobject)->hasErrors() ) {
 			//get rating according to given row
 			$rating = $this->ratingRepository->findMatchingObjectAndUid($ratingobject, $settings['ratedobjectuid'], \Thucke\ThRating\Domain\Repository\RatingRepository::addIfNotFound);
 		} else {
@@ -244,63 +250,69 @@ class ExtensionHelperService extends \Thucke\ThRating\Service\AbstractExtensionS
 			);		
 		}
 		return $rating;
-	}			
-
-	/**
-	 * Returns a new or existing vote
-	 * 
-	 * @param									$prefixId
-	 * @param	array							$settings
- 	 * @param	\Thucke\ThRating\Domain\Model\Rating	$rating
-	 * @return	\Thucke\ThRating\Domain\Model\Vote
-	 */
-	public function getVote( $prefixId, array $settings, \Thucke\ThRating\Domain\Model\Rating $rating ) {
-		//first fetch real voter or anonymous
-		$frontendUserUid = $this->accessControllService->getFrontendUserUid();
-		if ( !empty($settings['mapAnonymous']) && !$frontendUserUid ) {
-			//set anonymous vote
-			$voter =  $this->accessControllService->getFrontendVoter($settings['mapAnonymous']);
-			$anonymousRating = json_decode($_COOKIE[$prefixId.'_AnonymousRating_'.$rating->getUid()], true);
-			if ( !empty($anonymousRating['voteUid']) ) {
-				$vote = $this->voteRepository->findByUid($anonymousRating['voteUid']);
-			}
-		} else {
-			if ( $frontendUserUid ) {
-				//set FEUser if one is logged on
-				$voter =  $this->accessControllService->getFrontendVoter( $frontendUserUid );
-				if ($voter instanceof \Thucke\ThRating\Domain\Model\Voter) {
-					$vote = $this->voteRepository->findMatchingRatingAndVoter($rating->getUid(), $voter->getUid());
-				}
-			}
-		}
-		//voting not found in database or anonymous vote? - create new one
-		$voteValidator = $this->objectManager->get('Thucke\\ThRating\\Domain\\Validator\\VoteValidator');
-		if ( !$voteValidator->isObjSet($vote) || $voteValidator->validate($vote)->hasErrors() ) {
-			$vote = $this->objectManager->get('Thucke\\ThRating\\Domain\\Model\\Vote');
-			$ratingValidator = $this->objectManager->get('Thucke\\ThRating\\Domain\\Validator\\RatingValidator');
-			if ( $ratingValidator->isObjSet($rating) && !$ratingValidator->validate($rating)->hasErrors() ) {
-				$vote->setRating($rating);
-			}
-			if ($voter instanceof \Thucke\ThRating\Domain\Model\Voter) {
-				$vote->setVoter($voter);
-			}
-		}
-		return $vote;
 	}
 
-	
-	/**
+    /**
+     * Returns a new or existing vote
+     *
+     * @param									$prefixId
+     * @param	array							$settings
+     * @param	\Thucke\ThRating\Domain\Model\Rating	$rating
+     * @return	\Thucke\ThRating\Domain\Model\Vote
+     */
+    public function getVote( $prefixId, array $settings, \Thucke\ThRating\Domain\Model\Rating $rating ) {
+        /** @var     \Thucke\ThRating\Domain\Model\Vote $vote */
+        /** @var     \Thucke\ThRating\Domain\Model\Voter $voter */
+
+        //first fetch real voter or anonymous
+        /** @var integer $frontendUserUid */
+        $frontendUserUid = $this->accessControllService->getFrontendUserUid();
+        if ( !$frontendUserUid && !empty($settings['mapAnonymous']) ) {
+            //set anonymous vote
+            $voter =  $this->accessControllService->getFrontendVoter($settings['mapAnonymous']);
+            $anonymousRating = json_decode($_COOKIE[$prefixId.'_AnonymousRating_'.$rating->getUid()], true);
+            if ( !empty($anonymousRating['voteUid']) ) {
+                $vote = $this->voteRepository->findByUid($anonymousRating['voteUid']);
+            }
+        } else if ( $frontendUserUid ) {
+            //set FEUser if one is logged on
+            $voter =  $this->accessControllService->getFrontendVoter( $frontendUserUid );
+            if ($voter instanceof \Thucke\ThRating\Domain\Model\Voter) {
+                $vote = $this->voteRepository->findMatchingRatingAndVoter($rating->getUid(), $voter->getUid());
+            }
+        }
+        //voting not found in database or anonymous vote? - create new one
+        $voteValidator = $this->objectManager->get(\Thucke\ThRating\Domain\Validator\VoteValidator::class);
+        if ( !$voteValidator->isObjSet($vote) || $voteValidator->validate($vote)->hasErrors() ) {
+            $vote = $this->objectManager->get(\Thucke\ThRating\Domain\Model\Vote::class);
+            $ratingValidator = $this->objectManager->get(\Thucke\ThRating\Domain\Validator\RatingValidator::class);
+            if ( $ratingValidator->isObjSet($rating) && !$ratingValidator->validate($rating)->hasErrors() ) {
+                $vote->setRating($rating);
+            }
+            if ($voter instanceof \Thucke\ThRating\Domain\Model\Voter) {
+                $vote->setVoter($voter);
+            }
+        }
+        return $vote;
+    }
+
+
+    /**
 	 * Get a logger instance
 	 * The configuration of the logger is modified by extension typoscript config
 	 *
 	 * @param	string	$name the class name which this logger is for
 	 * @return 	\TYPO3\CMS\Core\Log\Logger
 	 */
-	public function getLogger( $name ) {
-		return $this->loggingService->getLogger(__CLASS__);
-	}
-	
-	/**
+	public function getLogger( $name = null) {
+	    if (empty($name)) {
+            return $this->loggingService->getLogger(__CLASS__);
+        }
+
+        return $this->loggingService->getLogger($name);
+    }
+
+    /**
 	 * Update and persist attached objects to the repository
 	 *
 	 * @param	string	$repository
@@ -314,7 +326,7 @@ class ExtensionHelperService extends \Thucke\ThRating\Service\AbstractExtensionS
 		} else {
 			$this->objectManager->get($repository)->update($objectToPersist);
 		}
-		$this->objectManager->get('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\PersistenceManager')->persistAll();
+		$this->objectManager->get(PersistenceManager::class)->persistAll();
 	}
 
 	/**
@@ -323,97 +335,103 @@ class ExtensionHelperService extends \Thucke\ThRating\Service\AbstractExtensionS
 	 * @return void
 	 */
 	public function clearDynamicCssFile() {
-		$this->objectManager->get('Thucke\\ThRating\\Evaluation\\DynamicCssEvaluator')->clearCachePostProc(NULL, NULL, NULL);
+		$this->objectManager->get(\Thucke\ThRating\Evaluation\DynamicCssEvaluator::class)->clearCachePostProc(NULL, NULL, NULL);
 	}
 	
 	/**
 	 * Render CSS-styles for ratings and ratingsteps
 	 * Only called by singeltonAction to render styles once per page.
-	 * The file 'typo3temp/thratingDyn.css' will be created if it doesn�t exist
+	 * The file self::DYN_CSS_FILENAME will be created if it doesn�t exist
 	 *
 	 * @return array
 	 */
 	public function renderDynCSS() {
-	    $messageArray = array(); 
+        /** @var string $cssFile */
+	    $messageArray = [];
 		//create file if it does not exist
-		if (file_exists(PATH_site.'typo3temp/thratingDyn.css')) {
-			$fstat = stat (PATH_site.'typo3temp/thratingDyn.css');
+		if (file_exists(PATH_site.self::DYN_CSS_FILENAME)) {
+			$fstat = stat (PATH_site.self::DYN_CSS_FILENAME);
 			//do not recreate file if it has greater than zero length
-			if ( $fstat[7] != 0 ) {
-				$this->logger->log(	\TYPO3\CMS\Core\Log\LogLevel::DEBUG, 'Dynamic CSS file exists - exiting', array());
+			if ( $fstat[7] !== 0 ) {
+				$this->logger->log(	\TYPO3\CMS\Core\Log\LogLevel::DEBUG, 'Dynamic CSS file exists - exiting');
 				return $messageArray;
 			}
 		}
 		
 		//now walk through all ratingobjects to calculate stepwidths
 		$allRatingobjects = $this->ratingobjectRepository->findAll(true);
-		foreach ( $allRatingobjects as $ratingobject) {
-			$ratingobjectUid = $ratingobject->getUid();
-			$stepconfObjects = $ratingobject->getStepconfs();
-			$stepcount = count($stepconfObjects);
-			if (!$stepcount) {
-			    $messageArray[] = array(
+
+        foreach ( $allRatingobjects as $ratingobject) {
+            $ratingobjectUid = $ratingobject->getUid();
+            /** @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Thucke\ThRating\Domain\Model\Stepconf> $stepconfObjects */
+            $stepconfObjects = $ratingobject->getStepconfs();
+            $stepcount = count($stepconfObjects);
+            if (!$stepcount) {
+                $messageArray[] = [
 			        'messageText' => \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('flash.renderCSS.noStepconf', 'ThRating',
-			            array(1=>$ratingobject->getUid(), 2=>$ratingobject->getPid())),
+			            [1=>$ratingobject->getUid(), 2=>$ratingobject->getPid()]),
 			        'messageTitle' => \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('flash.configuration.error', 'ThRating'),
 			        'severity' => "ERROR",
-			        'additionalInfo' => array( 'errorCode' => 1384705470,
+			        'additionalInfo' => ['errorCode' => 1384705470,
 			            'ratingobject UID' => $ratingobject->getUid(),
-			            'ratingobject PID' => $ratingobject->getPid()
-			        )
-			    );
-			    return $messageArray;
-			}
-			$stepconfs = $stepconfObjects->toArray();
-			foreach ( $stepconfs as $stepconf ) {	//stepconfs are already sorted by steporder
-				//just do checks here that all steps are OK
-				if ($this->stepconfValidator->isObjSet($stepconf) && !$this->stepconfValidator->validate($stepconf)->hasErrors()) {
-					$stepWeights[] = $stepconf->getStepweight();
-					$sumStepWeights += $stepconf->getStepweight();
-				} else {
-					foreach ($this->stepconfValidator->getErrors() as $errorMessage) {
-						$messageArray[] = array(
+			            'ratingobject PID' => $ratingobject->getPid()]];
+                return $messageArray;
+            }
+
+            /** @var array $stepWeights */
+            $stepWeights = [];
+            /** @var integer $sumStepWeights */
+            $sumStepWeights = 0;
+
+            $stepconfs = $stepconfObjects->toArray();
+            foreach ( $stepconfs as $stepconf ) {	//stepconfs are already sorted by steporder
+                //just do checks here that all steps are OK
+                if ($this->stepconfValidator->isObjSet($stepconf) && !$this->stepconfValidator->validate($stepconf)->hasErrors()) {
+                    /** @var \Thucke\ThRating\Domain\Model\Stepconf $stepconf */
+                    $stepWeights[] = $stepconf->getStepweight();
+                    $sumStepWeights += $stepconf->getStepweight();
+                } else {
+
+                    /** @var \TYPO3\CMS\Extbase\Error\Error $errorMessage */
+                    foreach ($this->stepconfValidator->validate($stepconf) as $errorMessage) {
+						$messageArray[] = [
 						    'messageText' => $errorMessage->getMessage(),
 					        'messageTitle' => \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('flash.configuration.error', 'ThRating'),
-						    'severity' => "ERROR",
-						    'additionalInfo' => array( 'errorCode' => $errorMessage->getCode(),
-					                                  'errorMessage' => $errorMessage->getMessage()
-                            )
-						);
+						    'severity' => 'ERROR',
+						    'additionalInfo' => ['errorCode' => $errorMessage->getCode(),
+					                                  'errorMessage' => $errorMessage->getMessage()]];
 					}
 					return $messageArray;
 				}
 			}
-			$this->logger->log(	\TYPO3\CMS\Core\Log\LogLevel::INFO,
+            $this->logger->log(	\TYPO3\CMS\Core\Log\LogLevel::INFO,
 					'Ratingobject data',
-					array(
+					[
 							'ratingobject UID' => $ratingobject->getUid(),
 							'ratingobject PID' => $ratingobject->getPid(),
 							'stepcount' => $stepcount,
 							'stepWeights' => $stepWeights,
-							'sumStepWeights' => $sumStepWeights,
-					));
-			
+							'sumStepWeights' => $sumStepWeights,]);
+
 			//generate CSS for all ratings out of TSConfig
 			foreach ( $this->settings['ratingConfigurations'] as $ratingName => $ratingConfig) {
-				if ( $ratingName == 'default' ) {
+				if ( $ratingName === 'default' ) {
 					continue;
 				}
 				$subURI = substr(PATH_site, strlen($_SERVER['DOCUMENT_ROOT'])+1);
-				$basePath = $this->getTypoScriptFrontendController()->baseUrl ? $this->getTypoScriptFrontendController()->baseUrl : '//'.$_SERVER['HTTP_HOST'].'/'.$subURI;
+				$basePath = $this->getTypoScriptFrontendController()->baseUrl ?: '//'.$_SERVER['HTTP_HOST'].'/'.$subURI;
 				
-				$this->ratingImage = $this->objectManager->get('Thucke\\ThRating\\Domain\\Model\\RatingImage',$ratingConfig['imagefile']);
+				$this->ratingImage = $this->objectManager->get(\Thucke\ThRating\Domain\Model\RatingImage::class);
+                $this->ratingImage->setConf($ratingConfig['imagefile']);
 				$filename = $this->ratingImage->getImageFile();
 				if ( empty($filename) ) {
-                    $messageArray[] = array(
+                    $messageArray[] = [
                         'messageText' => \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('flash.vote.renderCSS.defaultImage', 'ThRating'),
                         'messageTitle' => \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('flash.heading.warning', 'ThRating'),
-                        'severity' => "WARNING", 
-                        'additionalInfo' => array( 'errorCode' => 1403192702,
+                        'severity' => 'WARNING',
+                        'additionalInfo' => ['errorCode' => 1403192702,
 									'ratingName' => $ratingName,
-									'ratingConfig' => $ratingConfig
-                        )
-                    );
+									'ratingConfig' => $ratingConfig]];
 					$defaultRatingName = $this->settings['ratingConfigurations']['default'];
 					$ratingConfig = $this->settings['ratingConfigurations'][$defaultRatingName];
 					$this->ratingImage->setConf($ratingConfig['imagefile']);
@@ -426,34 +444,32 @@ class ExtensionHelperService extends \Thucke\ThRating\Service\AbstractExtensionS
 				$width = $imageDimensions['width'];
 				$mainId = '.thRating-RObj'.$ratingobjectUid.'-'.$ratingName;
 				$this->logger->log(	\TYPO3\CMS\Core\Log\LogLevel::DEBUG, 'Main CSS info',
-						array(
+						[
 								'mainId' => $mainId,
 								'filenameUri' => $filenameUri,
 								'image width' => $width,
-								'image height' => $height));
-						
-						//calculate overall rating size depending on rating direction
-						if ( $ratingConfig['tilt'] ){
-							$width = round($width / 3,1);
-							if ( !$ratingConfig['barimage'] ) {
-								$height = $height * $sumStepWeights;
-							}
-							$cssFile .= $mainId.' { width:'.$width.'px; height:'.$height.'px; }'.CHR(10);
-							$cssFile .= $mainId.', '.$mainId.' span:hover, '.$mainId.' span:active, '.$mainId.' span:focus, '.$mainId.' .current-rating {	background:url('.$filenameUri.') right bottom repeat-y;	}'.CHR(10);
-							$cssFile .= $mainId.' span, '.$mainId.' .current-rating { width:'.$width.'px; }'.CHR(10);
+								'image height' => $height]);
+
+                //calculate overall rating size depending on rating direction
+                if ( $ratingConfig['tilt'] ){
+                            $width = round($width / 3,1);
+                            if ( !$ratingConfig['barimage'] ) {
+                                $height *= $sumStepWeights;
+                            }
+                            $cssFile .= $mainId.' { width:'.$width.'px; height:'.$height.'px; }'.chr(10);
+							$cssFile .= $mainId.', '.$mainId.' span:hover, '.$mainId.' span:active, '.$mainId.' span:focus, '.$mainId.' .current-rating {	background:url('.$filenameUri.') right bottom repeat-y;	}'.chr(10);
+							$cssFile .= $mainId.' span, '.$mainId.' .current-rating { width:'.$width.'px; }'.chr(10);
 						} else {
 							$height = round($height / 3,1);
 							if ( !$ratingConfig['barimage'] ) {
-								$width = $width * $sumStepWeights;
+								$width *= $sumStepWeights;
 							}
-							$cssFile .= $mainId.' { width:'.$width.'px; height:'.$height.'px; }'.CHR(10);
-							$cssFile .= $mainId.', '.$mainId.' span:hover, '.$mainId.' span:active, '.$mainId.' span:focus, '.$mainId.' .current-rating {	background:url('.$filenameUri.') 0 0 repeat-x;	}'.CHR(10);
-							$cssFile .= $mainId.' span, '.$mainId.' .current-rating { height:'.$height.'px; line-height:'.$height.'px; }'.CHR(10);
+							$cssFile .= $mainId.' { width:'.$width.'px; height:'.$height.'px; }'.chr(10);
+							$cssFile .= $mainId.', '.$mainId.' span:hover, '.$mainId.' span:active, '.$mainId.' span:focus, '.$mainId.' .current-rating {	background:url('.$filenameUri.') 0 0 repeat-x;	}'.chr(10);
+							$cssFile .= $mainId.' span, '.$mainId.' .current-rating { height:'.$height.'px; line-height:'.$height.'px; }'.chr(10);
 							//calculate widths/heights related to stepweights
-							$i = 1;
-							$stepPart = 0;
 						}
-						$cssFile .= $mainId.' .current-poll {	background:url('.$filenameUri.');	}'.CHR(10);
+						$cssFile .= $mainId.' .current-poll {	background:url('.$filenameUri.');	}'.chr(10);
 			}
 			
 			//calculate widths/heights related to stepweights
@@ -465,29 +481,26 @@ class ExtensionHelperService extends \Thucke\ThRating\Service\AbstractExtensionS
 				$zIndex = $stepcount-$i+2;  //add 2 to override .current-poll and .currentPollText
 				//configure rating and polling styles for steps
 				$oneStepPart =  round($stepWeight * 100 / $sumStepWeights, 1);	//calculate single width of ratingstep
-				$cssFile .= 'span.RObj'.$ratingobjectUid.'-StpOdr'.$i.'-ratingpoll-normal { width:'.$oneStepPart.'%; z-index:'.$zIndex.'; margin-left:'.$stepPart.'%;}'.CHR(10);
-				$cssFile .= 'span.RObj'.$ratingobjectUid.'-StpOdr'.$i.'-ratingpoll-tilt { height:'.$oneStepPart.'%; z-index:'.$zIndex.'; margin-bottom:'.$stepPart.'%; }'.CHR(10);
-				$cssFile .= 'li.RObj'.$ratingobjectUid.'-StpOdr'.$i.'-currentpoll-normal { width:'.$oneStepPart.'%; margin-left:'.$stepPart.'%; }'.CHR(10);
-				$cssFile .= 'li.RObj'.$ratingobjectUid.'-StpOdr'.$i.'-currentpoll-normal span { width:100%; }'.CHR(10);
-				$cssFile .= 'li.RObj'.$ratingobjectUid.'-StpOdr'.$i.'-currentpoll-tilt { height:'.$oneStepPart.'%; margin-bottom:'.$stepPart.'%; }'.CHR(10);
-				$cssFile .= 'li.RObj'.$ratingobjectUid.'-StpOdr'.$i.'-currentpoll-tilt span { height:100%; }'.CHR(10);
+				$cssFile .= 'span.RObj'.$ratingobjectUid.'-StpOdr'.$i.'-ratingpoll-normal { width:'.$oneStepPart.'%; z-index:'.$zIndex.'; margin-left:'.$stepPart.'%;}'.chr(10);
+				$cssFile .= 'span.RObj'.$ratingobjectUid.'-StpOdr'.$i.'-ratingpoll-tilt { height:'.$oneStepPart.'%; z-index:'.$zIndex.'; margin-bottom:'.$stepPart.'%; }'.chr(10);
+				$cssFile .= 'li.RObj'.$ratingobjectUid.'-StpOdr'.$i.'-currentpoll-normal { width:'.$oneStepPart.'%; margin-left:'.$stepPart.'%; }'.chr(10);
+				$cssFile .= 'li.RObj'.$ratingobjectUid.'-StpOdr'.$i.'-currentpoll-normal span { width:100%; }'.chr(10);
+				$cssFile .= 'li.RObj'.$ratingobjectUid.'-StpOdr'.$i.'-currentpoll-tilt { height:'.$oneStepPart.'%; margin-bottom:'.$stepPart.'%; }'.chr(10);
+				$cssFile .= 'li.RObj'.$ratingobjectUid.'-StpOdr'.$i.'-currentpoll-tilt span { height:100%; }'.chr(10);
 				$stepPart =  round($sumWeights * 100 / $sumStepWeights, 1);	//calculate sum of widths to this ratingstep
-				$cssFile .= 'span.RObj'.$ratingobjectUid.'-StpOdr'.$i.'-ratingstep-normal { width:'.$stepPart.'%; z-index:'.$zIndex.'; }'.CHR(10);
-				$cssFile .= 'span.RObj'.$ratingobjectUid.'-StpOdr'.$i.'-ratingstep-tilt { height:'.$stepPart.'%; z-index:'.$zIndex.'; }'.CHR(10);
+				$cssFile .= 'span.RObj'.$ratingobjectUid.'-StpOdr'.$i.'-ratingstep-normal { width:'.$stepPart.'%; z-index:'.$zIndex.'; }'.chr(10);
+				$cssFile .= 'span.RObj'.$ratingobjectUid.'-StpOdr'.$i.'-ratingstep-tilt { height:'.$stepPart.'%; z-index:'.$zIndex.'; }'.chr(10);
 				$i++;
 			}
 			//reset variables for next iteration
-			unset($stepWeights);
-			unset($sumWeights);
-			unset($sumStepWeights);
-			$this->logger->log(	\TYPO3\CMS\Core\Log\LogLevel::DEBUG, 'CSS finished for ratingobject', array());
+            unset($stepWeights, $sumWeights, $sumStepWeights);
+            $this->logger->log(	\TYPO3\CMS\Core\Log\LogLevel::DEBUG, 'CSS finished for ratingobject', []);
 		}
 		
-		$this->logger->log(	\TYPO3\CMS\Core\Log\LogLevel::DEBUG, 'Saving CSS file', array('cssFile' => $cssFile));
-		$fp = fopen ( PATH_site.'typo3temp/thratingDyn.css', 'w' );
+		$this->logger->log(	\TYPO3\CMS\Core\Log\LogLevel::DEBUG, 'Saving CSS file', ['cssFile' => $cssFile]);
+		$fp = fopen ( PATH_site.self::DYN_CSS_FILENAME, 'w' );
 		fwrite ( $fp, $cssFile);
 		fclose ( $fp );
 		return $messageArray;
 	}
 }
-?>

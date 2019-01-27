@@ -7,14 +7,9 @@
 		<f:form.hidden name="ajaxRef" value="filled_by_JS"></f:form.hidden>
 	</f:form>
 	<div class='tx-thrating-singleton-message'>
-		<f:flashMessages as="flashMessages">
-	        <f:for each="{flashMessages}" as="flashMessage">
-	            <div class="alert {flashMessage.class}">
-	                <h4 class="alert-title">{flashMessage.title}</h4>
-	                <div class="alert-message">{flashMessage.message}</div>
-	            </div>
-	        </f:for>
-		</f:flashMessages>
+        <div class='tx-thrating-flash-message' aria-life="assertive" aria-atomic="false" aria-relevant="text">
+            <f:flashMessages />
+        </div>
 	</div>
 </div>
 <f:comment>

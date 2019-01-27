@@ -32,12 +32,9 @@ class VoterRepository extends \TYPO3\CMS\Extbase\Domain\Repository\FrontendUserR
 	 * Initialze this repository
 	 */
 	public function initializeObject() {
-		$configurationManager = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Configuration\\ConfigurationManager');
-		$settings = $configurationManager->getConfiguration('Settings', 'thRating', 'pi1');
+		$configurationManager = $this->objectManager->get(\TYPO3\CMS\Extbase\Configuration\ConfigurationManager::class);
 		//Even hidden or deleted FE Users  should be found
-		$this->defaultQuerySettings = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Typo3QuerySettings');
+		$this->defaultQuerySettings = $this->objectManager->get(\TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings::class);
 		$this->defaultQuerySettings->setIgnoreEnableFields(true);
 	}
 }
-
-?>
