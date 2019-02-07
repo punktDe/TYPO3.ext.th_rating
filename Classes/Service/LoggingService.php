@@ -1,5 +1,6 @@
 <?php
 namespace Thucke\ThRating\Service;
+
 /***************************************************************
 *  Copyright notice
 *
@@ -60,25 +61,32 @@ class LoggingService {
 	 * @param	string	$name the class name which this logger is for
 	 * @return 	\TYPO3\CMS\Core\Log\Logger
 	 */
-	public function getLogger( $name ) {
-		$writerConfiguration = $GLOBALS['TYPO3_CONF_VARS']['LOG']['Thucke']['ThRating']['writerConfiguration'];
+	public function getLogger( $name ): \TYPO3\CMS\Core\Log\Logger
+    {
+        /** @var array $writerConfiguration */
+        $writerConfiguration = $GLOBALS['TYPO3_CONF_VARS']['LOG']['Thucke']['ThRating']['writerConfiguration'];
 		$settings = $this->configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_SETTINGS,'thRating','pi1');
 		If ( is_array($settings['logging']) ){
 			foreach ($settings['logging'] as $logLevel => $logConfig) {
-				$levelUppercase = strtoupper($logLevel);
-				If ( !empty($logConfig['file']) ) {
-					$writerConfiguration[constant('\TYPO3\CMS\Core\Log\LogLevel::'.$levelUppercase)]['TYPO3\\CMS\\Core\\Log\\Writer\\FileWriter'] = 
+
+                /** @var string $levelUppercase */
+                $levelUppercase = strtoupper($logLevel);
+
+                If ( !empty($logConfig['file']) ) {
+                    $writerConfiguration[constant('\TYPO3\CMS\Core\Log\LogLevel::'.$levelUppercase)][\TYPO3\CMS\Core\Log\Writer\FileWriter::class] =
 						['logFile' => $logConfig['file']];
 				}
 				If ( !empty($logConfig['database']) ) {
-					$writerConfiguration[constant('\TYPO3\CMS\Core\Log\LogLevel::'.$levelUppercase)]['TYPO3\\CMS\\Core\\Log\\Writer\\Database'] = 
+					$writerConfiguration[constant('\TYPO3\CMS\Core\Log\LogLevel::'.$levelUppercase)][\TYPO3\CMS\Core\Log\Writer\DatabaseWriter::class] =
 						['table' => $logConfig['table']];
 				}
 			}
 		}
-		$GLOBALS['TYPO3_CONF_VARS']['LOG']['Thucke']['ThRating']['writerConfiguration'] = $writerConfiguration;
-		$logger = $this->objectManager->get('TYPO3\\CMS\\Core\\Log\\LogManager')->getLogger( $name );
-		return $logger;
+        if (!empty($writerConfiguration)) {
+            /** @noinspection UnsupportedStringOffsetOperationsInspection */
+            $GLOBALS['TYPO3_CONF_VARS']['LOG']['Thucke']['ThRating']['writerConfiguration'] = $writerConfiguration;
+        }
+        return $this->objectManager->get(\TYPO3\CMS\Core\Log\LogManager::class)->getLogger( $name );
 	}
 	
 }

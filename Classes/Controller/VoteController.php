@@ -88,7 +88,7 @@ class VoteController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
     /**
      * @param \Thucke\ThRating\Service\AccessControlService $accessControllService
      */
-    public function injectAccessControlService(\Thucke\ThRating\Service\AccessControlService $accessControllService)
+    public function injectAccessControlService(\Thucke\ThRating\Service\AccessControlService $accessControllService): void
     {
         $this->accessControllService = $accessControllService;
     }
@@ -101,7 +101,7 @@ class VoteController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
     /**
      * @param \Thucke\ThRating\Service\RichSnippetService $richSnippetService
      */
-    public function injectRichSnippetService(\Thucke\ThRating\Service\RichSnippetService $richSnippetService)
+    public function injectRichSnippetService(\Thucke\ThRating\Service\RichSnippetService $richSnippetService): void
     {
         $this->richSnippetService = $richSnippetService;
     }
@@ -114,7 +114,7 @@ class VoteController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
     /**
      * @param \Thucke\ThRating\Service\CookieService $cookieService
      */
-    public function injectCookieService(\Thucke\ThRating\Service\CookieService $cookieService)
+    public function injectCookieService(\Thucke\ThRating\Service\CookieService $cookieService): void
     {
         $this->cookieService = $cookieService;
     }
@@ -127,7 +127,7 @@ class VoteController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
     /**
      * @param \Thucke\ThRating\Domain\Repository\VoteRepository $voteRepository
      */
-    public function injectVoteRepository(\Thucke\ThRating\Domain\Repository\VoteRepository $voteRepository)
+    public function injectVoteRepository(\Thucke\ThRating\Domain\Repository\VoteRepository $voteRepository): void
     {
         $this->voteRepository = $voteRepository;
     }
@@ -141,7 +141,7 @@ class VoteController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
      * @param    \Thucke\ThRating\Domain\Validator\VoteValidator $voteValidator
      * @return    void
      */
-    public function injectVoteValidator(\Thucke\ThRating\Domain\Validator\VoteValidator $voteValidator)
+    public function injectVoteValidator(\Thucke\ThRating\Domain\Validator\VoteValidator $voteValidator): void
     {
         $this->voteValidator = $voteValidator;
     }
@@ -155,7 +155,7 @@ class VoteController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
      * @param    \Thucke\ThRating\Domain\Validator\RatingValidator $ratingValidator
      * @return    void
      */
-    public function injectRatingValidator(\Thucke\ThRating\Domain\Validator\RatingValidator $ratingValidator)
+    public function injectRatingValidator(\Thucke\ThRating\Domain\Validator\RatingValidator $ratingValidator): void
     {
         $this->ratingValidator = $ratingValidator;
     }
@@ -169,7 +169,7 @@ class VoteController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
      * @param \Thucke\ThRating\Domain\Repository\RatingobjectRepository $ratingobjectRepository
      * @return void
      */
-    public function injectRatingobjectRepository(\Thucke\ThRating\Domain\Repository\RatingobjectRepository $ratingobjectRepository)
+    public function injectRatingobjectRepository(\Thucke\ThRating\Domain\Repository\RatingobjectRepository $ratingobjectRepository): void
     {
         $this->ratingobjectRepository = $ratingobjectRepository;
     }
@@ -183,7 +183,7 @@ class VoteController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
      * @param \Thucke\ThRating\Domain\Repository\StepconfRepository $stepconfRepository
      * @return void
      */
-    public function injectStepconfRepository(\Thucke\ThRating\Domain\Repository\StepconfRepository $stepconfRepository)
+    public function injectStepconfRepository(\Thucke\ThRating\Domain\Repository\StepconfRepository $stepconfRepository): void
     {
         $this->stepconfRepository = $stepconfRepository;
     }
@@ -197,7 +197,7 @@ class VoteController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
      * @param    \Thucke\ThRating\Domain\Validator\StepconfValidator $stepconfValidator
      * @return    void
      */
-    public function injectStepconfValidator(\Thucke\ThRating\Domain\Validator\StepconfValidator $stepconfValidator)
+    public function injectStepconfValidator(\Thucke\ThRating\Domain\Validator\StepconfValidator $stepconfValidator): void
     {
         $this->stepconfValidator = $stepconfValidator;
     }
@@ -211,17 +211,18 @@ class VoteController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
      * @param    \Thucke\ThRating\Service\ExtensionHelperService $extensionHelperService
      * @return    void
      */
-    public function injectExtensionHelperService(\Thucke\ThRating\Service\ExtensionHelperService $extensionHelperService)
+    public function injectExtensionHelperService(\Thucke\ThRating\Service\ExtensionHelperService $extensionHelperService): void
     {
         $this->extensionHelperService = $extensionHelperService;
     }
 
     /**
      * Lifecycle-Event
-     * wird nach der Initialisierung des Objekts und nach dem Aufl�sen der Dependencies aufgerufen.
+     * wird nach der Initialisierung des Objekts und nach dem Auflösen der Dependencies aufgerufen.
      *
      */
-    public function initializeObject() {
+    public function initializeObject(): void
+    {
     }
 
     /**
@@ -233,7 +234,7 @@ class VoteController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
      * @throws \Thucke\ThRating\Exception\InvalidStoragePageException
      */
     /** @noinspection PhpMissingParentCallCommonInspection */
-    protected function initializeAction()
+    protected function initializeAction(): void
     {
         //instantiate the logger
         $this->logger = GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Object\ObjectManager::class)
@@ -248,6 +249,7 @@ class VoteController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 
         /** @var array $frameworkConfiguration */
         $frameworkConfiguration = $this->configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
+
         if ($this->request->hasArgument(self::AJAX_REFERENCE_ID)) {
             //switch to JSON respone on AJAX request
             $this->request->setFormat('json');
@@ -366,11 +368,11 @@ class VoteController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
             if (!$this->voteValidator->isObjSet($matchVote) || $this->voteValidator->validate($matchVote)->hasErrors() || $vote->isAnonymous()) {
                 $this->logger->log(\TYPO3\CMS\Core\Log\LogLevel::DEBUG, 'New vote could be added', ['errorCode' => 1404934012]);
                 $vote->getRating()->addVote($vote);
-                if ($vote->isAnonymous() && !$vote->hasAnonymousVote($this->prefixId) && $this->cookieProtection) {
+                if ($this->cookieProtection && $vote->isAnonymous() && !$vote->hasAnonymousVote($this->prefixId)) {
                     $this->logger->log(\TYPO3\CMS\Core\Log\LogLevel::DEBUG, 'Anonymous rating; preparing cookie potection', ['errorCode' => 1404934021]);
                     $anonymousRating['ratingtime'] = time();
                     $anonymousRating['voteUid'] = $vote->getUid();
-                    $lifeTime = time() + 60 * 60 * 24 * $this->cookieLifetime;
+                    $lifeTime = (new \DateTime('NOW'))->add(DateInterval::createFromDateString($this->cookieLifetime.' days'));
                     //set cookie to prevent multiple anonymous ratings
                     $this->cookieService->setVoteCookie($this->prefixId . '_AnonymousRating_' . $vote->getRating()->getUid(), json_encode($anonymousRating), $lifeTime);
                 }
@@ -466,13 +468,6 @@ class VoteController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
         $this->logger->log(\TYPO3\CMS\Core\Log\LogLevel::DEBUG, 'Entry ratinglinksAction', []);
         $this->settings['ratingConfigurations']['default'] = $this->settings['defaultRatingConfiguration']['ratinglinks'];
         $this->graphicActionHelper($vote);
-        /*if ( $this->settings['fluid']['templates']['ratinglinks']['likesMode'] ) {
-            \TYPO3\CMS\Core\Utility\GeneralUtility::deprecationLog(
-                get_class($this).': Setting "fluid.templates.ratinglinks.likesMode" is deprecated' .
-                    ' Use the specific action "mark" as a replacement. Will be removed two versions after 0.10.2 - at least in version 1.0.'
-            );
-            $this->view->assign('actionMethodName','markAction');
-        }*/
         $this->initSignalSlotDispatcher('afterRatinglinkAction');
         $this->logger->log(\TYPO3\CMS\Core\Log\LogLevel::DEBUG, 'Exit ratinglinksAction', []);
     }
@@ -606,7 +601,7 @@ class VoteController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
      * @throws \TYPO3\CMS\Extbase\SignalSlot\Exception\InvalidSlotException
      * @throws \TYPO3\CMS\Extbase\SignalSlot\Exception\InvalidSlotReturnException
      */
-    protected function initSignalSlotDispatcher($slotName)
+    protected function initSignalSlotDispatcher($slotName): void
     {
         $this->logger->log(\TYPO3\CMS\Core\Log\LogLevel::DEBUG, 'Entry initSignalSlotDispatcher', ['slotName' => $slotName]);
         if ($this->request->hasArgument('signalSlotHandlerContent')) {
@@ -691,7 +686,7 @@ class VoteController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
      *
      * @return void
      */
-    protected function initSettings()
+    protected function initSettings():void
     {
         $this->logger->log(\TYPO3\CMS\Core\Log\LogLevel::DEBUG, 'Entry initSettings', []);
 
@@ -753,6 +748,8 @@ class VoteController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 
         $frameworkConfiguration = $this->configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
         $frameworkConfiguration['settings'] = $this->settings;
+        //\TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump($frameworkConfiguration,' initSettings.settings ');
+
         $this->setFrameworkConfiguration($frameworkConfiguration);
 
         $this->logger->log(\TYPO3\CMS\Core\Log\LogLevel::DEBUG, 'Exit initSettings', []);
@@ -765,7 +762,7 @@ class VoteController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
      *
      * @return void
      */
-    protected function setAjaxSelections(\Thucke\ThRating\Domain\Model\Vote $vote)
+    protected function setAjaxSelections(\Thucke\ThRating\Domain\Model\Vote $vote): void
     {
         if ($vote->getVoter() instanceof \Thucke\ThRating\Domain\Model\Voter && empty($this->settings['displayOnly'])) {
             //cleanup settings to reduce data size in POST form
@@ -794,7 +791,7 @@ class VoteController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
      * @return void
      * @throws \Thucke\ThRating\Exception\InvalidAggregateRatingSchemaTypeException
      */
-    protected function fillSummaryView()
+    protected function fillSummaryView(): void
     {
         $this->view->assign('settings', $this->settings);
         $this->view->assign('ajaxRef', $this->ajaxSelections['ajaxRef']);
@@ -855,14 +852,14 @@ class VoteController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
      * @throws \Thucke\ThRating\Exception\FeUserStoragePageException if plugin.tx_felogin_pi1.storagePid has not been set
      * @return void
      */
-    protected function setStoragePids()
+    protected function setStoragePids(): void
     {
+        /** @var array $frameworkConfiguration */
         $frameworkConfiguration = $this->configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT);
         $feUserStoragePid = \TYPO3\CMS\Core\Utility\GeneralUtility::intExplode(',', $frameworkConfiguration['plugin.']['tx_felogin_pi1.']['storagePid'], true);
         $frameworkConfiguration = $frameworkConfiguration['plugin.']['tx_thrating.'];
 
         $storagePids = \TYPO3\CMS\Core\Utility\GeneralUtility::intExplode(',', $frameworkConfiguration['storagePid'], true);
-
         if (empty($storagePids[0])) {
             throw new \Thucke\ThRating\Exception\InvalidStoragePageException(\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('flash.vote.general.invalidStoragePid', 'ThRating'), 1403203519);
         }
@@ -870,9 +867,11 @@ class VoteController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
         if (empty($feUserStoragePid[0])) {
             throw new \Thucke\ThRating\Exception\FeUserStoragePageException(\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('flash.pluginConfiguration.missing.feUserStoragePid', 'ThRating'), 1403190539);
         }
-        array_push($storagePids, $feUserStoragePid[0]);
+        $storagePids[] = $feUserStoragePid[0];
         $frameworkConfiguration['persistence.']['storagePid'] = implode(',', $storagePids);
+        //\TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump($frameworkConfiguration,' setStoragePids.$frameworkConfiguration');
         $this->setFrameworkConfiguration($frameworkConfiguration);
+        //\TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump($this->configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK),' setStoragePids Final');
     }
 
     /**
@@ -891,7 +890,7 @@ class VoteController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
      * @param array $frameworkConfiguration
      * @return void
      */
-    protected function setFrameworkConfiguration(array $frameworkConfiguration)
+    protected function setFrameworkConfiguration(array $frameworkConfiguration): void
     {
         $this->configurationManager->setConfiguration($frameworkConfiguration);
         $this->cookieLifetime = abs((int)$this->settings['cookieLifetime']);
@@ -901,6 +900,7 @@ class VoteController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
         } else {
             $this->cookieProtection = true;
         }
+        //\TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump($this->configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK),' setFrameworkConfiguration ');
     }
 
 
@@ -913,7 +913,7 @@ class VoteController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
      * @param array $additionalInfo
      * @return    void
      */
-    private function logFlashMessage(string $messageText, string $messageTitle, string $severity, array $additionalInfo)
+    private function logFlashMessage(string $messageText, string $messageTitle, string $severity, array $additionalInfo): void
     {
         $additionalInfo = ['messageTitle' => $messageTitle] + $additionalInfo;
         $severity = strtoupper($severity);
