@@ -2,14 +2,32 @@
 	"name" : "thucke/th-rating",
 	"type" : "typo3-cms-extension",
 	"description" : "Highly flexible AJAX rating based on extbase/fluid/jquery. Allows multiple ratings within one page. Could be used as a cObj by other extensions or included in every FLUID template using the viewhelper. Each ratingstep could be configured having a name - international localization included.",
+	"keywords": [
+		"TYPO3",
+		"extension",
+		"ajax",
+		"jQuery",
+		"Fluid",
+		"Extbase",
+		"rating",
+		"polling",
+		"likeButton"
+	],
+	"authors": [
+		{
+			"name": "Thomas Hucke",
+			"role": "Developer"
+		}
+	],
 	"license" : "GPL-2.0-or-later",
-	"extra" : {
-		"installer-name" : "th_rating"
-	},
 	"require" : {
 		"php" : ">=7.1.0 <7.3",
 		"typo3/cms-core" : ">=8.7.0 <9.6",
 		"sjbr/static-info-tables" : ">=6.2.0 <7.0"
+	},
+	"require-dev": {
+		"friendsofphp/php-cs-fixer": "^2.0",
+		"nimut/testing-framework": "^1.0 || ^2.0 || ^3.0 || ^4.0"
 	},
 	"autoload" : {
 		"psr-4" : {
@@ -18,12 +36,30 @@
 	},
 	"autoload-dev" : {
 		"psr-4" : {
-			"Thucke\\ThRating\\Tests\\" : "Tests",
-			"TYPO3\\CMS\\Core\\Tests\\" : ".Build/vendor/typo3/cms/typo3/sysext/core/Tests/"
+			"Thucke\\ThRating\\Tests\\" : "Tests"
 		}
 	},
 	"replace" : {
 		"th-rating" : "self.version",
 		"typo3-ter/th-rating" : "self.version"
+	},
+	"config": {
+		"vendor-dir": ".Build/vendor",
+		"bin-dir": ".Build/bin"
+	},
+	"scripts": {
+		"post-autoload-dump": [
+			"mkdir -p .Build/Web/typo3conf/ext/",
+			"[ -L .Build/Web/typo3conf/ext/th_rating ] || ln -snvf ../../../../. .Build/Web/typo3conf/ext/th_rating"
+		]
+	},
+	"extra": {
+		"branch-alias": {
+			"dev-master": "2.x-dev"
+		},
+		"typo3/cms": {
+			"cms-package-dir": "{$vendor-dir}/typo3/cms",
+			"web-dir": ".Build/Web"
+		}
 	}
 }
