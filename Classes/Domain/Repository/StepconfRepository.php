@@ -77,6 +77,6 @@ class StepconfRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
 
         /** @var \Thucke\ThRating\Domain\Model\Stepconf $lookForStepconf */
         $lookForStepconf = $this->findStepconfObject($stepconf);
-        return $lookForStepconf.isValid();
+        return $lookForStepconf->isValid();
     }
 }
