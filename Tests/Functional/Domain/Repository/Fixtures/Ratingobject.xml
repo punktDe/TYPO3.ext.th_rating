@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<dataset>
+    <tx_thrating_domain_model_ratingobject>
+        <uid>1</uid>
+        <pid>1</pid>
+        <ratetable>testTable</ratetable>
+        <ratefield>testField</ratefield>
+    </tx_thrating_domain_model_ratingobject>
+    <tx_thrating_domain_model_ratingobject>
+        <uid>2</uid>
+        <pid>1</pid>
+        <ratetable>testTable</ratetable>
+        <ratefield>testField2</ratefield>
+    </tx_thrating_domain_model_ratingobject>
+    <tx_thrating_domain_model_ratingobject>
+        <uid>3</uid>
+        <pid>1</pid>
+        <ratetable>testTable2</ratetable>
+        <ratefield>testField1</ratefield>
+    </tx_thrating_domain_model_ratingobject>
+    <tx_thrating_domain_model_ratingobject>
+        <uid>4</uid>
+        <pid>1</pid>
+        <ratetable>testTable2</ratetable>
+        <ratefield>testField2</ratefield>
+    </tx_thrating_domain_model_ratingobject>
+</dataset>
