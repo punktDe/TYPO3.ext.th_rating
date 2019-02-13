@@ -30,83 +30,85 @@ namespace Thucke\ThRating\View;
  * @version $Id:$
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License, version 2
  */
-class JsonView extends \TYPO3\CMS\Extbase\Mvc\View\JsonView {
-
+class JsonView extends \TYPO3\CMS\Extbase\Mvc\View\JsonView
+{
     protected const CONFIGURATION_EXCLUDE = '_exclude';
     protected const CONFIGURATION_DESCEND = '_descend';
 
-	/**
-	 * Tag builder instance
-	 *
-	 * @var \TYPO3\CMS\Fluid\Core\ViewHelper\TagBuilder
-	 * @inject
-	 */
-	protected $tag;
-
-	/**
-	 * Only variables whose name is contained in this array will be rendered
-	 *
-	 * @var array
-	 */
-	protected $variablesToRender = [
-		'actionMethodName',
-		'currentPollDimensions',
-		'ratingClass',
-		'preContent',
-		'postContent',
-		'ajaxRef',
-		'rating',
-		'voter',
-		//'ratingobject',
-		//'currentRates',
-		//'anonymousVotes',
-		'stepCount',
-		'anonymousVoting',
-		'protected',
-		'voting',
-		'usersRate',
-		'ratingobjects',
-		//'LANG',
-		'flashMessages',];
-	/**/
+    /**
+     * Tag builder instance
+     *
+     * @var \TYPO3\CMS\Fluid\Core\ViewHelper\TagBuilder
+     * @inject
+     */
+    protected $tag;
 
     /**
-	 * Initializes this view.
-	 *
-	 * Override this method for initializing your concrete view implementation.
-	 * @return void
-	 * @api
-	 */
-    /** @noinspection PhpMissingParentCallCommonInspection */
-    public function initializeView() {
-		$configuration = [
-			'voter' => [
-				self::CONFIGURATION_EXCLUDE => ['pid','uid'],],
-			'rating' => [
-				self::CONFIGURATION_EXCLUDE => ['pid','uid'],
-				self::CONFIGURATION_DESCEND => [
-					'currentrates' => [],
-					'ratingobject' => [
-						self::CONFIGURATION_EXCLUDE => ['pid','uid'],],],],
-			'voting' => [
-				self::CONFIGURATION_EXCLUDE => ['pid','uid'],
-				self::CONFIGURATION_DESCEND => [
-					'vote' => [
-						self::CONFIGURATION_EXCLUDE => ['pid','uid'],
-						self::CONFIGURATION_DESCEND => [
-							'stepname' => [
-								self::CONFIGURATION_EXCLUDE => ['pid','uid'],],],],],],];
-		$this->setConfiguration($configuration);
-	}
+     * Only variables whose name is contained in this array will be rendered
+     *
+     * @var array
+     */
+    protected $variablesToRender = [
+        'actionMethodName',
+        'currentPollDimensions',
+        'ratingClass',
+        'preContent',
+        'postContent',
+        'ajaxRef',
+        'rating',
+        'voter',
+        //'ratingobject',
+        //'currentRates',
+        //'anonymousVotes',
+        'stepCount',
+        'anonymousVoting',
+        'protected',
+        'voting',
+        'usersRate',
+        'ratingobjects',
+        //'LANG',
+        'flashMessages', ];
+    /**/
 
-	/**
-	 * Get the classic DIV rendered FlashMessages from queue
-	 *
-	 * @return string
-	 */
-	public function getFlashMessages() {
+    /**
+     * Initializes this view.
+     *
+     * Override this method for initializing your concrete view implementation.
+     * @return void
+     * @api
+     */
+    /** @noinspection PhpMissingParentCallCommonInspection */
+    public function initializeView()
+    {
+        $configuration = [
+            'voter' => [
+                self::CONFIGURATION_EXCLUDE => ['pid', 'uid'], ],
+            'rating' => [
+                self::CONFIGURATION_EXCLUDE => ['pid', 'uid'],
+                self::CONFIGURATION_DESCEND => [
+                    'currentrates' => [],
+                    'ratingobject' => [
+                        self::CONFIGURATION_EXCLUDE => ['pid', 'uid'], ], ], ],
+            'voting' => [
+                self::CONFIGURATION_EXCLUDE => ['pid', 'uid'],
+                self::CONFIGURATION_DESCEND => [
+                    'vote' => [
+                        self::CONFIGURATION_EXCLUDE => ['pid', 'uid'],
+                        self::CONFIGURATION_DESCEND => [
+                            'stepname' => [
+                                self::CONFIGURATION_EXCLUDE => ['pid', 'uid'], ], ], ], ], ], ];
+        $this->setConfiguration($configuration);
+    }
+
+    /**
+     * Get the classic DIV rendered FlashMessages from queue
+     *
+     * @return string
+     */
+    public function getFlashMessages()
+    {
         return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Messaging\FlashMessageRendererResolver::class)
             ->resolve()
             ->render($this->controllerContext->getFlashMessageQueue()->getAllMessagesAndFlush());
-	}
+    }
 }

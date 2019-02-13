@@ -1,6 +1,7 @@
 <?php
 
 namespace Thucke\ThRating\Domain\Repository;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -50,7 +51,7 @@ class VoteRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
      * @param    \Thucke\ThRating\Domain\Model\Voter $voter     The Uid of the rated row
      * @return    \Thucke\ThRating\Domain\Model\Vote|object     The voting
      */
-    public function findMatchingRatingAndVoter($rating = NULL, $voter = NULL)
+    public function findMatchingRatingAndVoter($rating = null, $voter = null)
     {
         /** @var \TYPO3\CMS\Extbase\Persistence\QueryInterface $query */
         $query = $this->createQuery();
@@ -64,7 +65,7 @@ class VoteRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
      * @param    \Thucke\ThRating\Domain\Model\Stepconf $stepconf The stepconf object
      * @return    Int
      */
-    public function countByMatchingRatingAndVote($rating = NULL, $stepconf = NULL)
+    public function countByMatchingRatingAndVote($rating = null, $stepconf = null)
     {
         $query = $this->createQuery();
         $query->matching($query->logicalAnd([$query->equals('rating', $rating->getUid()), $query->equals('vote', $stepconf->getUid())]));
@@ -79,7 +80,7 @@ class VoteRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
      * @param    Int $anonymousVoter UID of the anonymous account
      * @return    Int
      */
-    public function countAnonymousByMatchingRatingAndVote($rating = NULL, $stepconf = NULL, $anonymousVoter = NULL)
+    public function countAnonymousByMatchingRatingAndVote($rating = null, $stepconf = null, $anonymousVoter = null)
     {
         if (!empty($anonymousVoter)) {
             $query = $this->createQuery();
@@ -88,5 +89,4 @@ class VoteRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
         }
         return 0;
     }
-
 }

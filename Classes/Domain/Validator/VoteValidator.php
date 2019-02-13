@@ -1,6 +1,7 @@
 <?php
 
 namespace Thucke\ThRating\Domain\Validator;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -71,10 +72,10 @@ class VoteValidator extends \TYPO3\CMS\Extbase\Validation\Validator\AbstractVali
      * If the given Vote is set
      *
      * @param \Thucke\ThRating\Domain\Model\Vote $vote The vote
-     * @return boolean
+     * @return bool
      */
     public function isObjSet($vote)
     {
-        return (!$this->isEmpty($vote) && $vote instanceof \Thucke\ThRating\Domain\Model\Vote);
+        return !$this->isEmpty($vote) && $vote instanceof \Thucke\ThRating\Domain\Model\Vote;
     }
 }

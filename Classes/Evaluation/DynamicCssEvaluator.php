@@ -1,6 +1,6 @@
 <?php /** @noinspection PhpUnusedParameterInspection */
-
 namespace Thucke\ThRating\Evaluation;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -42,7 +42,7 @@ class DynamicCssEvaluator
      *
      * @return    string JavaScript code for evaluating the
      */
-    function returnFieldJS()
+    public function returnFieldJS()
     {
         return 'return value;';
     }
@@ -53,12 +53,12 @@ class DynamicCssEvaluator
      *
      * @param    mixed $value : The value that has to be checked.
      * @param    string $is_in : Is-In String
-     * @param    integer $set : Determines if the field can be set (value correct) or not (PASSED BY REFERENCE!)
+     * @param    int $set : Determines if the field can be set (value correct) or not (PASSED BY REFERENCE!)
      * @return    string      The new value of the field
      */
-    function evaluateFieldValue($value, $is_in, &$set)
+    public function evaluateFieldValue($value, $is_in, &$set)
     {
-        $this->clearCachePostProc(NULL, NULL, NULL);
+        $this->clearCachePostProc(null, null, null);
         return $value;
     }
 
@@ -71,13 +71,14 @@ class DynamicCssEvaluator
      * @param null $pObj
      * @return void
      */
-    public function clearCachePostProc($_funcRef, $params, $pObj = NULL)
+    public function clearCachePostProc($_funcRef, $params, $pObj = null)
     {
-        if (file_exists(PATH_site . 'typo3temp/thratingDyn.css')) unlink(PATH_site . 'typo3temp/thratingDyn.css');
+        if (file_exists(PATH_site . 'typo3temp/thratingDyn.css')) {
+            unlink(PATH_site . 'typo3temp/thratingDyn.css');
+        }
         //recreate file with zero length - so its still included via TS
         $fp = fopen(PATH_site . 'typo3temp/thratingDyn.css', 'w');
         fwrite($fp, '');
         fclose($fp);
     }
-
 }

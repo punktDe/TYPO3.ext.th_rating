@@ -1,6 +1,7 @@
 <?php
 
 namespace Thucke\ThRating\Domain\Validator;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -60,10 +61,10 @@ class RatingValidator extends \TYPO3\CMS\Extbase\Validation\Validator\AbstractVa
      * If the given Rating is set
      *
      * @param \Thucke\ThRating\Domain\Model\Rating $rating The rating
-     * @return boolean
+     * @return bool
      */
     public function isObjSet($rating)
     {
-        return (!$this->isEmpty($rating) && get_class($rating) == \Thucke\ThRating\Domain\Model\Rating::class);
+        return !$this->isEmpty($rating) && get_class($rating) == \Thucke\ThRating\Domain\Model\Rating::class;
     }
 }

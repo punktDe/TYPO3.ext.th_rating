@@ -13,7 +13,7 @@ defined('TYPO3_MODE') or die();
         [        // An array holding the controller-action-combinations that are accessible
             'Vote' => 'ratinglinks,polling,mark,index,show,create,new,singleton',    // The first controller and its first action will be the default
         ], [        // An array of non-cachable controller-action-combinations (they must already be enabled)
-            'Vote' => 'new,create,ratinglinks,polling,mark',]);
+            'Vote' => 'new,create,ratinglinks,polling,mark', ]);
 
     // here we register "DynamicCssEvaluator" to remove the dynamic CSS file when values are modified in the BE
     $TYPO3_CONF_VARS['SC_OPTIONS']['tce']['formevals'][Thucke\ThRating\Evaluation\DynamicCssEvaluator::class] = '';
@@ -40,5 +40,4 @@ defined('TYPO3_MODE') or die();
     //$signalSlotDispatcher = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\SignalSlot\\Dispatcher');
     //$signalSlotDispatcher->connect('Thucke\\ThRating\\Controller\\VoteController', 'afterRatinglinkAction', 'Thucke\\ThRating\\Controller\\VoteController', 'afterRatinglinkActionHandler',false);
     //$signalSlotDispatcher->connect('Thucke\\ThRating\\Controller\\VoteController', 'afterCreateAction', 'Thucke\\ThRating\\Controller\\VoteController', 'afterCreateActionHandler',false);
-
 })();

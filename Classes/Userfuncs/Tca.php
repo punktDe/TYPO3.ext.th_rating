@@ -1,9 +1,10 @@
 <?php /** @noinspection PhpUnusedParameterInspection */
 namespace Thucke\ThRating\Userfuncs;
+
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2013 Thomas Hucke <thucke@web.de> 
+*  (c) 2013 Thomas Hucke <thucke@web.de>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -29,29 +30,32 @@ namespace Thucke\ThRating\Userfuncs;
  * @version $Id:$
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License, version 2
  */
-class Tca {
+class Tca
+{
 
-	/**
-	 * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface
-	 */
-	protected $objectManager;
-	/**
-	 * @param \TYPO3\CMS\Extbase\Object\ObjectManagerInterface	$objectManager
-	 * @return void
-	 */
-	public function injectObjectManager(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager) {
-		$this->objectManager = $objectManager;
-	}
-	
-	/**
-	 * Constructs a new rating object
-	 * @return void
-	 */
-	public function __construct( ) {
-		if ( empty($this->objectManager) ) {
-			$this->objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
-		}
-	}
+    /**
+     * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface
+     */
+    protected $objectManager;
+    /**
+     * @param \TYPO3\CMS\Extbase\Object\ObjectManagerInterface	$objectManager
+     * @return void
+     */
+    public function injectObjectManager(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager)
+    {
+        $this->objectManager = $objectManager;
+    }
+
+    /**
+     * Constructs a new rating object
+     * @return void
+     */
+    public function __construct()
+    {
+        if (empty($this->objectManager)) {
+            $this->objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
+        }
+    }
 
     /**
      * Returns the record title for the rating object in BE
@@ -61,8 +65,9 @@ class Tca {
      * @param $pObj
      * @return void
      */
-	public function getRatingObjectRecordTitle(&$params, &$pObj) {
-        $params['title'] = '#'.$params['row']['uid'].': '.$params['row']['ratetable'].' ['.$params['row']['ratefield'].']';
+    public function getRatingObjectRecordTitle(&$params, &$pObj)
+    {
+        $params['title'] = '#' . $params['row']['uid'] . ': ' . $params['row']['ratetable'] . ' [' . $params['row']['ratefield'] . ']';
     }
 
     /**
@@ -73,8 +78,9 @@ class Tca {
      * @param $pObj
      * @return void
      */
-    public function getStepconfRecordTitle(&$params, &$pObj) {
-        $params['title'] = '#'.$params['row']['uid']. ': Steporder ['.$params['row']['steporder'].']';
+    public function getStepconfRecordTitle(&$params, &$pObj)
+    {
+        $params['title'] = '#' . $params['row']['uid'] . ': Steporder [' . $params['row']['steporder'] . ']';
     }
 
     /**
@@ -85,9 +91,10 @@ class Tca {
      * @param $pObj
      * @return void
      */
-    public function getStepnameRecordTitle(&$params, &$pObj) {
-		//look into repository to find clear text object attributes
-		$stepnameRepository = $this->objectManager->get(\Thucke\ThRating\Domain\Repository\StepnameRepository::class);
+    public function getStepnameRecordTitle(&$params, &$pObj)
+    {
+        //look into repository to find clear text object attributes
+        $stepnameRepository = $this->objectManager->get(\Thucke\ThRating\Domain\Repository\StepnameRepository::class);
         $stepnameRepository->clearQuerySettings();	//disable syslanguage and enableFields
         $stepnameObject = $stepnameRepository->findByUid(intval($params['row']['uid']));
         /** @var string $stepnameLang */
@@ -96,7 +103,7 @@ class Tca {
         if (is_object($stepnameObject)) {
             /** @var \Thucke\ThRating\Domain\Model\Stepname $stepnameObject */
             $stepnameLang = $stepnameObject->get_languageUid();
-            If (empty($stepnameLang)) {
+            if (empty($stepnameLang)) {
                 $syslang = \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('tca.BE.default', 'ThRating');
             } elseif ($stepnameLang == -1) {
                 $syslang = \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('tca.BE.all', 'ThRating');
@@ -104,30 +111,30 @@ class Tca {
                 //look for language name
                 $syslangRepository = $this->objectManager->get(\Thucke\ThRating\Domain\Repository\StepnameRepository::class);
                 $syslangObject = $syslangRepository->findByUid($stepnameLang);
-                If ($syslangObject instanceof \Thucke\ThRating\Domain\Model\Syslang) {
+                if ($syslangObject instanceof \Thucke\ThRating\Domain\Model\Syslang) {
                     $syslang=$syslangObject->getTitle();
                 } else {
                     $syslang = \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('tca.BE.unknown', 'ThRating');
                 }
             }
         }
-		$stepconfRepository = $this->objectManager->get(\Thucke\ThRating\Domain\Repository\StepconfRepository::class);
+        $stepconfRepository = $this->objectManager->get(\Thucke\ThRating\Domain\Repository\StepconfRepository::class);
         $stepconfObject = $stepconfRepository->findByUid(intval($params['row']['stepconf']));
-		$ratetable = \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('tca.BE.new', 'ThRating');
-		$ratefield = \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('tca.BE.new', 'ThRating');
-		$steporder = \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('tca.BE.new', 'ThRating');
-		if ($stepconfObject instanceof \Thucke\ThRating\Domain\Model\Stepconf) {
-			$ratingObject = $stepconfObject->getRatingobject();
-			if ($ratingObject instanceof \TYPO3\CMS\Extbase\Persistence\Generic\LazyLoadingProxy) {
-				$ratingObject = $ratingObject->_loadRealInstance();
-			}
-			if ($ratingObject instanceof \Thucke\ThRating\Domain\Model\Ratingobject) {
-				$ratetable = $ratingObject->getRatetable();
-				$ratefield = $ratingObject->getRatefield();
-				$steporder = $stepconfObject->getSteporder();
-			}
-		}
-        $params['title'] = $ratetable.'['.$ratefield.']/Step '.$steporder.'/'.$syslang;
+        $ratetable = \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('tca.BE.new', 'ThRating');
+        $ratefield = \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('tca.BE.new', 'ThRating');
+        $steporder = \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('tca.BE.new', 'ThRating');
+        if ($stepconfObject instanceof \Thucke\ThRating\Domain\Model\Stepconf) {
+            $ratingObject = $stepconfObject->getRatingobject();
+            if ($ratingObject instanceof \TYPO3\CMS\Extbase\Persistence\Generic\LazyLoadingProxy) {
+                $ratingObject = $ratingObject->_loadRealInstance();
+            }
+            if ($ratingObject instanceof \Thucke\ThRating\Domain\Model\Ratingobject) {
+                $ratetable = $ratingObject->getRatetable();
+                $ratefield = $ratingObject->getRatefield();
+                $steporder = $stepconfObject->getSteporder();
+            }
+        }
+        $params['title'] = $ratetable . '[' . $ratefield . ']/Step ' . $steporder . '/' . $syslang;
     }
 
     /**
@@ -138,8 +145,9 @@ class Tca {
      * @param $pObj
      * @return void
      */
-    public function getRatingRecordTitle(&$params, &$pObj) {
-        $params['title'] = '#'.$params['row']['uid']. ': RowUid ['.$params['row']['ratedobjectuid'].']';
+    public function getRatingRecordTitle(&$params, &$pObj)
+    {
+        $params['title'] = '#' . $params['row']['uid'] . ': RowUid [' . $params['row']['ratedobjectuid'] . ']';
     }
 
     /**
@@ -150,53 +158,56 @@ class Tca {
      * @param $pObj
      * @return void
      */
-    public function getVoteRecordTitle(&$params, &$pObj) {
-        $params['title'] = 'Voteuser Uid ['.$params['row']['voter'].']';
+    public function getVoteRecordTitle(&$params, &$pObj)
+    {
+        $params['title'] = 'Voteuser Uid [' . $params['row']['voter'] . ']';
     }
-    
-	/**
-	 * Returns all configured ratinglink display types for flexform
-	 *
-	 * @param	array	$config
-	 * @return 	array	ratinglink configurations
-	 */
-	public function dynFlexRatinglinkConfig($config) {
-		//\TYPO3\CMS\Core\Utility\DebugUtility::debug($config,'config');
-		$flexFormPid = $config['flexParentDatabaseRow']['pid'];
-		$settings = $this->loadTypoScriptForBEModule('tx_thrating', $flexFormPid);
-		$ratingconfigs = $settings['settings.']['ratingConfigurations.'];
 
-		$optionList = [];
-		
-		// add first option - Default
-		$optionList[0] = [0 => 'Default', 1 => ''];
-		foreach ( $ratingconfigs as $configKey => $configValue ) {
-			$lastDot = strrpos( $configKey, '.' );
-			if ( $lastDot ) {
-				$name = substr($configKey, 0, $lastDot);
-				// add option
-				$optionList[] = [0 => $name, 1 => $name];
-			}
-		}
-		$config['items'] = $config['items'] + $optionList;		
-		return $config;
-	}
+    /**
+     * Returns all configured ratinglink display types for flexform
+     *
+     * @param	array	$config
+     * @return 	array	ratinglink configurations
+     */
+    public function dynFlexRatinglinkConfig($config)
+    {
+        //\TYPO3\CMS\Core\Utility\DebugUtility::debug($config,'config');
+        $flexFormPid = $config['flexParentDatabaseRow']['pid'];
+        $settings = $this->loadTypoScriptForBEModule('tx_thrating', $flexFormPid);
+        $ratingconfigs = $settings['settings.']['ratingConfigurations.'];
 
-	/**
-	 * Loads the TypoScript for the given extension prefix, e.g. tx_cspuppyfunctions_pi1, for use in a backend module.
-	 *
-	 * @param 	string 	$extKey	Extension key to look for config
-	 * @param	int		$pid	pageUid 
-	 * @return 	array
-	 */
-	function loadTypoScriptForBEModule($extKey,$pid) {
-		$sysPageObj = $this->objectManager->get('TYPO3\\CMS\\Frontend\\Page\\PageRepository');
+        $optionList = [];
+
+        // add first option - Default
+        $optionList[0] = [0 => 'Default', 1 => ''];
+        foreach ($ratingconfigs as $configKey => $configValue) {
+            $lastDot = strrpos($configKey, '.');
+            if ($lastDot) {
+                $name = substr($configKey, 0, $lastDot);
+                // add option
+                $optionList[] = [0 => $name, 1 => $name];
+            }
+        }
+        $config['items'] = $config['items'] + $optionList;
+        return $config;
+    }
+
+    /**
+     * Loads the TypoScript for the given extension prefix, e.g. tx_cspuppyfunctions_pi1, for use in a backend module.
+     *
+     * @param 	string 	$extKey	Extension key to look for config
+     * @param	int		$pid	pageUid
+     * @return 	array
+     */
+    public function loadTypoScriptForBEModule($extKey, $pid)
+    {
+        $sysPageObj = $this->objectManager->get('TYPO3\\CMS\\Frontend\\Page\\PageRepository');
         $rootLine = $sysPageObj->getRootLine($pid);
         $TSObj = $this->objectManager->get('TYPO3\\CMS\\Core\\TypoScript\\ExtendedTemplateService');
         $TSObj->tt_track = 0;
         $TSObj->init();
         $TSObj->runThroughTemplates($rootLine);
         $TSObj->generateConfig();
-        return $TSObj->setup['plugin.'][$extKey.'.'];
-	}
+        return $TSObj->setup['plugin.'][$extKey . '.'];
+    }
 }

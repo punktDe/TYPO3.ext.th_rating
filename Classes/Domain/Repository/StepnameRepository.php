@@ -41,17 +41,16 @@ class StepnameRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
     {
     }
 
-
     /**
      * Checks if stepname got a valid language code
      *
      * @param    \Thucke\ThRating\Domain\Model\Stepname $stepname The stepname object
-     * @return    boolean
+     * @return    bool
      */
     public function checkStepnameLanguage(\Thucke\ThRating\Domain\Model\Stepname $stepname)
     {
         $stepnameLang = $stepname->get_languageUid();
-        If ($stepnameLang > 0) {
+        if ($stepnameLang > 0) {
             //check if given language exist
 
             /** @var \Thucke\ThRating\Domain\Model\Syslang|object $queryResult */
@@ -127,12 +126,12 @@ class StepnameRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
             foreach (array_values($queryResult) as $value) {
                 $languageUid = $value[self::SYS_LANG_UID_LITERAL];
                 $languageCounter[$languageUid]++;
-                If ($languageCounter[$languageUid] > 1) {
+                if ($languageCounter[$languageUid] > 1) {
                     $checkConsistency['doubleLang'] = true;
                 }
 
                 //check if language flag exists in current website
-                If (($languageUid > 0) && in_array($languageUid, $websiteLanguagesArray, true)) {
+                if (($languageUid > 0) && in_array($languageUid, $websiteLanguagesArray, true)) {
                     $checkConsistency['existLang'] = true;
                 }
             }

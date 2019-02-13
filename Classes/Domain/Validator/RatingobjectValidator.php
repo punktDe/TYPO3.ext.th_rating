@@ -1,9 +1,10 @@
 <?php
 namespace Thucke\ThRating\Domain\Validator;
+
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2010 Thomas Hucke <thucke@web.de> 
+*  (c) 2010 Thomas Hucke <thucke@web.de>
 *  All rights reserved
 *
 *  This class is a backport of the corresponding class of FLOW3.
@@ -33,22 +34,24 @@ namespace Thucke\ThRating\Domain\Validator;
  * @copyright 	Copyright belongs to the respective author
  * @scope singleton
  */
-class RatingobjectValidator extends \TYPO3\CMS\Extbase\Validation\Validator\AbstractValidator {
+class RatingobjectValidator extends \TYPO3\CMS\Extbase\Validation\Validator\AbstractValidator
+{
 
-	/**
-	 * If the given Ratingobject is valid
-	 *
-	 * @param \Thucke\ThRating\Domain\Model\Ratingobject $ratingobject The ratingobject
-	 * @return void
-	 */
-    protected function isValid($ratingobject) {
-		$ratetable = $ratingobject->getRatetable();
-		$ratefield = $ratingobject->getRatefield();
-		if (empty($ratetable)) {
-			$this->addError(\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('error.validator.ratingobject_table_extbase', 'ThRating'), 1283528638);
-		}
-		if (empty($ratefield)) {
-			$this->addError(\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('error.validator.ratingobject_field_extbase', 'ThRating'), 1283536038);
-		}
-	}
+    /**
+     * If the given Ratingobject is valid
+     *
+     * @param \Thucke\ThRating\Domain\Model\Ratingobject $ratingobject The ratingobject
+     * @return void
+     */
+    protected function isValid($ratingobject)
+    {
+        $ratetable = $ratingobject->getRatetable();
+        $ratefield = $ratingobject->getRatefield();
+        if (empty($ratetable)) {
+            $this->addError(\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('error.validator.ratingobject_table_extbase', 'ThRating'), 1283528638);
+        }
+        if (empty($ratefield)) {
+            $this->addError(\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('error.validator.ratingobject_field_extbase', 'ThRating'), 1283536038);
+        }
+    }
 }

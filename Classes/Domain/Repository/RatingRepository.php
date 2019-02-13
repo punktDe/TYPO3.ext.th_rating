@@ -1,6 +1,7 @@
 <?php
 
 namespace Thucke\ThRating\Domain\Repository;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -71,7 +72,7 @@ class RatingRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
         $queryResult = $query->execute();
         if ($queryResult->count() != 0) {
             $foundRow = $queryResult->getFirst();
-            //Cope with an obviuos bug in TYPO3 6.1 that $queryResult->getFirst() doesn�t return the fully loaded object
+        //Cope with an obviuos bug in TYPO3 6.1 that $queryResult->getFirst() doesn�t return the fully loaded object
             /* If ( \TYPO3\CMS\Core\Utility\VersionNumberUtility::convertVersionNumberToInteger(TYPO3_version) < 6002000 ) {
                 $dummy = \TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump($foundRow, 'dummy', 2, true, false, true);
             } */

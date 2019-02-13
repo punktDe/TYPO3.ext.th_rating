@@ -1,6 +1,7 @@
 <?php
 
 namespace Thucke\ThRating\Domain\Repository;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -70,7 +71,7 @@ class StepconfRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
      * Finds the ratingstep entry by giving ratingobjectUid
      *
      * @param    \Thucke\ThRating\Domain\Model\Stepconf $stepconf The uid of the ratingobject
-     * @return    boolean                                                true if stepconf object exists in repository
+     * @return    bool                                                true if stepconf object exists in repository
      */
     public function existStepconf(\Thucke\ThRating\Domain\Model\Stepconf $stepconf)
     {

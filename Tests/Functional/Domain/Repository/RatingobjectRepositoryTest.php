@@ -1,6 +1,7 @@
 <?php
 declare(strict_types = 1);
 namespace Thucke\ThRating\Tests\Functional\Domain\Repository;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -29,6 +30,7 @@ use Thucke\ThRating\Domain\Repository\RatingobjectRepository;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
+
 /**
  * Testcases for Ratingobject
  *
@@ -56,7 +58,6 @@ class RatingobjectRepositoryTest extends FunctionalTestCase
      * @var PersistenceManager
      */
     private $persistenceManager;
-
 
     protected function setUp()
     {

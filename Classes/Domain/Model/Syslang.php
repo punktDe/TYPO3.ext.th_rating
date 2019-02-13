@@ -1,5 +1,6 @@
 <?php
 namespace Thucke\ThRating\Domain\Model;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -26,44 +27,45 @@ namespace Thucke\ThRating\Domain\Model;
 /**
  * The voter
  */
-class Syslang extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
+class Syslang extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
+{
 
-	/**
-	 * @var int 
-	 */
-	protected $staticLangIsocode;
-	
+    /**
+     * @var int
+     */
+    protected $staticLangIsocode;
 
-	/**
-	 * @var string
-	 */
-	protected $title;
+    /**
+     * @var string
+     */
+    protected $title;
 
-	
-	/**
-	 * @var string
-	 */
-	protected $flag;
+    /**
+     * @var string
+     */
+    protected $flag;
 
+    /**
+     * @return int
+     */
+    public function getStaticLangIsocode()
+    {
+        return $this->staticLangIsocode;
+    }
 
-	/**
-	 * @return int
-	 */
-	public function getStaticLangIsocode() {
-		return $this->staticLangIsocode;
-	}
+    /**
+     * @return string
+     */
+    public function getFlag()
+    {
+        return $this->flag;
+    }
 
-	/**
-	 * @return string
-	 */
-	public function getFlag() {
-		return $this->flag;
-	}
-	
-	/**
-	 * @return	string
-	 */
-	public function getTitle() {
-		return $this->title;
-	}
+    /**
+     * @return	string
+     */
+    public function getTitle()
+    {
+        return $this->title;
+    }
 }

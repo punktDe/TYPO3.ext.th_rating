@@ -1,7 +1,6 @@
 <?php
 namespace Thucke\ThRating\ViewHelpers;
 
-
 /**
  * A ViewHelper Exception
  *

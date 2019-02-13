@@ -1,5 +1,6 @@
 <?php
 namespace Thucke\ThRating\Domain\Repository;
+
 /***************************************************************
  *  Copyright notice
  *

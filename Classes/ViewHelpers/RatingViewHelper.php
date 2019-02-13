@@ -1,14 +1,16 @@
 <?php
 namespace Thucke\ThRating\ViewHelpers;
-use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
+
+use Thucke\ThRating\Service\ExtensionHelperService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
-use Thucke\ThRating\Service\ExtensionHelperService;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -66,20 +68,19 @@ class RatingViewHelper extends AbstractViewHelper
     protected static $tsfeBackup;
 
     /**
-	 * @var \TYPO3\CMS\Core\Log\Logger	$logger
-	 */
-	protected $logger;
+     * @var \TYPO3\CMS\Core\Log\Logger	$logger
+     */
+    protected $logger;
 
     /**
      * @var array
      */
     protected $typoScriptSetup;
 
-	/**
-	 * @var \Thucke\ThRating\Service\ExtensionHelperService
-	 */
-	protected $extensionHelperService;
-
+    /**
+     * @var \Thucke\ThRating\Service\ExtensionHelperService
+     */
+    protected $extensionHelperService;
 
     /**
      *
@@ -93,7 +94,6 @@ class RatingViewHelper extends AbstractViewHelper
         $this->registerArgument('ratingobject', 'integer', 'The ratingobject');
         $this->registerArgument('display', 'string', 'The display configuration');
     }
-
 
     /**
      * Renders the ratingView
@@ -118,7 +118,7 @@ class RatingViewHelper extends AbstractViewHelper
 
         //instantiate the logger
         $logger = $extensionHelperService->getLogger(__CLASS__);
-        $logger->log(	\TYPO3\CMS\Core\Log\LogLevel::DEBUG,
+        $logger->log(\TYPO3\CMS\Core\Log\LogLevel::DEBUG,
             'Entry point',
             [
                 'Viewhelper parameters' => [
@@ -127,7 +127,7 @@ class RatingViewHelper extends AbstractViewHelper
                     'ratetable' => $ratetable,
                     'ratefield' => $ratefield,
                     'ratedobjectuid' => $ratedobjectuid,
-                    'display' => $display,],
+                    'display' => $display, ],
                 'typoscript' => static::getConfigurationManager()->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT),
             ]
         );
@@ -142,7 +142,7 @@ class RatingViewHelper extends AbstractViewHelper
         $setup = static::getConfigurationManager()->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT);
         foreach ($pathSegments as $segment) {
             if (!array_key_exists($segment . '.', $setup)) {
-                $logger->log(	\TYPO3\CMS\Core\Log\LogLevel::CRITICAL,
+                $logger->log(\TYPO3\CMS\Core\Log\LogLevel::CRITICAL,
                     'TypoScript object path does not exist',
                     [
                         'Typoscript object path' => htmlspecialchars($typoscriptObjectPath),
@@ -170,24 +170,24 @@ class RatingViewHelper extends AbstractViewHelper
         }
         if (!empty($ratingobject)) {
             $setup[$lastSegment . '.']['settings.']['ratingobject'] = $ratingobject;
-        } elseif ( !empty($ratetable) && !empty($ratefield)) {
+        } elseif (!empty($ratetable) && !empty($ratefield)) {
             $setup[$lastSegment . '.']['settings.']['ratetable'] = $ratetable;
             $setup[$lastSegment . '.']['settings.']['ratefield'] = $ratefield;
         } else {
-            $logger->log(	\TYPO3\CMS\Core\Log\LogLevel::CRITICAL, 'ratingobject not specified or ratetable/ratfield not set', ['errorCode' => 1399727698]);
+            $logger->log(\TYPO3\CMS\Core\Log\LogLevel::CRITICAL, 'ratingobject not specified or ratetable/ratfield not set', ['errorCode' => 1399727698]);
             throw new Exception('ratingobject not specified or ratetable/ratfield not set', 1399727698);
         }
         if (!empty($ratedobjectuid)) {
             $setup[$lastSegment . '.']['settings.']['ratedobjectuid'] = $ratedobjectuid;
         } else {
-            $logger->log(	\TYPO3\CMS\Core\Log\LogLevel::CRITICAL, 'ratedobjectuid not set', ['errorCode' => 1304624408]);
+            $logger->log(\TYPO3\CMS\Core\Log\LogLevel::CRITICAL, 'ratedobjectuid not set', ['errorCode' => 1304624408]);
             throw new Exception('ratedobjectuid not set', 1304624408);
         }
         if (!empty($display)) {
             $setup[$lastSegment . '.']['settings.']['display'] = $display;
         }
 
-        $logger->log(	\TYPO3\CMS\Core\Log\LogLevel::DEBUG, 'Single contentObjectRenderer to get',
+        $logger->log(\TYPO3\CMS\Core\Log\LogLevel::DEBUG, 'Single contentObjectRenderer to get',
             [
                 'contentObjectRenderer type' => $setup[$lastSegment],
                 'cOjb config' => $setup[$lastSegment . '.']]);
@@ -197,8 +197,8 @@ class RatingViewHelper extends AbstractViewHelper
             static::resetFrontendEnvironment();
         }
 
-        $logger->log(	\TYPO3\CMS\Core\Log\LogLevel::INFO, 'Generated content', ['content' => $content]);
-        $logger->log(	\TYPO3\CMS\Core\Log\LogLevel::DEBUG, 'Exit point');
+        $logger->log(\TYPO3\CMS\Core\Log\LogLevel::INFO, 'Generated content', ['content' => $content]);
+        $logger->log(\TYPO3\CMS\Core\Log\LogLevel::DEBUG, 'Exit point');
         return $content;
     }
 

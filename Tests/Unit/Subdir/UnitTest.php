@@ -1,5 +1,6 @@
 <?php
 namespace Thucke\ThRating\Tests\Unit;
+
 /*
  * This file is part of the NIMUT testing-framework project.
  *
@@ -11,6 +12,7 @@ namespace Thucke\ThRating\Tests\Unit;
  * LICENSE file that was distributed with this source code.
  */
 use Nimut\TestingFramework\TestCase\UnitTestCase;
+
 class UnitTest extends UnitTestCase
 {
     /**

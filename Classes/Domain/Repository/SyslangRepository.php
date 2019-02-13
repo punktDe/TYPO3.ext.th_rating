@@ -1,9 +1,10 @@
 <?php
 namespace Thucke\ThRating\Domain\Repository;
+
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2010 Thomas Hucke <thucke@web.de> 
+*  (c) 2010 Thomas Hucke <thucke@web.de>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -26,15 +27,17 @@ namespace Thucke\ThRating\Domain\Repository;
 /**
  * A repository for website languages
  */
-class SyslangRepository extends \TYPO3\CMS\Extbase\Persistence\Repository {		
-	
-	/**
-	 * Initialze this repository
-	 */
-	public function initializeObject() {
-		$this->defaultQuerySettings = $this->objectManager->get(\TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings::class);
-		$this->defaultQuerySettings->setRespectStoragePage(false);
-		$this->defaultQuerySettings->setRespectSysLanguage(false);
-		$this->defaultQuerySettings->setIgnoreEnableFields(true);
-	}
+class SyslangRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
+{
+
+    /**
+     * Initialze this repository
+     */
+    public function initializeObject()
+    {
+        $this->defaultQuerySettings = $this->objectManager->get(\TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings::class);
+        $this->defaultQuerySettings->setRespectStoragePage(false);
+        $this->defaultQuerySettings->setRespectSysLanguage(false);
+        $this->defaultQuerySettings->setIgnoreEnableFields(true);
+    }
 }

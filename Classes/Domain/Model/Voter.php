@@ -1,5 +1,6 @@
 <?php
 namespace Thucke\ThRating\Domain\Model;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -26,5 +27,6 @@ namespace Thucke\ThRating\Domain\Model;
 /**
  * The voter
  */
-class Voter extends \TYPO3\CMS\Extbase\Domain\Model\FrontendUser {
+class Voter extends \TYPO3\CMS\Extbase\Domain\Model\FrontendUser
+{
 }
