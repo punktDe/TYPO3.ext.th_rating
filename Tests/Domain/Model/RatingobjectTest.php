@@ -1,9 +1,10 @@
 <?php
 namespace Thucke\ThRating\Tests\Unit\Domain\Model;
+
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2010 Thomas Hucke <thucke@web.de> 
+*  (c) 2010 Thomas Hucke <thucke@web.de>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -24,7 +25,7 @@ namespace Thucke\ThRating\Tests\Unit\Domain\Model;
 ***************************************************************/
 
 /**
- * Testcases for Ratingobject 
+ * Testcases for Ratingobject
  *
  * @version 	$Id:$
  * @author		Thomas Hucke <thucke@web.de>
@@ -33,28 +34,31 @@ namespace Thucke\ThRating\Tests\Unit\Domain\Model;
  * @scope 		alpha
  * @entity
  */
-class RatingobjectTest extends \TYPO3\CMS\Core\Tests\BaseTestCase {
+class RatingobjectTest extends \TYPO3\CMS\Core\Tests\BaseTestCase
+{
 
-	/**
+    /**
      * @var \Thucke\ThRating\Domain\Model\Ratingobject
      */
-    protected $fixture = NULL;
+    protected $fixture = null;
 
-	public function setUp() {
-	  $this->fixture = new \Thucke\ThRating\Domain\Model\Ratingobject();
-	}
+    public function setUp()
+    {
+        $this->fixture = new \Thucke\ThRating\Domain\Model\Ratingobject();
+    }
 
-	public function tearDown() {
-	  unset($this->fixture);
-	}
-	
-	/**
-	 * Checks construction of a new rating object
-	 * @test
-	 */
-	public function doTestTheTest() {
-		$this->assertEquals('tt_news', $this->fixture->getRatetable());
-		$this->assertEquals('uid', $this->fixture->getRatefield());
-	}
+    public function tearDown()
+    {
+        unset($this->fixture);
+    }
 
+    /**
+     * Checks construction of a new rating object
+     * @test
+     */
+    public function doTestTheTest()
+    {
+        $this->assertEquals('tt_news', $this->fixture->getRatetable());
+        $this->assertEquals('uid', $this->fixture->getRatefield());
+    }
 }

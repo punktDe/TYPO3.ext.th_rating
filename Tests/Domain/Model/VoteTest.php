@@ -1,9 +1,10 @@
 <?php
 namespace Thucke\ThRating\Tests\Domain\Model;
+
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2010 Thomas Hucke <thucke@web.de> 
+*  (c) 2010 Thomas Hucke <thucke@web.de>
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -24,7 +25,7 @@ namespace Thucke\ThRating\Tests\Domain\Model;
 ***************************************************************/
 
 /**
- * Testcases for Votes 
+ * Testcases for Votes
  *
  * @version 	$Id:$
  * @author		Thomas Hucke <thucke@web.de>
@@ -33,22 +34,23 @@ namespace Thucke\ThRating\Tests\Domain\Model;
  * @scope 		alpha
  * @entity
  */
-class VoteTest extends \TYPO3\CMS\Core\Tests\BaseTestCase {
+class VoteTest extends \TYPO3\CMS\Core\Tests\BaseTestCase
+{
 
-	/**
-	 * Checks construction of a new vote object
-	 * @test
-	 */
-	public function anInstanceOfTheVoteCanBeConstructed() {
-		$ratingobject = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Thucke\\ThRating\\Domain\\Model\\Ratingobject', 'tt_news', 'uid');
-		$rating = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Thucke\\ThRating\\Domain\\Model\\Ratingobject', $ratingobject, 3);
-		$step = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Thucke\\ThRating\\Domain\\Model\\Stepconf', $ratingobject, 1);
-		//$feU = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Domain\\Repository\\FrontendUserRepository');
-		//$voter = $feUsers->findByUid(1);
-		//$vote = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Thucke\\ThRating\\Domain\\Model\\Vote',$rating,$voter,$step);
-		//$this->assertEquals($rating,$vote->getRating());
-		//$this->assertEquals($voter,$vote->getVoter());
-		//$this->assertEquals(1,$vote->getVote());
-	}
-		
+    /**
+     * Checks construction of a new vote object
+     * @test
+     */
+    public function anInstanceOfTheVoteCanBeConstructed()
+    {
+        $ratingobject = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Thucke\\ThRating\\Domain\\Model\\Ratingobject', 'tt_news', 'uid');
+        $rating = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Thucke\\ThRating\\Domain\\Model\\Ratingobject', $ratingobject, 3);
+        $step = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Thucke\\ThRating\\Domain\\Model\\Stepconf', $ratingobject, 1);
+        //$feU = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Domain\\Repository\\FrontendUserRepository');
+        //$voter = $feUsers->findByUid(1);
+        //$vote = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Thucke\\ThRating\\Domain\\Model\\Vote',$rating,$voter,$step);
+        //$this->assertEquals($rating,$vote->getRating());
+        //$this->assertEquals($voter,$vote->getVoter());
+        //$this->assertEquals(1,$vote->getVote());
+    }
 }
