@@ -14,7 +14,7 @@ defined('TYPO3_MODE') or die();
             'Vote' => 'ratinglinks,polling,mark,index,show,create,new,singleton',    // The first controller and its first action will be the default
         ],
         [        // An array of non-cachable controller-action-combinations (they must already be enabled)
-            'Vote' => 'new,create,ratinglinks,polling,mark' ]
+            'Vote' => 'new,create,ratinglinks,polling,mark', ]
     );
 
     // here we register "DynamicCssEvaluator" to remove the dynamic CSS file when values are modified in the BE
