@@ -32,7 +32,6 @@ namespace Thucke\ThRating\Service;
  */
 class AbstractExtensionService implements \TYPO3\CMS\Core\SingletonInterface
 {
-
     /**
      * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface
      */

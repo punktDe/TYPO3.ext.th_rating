@@ -12,8 +12,10 @@ defined('TYPO3_MODE') or die();
         'Pi1',        // A unique name of the plugin in UpperCamelCase
         [        // An array holding the controller-action-combinations that are accessible
             'Vote' => 'ratinglinks,polling,mark,index,show,create,new,singleton',    // The first controller and its first action will be the default
-        ], [        // An array of non-cachable controller-action-combinations (they must already be enabled)
-            'Vote' => 'new,create,ratinglinks,polling,mark', ]);
+        ],
+        [        // An array of non-cachable controller-action-combinations (they must already be enabled)
+            'Vote' => 'new,create,ratinglinks,polling,mark' ]
+    );
 
     // here we register "DynamicCssEvaluator" to remove the dynamic CSS file when values are modified in the BE
     $TYPO3_CONF_VARS['SC_OPTIONS']['tce']['formevals'][Thucke\ThRating\Evaluation\DynamicCssEvaluator::class] = '';
@@ -23,7 +25,6 @@ defined('TYPO3_MODE') or die();
     /**
      * Base configuration of logging events.
      * Each loglevel could be swichted off using typoscript setting
-     *
      */
     /*$GLOBALS['TYPO3_CONF_VARS']['LOG']['Thucke']['ThRating']['writerConfiguration'] = array(
         \TYPO3\CMS\Core\Log\LogLevel::EMERGENCY => array(),

@@ -1,5 +1,4 @@
 <?php
-
 namespace Thucke\ThRating\Domain\Repository;
 
 /***************************************************************
@@ -64,6 +63,7 @@ class StepconfRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
         if (count($queryResult) != 0) {
             $foundRow = $queryResult->getFirst();
         }
+
         return $foundRow;
     }
 
@@ -75,9 +75,9 @@ class StepconfRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
      */
     public function existStepconf(\Thucke\ThRating\Domain\Model\Stepconf $stepconf)
     {
-
         /** @var \Thucke\ThRating\Domain\Model\Stepconf $lookForStepconf */
         $lookForStepconf = $this->findStepconfObject($stepconf);
+
         return $lookForStepconf->isValid();
     }
 }

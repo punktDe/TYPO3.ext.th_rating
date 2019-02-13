@@ -1,5 +1,4 @@
 <?php
-
 namespace Thucke\ThRating\Service;
 
 /***************************************************************
@@ -33,9 +32,8 @@ namespace Thucke\ThRating\Service;
  */
 class ExtensionManagementService extends AbstractExtensionService
 {
-
     /**
-     * @var \Thucke\ThRating\Service\ExtensionHelperService $extensionHelperService
+     * @var \Thucke\ThRating\Service\ExtensionHelperService
      */
     protected $extensionHelperService;
 
@@ -54,8 +52,8 @@ class ExtensionManagementService extends AbstractExtensionService
      * @param    string $tablename
      * @param    string $fieldname
      * @param    int $stepcount
-     * @return    \Thucke\ThRating\Domain\Model\Ratingobject
      * @throws \TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException
+     * @return    \Thucke\ThRating\Domain\Model\Ratingobject
      */
     public function makeRatable($tablename, $fieldname, $stepcount)
     {
@@ -72,6 +70,7 @@ class ExtensionManagementService extends AbstractExtensionService
         // CREATE NEW DYNCSS FILE
         $this->extensionHelperService->clearDynamicCssFile();
         $this->extensionHelperService->renderDynCSS();
+
         return $ratingobject;
     }
 
@@ -82,9 +81,9 @@ class ExtensionManagementService extends AbstractExtensionService
      * @param   string $stepname
      * @param   int $languageIso2Code
      * @param   bool $allStepconfs Take stepname for all steps and add steporder number at the end
-     * @return  bool
      * @throws \TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException
      * @throws \TYPO3\CMS\Extbase\Persistence\Exception\InvalidQueryException
+     * @return  bool
      */
     public function setStepname(\Thucke\ThRating\Domain\Model\Stepconf $stepconf, $stepname, $languageIso2Code = 0, $allStepconfs = false)
     {
@@ -110,6 +109,7 @@ class ExtensionManagementService extends AbstractExtensionService
                 }
             }
         }
+
         return $success;
     }
 }

@@ -35,11 +35,10 @@ namespace Thucke\ThRating\Domain\Model;
  */
 class RatingImage extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
 {
-
     /**
      * @var bool
      */
-    protected $isBuilderObject=false;
+    protected $isBuilderObject = false;
     /**
      * The filename of the final image
      *
@@ -57,6 +56,7 @@ class RatingImage extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * @var \TYPO3\CMS\Frontend\Imaging\GifBuilder
      */
     protected $gifBuilder;
+
     /**
      * @param \TYPO3\CMS\Frontend\Imaging\GifBuilder $gifBuilder
      * @return void
@@ -113,6 +113,7 @@ class RatingImage extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
                 //TODO: Error message
         }
     }
+
     /**
      * Returns the current typoscript configuration of the GIFBUILDER object
      *
@@ -123,8 +124,10 @@ class RatingImage extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
         if (empty($this->conf)) {
             return [];
         }
+
         return $this->conf;
     }
+
     /**
      * Sets the filename of the image
      *
@@ -143,10 +146,12 @@ class RatingImage extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
             //TODO: error handling
         }
     }
+
     /**
      * Returns the filename of the image
      *
-     * @var bool $fullPath	switch if absolute path should be returned
+     * @var bool	switch if absolute path should be returned
+     * @param mixed $fullPath
      * @return string
      */
     public function getImageFile($fullPath = false)
@@ -156,8 +161,10 @@ class RatingImage extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
             //clear image if file doe not exist
             $this->setImageFile('xxx');
         }
+
         return $fullPath ? PATH_site . '/' . $this->imageFile : $this->imageFile;
     }
+
     /**
      * Generates the image using the given typoscript
      *
@@ -174,6 +181,7 @@ class RatingImage extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
             }
             $this->setImageFile($genImageFile);
             $this->isBuilderObject = true;
+
             return true;
         }
 
@@ -183,7 +191,7 @@ class RatingImage extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
      * Returns the filename of the image
      *
-     * @var bool $fullPath	switch if absolute path should be returned
+     * @var bool	switch if absolute path should be returned
      * @return array('width','height')
      */
     public function getImageDimensions()
@@ -193,7 +201,8 @@ class RatingImage extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
         } else {
             [$width, $height] = getimagesize($this->getImageFile(true));
         }
-        return ['width'=>$width, 'height'=>$height, 'builderObject'=>$this->isBuilderObject];
+
+        return ['width' => $width, 'height' => $height, 'builderObject' => $this->isBuilderObject];
     }
 
     /**

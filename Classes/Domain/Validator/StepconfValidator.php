@@ -38,7 +38,6 @@ use Thucke\ThRating\Domain\Model\Stepname;
  */
 class StepconfValidator extends \TYPO3\CMS\Extbase\Validation\Validator\AbstractValidator
 {
-
     /**
      * @var \Thucke\ThRating\Domain\Repository\StepconfRepository
      */
@@ -52,6 +51,7 @@ class StepconfValidator extends \TYPO3\CMS\Extbase\Validation\Validator\Abstract
     {
         $this->stepconfRepository = $stepconfRepository;
     }
+
     /**
      * @var \Thucke\ThRating\Domain\Repository\StepnameRepository
      */
@@ -80,27 +80,31 @@ class StepconfValidator extends \TYPO3\CMS\Extbase\Validation\Validator\Abstract
         //a stepconf object must have a ratingobject
         if (!$stepconf->getRatingobject() instanceof \Thucke\ThRating\Domain\Model\Ratingobject) {
             $this->addError(\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('error.validator.stepconf.ratingobject', 'ThRating'), 1284700846);
+
             return;
         }
         //at least a steporder value must be set
         $steporder = $stepconf->getSteporder();
         if (empty($steporder)) {
             $this->addError(\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('error.validator.stepconf.steps', 'ThRating'), 1284700903);
+
             return;
         }
 
         //steporder must be positive integer ( >0 )
-        if (!is_int($stepconf->getSteporder()) or $stepconf->getSteporder()<1) {
+        if (!is_int($stepconf->getSteporder()) or $stepconf->getSteporder() < 1) {
             $this->addError(\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('error.validator.stepconf.invalidSteporderNumber', 'ThRating'), 1368123953);
+
             return;
         }
 
         //check if given steporder is valid (integer, maximum +1)
         /** @var object $maxSteporderStepconfobject */
         $maxSteporderStepconfobject = $this->stepconfRepository->findByRatingobject($stepconf->getRatingobject());
-        $maxSteporder = $maxSteporderStepconfobject[$maxSteporderStepconfobject->count()-1]->getSteporder();
-        if ($stepconf->getSteporder() > $maxSteporder+1) {
+        $maxSteporder = $maxSteporderStepconfobject[$maxSteporderStepconfobject->count() - 1]->getSteporder();
+        if ($stepconf->getSteporder() > $maxSteporder + 1) {
             $this->addError(\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('error.validator.stepconf.maxSteporder', 'ThRating'), 1368123970);
+
             return;
         }
 
@@ -112,7 +116,7 @@ class StepconfValidator extends \TYPO3\CMS\Extbase\Validation\Validator\Abstract
         if ($stepname instanceof \TYPO3\CMS\Extbase\Persistence\ObjectStorage) {
             $countNames = $stepname->count();
         }
-        if ($countNames!=0) {
+        if ($countNames != 0) {
             /** @var Stepname $firstStepname */
             $firstStepname = $stepname->current();
 
@@ -120,6 +124,7 @@ class StepconfValidator extends \TYPO3\CMS\Extbase\Validation\Validator\Abstract
             $defaultName = $this->stepnameRepository->findDefaultStepname($firstStepname);
             if (!$defaultName->isValid()) {
                 $this->addError(\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('error.validator.stepconf.defaultStepname', 'ThRating', [$firstStepname->getStepconf()->getUid()]), 1384374165);
+
                 return;
             }
 
@@ -127,10 +132,12 @@ class StepconfValidator extends \TYPO3\CMS\Extbase\Validation\Validator\Abstract
             $checkConsistency = $this->stepnameRepository->checkConsistency($firstStepname);
             if ($checkConsistency['doubleLang']) {
                 $this->addError(\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('error.validator.stepconf.doubleLangEntry', 'ThRating', [$firstStepname->getStepconf()->getUid()]), 1384374589);
+
                 return;
             }
             if ($checkConsistency['existLang']) {
                 $this->addError(\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('error.validator.stepconf.notExistingLanguage', 'ThRating', [$firstStepname->getUid()]), 1384374589);
+
                 return;
             }
         }

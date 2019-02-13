@@ -266,6 +266,12 @@ case ${TEST_SUITE} in
         SUITE_EXIT_CODE=$?
         docker-compose down
         ;;
+    php-cs-fixer)
+        setUpDockerComposeDotEnv
+        docker-compose run php-cs-fixer
+        SUITE_EXIT_CODE=$?
+        docker-compose down
+        ;;
     update)
         # pull typo3gmbh/phpXY:latest versions of those ones that exist locally
         docker images typo3gmbh/php*:latest --format "{{.Repository}}:latest" | xargs -I {} docker pull {}

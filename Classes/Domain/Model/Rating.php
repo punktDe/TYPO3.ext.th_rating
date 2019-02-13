@@ -35,7 +35,6 @@ namespace Thucke\ThRating\Domain\Model;
  */
 class Rating extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
 {
-
     //TODO check deleted referenced records
 
     /**
@@ -67,6 +66,7 @@ class Rating extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface
      */
     protected $objectManager;
+
     /**
      * @param \TYPO3\CMS\Extbase\Object\ObjectManagerInterface	$objectManager
      * @return void
@@ -80,6 +80,7 @@ class Rating extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * @var \Thucke\ThRating\Domain\Repository\VoteRepository
      */
     protected $voteRepository;
+
     /**
      * @param \Thucke\ThRating\Domain\Repository\VoteRepository $voteRepository
      * @return void
@@ -93,6 +94,7 @@ class Rating extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * @var \Thucke\ThRating\Service\ExtensionHelperService
      */
     protected $extensionHelperService;
+
     /**
      * @param	\Thucke\ThRating\Service\ExtensionHelperService $extensionHelperService
      * @return	void
@@ -128,7 +130,7 @@ class Rating extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * @param Ratingobject|null $ratingobject
      * @param null $ratedobjectuid
      */
-    public function __construct(Ratingobject $ratingobject = null, $ratedobjectuid=null)
+    public function __construct(Ratingobject $ratingobject = null, $ratedobjectuid = null)
     {
         if ($ratingobject) {
             $this->setRatingobject($ratingobject);
@@ -365,7 +367,7 @@ class Rating extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
                 $currentPollDimensions[$stepConf->getStepOrder()]['pctValue'] = 0;
             } else {
                 //calculate current polling styles -> holds a percent value for usage in CSS to display polling relations
-                $currentPollDimensions[$stepConf->getStepOrder()]['pctValue'] = round(($currentratesDecoded['weightedVotes'][$stepConf->getStepOrder()]  * 100) / $sumAllWeightedVotes, 1);
+                $currentPollDimensions[$stepConf->getStepOrder()]['pctValue'] = round(($currentratesDecoded['weightedVotes'][$stepConf->getStepOrder()] * 100) / $sumAllWeightedVotes, 1);
             }
         }
 
@@ -373,8 +375,8 @@ class Rating extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
                         'weightedVotes' => $currentratesDecoded['weightedVotes'],
                         'sumWeightedVotes' => $currentratesDecoded['sumWeightedVotes'],
                         'anonymousVotes' => $currentratesDecoded['anonymousVotes'],
-                        'currentPollDimensions' => $currentPollDimensions ,
-                        'numAllVotes' => $numAllVotes];
+                        'currentPollDimensions' => $currentPollDimensions,
+                        'numAllVotes' => $numAllVotes, ];
     }
 
     /**
@@ -386,10 +388,11 @@ class Rating extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     {
         $currentrate = $this->getCurrentrates();
         if (!empty($currentrate['weightedVotes'])) {
-            $calculatedRate = round(($currentrate['currentrate']  * 100) / count($currentrate['weightedVotes']), 1);
+            $calculatedRate = round(($currentrate['currentrate'] * 100) / count($currentrate['weightedVotes']), 1);
         } else {
             $calculatedRate = 0;
         }
+
         return $calculatedRate;
     }
 }

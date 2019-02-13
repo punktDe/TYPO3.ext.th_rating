@@ -35,7 +35,6 @@ namespace Thucke\ThRating\Domain\Model;
  */
 class Vote extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
 {
-
     /**
      * @var        \Thucke\ThRating\Domain\Model\Rating
      * @validate 	\Thucke\ThRating\Domain\Validator\RatingValidator
@@ -69,6 +68,7 @@ class Vote extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface
      */
     protected $objectManager;
+
     /**
      * @param \TYPO3\CMS\Extbase\Object\ObjectManagerInterface	$objectManager
      * @return void
@@ -88,8 +88,8 @@ class Vote extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     public function __construct(
         Rating $rating = null,
         Voter $voter = null,
-        Stepconf $vote  = null)
-    {
+        Stepconf $vote = null
+    ) {
         if ($rating) {
             $this->setRating($rating);
         }
@@ -201,6 +201,7 @@ class Vote extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
         } else {
             $retVal = false;
         }
+
         return $retVal;
     }
 
@@ -208,13 +209,14 @@ class Vote extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * Checks cookie if anonymous vote is already done
      * always false if cookie checks is deactivated
      *
-     * @param String $prefixId Extension prefix to identify cookie
+     * @param string $prefixId Extension prefix to identify cookie
      * @return 	bool
      */
     public function hasAnonymousVote($prefixId = 'DummyPrefix')
     {
         $anonymousRating = json_decode($_COOKIE[$prefixId . '_AnonymousRating_' . $this->getRating()->getUid()], true);
         $retVal = !empty($anonymousRating['voteUid']);
+
         return $retVal;
     }
 

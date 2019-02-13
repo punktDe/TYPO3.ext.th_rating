@@ -33,7 +33,6 @@ namespace Thucke\ThRating\ViewHelpers;
  */
 class SelectViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\SelectViewHelper
 {
-
     /**
      * Renders the rating select form
      *
@@ -63,6 +62,7 @@ class SelectViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\SelectViewHelpe
         //TODO delete deprecated $array = \TYPO3\CMS\Core\Utility\GeneralUtility::array_merge($options, $additionalOptions);
         $array = $additionalOptions + $options;
         ksort($array);
+
         return $array;
     }
 }

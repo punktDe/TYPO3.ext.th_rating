@@ -36,7 +36,6 @@ namespace Thucke\ThRating\Domain\Model;
  */
 class Ratingobject extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
 {
-
     /**
      * Table name of the cObj
      * Defaults to Typo3 tablename of pages
@@ -79,6 +78,7 @@ class Ratingobject extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * @var \Thucke\ThRating\Domain\Repository\StepconfRepository
      */
     protected $stepconfRepository;
+
     /**
      * @param \Thucke\ThRating\Domain\Repository\StepconfRepository $stepconfRepository
      * @return void
@@ -92,6 +92,7 @@ class Ratingobject extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * @var \Thucke\ThRating\Service\ExtensionHelperService
      */
     protected $extensionHelperService;
+
     /**
      * @param	\Thucke\ThRating\Service\ExtensionHelperService $extensionHelperService
      * @return	void
@@ -126,7 +127,6 @@ class Ratingobject extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      */
     public function initializeObject()
     {
-
         //Initialize rating storage if ratingobject is new
         if (!is_object($this->ratings)) {
             $this->ratings = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();

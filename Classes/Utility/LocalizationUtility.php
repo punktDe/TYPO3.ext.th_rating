@@ -21,12 +21,11 @@ namespace Thucke\ThRating\Utility;
  */
 class LocalizationUtility extends \TYPO3\CMS\Extbase\Utility\LocalizationUtility
 {
-
     /**
      * Returns the localized label of the LOCAL_LANG key, $key.
      *
      * @param string $extensionName The name of the extension
-     * @return string|NULL The value from LOCAL_LANG or NULL if no translation was found.
+     * @return string|null the value from LOCAL_LANG or NULL if no translation was found
      * @api
      * @todo : If vsprintf gets a malformed string, it returns false! Should we throw an exception there?
      */
@@ -44,6 +43,7 @@ class LocalizationUtility extends \TYPO3\CMS\Extbase\Utility\LocalizationUtility
             }
         }
         self::$LOCAL_LANG[$extensionName] = array_merge(self::$LOCAL_LANG[$extensionName]['default'], self::$LOCAL_LANG[$extensionName]);
+
         return self::$LOCAL_LANG[$extensionName];
     }
 }

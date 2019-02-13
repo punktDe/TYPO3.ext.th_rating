@@ -32,11 +32,11 @@ namespace Thucke\ThRating\Service;
  */
 class AccessControlService extends AbstractExtensionService
 {
-
     /**
      * @var \TYPO3\CMS\Extbase\Domain\Repository\FrontendUserRepository	$frontendUserRepository
      */
     protected $frontendUserRepository;
+
     /**
      * @param \TYPO3\CMS\Extbase\Domain\Repository\FrontendUserRepository $frontendUserRepository
      * @return void
@@ -45,10 +45,12 @@ class AccessControlService extends AbstractExtensionService
     {
         $this->frontendUserRepository = $frontendUserRepository;
     }
+
     /**
      * @var \Thucke\ThRating\Domain\Repository\VoterRepository	$voterRepository
      */
     protected $voterRepository;
+
     /**
      * @param \Thucke\ThRating\Domain\Repository\VoterRepository $voterRepository
      * @return void
@@ -75,6 +77,7 @@ class AccessControlService extends AbstractExtensionService
                 return true;	//treat anonymous user also as logged in
             }
         }
+
         return false;
     }
 
@@ -102,6 +105,7 @@ class AccessControlService extends AbstractExtensionService
         if ($this->hasLoggedInFrontendUser()) {
             return $GLOBALS['TSFE']->fe_user->groupData['uid'];
         }
+
         return [];
     }
 
@@ -113,6 +117,7 @@ class AccessControlService extends AbstractExtensionService
         if ($this->hasLoggedInFrontendUser() && !empty($GLOBALS['TSFE']->fe_user->user['uid'])) {
             return intval($GLOBALS['TSFE']->fe_user->user['uid']);
         }
+
         return null;
     }
 
@@ -134,6 +139,7 @@ class AccessControlService extends AbstractExtensionService
                 $voter = $this->frontendUserRepository->findByUid(intval($voter));
             }
         }
+
         return $voter;
     }
 
@@ -155,6 +161,7 @@ class AccessControlService extends AbstractExtensionService
                 $voter = $this->voterRepository->findByUid(intval($voter));
             }
         }
+
         return $voter;
     }
 }

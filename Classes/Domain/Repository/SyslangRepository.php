@@ -29,7 +29,6 @@ namespace Thucke\ThRating\Domain\Repository;
  */
 class SyslangRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
 {
-
     /**
      * Initialze this repository
      */

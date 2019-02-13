@@ -43,7 +43,6 @@ use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
  */
 class RatingobjectRepositoryTest extends FunctionalTestCase
 {
-
     /**
      * @var string[]
      */

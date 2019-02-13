@@ -36,7 +36,6 @@ namespace Thucke\ThRating\Domain\Validator;
  */
 class StepnameValidator extends \TYPO3\CMS\Extbase\Validation\Validator\AbstractValidator
 {
-
     /**
      * @var \Thucke\ThRating\Domain\Repository\StepnameRepository
      */
@@ -55,8 +54,8 @@ class StepnameValidator extends \TYPO3\CMS\Extbase\Validation\Validator\Abstract
      * If the given step is valid
      *
      * @param \Thucke\ThRating\Domain\Model\Stepname $stepname
-     * @return void
      * @throws \TYPO3\CMS\Extbase\Persistence\Exception\InvalidQueryException
+     * @return void
      */
     protected function isValid($stepname)
     {

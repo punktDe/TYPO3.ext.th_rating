@@ -1,5 +1,4 @@
 <?php
-
 namespace Thucke\ThRating\Domain\Repository;
 
 /***************************************************************
@@ -30,15 +29,13 @@ namespace Thucke\ThRating\Domain\Repository;
  */
 class RatingRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
 {
-
     /**
      * Defines name for function parameter
-     *
      */
     const addIfNotFound = true;
 
     /**
-     * @var \Thucke\ThRating\Service\ExtensionHelperService $extensionHelperService
+     * @var \Thucke\ThRating\Service\ExtensionHelperService
      */
     protected $extensionHelperService;
 
@@ -57,8 +54,8 @@ class RatingRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
      * @param    \Thucke\ThRating\Domain\Model\Ratingobject $ratingobject The concerned ratingobject
      * @param    int $ratedobjectuid The Uid of the rated row
      * @param    bool $addIfNotFound Set to true if new objects should instantly be added
-     * @return \Thucke\ThRating\Domain\Model\Rating        The rating
      * @throws \TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException
+     * @return \Thucke\ThRating\Domain\Model\Rating        The rating
      * @validate $ratingobject \Thucke\ThRating\Domain\Validator\RatingobjectValidator
      * @validate $ratedobjectuid NumberRange(minimum = 1)
      */
@@ -88,6 +85,7 @@ class RatingRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
                 $foundRow = $this->findMatchingObjectAndUid($ratingobject, $ratedobjectuid);
             }
         }
+
         return $foundRow;
     }
 }

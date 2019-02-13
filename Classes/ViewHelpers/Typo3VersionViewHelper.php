@@ -32,10 +32,6 @@ namespace Thucke\ThRating\ViewHelpers;
  */
 class Typo3VersionViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper
 {
-
-    /**
-     *
-     */
     public function initializeArguments()
     {
         $this->registerArgument('testVersion', 'string', 'The version number to check against', true);
@@ -53,6 +49,7 @@ class Typo3VersionViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractVi
         $testVersion = $this->arguments['testVersion'];
         $testOperator = $this->arguments['testOperator'];
         $result = version_compare(TYPO3_version, $testVersion, $testOperator);
+
         return $result;
     }
 }

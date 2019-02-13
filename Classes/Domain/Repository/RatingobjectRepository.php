@@ -29,15 +29,13 @@ namespace Thucke\ThRating\Domain\Repository;
  */
 class RatingobjectRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
 {
-
     /**
      * Defines name for function parameter
-     *
      */
     const addIfNotFound = true;
 
     /**
-     * @var \Thucke\ThRating\Service\ExtensionHelperService $extensionHelperService
+     * @var \Thucke\ThRating\Service\ExtensionHelperService
      */
     protected $extensionHelperService;
 
@@ -56,8 +54,8 @@ class RatingobjectRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
      * @param string $ratetable The tablename of the ratingobject
      * @param string $ratefield The fieldname of the ratingobject
      * @param bool $addIfNotFound Set to true if new objects should instantly be added
-     * @return \Thucke\ThRating\Domain\Model\Ratingobject The ratingobject
      * @throws \TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException
+     * @return \Thucke\ThRating\Domain\Model\Ratingobject The ratingobject
      */
     public function findMatchingTableAndField($ratetable, $ratefield, $addIfNotFound = false)
     {
@@ -81,6 +79,7 @@ class RatingobjectRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
                 $foundRow = $this->findMatchingTableAndField($ratetable, $ratefield);
             }
         }
+
         return $foundRow;
     }
 
@@ -90,6 +89,7 @@ class RatingobjectRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
      * @param bool $respectStoragePage Set to true if storagepage should be ignored
      * @return \TYPO3\CMS\Extbase\Persistence\QueryResultInterface|array All ratingobjects of the site
      */
+
     /** @noinspection PhpMissingParentCallCommonInspection */
     public function findAll($respectStoragePage = false)
     {
@@ -97,6 +97,7 @@ class RatingobjectRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
         if ($respectStoragePage) {
             $query->getQuerySettings()->setRespectStoragePage(false);
         }
+
         return $query->execute();
     }
 }

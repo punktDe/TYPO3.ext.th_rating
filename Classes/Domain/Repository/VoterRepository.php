@@ -29,7 +29,6 @@ namespace Thucke\ThRating\Domain\Repository;
  */
 class VoterRepository extends \TYPO3\CMS\Extbase\Domain\Repository\FrontendUserRepository
 {
-
     /**
      * Initialze this repository
      */

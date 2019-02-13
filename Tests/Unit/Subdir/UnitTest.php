@@ -22,6 +22,7 @@ class UnitTest extends UnitTestCase
     {
         $this->assertTrue(true);
     }
+
     /**
      * @test
      */
@@ -29,6 +30,7 @@ class UnitTest extends UnitTestCase
     {
         $this->assertTrue(true);
     }
+
     /**
      * @test
      */
@@ -36,6 +38,7 @@ class UnitTest extends UnitTestCase
     {
         $this->assertTrue(true);
     }
+
     /**
      * @test
      */

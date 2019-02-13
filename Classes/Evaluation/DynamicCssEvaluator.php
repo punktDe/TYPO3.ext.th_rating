@@ -1,4 +1,5 @@
-<?php /** @noinspection PhpUnusedParameterInspection */
+<?php
+/** @noinspection PhpUnusedParameterInspection */
 namespace Thucke\ThRating\Evaluation;
 
 /***************************************************************
@@ -33,7 +34,6 @@ namespace Thucke\ThRating\Evaluation;
  */
 class DynamicCssEvaluator
 {
-
     /**
      * This function needs to return JavaScript code for client side evaluation of the
      * field value. The JavaScript variable "value" is set to the field value in the context
@@ -51,7 +51,7 @@ class DynamicCssEvaluator
      * This is the server side (i.e. PHP) side of the field evaluation.
      * We only remove the dynamic CSS file to re-create it the next request
      *
-     * @param    mixed $value : The value that has to be checked.
+     * @param    mixed $value : The value that has to be checked
      * @param    string $is_in : Is-In String
      * @param    int $set : Determines if the field can be set (value correct) or not (PASSED BY REFERENCE!)
      * @return    string      The new value of the field
@@ -59,6 +59,7 @@ class DynamicCssEvaluator
     public function evaluateFieldValue($value, $is_in, &$set)
     {
         $this->clearCachePostProc(null, null, null);
+
         return $value;
     }
 

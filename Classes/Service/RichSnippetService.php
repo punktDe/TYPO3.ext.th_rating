@@ -33,7 +33,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class RichSnippetService extends AbstractExtensionService
 {
-
     /**
      * Instances of AggregateRating may appear as properties of the following types
      * @const array
@@ -46,7 +45,7 @@ class RichSnippetService extends AbstractExtensionService
         'Organization',
         'Place',
         'Product',
-        'Service'];
+        'Service', ];
 
     /**
      * @var string
@@ -85,10 +84,12 @@ class RichSnippetService extends AbstractExtensionService
 
         if (is_array($this->richSnippetConfig['richSnippetFields'])) {
             $this->logger->log(\TYPO3\CMS\Core\Log\LogLevel::DEBUG, 'setRichSnippetConfig Exit point', $this->richSnippetConfig['richSnippetFields']);
+
             return true;
         }
 
         $this->logger->log(\TYPO3\CMS\Core\Log\LogLevel::DEBUG, 'setRichSnippetConfig Exit point');
+
         return false;
     }
 
@@ -120,7 +121,8 @@ class RichSnippetService extends AbstractExtensionService
                 $this->schema = $schema;
             } else {
                 throw new \Thucke\ThRating\Exception\InvalidAggregateRatingSchemaTypeException(
-                    \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('error.richSnippetConfiguration.AggregateRatingPropertySchema', 'ThRating'), 1521487362
+                    \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('error.richSnippetConfiguration.AggregateRatingPropertySchema', 'ThRating'),
+                    1521487362
                 );
             }
         }
@@ -145,6 +147,7 @@ class RichSnippetService extends AbstractExtensionService
 
     /**
      * @param string
+     * @param mixed $name
      * @return void
      */
     public function setName($name)
@@ -178,8 +181,8 @@ class RichSnippetService extends AbstractExtensionService
 
     /**
      * @param int $uid
-     * @return string
      * @throws \Thucke\ThRating\Exception\InvalidAggregateRatingSchemaTypeException
+     * @return string
      */
     public function getRichSnippetObject($uid)
     {
@@ -207,6 +210,7 @@ class RichSnippetService extends AbstractExtensionService
             $this->setDescription($row[$this->richSnippetConfig['richSnippetFields']['description']]);
         }
         $this->logger->log(\TYPO3\CMS\Core\Log\LogLevel::DEBUG, 'getRichSnippetObject Exit point', (array) $this);
+
         return $this;
     }
 }

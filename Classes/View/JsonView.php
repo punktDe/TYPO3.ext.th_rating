@@ -68,7 +68,6 @@ class JsonView extends \TYPO3\CMS\Extbase\Mvc\View\JsonView
         'ratingobjects',
         //'LANG',
         'flashMessages', ];
-    /**/
 
     /**
      * Initializes this view.
@@ -77,6 +76,7 @@ class JsonView extends \TYPO3\CMS\Extbase\Mvc\View\JsonView
      * @return void
      * @api
      */
+
     /** @noinspection PhpMissingParentCallCommonInspection */
     public function initializeView()
     {

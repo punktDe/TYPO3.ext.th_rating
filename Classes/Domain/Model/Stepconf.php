@@ -35,7 +35,6 @@ namespace Thucke\ThRating\Domain\Model;
  */
 class Stepconf extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
 {
-
     /**
      * @var \Thucke\ThRating\Domain\Model\Ratingobject
      * @validate \Thucke\ThRating\Domain\Validator\RatingobjectValidator
@@ -83,6 +82,7 @@ class Stepconf extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface	$objectManager
      */
     protected $objectManager;
+
     /**
      * @param \TYPO3\CMS\Extbase\Object\ObjectManagerInterface	$objectManager
      * @return void
@@ -96,6 +96,7 @@ class Stepconf extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * @var \Thucke\ThRating\Domain\Repository\StepnameRepository	$stepnameRepository
      */
     protected $stepnameRepository;
+
     /**
      * @param \Thucke\ThRating\Domain\Repository\StepnameRepository $stepnameRepository
      * @return void
@@ -106,9 +107,10 @@ class Stepconf extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     }
 
     /**
-     * @var \Thucke\ThRating\Service\ExtensionHelperService $extensionHelperService
+     * @var \Thucke\ThRating\Service\ExtensionHelperService
      */
     protected $extensionHelperService;
+
     /**
      * @param	\Thucke\ThRating\Service\ExtensionHelperService $extensionHelperService
      * @return	void
@@ -123,7 +125,7 @@ class Stepconf extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * @param Ratingobject|null $ratingobject
      * @param null $steporder
      */
-    public function __construct(Ratingobject $ratingobject = null, $steporder=null)
+    public function __construct(Ratingobject $ratingobject = null, $steporder = null)
     {
         if ($ratingobject) {
             $this->setRatingobject($ratingobject);
@@ -209,6 +211,7 @@ class Stepconf extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     public function getStepweight()
     {
         empty($this->stepweight) && $this->stepweight = $this->steporder;
+
         return $this->stepweight;
     }
 
@@ -216,9 +219,9 @@ class Stepconf extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * Adds a localized stepname to this stepconf
      *
      * @param Stepname $stepname
-     * @return bool
      * @throws \TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException
      * @throws \TYPO3\CMS\Extbase\Persistence\Exception\InvalidQueryException
+     * @return bool
      */
     public function addStepname(Stepname $stepname)
     {
@@ -241,6 +244,7 @@ class Stepconf extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
             //warning - existing stepname entry for a language will not be overwritten
             $success = false;
         }
+
         return $success;
     }
 
@@ -254,6 +258,7 @@ class Stepconf extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
         if ($this->stepname instanceof \TYPO3\CMS\Extbase\Persistence\Generic\LazyLoadingProxy) {
             $this->stepname = $this->stepname->_loadRealInstance();
         }
+
         return $this->stepname;
     }
 
@@ -274,6 +279,7 @@ class Stepconf extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     {
         return empty($this->steporder) && empty($this->ratingobject);
     }
+
     /**
      * Method to use Object as plain string
      *
@@ -286,6 +292,7 @@ class Stepconf extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
         } else {
             $stepname = $this->getSteporder();
         }
+
         return strval($stepname);
     }
 }

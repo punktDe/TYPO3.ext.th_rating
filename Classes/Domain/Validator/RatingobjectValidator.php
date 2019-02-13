@@ -36,7 +36,6 @@ namespace Thucke\ThRating\Domain\Validator;
  */
 class RatingobjectValidator extends \TYPO3\CMS\Extbase\Validation\Validator\AbstractValidator
 {
-
     /**
      * If the given Ratingobject is valid
      *

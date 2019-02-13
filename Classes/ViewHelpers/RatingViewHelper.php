@@ -49,7 +49,6 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
  * <output>
  * rendered rating
  * </output>
- *
  */
 class RatingViewHelper extends AbstractViewHelper
 {
@@ -63,7 +62,7 @@ class RatingViewHelper extends AbstractViewHelper
     protected $escapeOutput = false;
 
     /**
-     * @var \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController contains a backup of the current $GLOBALS['TSFE'] if used in BE mode
+     * @var \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController contains a backup of the current['TSFE'] if used in BE mode
      */
     protected static $tsfeBackup;
 
@@ -82,9 +81,6 @@ class RatingViewHelper extends AbstractViewHelper
      */
     protected $extensionHelperService;
 
-    /**
-     *
-     */
     public function initializeArguments(): void
     {
         $this->registerArgument('action', 'string', 'The rating action');
@@ -101,8 +97,8 @@ class RatingViewHelper extends AbstractViewHelper
      * @param array $arguments
      * @param \Closure $renderChildrenClosure
      * @param RenderingContextInterface $renderingContext
-     * @return mixed
      * @throws \TYPO3\CMS\Fluid\Core\ViewHelper\Exception
+     * @return mixed
      */
     public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
     {
@@ -118,7 +114,8 @@ class RatingViewHelper extends AbstractViewHelper
 
         //instantiate the logger
         $logger = $extensionHelperService->getLogger(__CLASS__);
-        $logger->log(\TYPO3\CMS\Core\Log\LogLevel::DEBUG,
+        $logger->log(
+            \TYPO3\CMS\Core\Log\LogLevel::DEBUG,
             'Entry point',
             [
                 'Viewhelper parameters' => [
@@ -142,12 +139,14 @@ class RatingViewHelper extends AbstractViewHelper
         $setup = static::getConfigurationManager()->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT);
         foreach ($pathSegments as $segment) {
             if (!array_key_exists($segment . '.', $setup)) {
-                $logger->log(\TYPO3\CMS\Core\Log\LogLevel::CRITICAL,
+                $logger->log(
+                    \TYPO3\CMS\Core\Log\LogLevel::CRITICAL,
                     'TypoScript object path does not exist',
                     [
                         'Typoscript object path' => htmlspecialchars($typoscriptObjectPath),
                         'Setup' => $setup,
-                        'errorCode' => 1253191023]);
+                        'errorCode' => 1253191023, ]
+                );
 
                 throw new \TYPO3\CMS\Fluid\Core\ViewHelper\Exception(
                     'TypoScript object path "' . $typoscriptObjectPath . '" does not exist',
@@ -187,10 +186,13 @@ class RatingViewHelper extends AbstractViewHelper
             $setup[$lastSegment . '.']['settings.']['display'] = $display;
         }
 
-        $logger->log(\TYPO3\CMS\Core\Log\LogLevel::DEBUG, 'Single contentObjectRenderer to get',
+        $logger->log(
+            \TYPO3\CMS\Core\Log\LogLevel::DEBUG,
+            'Single contentObjectRenderer to get',
             [
                 'contentObjectRenderer type' => $setup[$lastSegment],
-                'cOjb config' => $setup[$lastSegment . '.']]);
+                'cOjb config' => $setup[$lastSegment . '.'], ]
+        );
 
         $content = $contentObjectRenderer->cObjGetSingle($setup[$lastSegment], $setup[$lastSegment . '.'] ?? []);
         if (TYPO3_MODE === 'BE') {
@@ -199,6 +201,7 @@ class RatingViewHelper extends AbstractViewHelper
 
         $logger->log(\TYPO3\CMS\Core\Log\LogLevel::INFO, 'Generated content', ['content' => $content]);
         $logger->log(\TYPO3\CMS\Core\Log\LogLevel::DEBUG, 'Exit point');
+
         return $content;
     }
 

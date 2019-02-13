@@ -1,4 +1,5 @@
-<?php /** @noinspection PhpUnusedParameterInspection */
+<?php
+/** @noinspection PhpUnusedParameterInspection */
 namespace Thucke\ThRating\Userfuncs;
 
 /***************************************************************
@@ -32,11 +33,11 @@ namespace Thucke\ThRating\Userfuncs;
  */
 class Tca
 {
-
     /**
      * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface
      */
     protected $objectManager;
+
     /**
      * @param \TYPO3\CMS\Extbase\Object\ObjectManagerInterface	$objectManager
      * @return void
@@ -112,7 +113,7 @@ class Tca
                 $syslangRepository = $this->objectManager->get(\Thucke\ThRating\Domain\Repository\StepnameRepository::class);
                 $syslangObject = $syslangRepository->findByUid($stepnameLang);
                 if ($syslangObject instanceof \Thucke\ThRating\Domain\Model\Syslang) {
-                    $syslang=$syslangObject->getTitle();
+                    $syslang = $syslangObject->getTitle();
                 } else {
                     $syslang = \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('tca.BE.unknown', 'ThRating');
                 }
@@ -189,6 +190,7 @@ class Tca
             }
         }
         $config['items'] = $config['items'] + $optionList;
+
         return $config;
     }
 
@@ -208,6 +210,7 @@ class Tca
         $TSObj->init();
         $TSObj->runThroughTemplates($rootLine);
         $TSObj->generateConfig();
+
         return $TSObj->setup['plugin.'][$extKey . '.'];
     }
 }

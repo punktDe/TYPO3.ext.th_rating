@@ -1,5 +1,4 @@
 <?php
-
 namespace Thucke\ThRating\Domain\Validator;
 
 /***************************************************************
@@ -37,7 +36,6 @@ namespace Thucke\ThRating\Domain\Validator;
  */
 class VoteValidator extends \TYPO3\CMS\Extbase\Validation\Validator\AbstractValidator
 {
-
     /**
      * This contains the supported options, their default values, types and descriptions.
      *

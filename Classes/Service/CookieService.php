@@ -1,4 +1,5 @@
-<?php /** @noinspection PhpTraditionalSyntaxArrayLiteralInspection */
+<?php
+/** @noinspection PhpTraditionalSyntaxArrayLiteralInspection */
 namespace Thucke\ThRating\Service;
 
 /***************************************************************
@@ -32,7 +33,6 @@ namespace Thucke\ThRating\Service;
  */
 class CookieService extends AbstractExtensionService
 {
-
     /**
      * Indicator for cookieProtection has been set
      * @var bool
@@ -56,16 +56,18 @@ class CookieService extends AbstractExtensionService
             $cookieDomain = $GLOBALS['TYPO3_CONF_VARS']['FE']['cookieDomain'];
         }
         if ($cookieDomain) {
-            if ($cookieDomain{0} == '/') {
+            if ($cookieDomain[0] == '/') {
                 $match = [];
                 /** @noinspection PhpUsageOfSilenceOperatorInspection */
                 $matchCnt = @preg_match($cookieDomain, \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_HOST_ONLY'), $match);
                 if ($matchCnt === false) {
-                    $this->logger->log(\TYPO3\CMS\Core\Log\LogLevel::ERROR,
-                                        'getCookieDomain: The regular expression for the cookie domain contains errors. The session is not shared across sub-domains.',
-                                        [
+                    $this->logger->log(
+                        \TYPO3\CMS\Core\Log\LogLevel::ERROR,
+                        'getCookieDomain: The regular expression for the cookie domain contains errors. The session is not shared across sub-domains.',
+                        [
                                             'cookieDomain' => $cookieDomain,
-                                            'errorCode' => 1399137882, ]);
+                                            'errorCode' => 1399137882 ]
+                    );
                 } elseif ($matchCnt) {
                     $result = $match[0];
                 }
@@ -73,6 +75,7 @@ class CookieService extends AbstractExtensionService
                 $result = $cookieDomain;
             }
         }
+
         return $result;
     }
 
@@ -84,10 +87,10 @@ class CookieService extends AbstractExtensionService
      * @param    string $cookieValue cookie value
      * @param    int $cookieExpire expire time for the cookie
      *
-     * @return    void
      * @throws \TYPO3\CMS\Core\Exception
+     * @return    void
      */
-    public function setVoteCookie($cookieName, $cookieValue, $cookieExpire=0)
+    public function setVoteCookie($cookieName, $cookieValue, $cookieExpire = 0)
     {
         // do not set session cookies
         if (!empty($cookieExpire)) {
@@ -108,16 +111,17 @@ class CookieService extends AbstractExtensionService
                 setcookie(
                     $cookieName,
                     $cookieValue,
-                    (integer) $cookieExpire,
+                    (int) $cookieExpire,
                     $cookiePath,
                     $cookieDomain,
                     $cookieSecure,
                     $cookieHttpOnly
                 );
                 $this->cookieProtection = true;
-                $this->logger->log(\TYPO3\CMS\Core\Log\LogLevel::INFO,
-                                    'setVoteCookie: Cookie set',
-                                    [
+                $this->logger->log(
+                    \TYPO3\CMS\Core\Log\LogLevel::INFO,
+                    'setVoteCookie: Cookie set',
+                    [
                                         'cookieName' => $cookieName,
                                         'cookieValue' => $cookieValue,
                                         'cookieExpire' => $cookieExpire,
@@ -125,7 +129,8 @@ class CookieService extends AbstractExtensionService
                                         'cookieDomain' => $cookieDomain,
                                         'cookieSecure' => $cookieSecure,
                                         'cookieHttpOnly' => $cookieHttpOnly,
-                                    ]);
+                                    ]
+                );
             } else {
                 throw new \TYPO3\CMS\Core\Exception(
                     'Cookie was not set since HTTPS was forced in $TYPO3_CONF_VARS[SYS][cookieSecure].',

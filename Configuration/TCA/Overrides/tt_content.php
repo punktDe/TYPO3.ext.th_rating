@@ -3,7 +3,7 @@ defined('TYPO3_MODE') or die();
 
 call_user_func(function () {
     \TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerPlugin(
-            'Thucke.ThRating',	// The extension name (in UpperCamelCase) or the extension key (in lower_underscore)
+        'Thucke.ThRating',	// The extension name (in UpperCamelCase) or the extension key (in lower_underscore)
             'Pi1',		// A unique name of the plugin in UpperCamelCase
             'Rating AX'	// A title shown in the backend dropdown field
             );

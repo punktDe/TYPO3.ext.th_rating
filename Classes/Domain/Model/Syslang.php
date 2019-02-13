@@ -29,7 +29,6 @@ namespace Thucke\ThRating\Domain\Model;
  */
 class Syslang extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
 {
-
     /**
      * @var int
      */

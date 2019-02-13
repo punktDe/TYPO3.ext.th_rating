@@ -1,5 +1,4 @@
 <?php
-
 namespace Thucke\ThRating\Domain\Validator;
 
 /***************************************************************
@@ -37,7 +36,6 @@ namespace Thucke\ThRating\Domain\Validator;
  */
 class RatingValidator extends \TYPO3\CMS\Extbase\Validation\Validator\AbstractValidator
 {
-
     /**
      * If the given Rating is valid
      *
@@ -49,10 +47,12 @@ class RatingValidator extends \TYPO3\CMS\Extbase\Validation\Validator\AbstractVa
         $ratedobjectuid = $rating->getRatedobjectuid();
         if (empty($ratedobjectuid)) {
             $this->addError(\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('error.validator.rating.ratedobjectuid', 'ThRating'), 1283536994);
+
             return;
         }
         if (!$rating->getRatingobject() instanceof \Thucke\ThRating\Domain\Model\Ratingobject) {
             $this->addError(\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('error.validator.rating.ratingobject', 'ThRating'), 1283538549);
+
             return;
         }
     }

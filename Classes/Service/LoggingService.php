@@ -32,7 +32,6 @@ namespace Thucke\ThRating\Service;
  */
 class LoggingService
 {
-
     /**
      * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface
      */
@@ -49,9 +48,10 @@ class LoggingService
      * @param	\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager,
      * @return void
      */
-    public function __construct(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager,
-                                \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager)
-    {
+    public function __construct(
+        \TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager,
+        \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager
+    ) {
         $this->objectManager = $objectManager;
         $this->configurationManager = $configurationManager;
     }
@@ -70,7 +70,6 @@ class LoggingService
         $settings = $this->configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_SETTINGS, 'thRating', 'pi1');
         if (is_array($settings['logging'])) {
             foreach ($settings['logging'] as $logLevel => $logConfig) {
-
                 /** @var string $levelUppercase */
                 $levelUppercase = strtoupper($logLevel);
 
@@ -88,6 +87,7 @@ class LoggingService
             /** @noinspection UnsupportedStringOffsetOperationsInspection */
             $GLOBALS['TYPO3_CONF_VARS']['LOG']['Thucke']['ThRating']['writerConfiguration'] = $writerConfiguration;
         }
+
         return $this->objectManager->get(\TYPO3\CMS\Core\Log\LogManager::class)->getLogger($name);
     }
 }

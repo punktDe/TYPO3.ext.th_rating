@@ -35,7 +35,6 @@ namespace Thucke\ThRating\Domain\Model;
  */
 class Stepname extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
 {
-
     /**
      * @var \Thucke\ThRating\Domain\Model\Stepconf
      * @validate \Thucke\ThRating\Domain\Validator\StepconfValidator
@@ -70,7 +69,7 @@ class Stepname extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * @param Stepconf|null $stepconf
      * @param null $stepname
      */
-    public function __construct(Stepconf $stepconf = null, $stepname=null)
+    public function __construct(Stepconf $stepconf = null, $stepname = null)
     {
         if ($stepconf) {
             $this->setStepconf($stepconf);
@@ -139,6 +138,7 @@ class Stepname extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
         if (empty($value)) {
             $value = strval($this->getStepconf()->getSteporder());
         }
+
         return $value;
     }
 
