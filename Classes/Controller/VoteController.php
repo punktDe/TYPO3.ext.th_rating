@@ -959,11 +959,11 @@ class VoteController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 
             /** @var QueryBuilder $queryBuilder */
             $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-                ->getQueryBuilderForTable($this->richSnippetConfig['tablename']);
+                ->getQueryBuilderForTable($table);
 
             //do update foreign table
             $queryResult = $queryBuilder
-                ->update($this->richSnippetConfig['tablename'])
+                ->update($table)
                 ->where($queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($rateUid)))
                 ->set($rateField, $currentRates)
                 ->execute();
