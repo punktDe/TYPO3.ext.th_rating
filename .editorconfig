@@ -3,6 +3,23 @@
 # top-most EditorConfig file
 root = true
 
+[{*.rst,*.rst.txt}]
+charset = utf-8
+end_of_line = lf
+insert_final_newline = true
+trim_trailing_whitespace = true
+indent_style = space
+indent_size = 3
+
+# MD-Files
+[*.md]
+charset = utf-8
+end_of_line = lf
+insert_final_newline = true
+trim_trailing_whitespace = true
+indent_style = space
+indent_size = 4
+
 # Unix-style newlines with a newline ending every file
 [*]
 charset = utf-8
@@ -13,7 +30,6 @@ trim_trailing_whitespace = true
 # CSS-Files
 [*.css]
 indent_style = tab
-indent_size = 4
 
 # HTML-Files
 [*.html]
@@ -23,12 +39,10 @@ indent_size = 2
 # TMPL-Files
 [*.tmpl]
 indent_style = tab
-indent_size = 4
 
 # SCSS-Files
 [*.scss]
 indent_style = space
-indent_size = 4
 
 # TS/JS-Files
 [*.ts]
@@ -41,22 +55,10 @@ indent_size = 2
 # JSON-Files
 [*.json]
 indent_style = tab
-indent_size = 4
 
 # PHP-Files
 [*.php]
 indent_style = space
-indent_size = 4
-
-# ReST-Files
-[*.rst]
-indent_style = space
-indent_size = 3
-
-# MD-Files
-[*.md]
-indent_style = space
-indent_size = 4
 
 # YAML-Files
 [{*.yaml,*.yml}]
@@ -81,7 +83,6 @@ indent_size = 2
 # XLF-Files
 [*.xlf]
 indent_style = tab
-indent_size = 4
 
 # SQL-Files
 [*.sql]
@@ -91,4 +92,3 @@ indent_size = 2
 # .htaccess
 [{_.htaccess,.htaccess}]
 indent_style = tab
-indent_size = 4
