@@ -7,17 +7,6 @@
 
 .. _start:
 
-
-.. |img-1|      image:: Images/hr.gif
-.. :align: left
-
-.. |img-2|      image:: Images/typo3-200px-transparent.png
-   :height: 21
-   :width: 87
-.. :border: 0
-.. :hspace: 9
-.. :name: Grafik2
-
 .. _docs.typo3.org: https://docs.typo3.org/typo3cms/extensions/th_rating/
 
 ==============
@@ -61,18 +50,11 @@ EXT: Rating AX
     The content of this document is related to TYPO3,
     a GNU/GPL CMS/Framework available from `www.typo3.org <http://www.typo3.org/>`_.
 
-
-|img-1|
-
-|img-2| EXT: Rating AX
-
-|img-1|
-
-
 **Table of Contents**
 
 .. toctree::
-    :maxdepth: 5
+    :maxdepth: 2
+    :titlesonly:
 
    Sitemap/Index
    Introduction/Index
