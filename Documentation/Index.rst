@@ -53,7 +53,6 @@ EXT: Rating AX
 **Table of Contents**
 
 .. toctree::
-   :maxdepth: 2
    :hidden:
    :caption: BASICS
 
@@ -62,7 +61,6 @@ EXT: Rating AX
    Tutorial/Index
 
 .. toctree::
-   :maxdepth: 2
    :hidden:
    :caption: EXPERT
    AdministratorManual/Index
