@@ -74,5 +74,6 @@ EXT: Rating AX
    :hidden:
    :caption: OTHER
 
-   Appendix/Index
+   ResourcesForEditors
+   Linktargets
    Sitemap/Index
