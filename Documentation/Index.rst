@@ -53,15 +53,24 @@ EXT: Rating AX
 **Table of Contents**
 
 .. toctree::
-    :maxdepth: 2
-    :titlesonly:
+   :maxdepth: 2
+   :hidden:
+   :caption: BASICS
 
-   Sitemap/Index
    Introduction/Index
    UsersManual/Index
+   Tutorial/Index
+
+.. toctree::
+   :maxdepth: 2
+   :hidden:
+   :caption: EXPERT
    AdministratorManual/Index
    DeveloperInformation/Index
-   Tutorial/Index
-   Linktargets/Index
 
-You'll find this documentation under `docs.typo3.org`_.
+.. toctree::
+   :hidden:
+   :caption: OTHER
+
+   Appendix/Index
+   Sitemap/Index
