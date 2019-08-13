@@ -1,57 +1,60 @@
+.. ==================================================
+.. FOR YOUR INFORMATION
+.. --------------------------------------------------
+.. -*- coding: utf-8 -*- with BOM.
 
 .. include:: Includes.txt
 
 .. _start:
 
-====================
-EXT: Flexible Rating
-====================
+.. _docs.typo3.org: https://docs.typo3.org/typo3cms/extensions/th_rating/
 
-:Version:         |version|
-:Author:          Thomas Hucke <thucke@web.de>
-:Buildinfo:       `Make folder <_make>`_
-:Copyright:       2011-2018, Thomas Hucke
-:Description:
-   Highly flexible AJAX rating based on extbase/fluid/jquery. Allows multiple ratings
-   within one page. It could be used as a cObj by other extensions or included in every
-   FLUID template using the viewhelper. Each ratingstep could be configured having a name
-   - international localization included.
-:License:         `CC BY-SA 3.0 <http://creativecommons.org/licenses/by-sa/3.0/>`_
-:Rendered:        |today|
+==============
+EXT: Rating AX
+==============
 
+.. only:: html
 
-   
-Info
-====
+    :Classification:
+        th_rating
 
-The content of this document is related to TYPO3, a GNU/GPL 
-CMS/Framework available from `typo3.org`__.
+    :Version:
+        |release|
 
-__ http://typo3.org/
+    :Language:
+        en
 
+    :Description:
+        Highly flexible AJAX rating based on extbase/fluid/jquery. Allows multiple ratings
+        within one page. It could be used as a cObj by other extensions or included in every
+        FLUID template using the viewhelper. Each ratingstep could be configured having a name
+        - international localization included.
 
-License
-=======
+    :Keywords:
+		ajax jQuery fluid extbase rating polling likeButton
 
-`CC BY-SA 3.0 <http://creativecommons.org/licenses/by-sa/3.0/>`_ 
-Creative Commons Attribution-ShareAlike 3.0 Unported.
-You are free
+    :Author:
+        Thomas Hucke
 
-- to share: to copy, distribute and transmit the work
-- to remix: to adapt the work
-- to make commercial use of the work
+    :Email:
+        thucke@web.de
 
+    :License:
+        This document is published under the Open Content License
+        available from http://www.opencontent.org/opl.shtml
 
-Sources
-=======
-
-The sources of this draft are located at
-`Github <https://github.com/thucke/TYPO3.ext.th_rating>`_.
+    :Rendered:
+        |today|
 
 
+    The content of this document is related to TYPO3,
+    a GNU/GPL CMS/Framework available from `www.typo3.org <http://www.typo3.org/>`_.
+
+**Table of Contents**
 
 .. toctree::
-   :hidden:
+    :maxdepth: 2
+    :titlesonly:
 
    Sitemap/Index
    Introduction/Index
@@ -60,5 +63,5 @@ The sources of this draft are located at
    DeveloperInformation/Index
    Tutorial/Index
    Linktargets/Index
-   
 
+You'll find this documentation under `docs.typo3.org`_.
