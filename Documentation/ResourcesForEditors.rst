@@ -1,11 +1,6 @@
 .. include:: Includes.txt
 
-========
-Appendix
-========
-
-Here, we list some resources that are useful when editing this manual:
-
+========================
 Resources for This Guide
 ========================
 
