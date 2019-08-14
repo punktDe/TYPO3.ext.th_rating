@@ -7,8 +7,6 @@
 
 .. _start:
 
-.. _docs.typo3.org: https://docs.typo3.org/typo3cms/extensions/th_rating/
-
 ==============
 EXT: Rating AX
 ==============
@@ -61,19 +59,3 @@ EXT: Rating AX
    UsersManual/Index
    Tutorial/Index
 
-
-.. toctree::
-   :hidden:
-   :caption: EXPERT
-
-   AdministratorManual/Index
-   DeveloperInformation/Index
-
-
-.. toctree::
-   :hidden:
-   :caption: OTHER
-
-   ResourcesForEditors
-   Linktargets
-   Sitemap/Index
