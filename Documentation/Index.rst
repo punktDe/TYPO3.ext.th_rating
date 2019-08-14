@@ -52,7 +52,6 @@ EXT: Rating AX
 
 
 .. toctree::
-   :hidden:
    :caption: BASICS
 
    Introduction/Index
