@@ -48,13 +48,30 @@ EXT: Rating AX
     The content of this document is related to TYPO3,
     a GNU/GPL CMS/Framework available from `www.typo3.org <http://www.typo3.org/>`_.
 
-**Table of Contents**
 
+.. **Table of Contents**
 
 .. toctree::
+   :hidden:
    :caption: BASICS
 
    Introduction/Index
    UsersManual/Index
    Tutorial/Index
 
+
+.. toctree::
+   :hidden:
+   :caption: EXPERT
+
+   AdministratorManual/Index
+   DeveloperInformation/Index
+
+
+.. toctree::
+   :hidden:
+   :caption: OTHER
+
+   ResourcesForEditors
+   Linktargets
+   Sitemap/Index
