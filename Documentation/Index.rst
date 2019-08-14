@@ -73,5 +73,4 @@ EXT: Rating AX
    :caption: OTHER
 
    ResourcesForEditors
-   Linktargets
    Sitemap/Index
