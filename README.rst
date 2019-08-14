@@ -2,8 +2,7 @@
 .. Image definitions
 .. --------------------------------------------------
 
-.. |phpstorm.png| image:: Documentation/DeveloperInformation/phpstorm.png
-   :width: 100px
+.. |phpstorm.png| image:: Documentation/Images/phpstorm100.png
    :target: https://www.jetbrains.com/?from=RatingAXTYPO3extension
    :alt: Jetbrains PHPStorm IDE
    :align: top
