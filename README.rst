@@ -2,11 +2,11 @@
 .. Image definitions
 .. --------------------------------------------------
 
-.. |phpstorm.png|                image:: Documentation/DeveloperInformation/phpstorm.png
-.. :width: 100
-.. :target: https://www.jetbrains.com/?from=RatingAXTYPO3extension
-.. :alt: Jetbrains PHPStorm IDE
-.. :align: top
+.. |phpstorm.png| image:: Documentation/DeveloperInformation/phpstorm.png
+   :width: 100px
+   :target: https://www.jetbrains.com/?from=RatingAXTYPO3extension
+   :alt: Jetbrains PHPStorm IDE
+   :align: top
 
 .. _readme:
 
