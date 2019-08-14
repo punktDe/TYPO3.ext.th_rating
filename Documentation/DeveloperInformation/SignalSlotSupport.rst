@@ -106,9 +106,6 @@ The keys are described in the following tables.
          +-----------------------------------+---------------------------------------------------------------+---------------+
          | ``currentPollDimensions``         | Detailed key description see currentPollDimensionsKeys_       | HashTable     |
          +-----------------------------------+---------------------------------------------------------------+---------------+
-         | .. raw:: html                                                                                                     |
-         |                                                                                                                   |
-         |    <br/>                                                                                                          |
          |                                                                                                                   |
          | .. important::                                                                                                    |
          |                                                                                                                   |

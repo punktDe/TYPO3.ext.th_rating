@@ -7,8 +7,6 @@
 
 .. _start:
 
-.. _docs.typo3.org: https://docs.typo3.org/typo3cms/extensions/th_rating/
-
 ==============
 EXT: Rating AX
 ==============
@@ -50,18 +48,29 @@ EXT: Rating AX
     The content of this document is related to TYPO3,
     a GNU/GPL CMS/Framework available from `www.typo3.org <http://www.typo3.org/>`_.
 
-**Table of Contents**
+
+.. **Table of Contents**
 
 .. toctree::
-    :maxdepth: 2
-    :titlesonly:
+   :hidden:
+   :caption: BASICS
 
-   Sitemap/Index
    Introduction/Index
    UsersManual/Index
+   Tutorial/Index
+
+
+.. toctree::
+   :hidden:
+   :caption: EXPERT
+
    AdministratorManual/Index
    DeveloperInformation/Index
-   Tutorial/Index
-   Linktargets/Index
 
-You'll find this documentation under `docs.typo3.org`_.
+
+.. toctree::
+   :hidden:
+   :caption: OTHER
+
+   ResourcesForEditors
+   Sitemap/Index
