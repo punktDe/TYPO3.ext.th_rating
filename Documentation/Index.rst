@@ -38,39 +38,33 @@ EXT: Rating AX
         thucke@web.de
 
     :License:
-        This document is published under the Open Content License
-        available from http://www.opencontent.org/opl.shtml
+        Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International
+        (`CC BY-NC-SA 4.0 <https://creativecommons.org/licenses/by-nc-sa/4.0/>`__)
 
     :Rendered:
         |today|
 
 
-    The content of this document is related to TYPO3,
-    a GNU/GPL CMS/Framework available from `www.typo3.org <http://www.typo3.org/>`_.
-
-
-.. **Table of Contents**
-
 .. toctree::
-   :hidden:
-   :caption: BASICS
+    :hidden:
+    :caption: BASICS
 
-   Introduction/Index
-   UsersManual/Index
-   Tutorial/Index
+    Introduction/Index
+    UsersManual/Index
+    Tutorial/Index
 
 
 .. toctree::
-   :hidden:
-   :caption: EXPERT
+    :hidden:
+    :caption: EXPERT
 
-   AdministratorManual/Index
-   DeveloperInformation/Index
+    AdministratorManual/Index
+    DeveloperInformation/Index
 
 
 .. toctree::
-   :hidden:
-   :caption: OTHER
+    :hidden:
+    :caption: OTHER
 
-   ResourcesForEditors
-   Sitemap/Index
+    ResourcesForEditors
+    Sitemap/Index
