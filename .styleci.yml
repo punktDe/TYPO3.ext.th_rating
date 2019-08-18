@@ -31,4 +31,9 @@ finder:
     - "*.php"
   not-path:
     - ".Build"
+    - ".github"
+    - "Configuration"
     - "Documentation"
+    - "Migrations"
+    - "Resources"
+    - "vendor"
