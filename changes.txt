@@ -1,4 +1,0 @@
-- Bug #82696: Argument 1 passed to TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule() must be of the type array, null given in ExtensionHelperService.php
-- Bug #83037: Graphics in barratings are not updated on AJAX response
-- Major Feature #83036: Validate compatibility to PHP 7.1
-- Some refactoring in connection with Userfunc

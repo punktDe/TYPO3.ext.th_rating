@@ -9,9 +9,9 @@
     z-index:    1000;
     height:     inherit;
     width:      inherit;
-    background: rgba( 255, 255, 255, .8 ) 
-                url('ajaxWait.gif') 
-                50% 50% 
+    background: rgba( 255, 255, 255, .8 )
+                url('ajaxWait.gif')
+                50% 50%
                 no-repeat;
 }
 /* Anytime the DIV has the loading class, our
@@ -105,24 +105,24 @@ div.tx-thrating-ratinglinks ul{
 	height:100%;
     z-index:1;
 }
-.thRating-normal .currentPollText { 
-	text-indent:0em; 
-	-moz-transform: rotate(90deg); 
-	-ms-transform: rotate(90deg); 
-	-o-transform: rotate(90deg); 
-	-webkit-transform: rotate(90deg); 
-	transform: rotate(90deg);  
-	min-width:100%; 
-	text-align:center; 
+.thRating-normal .currentPollText {
+	text-indent:0em;
+	-moz-transform: rotate(90deg);
+	-ms-transform: rotate(90deg);
+	-o-transform: rotate(90deg);
+	-webkit-transform: rotate(90deg);
+	transform: rotate(90deg);
+	min-width:100%;
+	text-align:center;
 }
 .thRating-tilt .current-poll{
 	width:100%;
     z-index:1;
 }
-.thRating-tilt .currentPollText { 
-	text-indent:0em; 
-	min-height:100%; 
-	text-align:center; 
+.thRating-tilt .currentPollText {
+	text-indent:0em;
+	min-height:100%;
+	text-align:center;
 }
 
 .currentPollText{
@@ -161,9 +161,9 @@ div.tx-thrating-ratinglinks ul{
 	width:0px;
 }
 .tx-thrating-summary{
-	white-space:nowrap; 
-	font-size:0.6em; 
-	line-height:1.4em; 
+	white-space:nowrap;
+	font-size:0.6em;
+	line-height:1.4em;
 	margin-top:1em;
     clear:left;
 }
