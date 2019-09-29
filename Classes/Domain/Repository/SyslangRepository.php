@@ -1,6 +1,9 @@
 <?php
 namespace Thucke\ThRating\Domain\Repository;
 
+use TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings;
+use TYPO3\CMS\Extbase\Persistence\Repository;
+
 /***************************************************************
 *  Copyright notice
 *
@@ -27,14 +30,15 @@ namespace Thucke\ThRating\Domain\Repository;
 /**
  * A repository for website languages
  */
-class SyslangRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
+class SyslangRepository extends Repository
 {
     /**
      * Initialze this repository
      */
-    public function initializeObject()
+    /** @noinspection PhpUnused */
+    public function initializeObject(): void
     {
-        $this->defaultQuerySettings = $this->objectManager->get(\TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings::class);
+        $this->defaultQuerySettings = $this->objectManager->get(Typo3QuerySettings::class);
         $this->defaultQuerySettings->setRespectStoragePage(false);
         $this->defaultQuerySettings->setRespectSysLanguage(false);
         $this->defaultQuerySettings->setIgnoreEnableFields(true);

@@ -1,8 +1,6 @@
 <?php
 namespace Thucke\ThRating\Domain\Validator;
 
-use Thucke\ThRating\Domain\Model\Stepname;
-
 /***************************************************************
  *  Copyright notice
  *
@@ -71,7 +69,7 @@ class StepconfValidator extends \TYPO3\CMS\Extbase\Validation\Validator\Abstract
      *
      * @param \Thucke\ThRating\Domain\Model\Stepconf $stepconf
      * @throws \TYPO3\CMS\Extbase\Persistence\Exception\InvalidQueryException
-     * @var Stepname $stepname
+     * @var \Thucke\ThRating\Domain\Model\Stepname $stepname
      * @var int $countNames
      * @var array $checkConsistency
      */
@@ -117,10 +115,10 @@ class StepconfValidator extends \TYPO3\CMS\Extbase\Validation\Validator\Abstract
             $countNames = $stepname->count();
         }
         if ($countNames != 0) {
-            /** @var Stepname $firstStepname */
+            /** @var \Thucke\ThRating\Domain\Model\Stepname $firstStepname */
             $firstStepname = $stepname->current();
 
-            /** @var Stepname|object $defaultName */
+            /** @var \Thucke\ThRating\Domain\Model\Stepname|object $defaultName */
             $defaultName = $this->stepnameRepository->findDefaultStepname($firstStepname);
             if (!$defaultName->isValid()) {
                 $this->addError(\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('error.validator.stepconf.defaultStepname', 'ThRating', [$firstStepname->getStepconf()->getUid()]), 1384374165);

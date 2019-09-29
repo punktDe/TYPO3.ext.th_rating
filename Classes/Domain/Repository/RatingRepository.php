@@ -1,6 +1,13 @@
 <?php
 namespace Thucke\ThRating\Domain\Repository;
 
+use Thucke\ThRating\Domain\Model\Rating;
+use Thucke\ThRating\Domain\Model\Ratingobject;
+use Thucke\ThRating\Domain\Validator\RatingValidator;
+use Thucke\ThRating\Service\ExtensionHelperService;
+use TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException;
+use TYPO3\CMS\Extbase\Persistence\Repository;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -27,23 +34,24 @@ namespace Thucke\ThRating\Domain\Repository;
 /**
  * A repository for ratings
  */
-class RatingRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
+class RatingRepository extends Repository
 {
     /**
      * Defines name for function parameter
      */
-    const addIfNotFound = true;
+    public const ADD_IF_NOT_FOUND = true;
 
     /**
-     * @var \Thucke\ThRating\Service\ExtensionHelperService
+     * @var  \Thucke\ThRating\Service\ExtensionHelperService
      */
     protected $extensionHelperService;
 
     /**
-     * @param    \Thucke\ThRating\Service\ExtensionHelperService $extensionHelperService
+     * @param     \Thucke\ThRating\Service\ExtensionHelperService $extensionHelperService
      * @return    void
      */
-    public function injectExtensionHelperService(\Thucke\ThRating\Service\ExtensionHelperService $extensionHelperService)
+    /** @noinspection PhpUnused */
+    public function injectExtensionHelperService(ExtensionHelperService $extensionHelperService): void
     {
         $this->extensionHelperService = $extensionHelperService;
     }
@@ -51,39 +59,37 @@ class RatingRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
     /**
      * Finds the specific rating by giving the object and row uid
      *
-     * @param    \Thucke\ThRating\Domain\Model\Ratingobject $ratingobject The concerned ratingobject
+     * @param    Ratingobject $ratingobject The concerned ratingobject
      * @param    int $ratedobjectuid The Uid of the rated row
      * @param    bool $addIfNotFound Set to true if new objects should instantly be added
-     * @throws \TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException
-     * @return \Thucke\ThRating\Domain\Model\Rating        The rating
+     * @throws  IllegalObjectTypeException
+     * @return  Rating        The rating
      * @validate $ratingobject \Thucke\ThRating\Domain\Validator\RatingobjectValidator
      * @validate $ratedobjectuid NumberRange(minimum = 1)
      */
-    public function findMatchingObjectAndUid($ratingobject, $ratedobjectuid, $addIfNotFound = false)
+    public function findMatchingObjectAndUid($ratingobject, $ratedobjectuid, $addIfNotFound = false): Rating
     {
         /** @var \Thucke\ThRating\Domain\Model\Rating $foundRow */
-        $foundRow = $this->objectManager->get(\Thucke\ThRating\Domain\Model\Rating::class);
+        $foundRow = $this->objectManager->get(Rating::class);
 
         $query = $this->createQuery();
         $query->matching($query->logicalAnd([$query->equals('ratingobject', $ratingobject->getUid()), $query->equals('ratedobjectuid', $ratedobjectuid)]))->setLimit(1);
         $queryResult = $query->execute();
-        if ($queryResult->count() != 0) {
+        if ($queryResult->count() !== 0) {
             $foundRow = $queryResult->getFirst();
-        //Cope with an obviuos bug in TYPO3 6.1 that $queryResult->getFirst() doesn�t return the fully loaded object
+            //Cope with an obvious bug in TYPO3 6.1 that $queryResult->getFirst() doesnt return the fully loaded object
             /* If ( \TYPO3\CMS\Core\Utility\VersionNumberUtility::convertVersionNumberToInteger(TYPO3_version) < 6002000 ) {
                 $dummy = \TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump($foundRow, 'dummy', 2, true, false, true);
             } */
-        } else {
-            if ($addIfNotFound) {
-                $foundRow->setRatingobject($ratingobject);
-                $foundRow->setRatedobjectuid($ratedobjectuid);
-                $validator = $this->objectManager->get(\Thucke\ThRating\Domain\Validator\RatingValidator::class);
-                if ($validator->isObjSet($foundRow) && !$validator->validate($foundRow)->hasErrors()) {
-                    $this->add($foundRow);
-                }
-                $this->extensionHelperService->persistRepository('Thucke\ThRating\Domain\Repository\RatingRepository', $foundRow);
-                $foundRow = $this->findMatchingObjectAndUid($ratingobject, $ratedobjectuid);
+        } elseif ($addIfNotFound) {
+            $foundRow->setRatingobject($ratingobject);
+            $foundRow->setRatedobjectuid($ratedobjectuid);
+            $validator = $this->objectManager->get(RatingValidator::class);
+            if (!$validator->validate($foundRow)->hasErrors()) {
+                $this->add($foundRow);
             }
+            $this->extensionHelperService->persistRepository(__CLASS__, $foundRow);
+            $foundRow = $this->findMatchingObjectAndUid($ratingobject, $ratedobjectuid);
         }
 
         return $foundRow;

@@ -1,6 +1,9 @@
-<?php
+<?php /** @noinspection PhpFullyQualifiedNameUsageInspection */
+
 namespace Thucke\ThRating\Service;
 
+use Thucke\ThRating\Domain\Repository\RatingobjectRepository;
+use Thucke\ThRating\Domain\Repository\RatingRepository;
 use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
 
 /***************************************************************
@@ -45,7 +48,8 @@ class ExtensionHelperService extends AbstractExtensionService
      * @param \Thucke\ThRating\Domain\Repository\RatingobjectRepository $ratingobjectRepository
      * @return void
      */
-    public function injectRatingobjectRepository(\Thucke\ThRating\Domain\Repository\RatingobjectRepository $ratingobjectRepository)
+    /** @noinspection PhpUnused */
+    public function injectRatingobjectRepository(RatingobjectRepository $ratingobjectRepository)
     {
         $this->ratingobjectRepository = $ratingobjectRepository;
     }
@@ -59,7 +63,8 @@ class ExtensionHelperService extends AbstractExtensionService
      * @param \Thucke\ThRating\Domain\Repository\RatingRepository $ratingRepository
      * @return void
      */
-    public function injectRatingRepository(\Thucke\ThRating\Domain\Repository\RatingRepository $ratingRepository)
+    /** @noinspection PhpUnused */
+    public function injectRatingRepository(RatingRepository $ratingRepository)
     {
         $this->ratingRepository = $ratingRepository;
     }
@@ -72,6 +77,7 @@ class ExtensionHelperService extends AbstractExtensionService
     /**
      * @param \Thucke\ThRating\Domain\Repository\VoteRepository $voteRepository
      */
+    /** @noinspection PhpUnused */
     public function injectVoteRepository(\Thucke\ThRating\Domain\Repository\VoteRepository $voteRepository)
     {
         $this->voteRepository = $voteRepository;
@@ -85,6 +91,7 @@ class ExtensionHelperService extends AbstractExtensionService
     /**
      * @param AccessControlService $accessControllService
      */
+    /** @noinspection PhpUnused */
     public function injectAccessControlService(AccessControlService $accessControllService)
     {
         $this->accessControllService = $accessControllService;
@@ -98,6 +105,7 @@ class ExtensionHelperService extends AbstractExtensionService
     /**
      * @param \Thucke\ThRating\Domain\Validator\StepconfValidator $stepconfValidator
      */
+    /** @noinspection PhpUnused */
     public function injectStepconfValidator(\Thucke\ThRating\Domain\Validator\StepconfValidator $stepconfValidator)
     {
         $this->stepconfValidator = $stepconfValidator;
@@ -186,9 +194,10 @@ class ExtensionHelperService extends AbstractExtensionService
     /**
      * Returns a new or existing ratingobject
      *
-     * @param    array $settings
+     * @param array $settings
+     * @return \Thucke\ThRating\Domain\Model\Ratingobject
+     * @throws \Thucke\ThRating\Exception\RecordNotFoundException
      * @throws \TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException
-     * @return    \Thucke\ThRating\Domain\Model\Ratingobject
      */
     public function getRatingobject(array $settings)
     {
@@ -201,7 +210,7 @@ class ExtensionHelperService extends AbstractExtensionService
                 $settings = $settings['defaultObject'] + $settings;
             }
             $settings = $this->completeConfigurationSettings($settings);
-            $ratingobject = $this->ratingobjectRepository->findMatchingTableAndField($settings['ratetable'], $settings['ratefield'], \Thucke\ThRating\Domain\Repository\RatingobjectRepository::addIfNotFound);
+            $ratingobject = $this->ratingobjectRepository->findMatchingTableAndField($settings['ratetable'], $settings['ratefield'], RatingobjectRepository::ADD_IF_NOT_FOUND);
         }
 
         return $ratingobject;
@@ -270,7 +279,7 @@ class ExtensionHelperService extends AbstractExtensionService
         } elseif ($settings['ratedobjectuid'] && !$this->objectManager->get(\Thucke\ThRating\Domain\Validator\RatingobjectValidator::class)
                 ->validate($ratingobject)->hasErrors()) {
             //get rating according to given row
-            $rating = $this->ratingRepository->findMatchingObjectAndUid($ratingobject, $settings['ratedobjectuid'], \Thucke\ThRating\Domain\Repository\RatingRepository::addIfNotFound);
+            $rating = $this->ratingRepository->findMatchingObjectAndUid($ratingobject, $settings['ratedobjectuid'], RatingRepository::ADD_IF_NOT_FOUND);
         } else {
             throw new \TYPO3\CMS\Core\Exception(
                 'Incomplete configuration setting. Either \'rating\' or \'ratedobjectuid\' are missing.',
@@ -388,7 +397,6 @@ class ExtensionHelperService extends AbstractExtensionService
             //do not recreate file if it has greater than zero length
             if ($fstat[7] !== 0) {
                 $this->logger->log(\TYPO3\CMS\Core\Log\LogLevel::DEBUG, 'Dynamic CSS file exists - exiting');
-
                 return $messageArray;
             }
         }
@@ -538,11 +546,11 @@ class ExtensionHelperService extends AbstractExtensionService
             }
             //reset variables for next iteration
             unset($stepWeights, $sumWeights, $sumStepWeights);
-            $this->logger->log(\TYPO3\CMS\Core\Log\LogLevel::DEBUG, 'CSS finished for ratingobject', []);
+            $this->logger->log(\TYPO3\CMS\Core\Log\LogLevel::DEBUG, 'CSS finished for ratingobject');
         }
 
         $this->logger->log(\TYPO3\CMS\Core\Log\LogLevel::DEBUG, 'Saving CSS file', ['cssFile' => $cssFile]);
-        $fp = fopen(PATH_site . self::DYN_CSS_FILENAME, 'w');
+        $fp = fopen(PATH_site . self::DYN_CSS_FILENAME, 'wb');
         fwrite($fp, $cssFile);
         fclose($fp);
 

@@ -47,7 +47,8 @@ class Syslang extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
      * @return int
      */
-    public function getStaticLangIsocode()
+    /** @noinspection PhpUnused */
+    public function getStaticLangIsocode(): int
     {
         return $this->staticLangIsocode;
     }
@@ -55,7 +56,8 @@ class Syslang extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
      * @return string
      */
-    public function getFlag()
+    /** @noinspection PhpUnused */
+    public function getFlag(): string
     {
         return $this->flag;
     }
@@ -63,7 +65,7 @@ class Syslang extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
      * @return	string
      */
-    public function getTitle()
+    public function getTitle(): string
     {
         return $this->title;
     }

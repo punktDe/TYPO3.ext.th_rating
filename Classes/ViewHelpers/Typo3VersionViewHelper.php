@@ -24,6 +24,9 @@ namespace Thucke\ThRating\ViewHelpers;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\VersionNumberUtility;
+
 /**
  * The TYPO3 version viewhelper
  *
@@ -32,10 +35,15 @@ namespace Thucke\ThRating\ViewHelpers;
  */
 class Typo3VersionViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper
 {
+    /** @var string */
+    protected $t3VersionNumber;
+
     public function initializeArguments()
     {
+        $this->t3VersionNumber = GeneralUtility::makeInstance(VersionNumberUtility::class)->getCurrentTypo3Version();
         $this->registerArgument('testVersion', 'string', 'The version number to check against', true);
         $this->registerArgument('testOperator', 'string', 'The operator', true);
+
     }
 
     /**
@@ -48,8 +56,6 @@ class Typo3VersionViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractVi
     {
         $testVersion = $this->arguments['testVersion'];
         $testOperator = $this->arguments['testOperator'];
-        $result = version_compare(TYPO3_version, $testVersion, $testOperator);
-
-        return $result;
+        return version_compare($this->t3VersionNumber, $testVersion, $testOperator);
     }
 }

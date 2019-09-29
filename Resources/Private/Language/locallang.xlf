@@ -219,11 +219,17 @@
 			<trans-unit id="error.validator.stepconf.notExistingLanguage" xml:space="preserve">
 				<source>Stepname %s one language does not exist in this website.</source>
 			</trans-unit>
+			<trans-unit id="error.validator.stepconf.empty" xml:space="preserve">
+				<source>Empty stepconf</source>
+			</trans-unit>
 			<trans-unit id="error.validator.rating.ratedobjectuid" xml:space="preserve">
 				<source>Missing UID in rating.</source>
 			</trans-unit>
 			<trans-unit id="error.validator.rating.ratingobject" xml:space="preserve">
 				<source>False ratingobject in rating</source>
+			</trans-unit>
+			<trans-unit id="error.validator.rating.empty" xml:space="preserve">
+				<source>Empty rating</source>
 			</trans-unit>
 			<trans-unit id="error.validator.vote.vote" xml:space="preserve">
 				<source>Missing vote</source>
@@ -233,6 +239,9 @@
 			</trans-unit>
 			<trans-unit id="error.validator.vote.stepconf" xml:space="preserve">
 				<source>False voting reference in vote</source>
+			</trans-unit>
+			<trans-unit id="error.validator.vote.empty" xml:space="preserve">
+				<source>Empty vote</source>
 			</trans-unit>
 			<trans-unit id="error.validator.stepname.stepconf" xml:space="preserve">
 				<source>False stepconf reference in stepname</source>
@@ -335,7 +344,7 @@
 			</trans-unit>
 			<trans-unit id="fluid.partial.infoBlock.logonForRatings" xml:space="preserve" approved="yes">
 				<note>Forwarded arguments: None</note>
-				<target></target><source>Please log on to do ratings</source>
+				<source>Please log on to do ratings</source>
 			</trans-unit>
 			<trans-unit id="fluid.layout.default.noRatingSteps" xml:space="preserve" approved="yes">
 				<note>Forwarded arguments: None</note>

@@ -1,6 +1,15 @@
 <?php
 namespace Thucke\ThRating\Domain\Model;
 
+use Thucke\ThRating\Domain\Repository\VoteRepository;
+use Thucke\ThRating\Service\ExtensionHelperService;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Configuration\ConfigurationManager;
+use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
+use TYPO3\CMS\Extbase\Object\ObjectManager;
+use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
+use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
+
 /***************************************************************
 *  Copyright notice
 *
@@ -33,7 +42,7 @@ namespace Thucke\ThRating\Domain\Model;
  * @scope 		beta
  * @entity
  */
-class Rating extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
+class Rating extends AbstractEntity
 {
     //TODO check deleted referenced records
 
@@ -71,7 +80,8 @@ class Rating extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * @param \TYPO3\CMS\Extbase\Object\ObjectManagerInterface	$objectManager
      * @return void
      */
-    public function injectObjectManager(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager)
+    /** @noinspection PhpUnused */
+    public function injectObjectManager(ObjectManagerInterface $objectManager): void
     {
         $this->objectManager = $objectManager;
     }
@@ -85,7 +95,7 @@ class Rating extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * @param \Thucke\ThRating\Domain\Repository\VoteRepository $voteRepository
      * @return void
      */
-    public function injectVoteRepository(\Thucke\ThRating\Domain\Repository\VoteRepository $voteRepository)
+    public function injectVoteRepository(VoteRepository $voteRepository): void
     {
         $this->voteRepository = $voteRepository;
     }
@@ -99,7 +109,8 @@ class Rating extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * @param	\Thucke\ThRating\Service\ExtensionHelperService $extensionHelperService
      * @return	void
      */
-    public function injectExtensionHelperService(\Thucke\ThRating\Service\ExtensionHelperService $extensionHelperService)
+    /** @noinspection PhpUnused */
+    public function injectExtensionHelperService(ExtensionHelperService $extensionHelperService): void
     {
         $this->extensionHelperService = $extensionHelperService;
     }
@@ -107,12 +118,12 @@ class Rating extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
      * The current calculated rates
      *
-     * Redundant information to enhance performance in displaying calculated informations
+     * Redundant information to enhance performance in displaying calculated information
      * This is a JSON encoded string with the following keys
      *	- votecounts(1...n)	vote counts of the specific ratingstep
-     * It be updated everytime a vote is created, changed or deleted.
+     * It be updated every time a vote is created, changed or deleted.
      * Specific handling must be defined when ratingsteps are added or removed or stepweights are changed
-     * Caclution of ratings:
+     * Calculation of ratings:
      *	currentrate = (  sum of all ( stepweight(n) * votecounts(n) ) ) / number of all votes
      *	currentwidth = round (currentrate * 100 / number of ratingsteps, 1)
      *
@@ -127,8 +138,9 @@ class Rating extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
 
     /**
      * Constructs a new rating object
-     * @param Ratingobject|null $ratingobject
-     * @param null $ratedobjectuid
+     * @param \Thucke\ThRating\Domain\Model\Ratingobject|null $ratingobject
+     * @param int|null $ratedobjectuid
+     * @throws \TYPO3\CMS\Extbase\Configuration\Exception\InvalidConfigurationTypeException
      */
     public function __construct(Ratingobject $ratingobject = null, $ratedobjectuid = null)
     {
@@ -144,27 +156,28 @@ class Rating extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
      * Initializes a new rating object
      * @return void
+     * @throws \TYPO3\CMS\Extbase\Configuration\Exception\InvalidConfigurationTypeException
      */
-    public function initializeObject()
+    public function initializeObject(): void
     {
         if (empty($this->objectManager)) {
-            $this->objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
+            $this->objectManager = GeneralUtility::makeInstance(ObjectManager::class);
         }
-        $this->settings = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Configuration\\ConfigurationManager')->getConfiguration('Settings', 'thRating', 'pi1');
+        $this->settings = $this->objectManager->get(ConfigurationManager::class)->getConfiguration('Settings', 'thRating', 'pi1');
 
         //Initialize vote storage if rating is new
         if (!is_object($this->votes)) {
-            $this->votes = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
+            $this->votes = new ObjectStorage();
         }
     }
 
     /**
      * Sets the ratingobject this rating is part of
      *
-     * @param Ratingobject $ratingobject The Rating
+     * @param \Thucke\ThRating\Domain\Model\Ratingobject $ratingobject The Rating
      * @return void
      */
-    public function setRatingobject(Ratingobject $ratingobject)
+    public function setRatingobject(Ratingobject $ratingobject): void
     {
         $this->ratingobject = $ratingobject;
         $this->setPid($ratingobject->getPid());
@@ -175,7 +188,7 @@ class Rating extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      *
      * @return	\Thucke\ThRating\Domain\Model\Ratingobject The ratingobject this rating is part of
      */
-    public function getRatingobject()
+    public function getRatingobject(): Ratingobject
     {
         return $this->ratingobject;
     }
@@ -186,7 +199,7 @@ class Rating extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * @param int $ratedobjectuid
      * @return void
      */
-    public function setRatedobjectuid($ratedobjectuid)
+    public function setRatedobjectuid($ratedobjectuid): void
     {
         $this->ratedobjectuid = $ratedobjectuid;
     }
@@ -207,11 +220,11 @@ class Rating extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * @param \Thucke\ThRating\Domain\Model\Vote $vote
      * @return void
      */
-    public function addVote(Vote $vote)
+    public function addVote(Vote $vote): void
     {
         $this->votes->attach($vote);
         $this->addCurrentrate($vote);
-        $this->extensionHelperService->persistRepository('Thucke\ThRating\Domain\Repository\VoteRepository', $vote);
+        $this->extensionHelperService->persistRepository(VoteRepository::class, $vote);
     }
 
     /**
@@ -221,12 +234,12 @@ class Rating extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * @param \Thucke\ThRating\Domain\Model\Vote $newVote
      * @return void
      */
-    public function updateVote(Vote $existingVote, Vote $newVote)
+    public function updateVote(Vote $existingVote, Vote $newVote): void
     {
         $this->removeCurrentrate($existingVote);
         $existingVote->setVote($newVote->getVote());
         $this->addCurrentrate($existingVote);
-        $this->extensionHelperService->persistRepository('Thucke\ThRating\Domain\Repository\VoteRepository', $existingVote);
+        $this->extensionHelperService->persistRepository(VoteRepository::class, $existingVote);
     }
 
     /**
@@ -235,7 +248,8 @@ class Rating extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * @param \Thucke\ThRating\Domain\Model\Vote $voteToRemove The vote to be removed
      * @return void
      */
-    public function removeVote(Vote $voteToRemove)
+    /** @noinspection PhpUnused */
+    public function removeVote(Vote $voteToRemove): void
     {
         $this->removeCurrentrate($voteToRemove);
         $this->votes->detach($voteToRemove);
@@ -246,16 +260,17 @@ class Rating extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      *
      * @return void
      */
-    public function removeAllVotes()
+    /** @noinspection PhpUnused */
+    public function removeAllVotes(): void
     {
-        $this->votes = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
+        $this->votes = new ObjectStorage();
         unset($this->currentrates);
     }
 
     /**
      * Returns all votes in this rating
      *
-     * @return	\TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Thucke\ThRating\Domain\Model\Vote>
+     * @return  \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Thucke\ThRating\Domain\Model\Vote>
      */
     public function getVotes()
     {
@@ -268,7 +283,7 @@ class Rating extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * This method is used for maintenance to assure consistency
      * @return void
      */
-    public function checkCurrentrates()
+    public function checkCurrentrates(): void
     {
         $currentratesDecoded['weightedVotes'] = [];
         $currentratesDecoded['sumWeightedVotes'] = [];
@@ -294,7 +309,7 @@ class Rating extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * @param \Thucke\ThRating\Domain\Model\Vote $voting The vote to be added
      * @return void
      */
-    public function addCurrentrate(Vote $voting)
+    public function addCurrentrate(Vote $voting): void
     {
         if (empty($this->currentrates)) {
             $this->checkCurrentrates(); //initialize entry
@@ -318,7 +333,7 @@ class Rating extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * @param \Thucke\ThRating\Domain\Model\Vote $voting The vote to be removed
      * @return void
      */
-    public function removeCurrentrate(Vote $voting)
+    public function removeCurrentrate(Vote $voting): void
     {
         if (empty($this->currentrates)) {
             $this->checkCurrentrates(); //initialize entry
@@ -341,7 +356,7 @@ class Rating extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      *
      * @return array
      */
-    public function getCurrentrates()
+    public function getCurrentrates(): array
     {
         $currentratesDecoded = json_decode($this->currentrates, true);
         if (empty($currentratesDecoded['numAllVotes'])) {
@@ -384,7 +399,8 @@ class Rating extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      *
      * @return string
      */
-    public function getCalculatedRate()
+    /** @noinspection PhpUnused */
+    public function getCalculatedRate(): string
     {
         $currentrate = $this->getCurrentrates();
         if (!empty($currentrate['weightedVotes'])) {

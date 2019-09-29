@@ -1,6 +1,12 @@
 <?php
 namespace Thucke\ThRating\Domain\Repository;
 
+use Thucke\ThRating\Domain\Model\Ratingobject;
+use Thucke\ThRating\Domain\Model\Stepconf;
+use TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings;
+use TYPO3\CMS\Extbase\Persistence\QueryInterface;
+use TYPO3\CMS\Extbase\Persistence\Repository;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -26,21 +32,24 @@ namespace Thucke\ThRating\Domain\Repository;
 
 /**
  * A repository for ratingstep configurations
- * @method findByRatingobject(\Thucke\ThRating\Domain\Model\Ratingobject $getRatingobject)
+ * @method findByRatingobject(Ratingobject $getRatingobject)
  */
-class StepconfRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
+class StepconfRepository extends Repository
 {
-    protected $defaultOrderings = ['steporder' => \TYPO3\CMS\Extbase\Persistence\QueryInterface::ORDER_ASCENDING];
+    protected     /** @noinspection PhpUnused */
+        $defaultOrderings = ['steporder' => QueryInterface::ORDER_ASCENDING];
 
     /**
-     * Initialze this repository
+     * Initialize this repository
+     * @return void
      */
-    public function initializeObject()
+    /** @noinspection PhpUnused */
+    public function initializeObject(): void
     {
         //disable RespectStoragePage as pid is always bound to parent objects pid
 
-        /** @var \TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings $defaultQuerySettings */
-        $defaultQuerySettings = $this->objectManager->get(\TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings::class);
+        /** @var Typo3QuerySettings $defaultQuerySettings */
+        $defaultQuerySettings = $this->objectManager->get(Typo3QuerySettings::class);
         $defaultQuerySettings->setRespectStoragePage(false);
         $this->setDefaultQuerySettings($defaultQuerySettings);
     }
@@ -51,16 +60,16 @@ class StepconfRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
      * @param    \Thucke\ThRating\Domain\Model\Stepconf $stepconf The ratingobject to look for
      * @return    \Thucke\ThRating\Domain\Model\Stepconf|object
      */
-    public function findStepconfObject(\Thucke\ThRating\Domain\Model\Stepconf $stepconf)
+    public function findStepconfObject(Stepconf $stepconf)
     {
         $query = $this->createQuery();
         $query->matching($query->logicalAnd([$query->equals('ratingobject', $stepconf->getRatingobject()->getUid()), $query->equals('steporder', $stepconf->getSteporder())]))->setLimit(1);
         $queryResult = $query->execute();
 
         /** @var \Thucke\ThRating\Domain\Model\Stepconf $foundRow */
-        $foundRow = $this->objectManager->get(\Thucke\ThRating\Domain\Model\Stepconf::class);
+        $foundRow = $this->objectManager->get(Stepconf::class);
 
-        if (count($queryResult) != 0) {
+        if (count($queryResult) !== 0) {
             $foundRow = $queryResult->getFirst();
         }
 
@@ -73,7 +82,7 @@ class StepconfRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
      * @param    \Thucke\ThRating\Domain\Model\Stepconf $stepconf The uid of the ratingobject
      * @return    bool                                                true if stepconf object exists in repository
      */
-    public function existStepconf(\Thucke\ThRating\Domain\Model\Stepconf $stepconf)
+    public function existStepconf(Stepconf $stepconf): bool
     {
         /** @var \Thucke\ThRating\Domain\Model\Stepconf $lookForStepconf */
         $lookForStepconf = $this->findStepconfObject($stepconf);

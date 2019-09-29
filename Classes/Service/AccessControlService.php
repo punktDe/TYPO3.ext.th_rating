@@ -1,4 +1,5 @@
-<?php
+<?php /** @noinspection PhpFullyQualifiedNameUsageInspection */
+
 namespace Thucke\ThRating\Service;
 
 /***************************************************************
@@ -41,6 +42,7 @@ class AccessControlService extends AbstractExtensionService
      * @param \TYPO3\CMS\Extbase\Domain\Repository\FrontendUserRepository $frontendUserRepository
      * @return void
      */
+    /** @noinspection PhpUnused */
     public function injectFrontendUserRepository(\TYPO3\CMS\Extbase\Domain\Repository\FrontendUserRepository $frontendUserRepository)
     {
         $this->frontendUserRepository = $frontendUserRepository;
@@ -55,6 +57,7 @@ class AccessControlService extends AbstractExtensionService
      * @param \Thucke\ThRating\Domain\Repository\VoterRepository $voterRepository
      * @return void
      */
+    /** @noinspection PhpUnused */
     public function injectVoterRepository(\Thucke\ThRating\Domain\Repository\VoterRepository $voterRepository)
     {
         $this->voterRepository = $voterRepository;
@@ -64,7 +67,7 @@ class AccessControlService extends AbstractExtensionService
      * Tests, if the given person is logged into the frontend
      *
      * @param	\TYPO3\CMS\Extbase\Domain\Model\FrontendUser	$person	The person
-     * @return	bool 											The result; true if the given person is logged in; otherwise false
+     * @return	bool    The result; true if the given person is logged in; otherwise false
      */
     public function isLoggedIn(\TYPO3\CMS\Extbase\Domain\Model\FrontendUser $person = null)
     {
@@ -84,9 +87,10 @@ class AccessControlService extends AbstractExtensionService
     /**
      * @return bool
      */
+    /** @noinspection PhpUnused */
     public function backendAdminIsLoggedIn()
     {
-        return $GLOBALS['TSFE']->beUserLogin === 1 ? true : false;
+        return $GLOBALS['TSFE']->beUserLogin === 1;
     }
 
     /**
@@ -100,6 +104,7 @@ class AccessControlService extends AbstractExtensionService
     /**
      * @return array
      */
+    /** @noinspection PhpUnused */
     public function getFrontendUserGroups()
     {
         if ($this->hasLoggedInFrontendUser()) {
@@ -112,13 +117,12 @@ class AccessControlService extends AbstractExtensionService
     /**
      * @return int|null
      */
+    /** @noinspection PhpUnused */
     public function getFrontendUserUid()
     {
         if ($this->hasLoggedInFrontendUser() && !empty($GLOBALS['TSFE']->fe_user->user['uid'])) {
-            return intval($GLOBALS['TSFE']->fe_user->user['uid']);
+            return (int)$GLOBALS['TSFE']->fe_user->user['uid'];
         }
-
-        return null;
     }
 
     /**
@@ -127,16 +131,17 @@ class AccessControlService extends AbstractExtensionService
      * @param mixed $voter
      * @return \TYPO3\CMS\Extbase\Domain\Model\FrontendUser
      */
+    /** @noinspection PhpUnused */
     public function getFrontendUser($voter = null)
     {
         //set userobject
         if (!$voter instanceof \TYPO3\CMS\Extbase\Domain\Model\FrontendUser) {
             //TODO Errorhandling if no user is logged in
-            if (!is_int(intval($voter)) || intval($voter) == 0) {
+            if ((int)$voter === 0) {
                 //get logged in fe-user
                 $voter = $this->frontendUserRepository->findByUid($this->getFrontendUserUid());
             } else {
-                $voter = $this->frontendUserRepository->findByUid(intval($voter));
+                $voter = $this->frontendUserRepository->findByUid((int)$voter);
             }
         }
 
@@ -154,11 +159,11 @@ class AccessControlService extends AbstractExtensionService
         //set userobject
         if (!$voter instanceof \Thucke\ThRating\Domain\Model\Voter) {
             //TODO Errorhandling if no user is logged in
-            if (!is_int(intval($voter)) || intval($voter) == 0) {
+            if ((int)$voter === 0) {
                 //get logged in fe-user
                 $voter = $this->voterRepository->findByUid($this->getFrontendUserUid());
             } else {
-                $voter = $this->voterRepository->findByUid(intval($voter));
+                $voter = $this->voterRepository->findByUid((int)$voter);
             }
         }
 

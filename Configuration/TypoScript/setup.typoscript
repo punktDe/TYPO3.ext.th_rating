@@ -3,97 +3,97 @@
 #########################################################################
 plugin.tx_thrating = USER
 plugin.tx_thrating {
-	userFunc = TYPO3\CMS\Extbase\Core\Bootstrap->run
-	pluginName = Pi1
-	extensionName = ThRating
-	vendorName = Thucke
-	controller = Vote
-	mvc.callDefaultActionIfActionCantBeResolved = 1
-	storagePid = {$plugin.tx_thrating.settings.pluginStoragePid}
-	switchableControllerActions {
-		Vote {
-			1 = ratinglinks
-			2 = polling
-			3 = mark
-			4 = index
-			5 = show
-			6 = create
-			7 = new
-			8 = singleton
-		}
-	}
-	settings {
-		#select the ratingConfiguration you want
-		display = stars
-	}
-	
-	#use this section to configure your own ratingConfigurations
-	ratings {
-		exampleRatingConfig {
-			imagefile = typo3conf/ext/th_rating/Resources/Public/Css/rating_bar.png
-			barimage = 1
-			tilt = 0
-			settings {
-				showNoFEUser = 1
-				showNotRated = 1
-				mapAnonymous = 0
-				displayOnly = 0
-				cookieLifetime = 0
-			}
-			fluid {
-				layouts {
-					default {
-						showSummary = 1
-						showCurrentRates = 1
-						showSectionContent = 1
-					}
-				}
-				templates {
-					ratinglinks {
-                        likesMode = 0
-						tooltips = 1
-                    }
-				}
-				partials {
-					usersRating {
-						showTextInfo = 1
-						showGraphicInfo = 0
-					}
-					infoBlock {
-						showAnonymousVotes = 1
-					}
-				}
-			}
-		}
-	}
-	persistence {
-		classes {
-			Thucke\ThRating\Domain\Model\Ratingobject {
-				newRecordStoragePid < plugin.tx_thrating.storagePid
-			}
-		}
-	}
-	view {
-		templateRootPath >
-		templateRootPaths {
-			0 = EXT:th_rating/Resources/Private/Templates/
-		}
-		partialRootPath >
-		partialRootPaths {
-			0 = EXT:th_rating/Resources/Private/Partials/
-		}
-		layoutRootPath >
-		layoutRootPaths {
-			0 = EXT:th_rating/Resources/Private/Layouts/
-		}
-	}
-	
-	# This is an example how to modify the translation
-	_LOCAL_LANG {
-		default {
-			read_more = more >>
-		}
-	}
+  userFunc = TYPO3\CMS\Extbase\Core\Bootstrap->run
+  pluginName = Pi1
+  extensionName = ThRating
+  vendorName = Thucke
+  controller = Vote
+  mvc.callDefaultActionIfActionCantBeResolved = 1
+  storagePid = {$plugin.tx_thrating.settings.pluginStoragePid}
+  switchableControllerActions {
+    Vote {
+      1 = ratinglinks
+      2 = polling
+      3 = mark
+      4 = index
+      5 = show
+      6 = create
+      7 = new
+      8 = singleton
+    }
+  }
+  settings {
+    #select the ratingConfiguration you want
+    display = stars
+  }
+
+  #use this section to configure your own ratingConfigurations
+  ratings {
+    exampleRatingConfig {
+      imagefile = typo3conf/ext/th_rating/Resources/Public/Css/rating_bar.png
+      barimage = 1
+      tilt = 0
+      settings {
+        showNoFEUser = 1
+        showNotRated = 1
+        mapAnonymous = 0
+        displayOnly = 0
+        cookieLifetime = 0
+      }
+      fluid {
+        layouts {
+          default {
+            showSummary = 1
+            showCurrentRates = 1
+            showSectionContent = 1
+          }
+        }
+        templates {
+          ratinglinks {
+            likesMode = 0
+            tooltips = 1
+          }
+        }
+        partials {
+          usersRating {
+            showTextInfo = 1
+            showGraphicInfo = 0
+          }
+          infoBlock {
+            showAnonymousVotes = 1
+          }
+        }
+      }
+    }
+  }
+  persistence {
+    classes {
+      Thucke\ThRating\Domain\Model\Ratingobject {
+        newRecordStoragePid < plugin.tx_thrating.storagePid
+      }
+    }
+  }
+  view {
+    templateRootPath >
+    templateRootPaths {
+      0 = EXT:th_rating/Resources/Private/Templates/
+    }
+    partialRootPath >
+    partialRootPaths {
+      0 = EXT:th_rating/Resources/Private/Partials/
+    }
+    layoutRootPath >
+    layoutRootPaths {
+      0 = EXT:th_rating/Resources/Private/Layouts/
+    }
+  }
+
+  # This is an example how to modify the translation
+  _LOCAL_LANG {
+    default {
+      read_more = more >>
+    }
+  }
 }
 
 
@@ -101,147 +101,147 @@ plugin.tx_thrating {
 # Static extension configuration - do not override!!					#
 #########################################################################
 plugin.tx_thrating {
-	persistence.enhancedLazyLoadingStrategy = 0
-	settings {
-		showNoFEUser = {$plugin.tx_thrating.config.showNoFEUser}
-		mapAnonymous = {$plugin.tx_thrating.config.mapAnonymous}
-		cookieLifetime = {$plugin.tx_thrating.config.cookieLifetime}
-		ratingContext = defaultContext
-		defaultRatingConfiguration {
-			ratinglinks = stars
-			polling = polling
-			mark = smileyLikes
-		}
-		logging {
-			emergency {
-				file = typo3temp/logs/ThRating.log
-				table = sys_log
-			}
-			alert {
-				table = sys_log
-			}
-			critical {
-				table = sys_log
-			}
-			error {
-				table = sys_log
-			}
-			warning {
-			}
-			notice {
-			}
-			info {
-			}
-			debug {
-			}
-		}
-		#this section would be overridden by a similar section within your ratingconfiguration
-		fluid {
-			layouts {
-				default {
-					showSummary = 0
-					showCurrentRates = 1
-					showSectionContent = 1
-				}
-			}
-            templates {
-                ratinglinks {
-                    likesMode = 0
-					tooltips = 0
-                }
+  persistence.enhancedLazyLoadingStrategy = 0
+  settings {
+    showNoFEUser = {$plugin.tx_thrating.config.showNoFEUser}
+    mapAnonymous = {$plugin.tx_thrating.config.mapAnonymous}
+    cookieLifetime = {$plugin.tx_thrating.config.cookieLifetime}
+    ratingContext = defaultContext
+    defaultRatingConfiguration {
+      ratinglinks = stars
+      polling = polling
+      mark = smileyLikes
+    }
+    logging {
+      emergency {
+        file = typo3temp/logs/ThRating.log
+        table = sys_log
+      }
+      alert {
+        table = sys_log
+      }
+      critical {
+        table = sys_log
+      }
+      error {
+        table = sys_log
+      }
+      warning {
+      }
+      notice {
+      }
+      info {
+      }
+      debug {
+      }
+    }
+    #this section would be overridden by a similar section within your ratingconfiguration
+    fluid {
+      layouts {
+        default {
+          showSummary = 0
+          showCurrentRates = 1
+          showSectionContent = 1
+        }
+      }
+      templates {
+        ratinglinks {
+          likesMode = 0
+          tooltips = 0
+        }
+      }
+      partials {
+        usersRating {
+          showTextInfo = 1
+          showGraphicInfo = 0
+        }
+        infoBlock {
+          showAnonymousVotes = 1
+        }
+      }
+    }
+    defaultObject {
+      ratetable = tt_content
+      ratefield = uid
+      richSnippetFields {
+        name = header
+        description = bodytext
+      }
+      #this is similar to
+      #ratingobject = 1
+    }
+    #make configured ratings avaiable to the extension
+    ratingConfigurations < plugin.tx_thrating.ratings
+    ratingConfigurations {
+      stars {
+        imagefile = typo3conf/ext/th_rating/Resources/Public/Css/stars.gif
+        barimage = 0
+        tilt = 0
+      }
+      starsTilt {
+        imagefile = typo3conf/ext/th_rating/Resources/Public/Css/starsTilt.gif
+        barimage = 0
+        tilt = 1
+      }
+      facesbartilt {
+        imagefile = typo3conf/ext/th_rating/Resources/Public/Css/facesbarTilt.gif
+        barimage = 1
+        tilt = 1
+      }
+      barrating {
+        imagefile = typo3conf/ext/th_rating/Resources/Public/Css/rating_bar.png
+        barimage = 1
+        tilt = 0
+      }
+      smileyLikes {
+        imagefile = typo3conf/ext/th_rating/Resources/Public/Css/smiley.gif
+        barimage = 0
+        tilt = 0
+        settings {
+          showNoFEUser = 0
+          showNotRated = 0
+          #mapAnonymous = 0
+          cookieLifetime = 365
+        }
+        fluid {
+          layouts {
+            default {
+              showSummary = 0
+              showCurrentRates = 0
+              showSectionContent = 1
             }
-			partials {
-				usersRating {
-					showTextInfo = 1
-					showGraphicInfo = 0
-				}
-				infoBlock {
-					showAnonymousVotes = 1
-				}
-			}
-		}
-		defaultObject {
-			ratetable = tt_content
-			ratefield = uid
-			richSnippetFields {
-				name = header
-				description = bodytext
-			}
-			#this is similar to
-			#ratingobject = 1
-		}
-		#make configured ratings avaiable to the extension 
-		ratingConfigurations < plugin.tx_thrating.ratings
-		ratingConfigurations {
-			stars {
-				imagefile = typo3conf/ext/th_rating/Resources/Public/Css/stars.gif
-				barimage = 0
-				tilt = 0
-			}
-			starsTilt {
-				imagefile = typo3conf/ext/th_rating/Resources/Public/Css/starsTilt.gif
-				barimage = 0
-				tilt = 1
-			}
-			facesbartilt {
-				imagefile = typo3conf/ext/th_rating/Resources/Public/Css/facesbarTilt.gif
-				barimage = 1
-				tilt = 1
-			}
-			barrating {
-				imagefile = typo3conf/ext/th_rating/Resources/Public/Css/rating_bar.png
-				barimage = 1
-				tilt = 0
-			}
-			smileyLikes {
-				imagefile = typo3conf/ext/th_rating/Resources/Public/Css/smiley.gif
-				barimage = 0
-				tilt = 0
-				settings {
-					showNoFEUser = 0
-					showNotRated = 0
-					#mapAnonymous = 0
-					cookieLifetime = 365
-				}
-				fluid {
-					layouts {
-						default {
-							showSummary = 0
-							showCurrentRates = 0
-							showSectionContent = 1
-						}
-					}
-					templates {
-						ratinglinks.likesMode = 1
-						ratinglinks.tooltips = 0
-					}
-					partials {
-						usersRating {
-							showTextInfo = 0
-							showGraphicInfo = 1
-						}
-						infoBlock {
-							showAnonymousVotes = 0
-						}
-					}
-				}
-			}
-			polling {
-				imagefile = typo3conf/ext/th_rating/Resources/Public/Css/polling.png
-				barimage = 0
-				tilt = 0
-			}
-		}
-	}
+          }
+          templates {
+            ratinglinks.likesMode = 1
+            ratinglinks.tooltips = 0
+          }
+          partials {
+            usersRating {
+              showTextInfo = 0
+              showGraphicInfo = 1
+            }
+            infoBlock {
+              showAnonymousVotes = 0
+            }
+          }
+        }
+      }
+      polling {
+        imagefile = typo3conf/ext/th_rating/Resources/Public/Css/polling.png
+        barimage = 0
+        tilt = 0
+      }
+    }
+  }
 }
 lib.thrating.ratingInstanceUrl = COA
 lib.thrating.ratingInstanceUrl {
-	1 = TEXT
-	1.data = getIndpEnv:TYPO3_REQUEST_SCRIPT
-	2 = TEXT
-	2.value = ?id=
-	3 = TEXT
-	3.data=TSFE:id
+  1 = TEXT
+  1.data = getIndpEnv:TYPO3_REQUEST_SCRIPT
+  2 = TEXT
+  2.value = ?id=
+  3 = TEXT
+  3.data=TSFE:id
 }
 
 #########################################################################
@@ -249,25 +249,25 @@ lib.thrating.ratingInstanceUrl {
 #########################################################################
 #include only if it is wanted by configuration
 [globalVar = LIT:1 = {$plugin.tx_thrating.config.loadJQuery}]
-page.includeJSFooterlibs {
-	jquery = //ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js
-	jquery.compressed = 1
-	jquery.external = 1
-	jquery.forceOnTop = 1
-}
+  page.includeJSFooterlibs {
+    jquery = //ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js
+    jquery.compressed = 1
+    jquery.external = 1
+    jquery.forceOnTop = 1
+  }
 
 [global]
 page {
-	includeJSFooter {
-		jQueryFormPlugin = EXT:th_rating/Resources/Public/JavaScript/jquery.form.min.js
-		jQueryFormPlugin.async = 0
-		actions = EXT:th_rating/Resources/Public/JavaScript/actions.js
-		actions.async = 0
-	}
-	includeCSS {
-		thRatingdyn = typo3temp/thratingDyn.css
-		thRating = EXT:th_rating/Resources/Public/Css/styles.css
-	}
+  includeJSFooter {
+    jQueryFormPlugin = EXT:th_rating/Resources/Public/JavaScript/jquery.form.min.js
+    jQueryFormPlugin.async = 0
+    actions = EXT:th_rating/Resources/Public/JavaScript/actions.js
+    actions.async = 0
+  }
+  includeCSS {
+    thRatingdyn = typo3temp/thratingDyn.css
+    thRating = EXT:th_rating/Resources/Public/Css/styles.css
+  }
 }
 
 
@@ -277,15 +277,15 @@ page {
 #########################################################################
 thrating_ajax = PAGE
 thrating_ajax {
-	typeNum = 1349058974
-	config {
-		disableAllHeaderCode = 1 
-        no_cache = 1
-		admPanel = 0
-		debug = 0
-		metaCharset = utf-8
-	}
-	10 < plugin.tx_thrating
+  typeNum = 1349058974
+  config {
+    disableAllHeaderCode = 1
+    no_cache = 1
+    admPanel = 0
+    debug = 0
+    metaCharset = utf-8
+  }
+  10 < plugin.tx_thrating
 }
 
 #########################################################################
@@ -294,10 +294,10 @@ thrating_ajax {
 page.1288250055 = USER
 page.1288250055 < plugin.tx_thrating
 page.1288250055 {
-	action = singleton
-	switchableControllerActions {
-		Vote {
-			1 = singleton
-		}
-	}
+  action = singleton
+  switchableControllerActions {
+    Vote {
+      1 = singleton
+    }
+  }
 }

@@ -1,6 +1,13 @@
 <?php
 namespace Thucke\ThRating\Domain\Model;
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Configuration\Exception\InvalidConfigurationTypeException;
+use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
+use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
+use TYPO3\CMS\Extbase\Configuration\ConfigurationManager;
+use TYPO3\CMS\Extbase\Object\ObjectManager;
+
 /***************************************************************
 *  Copyright notice
 *
@@ -33,11 +40,11 @@ namespace Thucke\ThRating\Domain\Model;
  * @scope 		beta
  * @entity
  */
-class Vote extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
+class Vote extends AbstractEntity
 {
     /**
-     * @var        \Thucke\ThRating\Domain\Model\Rating
-     * @validate 	\Thucke\ThRating\Domain\Validator\RatingValidator
+     * @var         \Thucke\ThRating\Domain\Model\Rating
+     * @validate    \Thucke\ThRating\Domain\Validator\RatingValidator
      * @validate 	NotEmpty
      */
     protected $rating;
@@ -53,9 +60,9 @@ class Vote extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
      * The actual voting of this object
      *
-     * @var        \Thucke\ThRating\Domain\Model\Stepconf
-     * @validate	\Thucke\ThRating\Domain\Validator\StepconfValidator
-     * @validate 	NotEmpty
+     * @var         \Thucke\ThRating\Domain\Model\Stepconf
+     * @validate    \Thucke\ThRating\Domain\Validator\StepconfValidator
+     * @validate    NotEmpty
      */
     protected $vote;
 
@@ -73,7 +80,8 @@ class Vote extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * @param \TYPO3\CMS\Extbase\Object\ObjectManagerInterface	$objectManager
      * @return void
      */
-    public function injectObjectManager(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager)
+    /** @noinspection PhpUnused */
+    public function injectObjectManager(ObjectManagerInterface $objectManager): void
     {
         $this->objectManager = $objectManager;
     }
@@ -81,10 +89,13 @@ class Vote extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
      * Constructs a new rating object
      *
-     * @param Rating|null $rating
-     * @param Voter|null $voter
-     * @param Stepconf|null $vote
+     * @param \Thucke\ThRating\Domain\Model\Rating|null $rating
+     * @param \Thucke\ThRating\Domain\Model\Voter|null $voter
+     * @param \Thucke\ThRating\Domain\Model\Stepconf|null $vote
+     * @throws InvalidConfigurationTypeException
+     * return void
      */
+    /** @noinspection PhpUnused */
     public function __construct(
         Rating $rating = null,
         Voter $voter = null,
@@ -105,23 +116,25 @@ class Vote extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
      * Initializes the new vote object
      * @return void
+     * @throws \TYPO3\CMS\Extbase\Configuration\Exception\InvalidConfigurationTypeException
      */
-    public function initializeObject()
+    public function initializeObject(): void
     {
         if (empty($this->objectManager)) {
-            $this->objectManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Object\\ObjectManager');
+            $this->objectManager = GeneralUtility::makeInstance(ObjectManager::class);
         }
-        $this->settings = $this->objectManager->get('TYPO3\\CMS\\Extbase\\Configuration\\ConfigurationManager')->getConfiguration('Settings', 'thRating', 'pi1');
+        $this->settings = $this->objectManager->get(ConfigurationManager::class)->getConfiguration('Settings',
+            'thRating', 'pi1');
         //\TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump($this,get_class($this).' initializeObject');
     }
 
     /**
      * Sets the rating this vote is part of
      *
-     * @param Rating $rating The Rating
+     * @param \Thucke\ThRating\Domain\Model\Rating $rating The Rating
      * @return void
      */
-    public function setRating(Rating $rating)
+    public function setRating(Rating $rating): void
     {
         $this->rating = $rating;
         $this->setPid($rating->getPid());
@@ -130,9 +143,9 @@ class Vote extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
      * Returns the rating this vote is part of
      *
-     * @return Rating The rating this vote is part of
+     * @return \Thucke\ThRating\Domain\Model\Rating The rating this vote is part of
      */
-    public function getRating()
+    public function getRating(): Rating
     {
         return $this->rating;
     }
@@ -140,10 +153,10 @@ class Vote extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
      * Sets the frontenduser of this vote
      *
-     * @param Voter $voter	The frontenduser
+     * @param \Thucke\ThRating\Domain\Model\Voter $voter	The frontenduser
      * @return void
      */
-    public function setVoter(Voter $voter)
+    public function setVoter(Voter $voter): void
     {
         $this->voter = $voter;
     }
@@ -151,9 +164,9 @@ class Vote extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
      * Returns the frontenduser of this vote
      *
-     * @return Voter    The frontenduser of this vote
+     * @return \Thucke\ThRating\Domain\Model\Voter    The frontenduser of this vote
      */
-    public function getVoter()
+    public function getVoter(): Voter
     {
         return $this->voter;
     }
@@ -161,10 +174,10 @@ class Vote extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
      * Sets the choosen stepconfig
      *
-     * @param Stepconf $vote
+     * @param \Thucke\ThRating\Domain\Model\Stepconf $vote
      * @return void
      */
-    public function setVote($vote)
+    public function setVote($vote): void
     {
         $this->vote = $vote;
     }
@@ -172,7 +185,7 @@ class Vote extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
      * Gets the rating object uid
      *
-     * @return Stepconf Reference to selected stepconfig
+     * @return \Thucke\ThRating\Domain\Model\Stepconf|null Reference to selected stepconfig
      */
     public function getVote()
     {
@@ -184,9 +197,10 @@ class Vote extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      *
      * @return bool
      */
-    public function hasRated()
+    /** @noinspection PhpUnused */
+    public function hasRated(): bool
     {
-        return !empty($this->getVote()) && (get_class($this->getVote()) == 'Thucke\ThRating\Domain\Model\Stepconf');
+        return $this->getVote() !== null && ($this->getVote() instanceof Stepconf);
     }
 
     /**
@@ -194,10 +208,10 @@ class Vote extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      *
      * @return bool
      */
-    public function isAnonymous()
+    public function isAnonymous(): bool
     {
         if ($this->getVoter() instanceof Voter) {
-            $retVal = $this->getVoter()->getUid() == $this->settings['mapAnonymous'] && !empty($this->settings['mapAnonymous']);
+            $retVal = $this->getVoter()->getUid() === (int)$this->settings['mapAnonymous'] && !empty($this->settings['mapAnonymous']);
         } else {
             $retVal = false;
         }
@@ -212,12 +226,10 @@ class Vote extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * @param string $prefixId Extension prefix to identify cookie
      * @return 	bool
      */
-    public function hasAnonymousVote($prefixId = 'DummyPrefix')
+    public function hasAnonymousVote($prefixId = 'DummyPrefix'): bool
     {
         $anonymousRating = json_decode($_COOKIE[$prefixId . '_AnonymousRating_' . $this->getRating()->getUid()], true);
-        $retVal = !empty($anonymousRating['voteUid']);
-
-        return $retVal;
+        return !empty($anonymousRating['voteUid']);
     }
 
     /**
@@ -225,8 +237,8 @@ class Vote extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      *
      * @return string
      */
-    public function __toString()
+    public function __toString(): string
     {
-        return strval($this->getVote());
+        return (string)$this->getVote();
     }
 }

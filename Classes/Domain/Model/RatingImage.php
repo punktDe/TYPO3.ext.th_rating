@@ -61,7 +61,7 @@ class RatingImage extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * @param \TYPO3\CMS\Frontend\Imaging\GifBuilder $gifBuilder
      * @return void
      */
-    public function injectGifBuilder(\TYPO3\CMS\Frontend\Imaging\GifBuilder $gifBuilder)
+    public function injectGifBuilder(\TYPO3\CMS\Frontend\Imaging\GifBuilder $gifBuilder): void
     {
         $this->gifBuilder = $gifBuilder;
         $this->gifBuilder->init();
@@ -85,7 +85,7 @@ class RatingImage extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * Initializes the new vote object
      * @return void
      */
-    public function initializeObject()
+    public function initializeObject(): void
     {
         if (empty($this->gifBuilder)) {
             /** @noinspection PhpParamsInspection */
@@ -99,7 +99,7 @@ class RatingImage extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * @param mixed	$conf	either an array consisting of GIFBUILDER typoscript or a plain string having the filename
      * @return void
      */
-    public function setConf($conf)
+    public function setConf($conf): void
     {
         switch (gettype($conf)) {
             case 'string':
@@ -119,7 +119,7 @@ class RatingImage extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      *
      * @return array
      */
-    public function getConf()
+    public function getConf(): array
     {
         if (empty($this->conf)) {
             return [];
@@ -134,7 +134,7 @@ class RatingImage extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * @param string $imageFile
      * @return void
      */
-    public function setImageFile($imageFile)
+    public function setImageFile($imageFile): void
     {
         $fullImagePath = PATH_site . $imageFile;
         if (file_exists($fullImagePath)) {
@@ -150,11 +150,10 @@ class RatingImage extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
      * Returns the filename of the image
      *
-     * @var bool	switch if absolute path should be returned
      * @param mixed $fullPath
      * @return string
      */
-    public function getImageFile($fullPath = false)
+    public function getImageFile($fullPath = false): string
     {
         $checkedFile = $this->gifBuilder->checkFile($this->imageFile);
         if (empty($checkedFile)) {
@@ -170,7 +169,7 @@ class RatingImage extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      *
      * @return	bool			The result; true if the given the image has been created successfully; otherwise false
      */
-    public function generateImage()
+    public function generateImage(): bool
     {
         if (!empty($this->conf)) {
             $this->gifBuilder->start($this->getConf(), []);
@@ -194,7 +193,7 @@ class RatingImage extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * @var bool	switch if absolute path should be returned
      * @return array('width','height')
      */
-    public function getImageDimensions()
+    public function getImageDimensions(): array
     {
         if ($this->isBuilderObject) {
             [$width, $height] = $this->gifBuilder->getImageDimensions($this->imageFile);
@@ -210,7 +209,7 @@ class RatingImage extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      *
      * @return string
      */
-    public function __toString()
+    public function __toString(): string
     {
         return $this->imageFile;
     }
