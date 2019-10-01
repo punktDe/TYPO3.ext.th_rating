@@ -1,5 +1,9 @@
-<?php
+<?php /** @noinspection PhpFullyQualifiedNameUsageInspection */
+
 namespace Thucke\ThRating\Domain\Validator;
+
+use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
+use TYPO3\CMS\Extbase\Validation\Validator\AbstractValidator;
 
 /***************************************************************
 *  Copyright notice
@@ -34,7 +38,7 @@ namespace Thucke\ThRating\Domain\Validator;
  * @copyright 	Copyright belongs to the respective author
  * @scope singleton
  */
-class RatingobjectValidator extends \TYPO3\CMS\Extbase\Validation\Validator\AbstractValidator
+class RatingobjectValidator extends AbstractValidator
 {
     /**
      * If the given Ratingobject is valid
@@ -44,13 +48,16 @@ class RatingobjectValidator extends \TYPO3\CMS\Extbase\Validation\Validator\Abst
      */
     protected function isValid($ratingobject)
     {
+        /** @var string $ratetable */
         $ratetable = $ratingobject->getRatetable();
+        /** @var string $ratefield */
         $ratefield = $ratingobject->getRatefield();
+
         if (empty($ratetable)) {
-            $this->addError(\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('error.validator.ratingobject_table_extbase', 'ThRating'), 1283528638);
+            $this->addError(LocalizationUtility::translate('error.validator.ratingobject_table_extbase', 'ThRating'), 1283528638);
         }
         if (empty($ratefield)) {
-            $this->addError(\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('error.validator.ratingobject_field_extbase', 'ThRating'), 1283536038);
+            $this->addError(LocalizationUtility::translate('error.validator.ratingobject_field_extbase', 'ThRating'), 1283536038);
         }
     }
 }
