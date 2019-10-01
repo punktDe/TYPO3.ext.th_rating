@@ -59,6 +59,7 @@ class VoteValidator extends AbstractValidator
      */
     protected function isValid($vote)
     {
+        \TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump($vote,get_class($this).' isValid');
         /** @noinspection NotOptimalIfConditionsInspection */
         if (!$this->isEmpty($vote) && $vote instanceof Vote) {
             //a vote object must have a vote
@@ -78,6 +79,7 @@ class VoteValidator extends AbstractValidator
             }
         } else {
             $this->addError(LocalizationUtility::translate('error.validator.vote.empty', 'ThRating'),1568141014);
+            \TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump($vote,get_class($this).' isValid else');
         }
     }
 
@@ -89,6 +91,9 @@ class VoteValidator extends AbstractValidator
      */
     public function isObjSet($vote)
     {
-        return !$this->isEmpty($vote) && $vote instanceof Vote;
+        $result= !$this->isEmpty($vote) && $vote instanceof Vote;
+        \TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump($result,get_class($this).' isObjSet');
+
+        return $result;
     }
 }

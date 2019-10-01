@@ -345,7 +345,7 @@ class VoteController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
         $this->initVoting($vote);  //just to set all properties
 
         $this->fillSummaryView();
-        if ($this->voteValidator->isObjSet($vote) && !$this->voteValidator->validate($this->vote)->hasErrors()) {
+        if (!$this->voteValidator->validate($this->vote)->hasErrors()) {
             if ($this->accessControllService->isLoggedIn($vote->getVoter()) || $vote->isAnonymous()) {
             } else {
                 $this->logFlashMessage(\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('flash.vote.create.noPermission', 'ThRating'), \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('flash.heading.error', 'ThRating'), 'ERROR', ['errorCode' => 1403201246]);
@@ -381,7 +381,7 @@ class VoteController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
                 $matchVote = $this->voteRepository->findMatchingRatingAndVoter($vote->getRating(), $vote->getVoter());
             }
             //add new or anonymous vote
-            if (!$this->voteValidator->isObjSet($matchVote) || $this->voteValidator->validate($matchVote)->hasErrors() || $vote->isAnonymous()) {
+            if ($this->voteValidator->validate($matchVote)->hasErrors() || $vote->isAnonymous()) {
                 $this->logger->log(\TYPO3\CMS\Core\Log\LogLevel::DEBUG, 'New vote could be added', ['errorCode' => 1404934012]);
                 $vote->getRating()->addVote($vote);
                 if ($this->cookieProtection && $vote->isAnonymous() && !$vote->hasAnonymousVote($this->prefixId)) {
@@ -398,7 +398,7 @@ class VoteController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
                 }
                 $this->logFlashMessage(\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('flash.vote.create.newCreated', 'ThRating'), \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('flash.heading.ok', 'ThRating'), 'DEBUG', ['ratingobject' => $vote->getRating()->getRatingobject()->getUid(), 'ratetable' => $vote->getRating()->getRatingobject()->getRatetable(), 'ratefield' => $vote->getRating()->getRatingobject()->getRatefield(), 'voter' => $vote->getVoter()->getUsername(), 'vote' => (string)$vote->getVote()]);
             } else {
-                if ($this->voteValidator->isObjSet($matchVote) && !$this->voteValidator->validate($matchVote)->hasErrors() && !empty($this->settings['enableReVote'])) {
+                if (!empty($this->settings['enableReVote']) && !$this->voteValidator->validate($matchVote)->hasErrors()) {
                     /** @var \Thucke\ThRating\Domain\Model\Stepconf $matchVoteStepconf */
                     $matchVoteStepconf = $matchVote->getVote();
                     /** @var \Thucke\ThRating\Domain\Model\Stepconf $newVoteStepconf */
@@ -632,7 +632,7 @@ class VoteController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
             $signalSlotMessage['fieldname'] = (string)$this->vote->getRating()->getRatingobject()->getRatefield();
             $signalSlotMessage['uid'] = (int)$this->vote->getRating()->getRatedobjectuid();
             $signalSlotMessage['currentRates'] = $this->vote->getRating()->getCurrentrates();
-            if ($this->voteValidator->isObjSet($this->vote) && !$this->voteValidator->validate($this->vote)->hasErrors()) {
+            if (!$this->voteValidator->validate($this->vote)->hasErrors()) {
                 $signalSlotMessage['voter'] = $this->vote->getVoter()->getUid();
                 $signalSlotMessage['votingStep'] = $this->vote->getVote()->getSteporder();
                 $signalSlotMessage['votingName'] = strval($this->vote->getVote()->getStepname());
@@ -837,8 +837,8 @@ class VoteController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
         if ($this->settings['showNotRated'] && empty($currentrate['currentrate'])) {
             $this->logFlashMessage(\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('flash.vote.show.notRated', 'ThRating'), \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('flash.heading.info', 'ThRating'), 'INFO', ['errorCode' => 1403203414]);
         }
-        if ($this->voteValidator->isObjSet($this->vote) && !$this->voteValidator->validate($this->vote)->hasErrors()) {
-            if ((!$this->vote->isAnonymous() && $this->vote->getVoter()->getUid() == $this->accessControllService->getFrontendUserUid()) || ($this->vote->isAnonymous() && ($this->vote->hasAnonymousVote($this->prefixId) || $this->cookieProtection || $this->cookieService->isProtected()))) {
+        if (!$this->voteValidator->validate($this->vote)->hasErrors()) {
+            if ((!$this->vote->isAnonymous() && $this->vote->getVoter()->getUid() === $this->accessControllService->getFrontendUserUid()) || ($this->vote->isAnonymous() && ($this->vote->hasAnonymousVote($this->prefixId) || $this->cookieProtection || $this->cookieService->isProtected()))) {
                 $this->view->assign('protected', $this->cookieService->isProtected());
                 $this->view->assign('voting', $this->vote);
                 $this->view->assign('usersRate', $this->vote->getVote()->getSteporder() * 100 / count($currentrate['weightedVotes']) . '%');

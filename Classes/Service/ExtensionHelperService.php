@@ -2,9 +2,27 @@
 
 namespace Thucke\ThRating\Service;
 
+use Thucke\ThRating\Domain\Model\Rating;
+use Thucke\ThRating\Domain\Model\Ratingobject;
+use Thucke\ThRating\Domain\Model\Stepconf;
+use Thucke\ThRating\Domain\Model\Stepname;
+use Thucke\ThRating\Domain\Model\RatingImage;
+use Thucke\ThRating\Domain\Model\Vote;
 use Thucke\ThRating\Domain\Repository\RatingobjectRepository;
 use Thucke\ThRating\Domain\Repository\RatingRepository;
+use Thucke\ThRating\Domain\Repository\SyslangRepository;
+use Thucke\ThRating\Domain\Repository\VoteRepository;
+use Thucke\ThRating\Domain\Validator\RatingobjectValidator;
+use Thucke\ThRating\Domain\Validator\StepconfValidator;
+use Thucke\ThRating\Evaluation\DynamicCssEvaluator;
+use TYPO3\CMS\Core\Log\Logger;
+use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
+use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
+use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
+use TYPO3\CMS\Core\Utility\ArrayUtility;
+use TYPO3\CMS\Core\Log\LogLevel;
+use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 /***************************************************************
 *  Copyright notice
@@ -49,7 +67,7 @@ class ExtensionHelperService extends AbstractExtensionService
      * @return void
      */
     /** @noinspection PhpUnused */
-    public function injectRatingobjectRepository(RatingobjectRepository $ratingobjectRepository)
+    public function injectRatingobjectRepository(RatingobjectRepository $ratingobjectRepository): void
     {
         $this->ratingobjectRepository = $ratingobjectRepository;
     }
@@ -64,7 +82,7 @@ class ExtensionHelperService extends AbstractExtensionService
      * @return void
      */
     /** @noinspection PhpUnused */
-    public function injectRatingRepository(RatingRepository $ratingRepository)
+    public function injectRatingRepository(RatingRepository $ratingRepository): void
     {
         $this->ratingRepository = $ratingRepository;
     }
@@ -78,7 +96,7 @@ class ExtensionHelperService extends AbstractExtensionService
      * @param \Thucke\ThRating\Domain\Repository\VoteRepository $voteRepository
      */
     /** @noinspection PhpUnused */
-    public function injectVoteRepository(\Thucke\ThRating\Domain\Repository\VoteRepository $voteRepository)
+    public function injectVoteRepository(VoteRepository $voteRepository): void
     {
         $this->voteRepository = $voteRepository;
     }
@@ -92,7 +110,7 @@ class ExtensionHelperService extends AbstractExtensionService
      * @param AccessControlService $accessControllService
      */
     /** @noinspection PhpUnused */
-    public function injectAccessControlService(AccessControlService $accessControllService)
+    public function injectAccessControlService(AccessControlService $accessControllService): void
     {
         $this->accessControllService = $accessControllService;
     }
@@ -106,7 +124,7 @@ class ExtensionHelperService extends AbstractExtensionService
      * @param \Thucke\ThRating\Domain\Validator\StepconfValidator $stepconfValidator
      */
     /** @noinspection PhpUnused */
-    public function injectStepconfValidator(\Thucke\ThRating\Domain\Validator\StepconfValidator $stepconfValidator)
+    public function injectStepconfValidator(StepconfValidator $stepconfValidator): void
     {
         $this->stepconfValidator = $stepconfValidator;
     }
@@ -119,7 +137,7 @@ class ExtensionHelperService extends AbstractExtensionService
     /**
      * @param \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager
      */
-    public function injectConfigurationManager(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager)
+    public function injectConfigurationManager(ConfigurationManagerInterface $configurationManager): void
     {
         $this->configurationManager = $configurationManager;
     }
@@ -139,21 +157,21 @@ class ExtensionHelperService extends AbstractExtensionService
      * Constructor
      * @return void
      */
-    public function initializeObject()
+    public function initializeObject(): void
     {
-        $this->settings = $this->configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_SETTINGS, 'thrating', 'pi1');
-        $frameworkConfiguration = $this->configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK, 'thrating', 'pi1');
+        $this->settings = $this->configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_SETTINGS, 'thrating', 'pi1');
+        $frameworkConfiguration = $this->configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK, 'thrating', 'pi1');
 
         if (!empty($frameworkConfiguration['ratings'])) {
             //Merge extension ratingConfigurations with customer added ones
-            \TYPO3\CMS\Core\Utility\ArrayUtility::mergeRecursiveWithOverrule($this->settings['ratingConfigurations'], $frameworkConfiguration['ratings']);
+            ArrayUtility::mergeRecursiveWithOverrule($this->settings['ratingConfigurations'], $frameworkConfiguration['ratings']);
         }
     }
 
     /**
      * @return \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController
      */
-    protected function getTypoScriptFrontendController()
+    protected function getTypoScriptFrontendController(): TypoScriptFrontendController
     {
         /** @var \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController $TSFE */
         global $TSFE;
@@ -167,7 +185,7 @@ class ExtensionHelperService extends AbstractExtensionService
      * @param	array	$settings
      * @return	array
      */
-    private function completeConfigurationSettings(array $settings)
+    private function completeConfigurationSettings(array $settings): array
     {
         $cObj = $this->configurationManager->getContentObject();
 
@@ -199,7 +217,7 @@ class ExtensionHelperService extends AbstractExtensionService
      * @throws \Thucke\ThRating\Exception\RecordNotFoundException
      * @throws \TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException
      */
-    public function getRatingobject(array $settings)
+    public function getRatingobject(array $settings): Ratingobject
     {
         //check whether a dedicated ratingobject is configured
         if (!empty($settings['ratingobject'])) {
@@ -210,9 +228,9 @@ class ExtensionHelperService extends AbstractExtensionService
                 $settings = $settings['defaultObject'] + $settings;
             }
             $settings = $this->completeConfigurationSettings($settings);
-            $ratingobject = $this->ratingobjectRepository->findMatchingTableAndField($settings['ratetable'], $settings['ratefield'], RatingobjectRepository::ADD_IF_NOT_FOUND);
+            $ratingobject = $this->ratingobjectRepository->findMatchingTableAndField(
+                $settings['ratetable'], $settings['ratefield'], RatingobjectRepository::ADD_IF_NOT_FOUND);
         }
-
         return $ratingobject;
     }
 
@@ -222,10 +240,10 @@ class ExtensionHelperService extends AbstractExtensionService
      * @param	array	$stepconfArray
      * @return	\Thucke\ThRating\Domain\Model\Stepconf
      */
-    public function createStepconf(array $stepconfArray)
+    public function createStepconf(array $stepconfArray): Stepconf
     {
         /** @var \Thucke\ThRating\Domain\Model\Stepconf $stepconf */
-        $stepconf = $this->objectManager->get(\Thucke\ThRating\Domain\Model\Stepconf::class);
+        $stepconf = $this->objectManager->get(Stepconf::class);
         $stepconf->setRatingobject($stepconfArray['ratingobject']);
         $stepconf->setSteporder($stepconfArray['steporder']);
         $stepconf->setStepweight($stepconfArray['stepweight']);
@@ -239,16 +257,16 @@ class ExtensionHelperService extends AbstractExtensionService
      * @param   array   $stepnameArray
      * @return  \Thucke\ThRating\Domain\Model\Stepname
      */
-    public function createStepname(array $stepnameArray)
+    public function createStepname(array $stepnameArray): Stepname
     {
         /** @var \Thucke\ThRating\Domain\Model\Stepname $stepname */
-        $stepname = $this->objectManager->get(\Thucke\ThRating\Domain\Model\Stepname::class);
+        $stepname = $this->objectManager->get(Stepname::class);
         $stepname->setStepname($stepnameArray['stepname']);
 
         if (!empty($stepnameArray['languageIso2Code'])) {
             //check if additional language flag exists in current website
             /** @var \Thucke\ThRating\Domain\Model\Syslang|\TYPO3\CMS\Extbase\Persistence\QueryResultInterface $languageObject */
-            $languageObject = $this->objectManager->get(\Thucke\ThRating\Domain\Repository\SyslangRepository::class)->findByStaticLangIsocode($stepnameArray['languageIso2Code']);
+            $languageObject = $this->objectManager->get(SyslangRepository::class)->findByStaticLangIsocode($stepnameArray['languageIso2Code']);
             if ($languageObject->count() > 0) {
                 $stepname->set_languageUid($languageObject->getFirst()->getUid());
             } else {
@@ -270,13 +288,13 @@ class ExtensionHelperService extends AbstractExtensionService
      * @throws 	\TYPO3\CMS\Core\Exception
      * @return	\Thucke\ThRating\Domain\Model\Rating
      */
-    public function getRating(array $settings, \Thucke\ThRating\Domain\Model\Ratingobject $ratingobject = null)
+    public function getRating(array $settings, Ratingobject $ratingobject = null): Rating
     {
         $settings = $this->completeConfigurationSettings($settings);
         if (!empty($settings['rating'])) {
             //fetch rating when it is configured
             $rating = $this->ratingRepository->findByUid($settings['rating']);
-        } elseif ($settings['ratedobjectuid'] && !$this->objectManager->get(\Thucke\ThRating\Domain\Validator\RatingobjectValidator::class)
+        } elseif ($settings['ratedobjectuid'] && !$this->objectManager->get(RatingobjectValidator::class)
                 ->validate($ratingobject)->hasErrors()) {
             //get rating according to given row
             $rating = $this->ratingRepository->findMatchingObjectAndUid($ratingobject, $settings['ratedobjectuid'], RatingRepository::ADD_IF_NOT_FOUND);
@@ -298,7 +316,7 @@ class ExtensionHelperService extends AbstractExtensionService
      * @param	\Thucke\ThRating\Domain\Model\Rating	$rating
      * @return	\Thucke\ThRating\Domain\Model\Vote
      */
-    public function getVote($prefixId, array $settings, \Thucke\ThRating\Domain\Model\Rating $rating)
+    public function getVote($prefixId, array $settings, \Thucke\ThRating\Domain\Model\Rating $rating): Vote
     {
         /** @var \Thucke\ThRating\Domain\Model\Vote $vote */
         /** @var \Thucke\ThRating\Domain\Model\Voter $voter */
@@ -322,7 +340,7 @@ class ExtensionHelperService extends AbstractExtensionService
         }
         //voting not found in database or anonymous vote? - create new one
         $voteValidator = $this->objectManager->get(\Thucke\ThRating\Domain\Validator\VoteValidator::class);
-        if (!$voteValidator->isObjSet($vote) || $voteValidator->validate($vote)->hasErrors()) {
+        if ($voteValidator->validate($vote)->hasErrors()) {
             $vote = $this->objectManager->get(\Thucke\ThRating\Domain\Model\Vote::class);
             $ratingValidator = $this->objectManager->get(\Thucke\ThRating\Domain\Validator\RatingValidator::class);
             if (!$ratingValidator->validate($rating)->hasErrors()) {
@@ -343,7 +361,7 @@ class ExtensionHelperService extends AbstractExtensionService
      * @param	string	$name the class name which this logger is for
      * @return 	\TYPO3\CMS\Core\Log\Logger
      */
-    public function getLogger($name = null)
+    public function getLogger($name = null): Logger
     {
         if (empty($name)) {
             return $this->loggingService->getLogger(__CLASS__);
@@ -359,7 +377,7 @@ class ExtensionHelperService extends AbstractExtensionService
      * @param	\TYPO3\CMS\Extbase\DomainObject\AbstractEntity	$objectToPersist
      * @return void
      */
-    public function persistRepository($repository, \TYPO3\CMS\Extbase\DomainObject\AbstractEntity $objectToPersist)
+    public function persistRepository($repository, AbstractEntity $objectToPersist): void
     {
         $objectUid = $objectToPersist->getUid();
         if (empty($objectUid)) {
@@ -375,9 +393,9 @@ class ExtensionHelperService extends AbstractExtensionService
      *
      * @return void
      */
-    public function clearDynamicCssFile()
+    public function clearDynamicCssFile(): void
     {
-        $this->objectManager->get(\Thucke\ThRating\Evaluation\DynamicCssEvaluator::class)->clearCachePostProc(null, null, null);
+        $this->objectManager->get(DynamicCssEvaluator::class)->clearCachePostProc(null, null, null);
     }
 
     /**
@@ -387,7 +405,7 @@ class ExtensionHelperService extends AbstractExtensionService
      *
      * @return array
      */
-    public function renderDynCSS()
+    public function renderDynCSS(): array
     {
         /** @var string $cssFile */
         $messageArray = [];
@@ -396,7 +414,7 @@ class ExtensionHelperService extends AbstractExtensionService
             $fstat = stat(PATH_site . self::DYN_CSS_FILENAME);
             //do not recreate file if it has greater than zero length
             if ($fstat[7] !== 0) {
-                $this->logger->log(\TYPO3\CMS\Core\Log\LogLevel::DEBUG, 'Dynamic CSS file exists - exiting');
+                $this->logger->log(LogLevel::DEBUG, 'Dynamic CSS file exists - exiting');
                 return $messageArray;
             }
         }
@@ -411,12 +429,12 @@ class ExtensionHelperService extends AbstractExtensionService
             $stepcount = count($stepconfObjects);
             if (!$stepcount) {
                 $messageArray[] = [
-                    'messageText' => \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate(
+                    'messageText' => LocalizationUtility::translate(
                         'flash.renderCSS.noStepconf',
                         'ThRating',
                         [1 => $ratingobject->getUid(), 2 => $ratingobject->getPid()]
                     ),
-                    'messageTitle' => \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('flash.configuration.error', 'ThRating'),
+                    'messageTitle' => LocalizationUtility::translate('flash.configuration.error', 'ThRating'),
                     'severity' => 'ERROR',
                     'additionalInfo' => ['errorCode' => 1384705470,
                         'ratingobject UID' => $ratingobject->getUid(),
@@ -442,7 +460,7 @@ class ExtensionHelperService extends AbstractExtensionService
                     foreach ($this->stepconfValidator->validate($stepconf) as $errorMessage) {
                         $messageArray[] = [
                             'messageText' => $errorMessage->getMessage(),
-                            'messageTitle' => \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('flash.configuration.error', 'ThRating'),
+                            'messageTitle' => LocalizationUtility::translate('flash.configuration.error', 'ThRating'),
                             'severity' => 'ERROR',
                             'additionalInfo' => ['errorCode' => $errorMessage->getCode(),
                                                       'errorMessage' => $errorMessage->getMessage(), ], ];
@@ -452,7 +470,7 @@ class ExtensionHelperService extends AbstractExtensionService
                 }
             }
             $this->logger->log(
-                \TYPO3\CMS\Core\Log\LogLevel::INFO,
+                LogLevel::INFO,
                 'Ratingobject data',
                 [
                             'ratingobject UID' => $ratingobject->getUid(),
@@ -470,13 +488,13 @@ class ExtensionHelperService extends AbstractExtensionService
                 $subURI = substr(PATH_site, strlen($_SERVER['DOCUMENT_ROOT']) + 1);
                 $basePath = $this->getTypoScriptFrontendController()->baseUrl ?: '//' . $_SERVER['HTTP_HOST'] . '/' . $subURI;
 
-                $this->ratingImage = $this->objectManager->get(\Thucke\ThRating\Domain\Model\RatingImage::class);
+                $this->ratingImage = $this->objectManager->get(RatingImage::class);
                 $this->ratingImage->setConf($ratingConfig['imagefile']);
                 $filename = $this->ratingImage->getImageFile();
                 if (empty($filename)) {
                     $messageArray[] = [
-                        'messageText' => \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('flash.vote.renderCSS.defaultImage', 'ThRating'),
-                        'messageTitle' => \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('flash.heading.warning', 'ThRating'),
+                        'messageText' => LocalizationUtility::translate('flash.vote.renderCSS.defaultImage', 'ThRating'),
+                        'messageTitle' => LocalizationUtility::translate('flash.heading.warning', 'ThRating'),
                         'severity' => 'WARNING',
                         'additionalInfo' => ['errorCode' => 1403192702,
                                     'ratingName' => $ratingName,
@@ -493,7 +511,7 @@ class ExtensionHelperService extends AbstractExtensionService
                 $width = $imageDimensions['width'];
                 $mainId = '.thRating-RObj' . $ratingobjectUid . '-' . $ratingName;
                 $this->logger->log(
-                    \TYPO3\CMS\Core\Log\LogLevel::DEBUG,
+                    LogLevel::DEBUG,
                     'Main CSS info',
                     [
                                 'mainId' => $mainId,
@@ -546,10 +564,10 @@ class ExtensionHelperService extends AbstractExtensionService
             }
             //reset variables for next iteration
             unset($stepWeights, $sumWeights, $sumStepWeights);
-            $this->logger->log(\TYPO3\CMS\Core\Log\LogLevel::DEBUG, 'CSS finished for ratingobject');
+            $this->logger->log(LogLevel::DEBUG, 'CSS finished for ratingobject');
         }
 
-        $this->logger->log(\TYPO3\CMS\Core\Log\LogLevel::DEBUG, 'Saving CSS file', ['cssFile' => $cssFile]);
+        $this->logger->log(LogLevel::DEBUG, 'Saving CSS file', ['cssFile' => $cssFile]);
         $fp = fopen(PATH_site . self::DYN_CSS_FILENAME, 'wb');
         fwrite($fp, $cssFile);
         fclose($fp);
