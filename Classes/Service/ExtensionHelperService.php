@@ -433,7 +433,7 @@ class ExtensionHelperService extends AbstractExtensionService
             $stepconfs = $stepconfObjects->toArray();
             foreach ($stepconfs as $stepconf) {	//stepconfs are already sorted by steporder
                 //just do checks here that all steps are OK
-                if ($this->stepconfValidator->isObjSet($stepconf) && !$this->stepconfValidator->validate($stepconf)->hasErrors()) {
+                if (!$this->stepconfValidator->validate($stepconf)->hasErrors()) {
                     /** @var \Thucke\ThRating\Domain\Model\Stepconf $stepconf */
                     $stepWeights[] = $stepconf->getStepweight();
                     $sumStepWeights += $stepconf->getStepweight();
