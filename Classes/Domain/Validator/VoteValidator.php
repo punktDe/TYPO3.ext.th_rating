@@ -59,18 +59,25 @@ class VoteValidator extends AbstractValidator
      */
     protected function isValid($vote)
     {
-        //a vote object must have a vote
-        if (!$vote->getVote() instanceof Stepconf) {
-            $this->addError(LocalizationUtility::translate('error.validator.vote.vote', 'ThRating'), 1283537235);
+        /** @noinspection NotOptimalIfConditionsInspection */
+        if (!$this->isEmpty($vote) && $vote instanceof Vote) {
+            //a vote object must have a vote
+            if (!$vote->getVote() instanceof Stepconf) {
+                $this->addError(LocalizationUtility::translate('error.validator.vote.vote', 'ThRating'), 1283537235);
+            } else {
+                //a vote must have a valid voter
+                if (!$vote->getVoter() instanceof Voter) {
+                    $this->addError(LocalizationUtility::translate('error.validator.vote.voter', 'ThRating'),
+                        1283540684);
+                }
+                //check if the given vote is a valid step for this ratingobject
+                if (!$vote->getRating()->getRatingobject()->getStepconfs()->contains($vote->getVote())) {
+                    $this->addError(LocalizationUtility::translate('error.validator.vote.stepconf', 'ThRating'),
+                        1283612492);
+                }
+            }
         } else {
-            //a vote must have a valid voter
-            if (!$vote->getVoter() instanceof Voter) {
-                $this->addError(LocalizationUtility::translate('error.validator.vote.voter', 'ThRating'), 1283540684);
-            }
-            //check if the given vote is a valid step for this ratingobject
-            if (!$vote->getRating()->getRatingobject()->getStepconfs()->contains($vote->getVote())) {
-                $this->addError(LocalizationUtility::translate('error.validator.vote.stepconf', 'ThRating'), 1283612492);
-            }
+            $this->addError(LocalizationUtility::translate('error.validator.vote.empty', 'ThRating'),1568141014);
         }
     }
 
