@@ -26,6 +26,7 @@ namespace Thucke\ThRating\ViewHelpers;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\VersionNumberUtility;
+use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
  * The TYPO3 version viewhelper
@@ -33,11 +34,12 @@ use TYPO3\CMS\Core\Utility\VersionNumberUtility;
  * @version $Id:$
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License, version 2
  */
-class Typo3VersionViewHelper extends \TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper
+class Typo3VersionViewHelper extends AbstractViewHelper
 {
     /** @var string */
     protected $t3VersionNumber;
 
+    /** @noinspection PhpMissingParentCallCommonInspection */
     public function initializeArguments()
     {
         $this->t3VersionNumber = GeneralUtility::makeInstance(VersionNumberUtility::class)->getCurrentTypo3Version();
