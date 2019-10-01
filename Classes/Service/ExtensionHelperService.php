@@ -325,7 +325,7 @@ class ExtensionHelperService extends AbstractExtensionService
         if (!$voteValidator->isObjSet($vote) || $voteValidator->validate($vote)->hasErrors()) {
             $vote = $this->objectManager->get(\Thucke\ThRating\Domain\Model\Vote::class);
             $ratingValidator = $this->objectManager->get(\Thucke\ThRating\Domain\Validator\RatingValidator::class);
-            if ($ratingValidator->isObjSet($rating) && !$ratingValidator->validate($rating)->hasErrors()) {
+            if (!$ratingValidator->validate($rating)->hasErrors()) {
                 $vote->setRating($rating);
             }
             if ($voter instanceof \Thucke\ThRating\Domain\Model\Voter) {

@@ -49,7 +49,6 @@ class StepnameValidator extends AbstractValidator
      */
     protected $stepnameRepository;
 
-
     /**
      * @param \Thucke\ThRating\Domain\Repository\StepnameRepository $stepnameRepository
      * @return void

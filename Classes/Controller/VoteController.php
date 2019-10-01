@@ -7,7 +7,6 @@ namespace Thucke\ThRating\Controller;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use Thucke\ThRating\Domain\Model\Vote;
 
 /***************************************************************
  *  Copyright notice
@@ -563,7 +562,7 @@ class VoteController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
         $this->view->assign('actionMethodName', $this->actionMethodName);
 
         $rating = $this->vote->getRating();
-        if ($this->ratingValidator->isObjSet($rating) && !$this->ratingValidator->validate($rating)->hasErrors()) {
+        if (!$this->ratingValidator->validate($rating)->hasErrors()) {
             $this->ratingImage = $this->objectManager->get(\Thucke\ThRating\Domain\Model\RatingImage::class);
             $this->ratingImage->setConf($this->settings['ratingConfigurations'][$this->ratingName]['imagefile']);
             //read dimensions of the image
@@ -592,7 +591,7 @@ class VoteController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
             $this->logger->log(\TYPO3\CMS\Core\Log\LogLevel::INFO, 'Set ratinglink information', ['errorCode' => 1404933850, 'ajaxSelections[steporder]' => $this->ajaxSelections['steporder']]);
         }
         $this->fillSummaryView();
-        ($this->request->getFormat() == 'json') && $this->view->assign('flashMessages', $this->view->getFlashMessages());
+        ($this->request->getFormat() === 'json') && $this->view->assign('flashMessages', $this->view->getFlashMessages());
         $this->logger->log(\TYPO3\CMS\Core\Log\LogLevel::DEBUG, 'Exit graphicActionHelper');
     }
 
