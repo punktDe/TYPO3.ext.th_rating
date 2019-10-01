@@ -1,5 +1,12 @@
-<?php
+<?php /** @noinspection PhpUnnecessaryFullyQualifiedNameInspection */
+
 namespace Thucke\ThRating\Domain\Validator;
+
+use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
+use TYPO3\CMS\Extbase\Validation\Validator\AbstractValidator;
+use Thucke\ThRating\Domain\Model\Stepconf;
+use Thucke\ThRating\Domain\Model\Vote;
+use Thucke\ThRating\Domain\Model\Voter;
 
 /***************************************************************
  *  Copyright notice
@@ -34,14 +41,15 @@ namespace Thucke\ThRating\Domain\Validator;
  * @copyright Copyright belongs to the respective authors
  * @scope singleton
  */
-class VoteValidator extends \TYPO3\CMS\Extbase\Validation\Validator\AbstractValidator
+class VoteValidator extends AbstractValidator
 {
     /**
-     * This contains the supported options, their default values, types and descriptions.
+     * This validator always needs to be executed even if the given value is empty.
+     * See AbstractValidator::validate()
      *
-     * @var array
+     * @var bool
      */
-    protected $supportedOptions = [];
+    protected $acceptsEmptyValues = false;
 
     /**
      * If the given Vote is valid
@@ -52,16 +60,16 @@ class VoteValidator extends \TYPO3\CMS\Extbase\Validation\Validator\AbstractVali
     protected function isValid($vote)
     {
         //a vote object must have a vote
-        if (!$vote->getVote() instanceof \Thucke\ThRating\Domain\Model\Stepconf) {
-            $this->addError(\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('error.validator.vote.vote', 'ThRating'), 1283537235);
+        if (!$vote->getVote() instanceof Stepconf) {
+            $this->addError(LocalizationUtility::translate('error.validator.vote.vote', 'ThRating'), 1283537235);
         } else {
             //a vote must have a valid voter
-            if (!$vote->getVoter() instanceof \Thucke\ThRating\Domain\Model\Voter) {
-                $this->addError(\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('error.validator.vote.voter', 'ThRating'), 1283540684);
+            if (!$vote->getVoter() instanceof Voter) {
+                $this->addError(LocalizationUtility::translate('error.validator.vote.voter', 'ThRating'), 1283540684);
             }
             //check if the given vote is a valid step for this ratingobject
             if (!$vote->getRating()->getRatingobject()->getStepconfs()->contains($vote->getVote())) {
-                $this->addError(\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('error.validator.vote.stepconf', 'ThRating'), 1283612492);
+                $this->addError(LocalizationUtility::translate('error.validator.vote.stepconf', 'ThRating'), 1283612492);
             }
         }
     }
@@ -74,6 +82,6 @@ class VoteValidator extends \TYPO3\CMS\Extbase\Validation\Validator\AbstractVali
      */
     public function isObjSet($vote)
     {
-        return !$this->isEmpty($vote) && $vote instanceof \Thucke\ThRating\Domain\Model\Vote;
+        return !$this->isEmpty($vote) && $vote instanceof Vote;
     }
 }
