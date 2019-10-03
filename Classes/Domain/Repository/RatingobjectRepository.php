@@ -1,4 +1,7 @@
 <?php
+/** @noinspection PhpUnnecessaryFullyQualifiedNameInspection */
+/** @noinspection PhpFullyQualifiedNameUsageInspection */
+
 namespace Thucke\ThRating\Domain\Repository;
 
 use Thucke\ThRating\Domain\Model\Ratingobject;
@@ -79,7 +82,7 @@ class RatingobjectRepository extends Repository
             $query->equals('ratefield', $ratefield)
         ]))->setLimit(1);
 
-        /** @var QueryResultInterface $queryResult */
+        /** @var \TYPO3\CMS\Extbase\Persistence\QueryResultInterface  $queryResult */
         $queryResult = $query->execute();
 
         if (count($queryResult) !== 0) {
@@ -104,13 +107,11 @@ class RatingobjectRepository extends Repository
      * @param boolean   Switch to fetch ALL entries regardless of their pid
      * @return \TYPO3\CMS\Extbase\Persistence\QueryResultInterface|array All ratingobjects of the site
      */
-
     /** @noinspection PhpMissingParentCallCommonInspection */
     public function findAll($ignoreStoragePage = false)
     {
         $query = $this->createQuery();
         $query->getQuerySettings()->setRespectStoragePage(!$ignoreStoragePage);
-
         return $query->execute();
     }
 }

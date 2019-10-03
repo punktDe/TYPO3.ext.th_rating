@@ -12,7 +12,9 @@ use Thucke\ThRating\Domain\Repository\RatingobjectRepository;
 use Thucke\ThRating\Domain\Repository\RatingRepository;
 use Thucke\ThRating\Domain\Repository\SyslangRepository;
 use Thucke\ThRating\Domain\Repository\VoteRepository;
+use Thucke\ThRating\Domain\Validator\VoteValidator;
 use Thucke\ThRating\Domain\Validator\RatingobjectValidator;
+use Thucke\ThRating\Domain\Validator\RatingValidator;
 use Thucke\ThRating\Domain\Validator\StepconfValidator;
 use Thucke\ThRating\Evaluation\DynamicCssEvaluator;
 use TYPO3\CMS\Core\Log\Logger;
@@ -316,7 +318,7 @@ class ExtensionHelperService extends AbstractExtensionService
      * @param	\Thucke\ThRating\Domain\Model\Rating	$rating
      * @return	\Thucke\ThRating\Domain\Model\Vote
      */
-    public function getVote($prefixId, array $settings, \Thucke\ThRating\Domain\Model\Rating $rating): Vote
+    public function getVote($prefixId, array $settings, Rating $rating): Vote
     {
         /** @var \Thucke\ThRating\Domain\Model\Vote $vote */
         /** @var \Thucke\ThRating\Domain\Model\Voter $voter */
@@ -339,10 +341,10 @@ class ExtensionHelperService extends AbstractExtensionService
             }
         }
         //voting not found in database or anonymous vote? - create new one
-        $voteValidator = $this->objectManager->get(\Thucke\ThRating\Domain\Validator\VoteValidator::class);
+        $voteValidator = $this->objectManager->get(VoteValidator::class);
         if ($voteValidator->validate($vote)->hasErrors()) {
-            $vote = $this->objectManager->get(\Thucke\ThRating\Domain\Model\Vote::class);
-            $ratingValidator = $this->objectManager->get(\Thucke\ThRating\Domain\Validator\RatingValidator::class);
+            $vote = $this->objectManager->get(Vote::class);
+            $ratingValidator = $this->objectManager->get(RatingValidator::class);
             if (!$ratingValidator->validate($rating)->hasErrors()) {
                 $vote->setRating($rating);
             }
