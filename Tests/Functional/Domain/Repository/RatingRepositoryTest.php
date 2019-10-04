@@ -27,10 +27,10 @@ namespace Thucke\ThRating\Tests\Functional\Domain\Repository;
 
 use Nimut\TestingFramework\Exception\Exception;
 use Nimut\TestingFramework\TestCase\FunctionalTestCase;
+use Thucke\ThRating\Domain\Model\Rating;
 use Thucke\ThRating\Domain\Model\Ratingobject;
 use Thucke\ThRating\Domain\Repository\RatingobjectRepository;
-use Thucke\ThRating\Domain\Validator\RatingobjectValidator;
-use Thucke\ThRating\Exception\RecordNotFoundException;
+use Thucke\ThRating\Domain\Repository\RatingRepository;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException;
@@ -38,7 +38,7 @@ use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
 use TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings;
 
 /**
- * Testcases for RatingobjectRepository
+ * Testcases for RatingRepository
  *
  * @version 	$Id:$
  * @author		Thomas Hucke <thucke@web.de>
@@ -47,7 +47,7 @@ use TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings;
  * @scope 		alpha
  * @entity
  */
-class RatingobjectRepositoryTest extends FunctionalTestCase
+class RatingRepositoryTest extends FunctionalTestCase
 {
     /**
      * @var string[]
@@ -55,7 +55,7 @@ class RatingobjectRepositoryTest extends FunctionalTestCase
     protected $testExtensionsToLoad = ['typo3conf/ext/th_rating'];
 
     /**
-     * @var RatingobjectRepository
+     * @var RatingRepository
      */
     private $subject;
 
@@ -68,6 +68,10 @@ class RatingobjectRepositoryTest extends FunctionalTestCase
      * @var ObjectManager
      */
     private $objectManager;
+    /**
+     * @var Ratingobject
+     */
+    private $ratingobject;
 
     /**
      * @throws Exception
@@ -76,14 +80,16 @@ class RatingobjectRepositoryTest extends FunctionalTestCase
     {
         parent::setUp();
 
-        $this->persistenceManager = GeneralUtility::makeInstance(PersistenceManager::class);
+        $this->importDataSet(__DIR__ . '/Fixtures/Rating.xml');
 
-        /** @var ObjectManager $objectManager */
+        $this->persistenceManager = GeneralUtility::makeInstance(PersistenceManager::class);
         $this->objectManager = GeneralUtility::makeInstance(ObjectManager::class);
-        $this->subject = $this->objectManager->get(RatingobjectRepository::class);
-        $this->subject->injectPersistenceManager($this->persistenceManager);
+
+        $this->subject = $this->objectManager->get(RatingRepository::class);
         $this->subject->setDefaultQuerySettings($this->getDefaultQuerySettings());
-        $this->importDataSet(__DIR__ . '/Fixtures/Ratingobject.xml');
+        $this->subject->injectPersistenceManager($this->persistenceManager);
+        $this->ratingobject = $this->createRatingobjectRepository()->findByUid(1);
+
     }
 
     /**
@@ -98,67 +104,67 @@ class RatingobjectRepositoryTest extends FunctionalTestCase
     }
 
     /**
+     * @return RatingobjectRepository
+     */
+    protected function createRatingobjectRepository(): RatingobjectRepository {
+        $ratingobjectRepository = $this->objectManager->get(RatingobjectRepository::class);
+        $ratingobjectRepository->injectPersistenceManager($this->persistenceManager);
+        $ratingobjectRepository->setDefaultQuerySettings($this->getDefaultQuerySettings());
+        return $ratingobjectRepository;
+
+    }
+    /**
      * @test
      * @throws IllegalObjectTypeException
+     * @throws \TYPO3\CMS\Extbase\Configuration\Exception\InvalidConfigurationTypeException
      */
     public function addAndPersistAllCreatesNewRecord(): void
     {
-        $ratetable = 'newTable';
-        $ratefield = 'newField';
-        $model = new Ratingobject($ratetable, $ratefield);
+        $ratedobjectuid = 4;
+        $model = new Rating($this->ratingobject, $ratedobjectuid);
 
         $this->subject->add($model);
         $this->persistenceManager->persistAll();
 
-        $databaseRow = $this->getDatabaseConnection()->selectSingleRow('*', 'tx_thrating_domain_model_ratingobject',
+        $databaseRow = $this->getDatabaseConnection()->selectSingleRow('*', 'tx_thrating_domain_model_rating',
             'uid = ' . $model->getUid());
-        $this->assertSame($ratetable, $databaseRow['ratetable']);
+        $this->assertSame(1, $databaseRow['ratingobject']);
     }
 
     /**
      * @test
      */
-    public function findAllAndStoragePageCombination(): void
+    public function findAll(): void
     {
-        $this->assertEquals(4, $this->subject->findAll(true)->count());
-        $this->assertEquals(3, $this->subject->findAll(false)->count());
+        $this->assertEquals(4, $this->subject->findAll()->count());
     }
 
     /**
      * @test
      * @throws IllegalObjectTypeException
-     * @throws RecordNotFoundException
      */
-    public function findMatchingTableAndField(): void
+    public function findMatchingObjectAndUid(): void
     {
         $foundRow = $this->subject->findByUid(1);
-        $this->assertEquals(1, $foundRow->getUid());
-        $this->assertEquals('testTable', $foundRow->getRatetable());
-        $this->assertEquals('testField', $foundRow->getRatefield());
-
-        $foundRow = $this->subject->findMatchingTableAndField('testTable', 'testField');
         //check for right object type
-        $this->assertInstanceOf(Ratingobject::class, $foundRow);
+        $this->assertInstanceOf(Rating::class, $foundRow);
+        $this->assertEquals(1, $foundRow->getUid());
+        $this->assertEquals(1, $foundRow->getRatingobject()->getUid());
+        $this->assertEquals(1, $foundRow->getRatedobjectuid());
+
+        $foundRow = $this->subject->findMatchingObjectAndUid($this->ratingobject, 1);
+        //check for right object type
+        $this->assertInstanceOf(Rating::class, $foundRow);
         //validate found object
-        $this->assertFalse($this->objectManager->get(RatingobjectValidator::class)->validate($foundRow)->hasErrors());
+        //$this->assertFalse($this->objectManager->get(RatingValidator::class)->validate($foundRow)->hasErrors());
         //check if it matches fixture
         $this->assertEquals(1, $foundRow->getUid());
 
-        /* TODO this test fails only outside the context of TYPO3
-        $foundRow = $this->subject->findMatchingTableAndField('testTable', 'testFieldNewAdded', true);
-        $this->assertEquals(5, $foundRow->getUid());
-        */
-    }
+        $foundRow = $this->subject->findMatchingObjectAndUid($this->ratingobject, 4);
+        $this->assertEquals(0, $foundRow->getUid());
 
-    /**
-     * @test
-     * @throws IllegalObjectTypeException
-     * @throws RecordNotFoundException
-     */
-    public function exceptionOnMissingEntry(): void
-    {
-        $this->expectException(RecordNotFoundException::class);
-        $this->subject->findMatchingTableAndField('testTable', 'testFieldNewAdded');
+        $foundRow = $this->subject->findMatchingObjectAndUid($this->ratingobject, 4, true);
+        $this->assertEquals(5, $foundRow->getUid());
     }
 
 }

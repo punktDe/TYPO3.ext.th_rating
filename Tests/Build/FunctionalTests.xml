@@ -1,7 +1,7 @@
 <phpunit
-	backupGlobals="false"
+	backupGlobals="true"
 	backupStaticAttributes="false"
-	bootstrap="../../.Build/vendor/nimut/testing-framework/res/Configuration/FunctionalTestsBootstrap.php"
+	bootstrap="FunctionalTestsBootstrap.php"
 	colors="true"
 	convertErrorsToExceptions="true"
 	convertWarningsToExceptions="true"
@@ -11,12 +11,6 @@
 	stopOnFailure="false"
 	stopOnIncomplete="false"
 	stopOnSkipped="false"
-	strict="false"
-	verbose="false">
-
-	<testsuites>
-		<testsuite name="EXT:th_rating functional tests">
-			<directory>../Functional/</directory>
-		</testsuite>
-	</testsuites>
-</phpunit>
+	verbose="false"
+	convertDeprecationsToExceptions="false"
+/>

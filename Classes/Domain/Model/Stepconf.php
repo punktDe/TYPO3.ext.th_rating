@@ -174,9 +174,9 @@ class Stepconf extends AbstractEntity
     /**
      * Returns the ratingobject this rating is part of
      *
-     * @return \Thucke\ThRating\Domain\Model\Ratingobject The ratingobject this rating is part of
+     * @return \Thucke\ThRating\Domain\Model\Ratingobject|null
      */
-    public function getRatingobject(): Ratingobject
+    public function getRatingobject()
     {
         return $this->ratingobject;
     }
@@ -281,14 +281,6 @@ class Stepconf extends AbstractEntity
     public function getVotes()
     {
         return clone $this->votes;
-    }
-
-    /**
-     * @return bool
-     */
-    public function isValid(): bool
-    {
-        return empty($this->steporder) && empty($this->ratingobject);
     }
 
     /**

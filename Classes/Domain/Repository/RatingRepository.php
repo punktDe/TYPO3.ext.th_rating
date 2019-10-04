@@ -59,7 +59,7 @@ class RatingRepository extends Repository
     /**
      * Finds the specific rating by giving the object and row uid
      *
-     * @param    Ratingobject $ratingobject The concerned ratingobject
+     * @param    \Thucke\ThRating\Domain\Model\Ratingobject $ratingobject The concerned ratingobject
      * @param    int $ratedobjectuid The Uid of the rated row
      * @param    bool $addIfNotFound Set to true if new objects should instantly be added
      * @throws  IllegalObjectTypeException
@@ -67,7 +67,7 @@ class RatingRepository extends Repository
      * @validate $ratingobject \Thucke\ThRating\Domain\Validator\RatingobjectValidator
      * @validate $ratedobjectuid NumberRange(minimum = 1)
      */
-    public function findMatchingObjectAndUid($ratingobject, $ratedobjectuid, $addIfNotFound = false): Rating
+    public function findMatchingObjectAndUid(Ratingobject $ratingobject, $ratedobjectuid, $addIfNotFound = false): Rating
     {
         /** @var \Thucke\ThRating\Domain\Model\Rating $foundRow */
         $foundRow = $this->objectManager->get(Rating::class);

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<dataset>
+	<tx_thrating_domain_model_ratingobject>
+		<uid>1</uid>
+		<pid>1</pid>
+		<ratetable>testTable</ratetable>
+		<ratefield>testField</ratefield>
+	</tx_thrating_domain_model_ratingobject>
+    <tx_thrating_domain_model_stepconf>
+        <uid>1</uid>
+        <pid>1</pid>
+        <ratingobject>1</ratingobject>
+		<steporder>1</steporder>
+		<stepweight>1</stepweight>
+		<stepname>1</stepname>
+		<votes>0</votes>
+    </tx_thrating_domain_model_stepconf>
+    <tx_thrating_domain_model_stepconf>
+        <uid>2</uid>
+        <pid>1</pid>
+		<ratingobject>1</ratingobject>
+		<steporder>2</steporder>
+		<stepweight>1</stepweight>
+		<stepname>2</stepname>
+		<votes>0</votes>
+    </tx_thrating_domain_model_stepconf>
+    <tx_thrating_domain_model_stepconf>
+        <uid>3</uid>
+        <pid>1</pid>
+		<ratingobject>2</ratingobject>
+		<steporder>1</steporder>
+		<stepweight>1</stepweight>
+		<stepname>1</stepname>
+		<votes>0</votes>
+    </tx_thrating_domain_model_stepconf>
+    <tx_thrating_domain_model_stepconf>
+        <uid>4</uid>
+        <pid>1</pid>
+		<ratingobject>2</ratingobject>
+		<steporder>2</steporder>
+		<stepweight>1</stepweight>
+		<stepname>1</stepname>
+		<votes>0</votes>
+    </tx_thrating_domain_model_stepconf>
+</dataset>

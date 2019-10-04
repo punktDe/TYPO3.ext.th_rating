@@ -36,7 +36,6 @@ namespace Thucke\ThRating\Tests\Domain\Model;
  */
 class StepconfigTest extends \TYPO3\CMS\Core\Tests\BaseTestCase
 {
-
     /**
      * @var string Put the extension name here
      */
@@ -90,7 +89,7 @@ class StepconfigTest extends \TYPO3\CMS\Core\Tests\BaseTestCase
     {
         $this->stepconf->addStepname($this->stepname);
         $this->markTestIncomplete(
-          'This test has not been implemented yet. - ' . strval($this->stepconf->getStepname())
+            'This test has not been implemented yet. - ' . strval($this->stepconf->getStepname())
         );
         $this->assertEquals('Step1', strval($this->stepconf->getStepname()));
     }

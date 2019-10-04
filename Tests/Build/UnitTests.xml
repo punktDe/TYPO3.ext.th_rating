@@ -1,22 +1,16 @@
 <phpunit
-	backupGlobals="false"
-	backupStaticAttributes="false"
-	bootstrap="../../.Build/vendor/nimut/testing-framework/res/Configuration/UnitTestsBootstrap.php"
-	colors="true"
-	convertErrorsToExceptions="true"
-	convertWarningsToExceptions="true"
-	forceCoversAnnotation="false"
-	processIsolation="false"
-	stopOnError="false"
-	stopOnFailure="false"
-	stopOnIncomplete="false"
-	stopOnSkipped="false"
-	strict="false"
-	verbose="false">
-
-	<testsuites>
-		<testsuite name="EXT:th_rating unit tests">
-			<directory>../Unit/</directory>
-		</testsuite>
-	</testsuites>
-</phpunit>
+    backupGlobals="true"
+    backupStaticAttributes="false"
+    bootstrap="UnitTestsBootstrap.php"
+    colors="true"
+    convertErrorsToExceptions="true"
+    convertWarningsToExceptions="true"
+    forceCoversAnnotation="false"
+    processIsolation="false"
+    stopOnError="false"
+    stopOnFailure="false"
+    stopOnIncomplete="false"
+    stopOnSkipped="false"
+    verbose="false"
+    convertDeprecationsToExceptions="false"
+/>
