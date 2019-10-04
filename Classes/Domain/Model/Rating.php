@@ -142,7 +142,7 @@ class Rating extends AbstractEntity
      * @param int|null $ratedobjectuid
      * @throws \TYPO3\CMS\Extbase\Configuration\Exception\InvalidConfigurationTypeException
      */
-    public function __construct(Ratingobject $ratingobject = null, $ratedobjectuid = null)
+    public function __construct(Ratingobject    $ratingobject = null, $ratedobjectuid = null)
     {
         if ($ratingobject) {
             $this->setRatingobject($ratingobject);
@@ -320,7 +320,9 @@ class Rating extends AbstractEntity
             $currentratesDecoded['anonymousVotes']++;
         }
         $votingStep = $voting->getVote();
+        /** @noinspection NullPointerExceptionInspection */
         $votingSteporder = $votingStep->getSteporder();
+        /** @noinspection NullPointerExceptionInspection */
         $votingStepweight = $votingStep->getStepweight();
         $currentratesDecoded['weightedVotes'][$votingSteporder] += $votingStepweight;
         $currentratesDecoded['sumWeightedVotes'][$votingSteporder] += $votingStepweight * $votingSteporder;
@@ -344,7 +346,9 @@ class Rating extends AbstractEntity
             $currentratesDecoded['anonymousVotes']--;
         }
         $votingStep = $voting->getVote();
+        /** @noinspection NullPointerExceptionInspection */
         $votingSteporder = $votingStep->getSteporder();
+        /** @noinspection NullPointerExceptionInspection */
         $votingStepweight = $votingStep->getStepweight();
         $currentratesDecoded['weightedVotes'][$votingSteporder] -= $votingStepweight;
         $currentratesDecoded['sumWeightedVotes'][$votingSteporder] -= $votingStepweight * $votingSteporder;

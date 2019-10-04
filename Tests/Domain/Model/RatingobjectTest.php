@@ -36,7 +36,6 @@ namespace Thucke\ThRating\Tests\Unit\Domain\Model;
  */
 class RatingobjectTest extends \TYPO3\CMS\Core\Tests\BaseTestCase
 {
-
     /**
      * @var \Thucke\ThRating\Domain\Model\Ratingobject
      */

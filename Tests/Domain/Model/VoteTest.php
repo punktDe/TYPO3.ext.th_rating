@@ -36,7 +36,6 @@ namespace Thucke\ThRating\Tests\Domain\Model;
  */
 class VoteTest extends \TYPO3\CMS\Core\Tests\BaseTestCase
 {
-
     /**
      * Checks construction of a new vote object
      * @test

@@ -36,7 +36,6 @@ namespace Thucke\ThRating\Tests\Domain\Model;
  */
 class RatingTest extends \TYPO3\CMS\Core\Tests\BaseTestCase
 {
-
     /**
      * @var string Put the extension name here
      */

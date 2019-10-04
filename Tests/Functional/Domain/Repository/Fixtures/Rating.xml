@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<dataset>
+    <tx_thrating_domain_model_rating>
+        <uid>1</uid>
+        <pid>1</pid>
+        <ratingobject>1</ratingobject>
+        <ratedobjectuid>1</ratedobjectuid>
+    </tx_thrating_domain_model_rating>
+    <tx_thrating_domain_model_rating>
+        <uid>2</uid>
+        <pid>1</pid>
+		<ratingobject>1</ratingobject>
+		<ratedobjectuid>2</ratedobjectuid>
+    </tx_thrating_domain_model_rating>
+    <tx_thrating_domain_model_rating>
+        <uid>3</uid>
+        <pid>1</pid>
+		<ratingobject>1</ratingobject>
+		<ratedobjectuid>3</ratedobjectuid>
+    </tx_thrating_domain_model_rating>
+    <tx_thrating_domain_model_rating>
+        <uid>4</uid>
+        <pid>1</pid>
+		<ratingobject>2</ratingobject>
+		<ratedobjectuid>1</ratedobjectuid>
+    </tx_thrating_domain_model_rating>
+	<tx_thrating_domain_model_ratingobject>
+		<uid>1</uid>
+		<pid>1</pid>
+		<ratetable>testTable</ratetable>
+		<ratefield>testField</ratefield>
+	</tx_thrating_domain_model_ratingobject>
+</dataset>

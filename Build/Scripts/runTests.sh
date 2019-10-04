@@ -287,3 +287,5 @@ esac
 
 exit $SUITE_EXIT_CODE
 
+#convertDeprecationsToExceptions="false"
+

@@ -1,8 +1,10 @@
-<?php
+<?php /** @noinspection PhpUnnecessaryFullyQualifiedNameInspection */
+
 namespace Thucke\ThRating\Domain\Repository;
 
 use Thucke\ThRating\Domain\Model\Ratingobject;
 use Thucke\ThRating\Domain\Model\Stepconf;
+use Thucke\ThRating\Domain\Validator\StepconfValidator;
 use TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings;
 use TYPO3\CMS\Extbase\Persistence\QueryInterface;
 use TYPO3\CMS\Extbase\Persistence\Repository;
@@ -60,10 +62,14 @@ class StepconfRepository extends Repository
      * @param    \Thucke\ThRating\Domain\Model\Stepconf $stepconf The ratingobject to look for
      * @return    \Thucke\ThRating\Domain\Model\Stepconf|object
      */
-    public function findStepconfObject(Stepconf $stepconf)
+    public function findStepconfObject(Stepconf $stepconf): Stepconf
     {
         $query = $this->createQuery();
-        $query->matching($query->logicalAnd([$query->equals('ratingobject', $stepconf->getRatingobject()->getUid()), $query->equals('steporder', $stepconf->getSteporder())]))->setLimit(1);
+        /** @noinspection NullPointerExceptionInspection */
+        $query->matching($query->logicalAnd([
+            $query->equals('ratingobject', $stepconf->getRatingobject()->getUid()),
+            $query->equals('steporder', $stepconf->getSteporder())
+        ]))->setLimit(1);
         $queryResult = $query->execute();
 
         /** @var \Thucke\ThRating\Domain\Model\Stepconf $foundRow */
@@ -80,13 +86,12 @@ class StepconfRepository extends Repository
      * Finds the ratingstep entry by giving ratingobjectUid
      *
      * @param    \Thucke\ThRating\Domain\Model\Stepconf $stepconf The uid of the ratingobject
-     * @return    bool                                                true if stepconf object exists in repository
+     * @return    bool  true if stepconf object exists in repository
      */
     public function existStepconf(Stepconf $stepconf): bool
     {
-        /** @var \Thucke\ThRating\Domain\Model\Stepconf $lookForStepconf */
-        $lookForStepconf = $this->findStepconfObject($stepconf);
-
-        return $lookForStepconf->isValid();
+        $foundRow =  $this->findStepconfObject($stepconf);
+        $stepconfValidator = $this->objectManager->get(StepconfValidator::class);
+        return !$stepconfValidator->validate($foundRow)->hasErrors();
     }
 }

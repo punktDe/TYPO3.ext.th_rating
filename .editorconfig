@@ -90,5 +90,5 @@ indent_style = tab
 indent_size = 2
 
 # .htaccess
-[{_.htaccess,.htaccess}]
+[{_.htaccess,.htaccess,*.xml}]
 indent_style = tab

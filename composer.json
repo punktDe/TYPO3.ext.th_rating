@@ -22,7 +22,7 @@
 	"license" : "GPL-2.0-or-later",
 	"require" : {
 		"php" : ">=7.1.0 <7.4",
-		"typo3/cms-core" : ">=8.7.7 <9.6",
+		"typo3/cms-core" : ">=8.7.7 <9.0",
 		"sjbr/static-info-tables" : ">=6.2.0 <7.0"
 	},
 	"require-dev": {

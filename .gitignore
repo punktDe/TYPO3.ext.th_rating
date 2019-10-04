@@ -17,6 +17,7 @@
 nbproject
 
 # some additional exclusions
-.Build/
+.Build
 Build/testing-docker/.env
 composer.lock
+.php_cs.cache
