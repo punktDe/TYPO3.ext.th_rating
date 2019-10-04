@@ -335,7 +335,7 @@
 			</trans-unit>
 			<trans-unit id="fluid.partial.infoBlock.logonForRatings" xml:space="preserve" approved="yes">
 				<note>Forwarded arguments: None</note>
-				<target></target><source>Please log on to do ratings</source>
+				<source>Please log on to do ratings</source>
 			</trans-unit>
 			<trans-unit id="fluid.layout.default.noRatingSteps" xml:space="preserve" approved="yes">
 				<note>Forwarded arguments: None</note>
