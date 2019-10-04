@@ -66,5 +66,6 @@ EXT: Rating AX
     :hidden:
     :caption: OTHER
 
+    Gdpr
     ResourcesForEditors
     Sitemap/Index
