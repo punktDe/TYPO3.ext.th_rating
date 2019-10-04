@@ -10,15 +10,14 @@ If cookies are activated using either one of both options (value unequal zero)
 * Typoscript :ref:`tsCookieLifetime`
 
 the extension generates cookies for each anonymous rating.
-Name: ``tx_thrating_pi1_AnonymousRating_<xx>``
 
-.. list-table::
-   :widths: 20 80
-   :header-rows: 1
+Cookiename: ``tx_thrating_pi1_AnonymousRating_<xx>``
 
-   *  - Name
-      - Value
-   *  - ``ratingtime``
-      - Timestamp when the anonymous rating has be done
-   *  - ``voteUid``
-      - Primary key value (integer) the vote is identified in the database
+.. container::
+
+   ================ ======================================================================
+   Name             Description
+   ================ ======================================================================
+   ``ratingtime``   Timestamp when the anonymous rating has be done
+   ``voteUid``      Primary key value (integer) the vote is identified in the database
+   ================ ======================================================================
