@@ -7,10 +7,6 @@ matrix:
       env: TYPO3_VERSION=^9
     - php: 7.2
       env: TYPO3_VERSION=^8
-    - php: 7.3
-      env: TYPO3_VERSION=^9
-    - php: 7.3
-      env: TYPO3_VERSION=^8
 addons:
   apt:
     packages:
@@ -38,13 +34,12 @@ before_install:
 
 install:
   - >
-    if [[ "$TYPO3_VERSION" == "^8" ]];
-    then
-      composer require --no-update "typo3/cms:$TYPO3_VERSION"
-    else
-      composer require --no-update "typo3/minimal:$TYPO3_VERSION"
-    fi
-  - Build/Scripts/runTests.sh -s composerInstall -p $TRAVIS_PHP_VERSION
+    composer require --no-update "typo3/minimal:$TYPO3_VERSION";
+    composer show;
+  - >
+    echo;
+    echo Restoring conposer.json;
+    git checkout .;
   - export TYPO3_PATH_WEB=$PWD/.Build/Web
 
 notifications:
@@ -58,10 +53,6 @@ before_script:
   - Build/Scripts/runTests.sh -s composerInstall -p $TRAVIS_PHP_VERSION
 
 script:
-  - >
-    echo "Running composer validate"
-    Build/Scripts/runTests.sh -s composerValidate -p $TRAVIS_PHP_VERSION
-
   - >
     echo "Running unit tests";
     Build/Scripts/runTests.sh -s unit -p $TRAVIS_PHP_VERSION
