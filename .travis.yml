@@ -49,9 +49,6 @@ before_script:
   - git checkout composer.json
   - export TYPO3_PATH_WEB=$PWD/.Build/Web
 
-install:
-  - composer install
-
 script:
   - >
     echo;
