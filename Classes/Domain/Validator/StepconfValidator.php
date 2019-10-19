@@ -54,7 +54,6 @@ class StepconfValidator extends AbstractValidator
 
     /**
      * @param \Thucke\ThRating\Domain\Repository\StepconfRepository $stepconfRepository
-     * @return void
      */
     /** @noinspection PhpUnused */
     public function injectStepconfRepository(StepconfRepository $stepconfRepository)
@@ -69,7 +68,6 @@ class StepconfValidator extends AbstractValidator
 
     /**
      * @param \Thucke\ThRating\Domain\Repository\StepnameRepository $stepnameRepository
-     * @return void
      */
     /** @noinspection PhpUnused */
     public function injectStepnameRepository(StepnameRepository $stepnameRepository)
@@ -104,7 +102,6 @@ class StepconfValidator extends AbstractValidator
     /**
      * A stepconf object must have a ratingobject
      * @param Stepconf $stepconf
-     * @return void
      */
     protected function checkRatingobject(Stepconf $stepconf): void
     {
@@ -119,7 +116,6 @@ class StepconfValidator extends AbstractValidator
     /**
      * At least a steporder value must be set and a positive integer ( >0 ) and valid regaing existing values
      * @param Stepconf $stepconf
-     * @return void
      */
     protected function checkSteporder(Stepconf $stepconf): void
     {
@@ -158,7 +154,6 @@ class StepconfValidator extends AbstractValidator
      * @param Stepconf $stepconf
      * @throws InvalidQueryException
      * @throws \TYPO3\CMS\Extbase\Persistence\Exception\InvalidQueryException
-     * @return void
      */
     protected function validateStepnames($stepconf): void
     {

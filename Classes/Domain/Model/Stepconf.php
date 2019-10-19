@@ -93,7 +93,6 @@ class Stepconf extends AbstractEntity
 
     /**
      * @param \TYPO3\CMS\Extbase\Object\ObjectManagerInterface	$objectManager
-     * @return void
      */
     /** @noinspection PhpUnused */
     public function injectObjectManager(ObjectManagerInterface $objectManager): void
@@ -108,7 +107,6 @@ class Stepconf extends AbstractEntity
 
     /**
      * @param \Thucke\ThRating\Domain\Repository\StepnameRepository $stepnameRepository
-     * @return void
      */
     /** @noinspection PhpUnused */
     public function injectStepnameRepository(StepnameRepository $stepnameRepository): void
@@ -123,7 +121,6 @@ class Stepconf extends AbstractEntity
 
     /**
      * @param	\Thucke\ThRating\Service\ExtensionHelperService $extensionHelperService
-     * @return	void
      */
     /** @noinspection PhpUnused */
     public function injectExtensionHelperService(ExtensionHelperService $extensionHelperService): void
@@ -149,7 +146,6 @@ class Stepconf extends AbstractEntity
 
     /**
      * Initializes a new stepconf object
-     * @return void
      */
     public function initializeObject(): void
     {
@@ -163,7 +159,6 @@ class Stepconf extends AbstractEntity
      * Sets the ratingobject this rating is part of
      *
      * @param \Thucke\ThRating\Domain\Model\Ratingobject $ratingobject The Rating
-     * @return void
      */
     public function setRatingobject(Ratingobject $ratingobject): void
     {
@@ -185,7 +180,6 @@ class Stepconf extends AbstractEntity
      * Sets the stepconfig order
      *
      * @param int $steporder
-     * @return void
      */
     public function setSteporder($steporder): void
     {
@@ -206,7 +200,6 @@ class Stepconf extends AbstractEntity
      * Sets the stepconfig value
      *
      * @param int $stepweight
-     * @return void
      */
     public function setStepweight($stepweight): void
     {

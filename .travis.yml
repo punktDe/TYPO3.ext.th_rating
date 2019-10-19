@@ -7,6 +7,10 @@ matrix:
       env: TYPO3_VERSION=^9
     - php: 7.2
       env: TYPO3_VERSION=^8
+    - php: 7.3
+      env: TYPO3_VERSION=^9
+    - php: 7.3
+      env: TYPO3_VERSION=^8
 
 sudo: false
 
@@ -14,6 +18,8 @@ addons:
   apt:
     packages:
       - parallel
+  sonarcloud:
+    organization: "thucke"
 
 services:
   - mysql
@@ -21,6 +27,8 @@ services:
 cache:
   directories:
     - $HOME/.composer/cache
+    - $HOME/.sonar/cache
+    - .Build/cache
 
 notifications:
   email:
@@ -60,4 +68,12 @@ script:
     echo "Running php lint";
     find . -name \*.php ! -path "./.Build/*" | parallel --gnu php -d display_errors=stderr -l {} > /dev/null \;
 
-  - find 'Tests/Functional' -wholename '*Test.php' | parallel --gnu 'echo; echo "Running functional test suite {}"; .Build/bin/phpunit --colors  -c .Build/vendor/nimut/testing-framework/res/Configuration/FunctionalTests.xml {}'
+  - >
+    echo;
+    echo "Running Sonar";
+    sonar-scanner
+
+  - >
+    echo;
+    echo "Running functional tests";
+    find 'Tests/Functional' -wholename '*Test.php' | parallel --gnu 'echo; echo "Running functional test suite {}"; .Build/bin/phpunit --colors  -c .Build/vendor/nimut/testing-framework/res/Configuration/FunctionalTests.xml {}'

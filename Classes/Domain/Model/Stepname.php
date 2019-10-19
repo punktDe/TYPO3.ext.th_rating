@@ -85,7 +85,6 @@ class Stepname extends AbstractEntity
 
     /**
      * Initializes a new stepconf object
-     * @return void
      */
     public function initializeObject(): void
     {
@@ -96,7 +95,6 @@ class Stepname extends AbstractEntity
      * Sets the stepconf this rating is part of
      *
      * @param \Thucke\ThRating\Domain\Model\Stepconf $stepconf The Rating
-     * @return void
      */
     public function setStepconf(Stepconf $stepconf): void
     {
@@ -118,7 +116,6 @@ class Stepname extends AbstractEntity
      * Sets the stepconfig name
      *
      * @param string $stepname
-     * @return void
      */
     public function setStepname($stepname): void
     {
@@ -157,7 +154,6 @@ class Stepname extends AbstractEntity
 
     /**
      * @param $l18nParent
-     * @return void
      */
     public function setL18nParent($l18nParent): void
     {
@@ -166,7 +162,6 @@ class Stepname extends AbstractEntity
 
     /**
      * @param int $_languageUid
-     * @return void
      */
     public function set_languageUid($_languageUid): void
     {

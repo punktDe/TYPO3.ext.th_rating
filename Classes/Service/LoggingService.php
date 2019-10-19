@@ -46,7 +46,6 @@ class LoggingService
      * Must overrule the abstract class method to avoid self referencing
      * @param	\TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager
      * @param	\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager,
-     * @return void
      */
     public function __construct(
         \TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager,

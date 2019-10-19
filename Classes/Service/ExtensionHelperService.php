@@ -66,7 +66,6 @@ class ExtensionHelperService extends AbstractExtensionService
 
     /**
      * @param \Thucke\ThRating\Domain\Repository\RatingobjectRepository $ratingobjectRepository
-     * @return void
      */
 
     /** @noinspection PhpUnused */
@@ -82,7 +81,6 @@ class ExtensionHelperService extends AbstractExtensionService
 
     /**
      * @param \Thucke\ThRating\Domain\Repository\RatingRepository $ratingRepository
-     * @return void
      */
 
     /** @noinspection PhpUnused */
@@ -162,7 +160,6 @@ class ExtensionHelperService extends AbstractExtensionService
 
     /**
      * Constructor
-     * @return void
      */
     public function initializeObject(): void
     {
@@ -386,7 +383,6 @@ class ExtensionHelperService extends AbstractExtensionService
      *
      * @param	string	$repository
      * @param	\TYPO3\CMS\Extbase\DomainObject\AbstractEntity	$objectToPersist
-     * @return void
      */
     public function persistRepository($repository, AbstractEntity $objectToPersist): void
     {
@@ -401,8 +397,6 @@ class ExtensionHelperService extends AbstractExtensionService
 
     /**
      * Clear the dynamic CSS file for recreation
-     *
-     * @return void
      */
     public function clearDynamicCssFile(): void
     {

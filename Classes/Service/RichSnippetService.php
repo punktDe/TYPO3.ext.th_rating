@@ -112,7 +112,6 @@ class RichSnippetService extends AbstractExtensionService
     /**
      * @param string $schema
      * @throws \Thucke\ThRating\Exception\InvalidAggregateRatingSchemaTypeException if parameter is invalid
-     * @return void
      */
     public function setSchema($schema)
     {
@@ -138,7 +137,6 @@ class RichSnippetService extends AbstractExtensionService
 
     /**
      * @param string $anchor
-     * @return void
      */
     public function setAnchor($anchor)
     {
@@ -148,7 +146,6 @@ class RichSnippetService extends AbstractExtensionService
     /**
      * @param string
      * @param mixed $name
-     * @return void
      */
     public function setName($name)
     {
@@ -209,7 +206,7 @@ class RichSnippetService extends AbstractExtensionService
             $this->setName($row[$this->richSnippetConfig['richSnippetFields']['name']]);
             $this->setDescription($row[$this->richSnippetConfig['richSnippetFields']['description']]);
         }
-        $this->logger->log(\TYPO3\CMS\Core\Log\LogLevel::DEBUG, 'getRichSnippetObject Exit point', (array) $this);
+        $this->logger->log(\TYPO3\CMS\Core\Log\LogLevel::DEBUG, 'getRichSnippetObject Exit point', (array)$this);
 
         return $this;
     }

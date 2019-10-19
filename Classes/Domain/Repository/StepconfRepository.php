@@ -43,7 +43,6 @@ class StepconfRepository extends Repository
 
     /**
      * Initialize this repository
-     * @return void
      */
     /** @noinspection PhpUnused */
     public function initializeObject(): void

@@ -35,8 +35,6 @@ class SelectViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\SelectViewHelpe
 {
     /**
      * Renders the rating select form
-     *
-     * @return void
      */
     public function initializeArguments()
     {

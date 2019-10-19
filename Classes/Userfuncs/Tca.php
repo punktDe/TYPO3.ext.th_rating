@@ -40,7 +40,6 @@ class Tca
 
     /**
      * @param \TYPO3\CMS\Extbase\Object\ObjectManagerInterface	$objectManager
-     * @return void
      */
     public function injectObjectManager(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager)
     {
@@ -49,7 +48,6 @@ class Tca
 
     /**
      * Constructs a new rating object
-     * @return void
      */
     public function __construct()
     {
@@ -64,7 +62,6 @@ class Tca
      *
      * @param $params
      * @param $pObj
-     * @return void
      */
     public function getRatingObjectRecordTitle(&$params, &$pObj)
     {
@@ -77,7 +74,6 @@ class Tca
      *
      * @param $params
      * @param $pObj
-     * @return void
      */
     public function getStepconfRecordTitle(&$params, &$pObj)
     {
@@ -90,14 +86,13 @@ class Tca
      *
      * @param $params
      * @param $pObj
-     * @return void
      */
     public function getStepnameRecordTitle(&$params, &$pObj)
     {
         //look into repository to find clear text object attributes
         $stepnameRepository = $this->objectManager->get(\Thucke\ThRating\Domain\Repository\StepnameRepository::class);
         $stepnameRepository->clearQuerySettings();	//disable syslanguage and enableFields
-        $stepnameObject = $stepnameRepository->findByUid(intval($params['row']['uid']));
+        $stepnameObject = $stepnameRepository->findByUid((int)($params['row']['uid']));
         /** @var string $stepnameLang */
         /** @var string $sysLang */
         $syslang = '';
@@ -120,7 +115,7 @@ class Tca
             }
         }
         $stepconfRepository = $this->objectManager->get(\Thucke\ThRating\Domain\Repository\StepconfRepository::class);
-        $stepconfObject = $stepconfRepository->findByUid(intval($params['row']['stepconf']));
+        $stepconfObject = $stepconfRepository->findByUid((int)($params['row']['stepconf']));
         $ratetable = \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('tca.BE.new', 'ThRating');
         $ratefield = \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('tca.BE.new', 'ThRating');
         $steporder = \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('tca.BE.new', 'ThRating');
@@ -144,7 +139,6 @@ class Tca
      *
      * @param $params
      * @param $pObj
-     * @return void
      */
     public function getRatingRecordTitle(&$params, &$pObj)
     {
@@ -157,7 +151,6 @@ class Tca
      *
      * @param $params
      * @param $pObj
-     * @return void
      */
     public function getVoteRecordTitle(&$params, &$pObj)
     {

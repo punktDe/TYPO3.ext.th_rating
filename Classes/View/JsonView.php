@@ -73,7 +73,6 @@ class JsonView extends \TYPO3\CMS\Extbase\Mvc\View\JsonView
      * Initializes this view.
      *
      * Override this method for initializing your concrete view implementation.
-     * @return void
      * @api
      */
 

@@ -51,7 +51,6 @@ class RatingobjectRepository extends Repository
 
     /**
      * @param   \Thucke\ThRating\Service\ExtensionHelperService $extensionHelperService
-     * @return  void
      */
     /** @noinspection PhpUnused */
     public function injectExtensionHelperService(ExtensionHelperService $extensionHelperService): void

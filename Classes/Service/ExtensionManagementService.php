@@ -39,7 +39,6 @@ class ExtensionManagementService extends AbstractExtensionService
 
     /**
      * @param    \Thucke\ThRating\Service\ExtensionHelperService $extensionHelperService
-     * @return    void
      */
     public function injectExtensionHelperService(ExtensionHelperService $extensionHelperService)
     {

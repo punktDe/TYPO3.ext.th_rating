@@ -40,7 +40,6 @@ class AccessControlService extends AbstractExtensionService
 
     /**
      * @param \TYPO3\CMS\Extbase\Domain\Repository\FrontendUserRepository $frontendUserRepository
-     * @return void
      */
 
     /** @noinspection PhpUnused */
@@ -56,7 +55,6 @@ class AccessControlService extends AbstractExtensionService
 
     /**
      * @param \Thucke\ThRating\Domain\Repository\VoterRepository $voterRepository
-     * @return void
      */
 
     /** @noinspection PhpUnused */

@@ -78,7 +78,6 @@ class Rating extends AbstractEntity
 
     /**
      * @param \TYPO3\CMS\Extbase\Object\ObjectManagerInterface	$objectManager
-     * @return void
      */
     /** @noinspection PhpUnused */
     public function injectObjectManager(ObjectManagerInterface $objectManager): void
@@ -93,7 +92,6 @@ class Rating extends AbstractEntity
 
     /**
      * @param \Thucke\ThRating\Domain\Repository\VoteRepository $voteRepository
-     * @return void
      */
     public function injectVoteRepository(VoteRepository $voteRepository): void
     {
@@ -107,7 +105,6 @@ class Rating extends AbstractEntity
 
     /**
      * @param	\Thucke\ThRating\Service\ExtensionHelperService $extensionHelperService
-     * @return	void
      */
     /** @noinspection PhpUnused */
     public function injectExtensionHelperService(ExtensionHelperService $extensionHelperService): void
@@ -156,7 +153,6 @@ class Rating extends AbstractEntity
     /**
      * Initializes a new rating object
      * @throws \TYPO3\CMS\Extbase\Configuration\Exception\InvalidConfigurationTypeException
-     * @return void
      */
     public function initializeObject(): void
     {
@@ -175,7 +171,6 @@ class Rating extends AbstractEntity
      * Sets the ratingobject this rating is part of
      *
      * @param \Thucke\ThRating\Domain\Model\Ratingobject $ratingobject The Rating
-     * @return void
      */
     public function setRatingobject(Ratingobject $ratingobject): void
     {
@@ -197,7 +192,6 @@ class Rating extends AbstractEntity
      * Sets the rating object uid
      *
      * @param int $ratedobjectuid
-     * @return void
      */
     public function setRatedobjectuid($ratedobjectuid): void
     {
@@ -218,7 +212,6 @@ class Rating extends AbstractEntity
      * Adds a vote to this rating
      *
      * @param \Thucke\ThRating\Domain\Model\Vote $vote
-     * @return void
      */
     public function addVote(Vote $vote): void
     {
@@ -232,7 +225,6 @@ class Rating extends AbstractEntity
      *
      * @param \Thucke\ThRating\Domain\Model\Vote $existingVote
      * @param \Thucke\ThRating\Domain\Model\Vote $newVote
-     * @return void
      */
     public function updateVote(Vote $existingVote, Vote $newVote): void
     {
@@ -246,7 +238,6 @@ class Rating extends AbstractEntity
      * Remove a vote from this rating
      *
      * @param \Thucke\ThRating\Domain\Model\Vote $voteToRemove The vote to be removed
-     * @return void
      */
     /** @noinspection PhpUnused */
     public function removeVote(Vote $voteToRemove): void
@@ -257,8 +248,6 @@ class Rating extends AbstractEntity
 
     /**
      * Remove all votes from this rating
-     *
-     * @return void
      */
     /** @noinspection PhpUnused */
     public function removeAllVotes(): void
@@ -281,7 +270,6 @@ class Rating extends AbstractEntity
      * Checks all votes of this rating and sets currentrates accordingly
      *
      * This method is used for maintenance to assure consistency
-     * @return void
      */
     public function checkCurrentrates(): void
     {
@@ -307,7 +295,6 @@ class Rating extends AbstractEntity
      * Adds a vote to the calculations of this rating
      *
      * @param \Thucke\ThRating\Domain\Model\Vote $voting The vote to be added
-     * @return void
      */
     public function addCurrentrate(Vote $voting): void
     {
@@ -333,7 +320,6 @@ class Rating extends AbstractEntity
      * Adds a vote to the calculations of this rating
      *
      * @param \Thucke\ThRating\Domain\Model\Vote $voting The vote to be removed
-     * @return void
      */
     public function removeCurrentrate(Vote $voting): void
     {

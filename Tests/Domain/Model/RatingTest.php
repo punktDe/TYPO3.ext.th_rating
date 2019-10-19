@@ -1,15 +1,15 @@
 <?php
 namespace Thucke\ThRating\Tests\Domain\Model;
 
-use Thucke\ThRating\Domain\Model\Rating;
-use Thucke\ThRating\Domain\Validator\RatingValidator;
 use Nimut\TestingFramework\TestCase\UnitTestCase;
-use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
-use Thucke\ThRating\Domain\Model\Vote;
+use Thucke\ThRating\Domain\Model\Rating;
 use Thucke\ThRating\Domain\Model\Ratingobject;
 use Thucke\ThRating\Domain\Model\Stepconf;
+use Thucke\ThRating\Domain\Model\Vote;
 use Thucke\ThRating\Domain\Repository\StepconfRepository;
 use Thucke\ThRating\Domain\Repository\VoteRepository;
+use Thucke\ThRating\Domain\Validator\RatingValidator;
+use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 
 /***************************************************************
 *  Copyright notice

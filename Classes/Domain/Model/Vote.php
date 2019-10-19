@@ -78,7 +78,6 @@ class Vote extends AbstractEntity
 
     /**
      * @param \TYPO3\CMS\Extbase\Object\ObjectManagerInterface	$objectManager
-     * @return void
      */
     /** @noinspection PhpUnused */
     public function injectObjectManager(ObjectManagerInterface $objectManager): void
@@ -116,7 +115,6 @@ class Vote extends AbstractEntity
     /**
      * Initializes the new vote object
      * @throws \TYPO3\CMS\Extbase\Configuration\Exception\InvalidConfigurationTypeException
-     * @return void
      */
     public function initializeObject(): void
     {
@@ -135,7 +133,6 @@ class Vote extends AbstractEntity
      * Sets the rating this vote is part of
      *
      * @param \Thucke\ThRating\Domain\Model\Rating $rating The Rating
-     * @return void
      */
     public function setRating(Rating $rating): void
     {
@@ -157,7 +154,6 @@ class Vote extends AbstractEntity
      * Sets the frontenduser of this vote
      *
      * @param \Thucke\ThRating\Domain\Model\Voter $voter	The frontenduser
-     * @return void
      */
     public function setVoter(Voter $voter): void
     {
@@ -178,7 +174,6 @@ class Vote extends AbstractEntity
      * Sets the choosen stepconfig
      *
      * @param \Thucke\ThRating\Domain\Model\Stepconf $vote
-     * @return void
      */
     public function setVote($vote): void
     {

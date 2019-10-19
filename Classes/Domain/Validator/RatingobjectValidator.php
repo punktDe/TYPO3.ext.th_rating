@@ -44,7 +44,6 @@ class RatingobjectValidator extends AbstractValidator
      * If the given Ratingobject is valid
      *
      * @param \Thucke\ThRating\Domain\Model\Ratingobject $ratingobject The ratingobject
-     * @return void
      */
     protected function isValid($ratingobject)
     {

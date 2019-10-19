@@ -50,7 +50,6 @@ class StepnameValidator extends AbstractValidator
 
     /**
      * @param \Thucke\ThRating\Domain\Repository\StepnameRepository $stepnameRepository
-     * @return void
      */
     /** @noinspection PhpUnused */
     public function injectStepnameRepository(\Thucke\ThRating\Domain\Repository\StepnameRepository $stepnameRepository)
@@ -63,7 +62,6 @@ class StepnameValidator extends AbstractValidator
      *
      * @param \Thucke\ThRating\Domain\Model\Stepname $stepname
      * @throws \TYPO3\CMS\Extbase\Persistence\Exception\InvalidQueryException
-     * @return void
      */
     protected function isValid($stepname): void
     {

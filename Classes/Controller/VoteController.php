@@ -1,6 +1,5 @@
 <?php
 /** @noinspection PhpUnnecessaryFullyQualifiedNameInspection */
-
 /** @noinspection PhpFullyQualifiedNameUsageInspection */
 namespace Thucke\ThRating\Controller;
 
@@ -169,7 +168,6 @@ class VoteController extends ActionController
 
     /**
      * @param    \Thucke\ThRating\Domain\Validator\VoteValidator $voteValidator
-     * @return    void
      */
     /** @noinspection PhpUnused */
     public function injectVoteValidator(VoteValidator $voteValidator): void
@@ -184,7 +182,6 @@ class VoteController extends ActionController
 
     /**
      * @param    \Thucke\ThRating\Domain\Validator\RatingValidator $ratingValidator
-     * @return    void
      */
     /** @noinspection PhpUnused */
     public function injectRatingValidator(RatingValidator $ratingValidator): void
@@ -199,7 +196,6 @@ class VoteController extends ActionController
 
     /**
      * @param \Thucke\ThRating\Domain\Repository\RatingobjectRepository $ratingobjectRepository
-     * @return void
      */
     /** @noinspection PhpUnused */
     public function injectRatingobjectRepository(RatingobjectRepository $ratingobjectRepository): void
@@ -214,7 +210,6 @@ class VoteController extends ActionController
 
     /**
      * @param \Thucke\ThRating\Domain\Repository\StepconfRepository $stepconfRepository
-     * @return void
      */
     /** @noinspection PhpUnused */
     public function injectStepconfRepository(StepconfRepository $stepconfRepository): void
@@ -229,7 +224,6 @@ class VoteController extends ActionController
 
     /**
      * @param \Thucke\ThRating\Domain\Validator\StepconfValidator $stepconfValidator
-     * @return    void
      */
     /** @noinspection PhpUnused */
     public function injectStepconfValidator(StepconfValidator $stepconfValidator): void
@@ -244,7 +238,6 @@ class VoteController extends ActionController
 
     /**
      * @param \Thucke\ThRating\Service\ExtensionHelperService $extensionHelperService
-     * @return void
      */
     /** @noinspection PhpUnused */
     public function injectExtensionHelperService(ExtensionHelperService $extensionHelperService): void
@@ -267,7 +260,6 @@ class VoteController extends ActionController
      * @throws InvalidStoragePageException*
      * @throws \Exception
      * @throws \TYPO3\CMS\Extbase\Mvc\Exception\NoSuchArgumentException
-     * @return void
      */
     /** @noinspection PhpMissingParentCallCommonInspection */
     protected function initializeAction(): void
@@ -387,8 +379,6 @@ class VoteController extends ActionController
      * @throws \TYPO3\CMS\Extbase\Mvc\Exception\StopActionException
      * @throws \TYPO3\CMS\Extbase\SignalSlot\Exception\InvalidSlotException
      * @throws \TYPO3\CMS\Extbase\SignalSlot\Exception\InvalidSlotReturnException
-     * @return void
-     * dontverifyrequesthash
      */
     /** @noinspection PhpUnused */
     public function createAction(\Thucke\ThRating\Domain\Model\Vote $vote)
@@ -644,7 +634,6 @@ class VoteController extends ActionController
      * @throws \TYPO3\CMS\Extbase\Mvc\Exception\NoSuchArgumentException
      * @throws \TYPO3\CMS\Extbase\SignalSlot\Exception\InvalidSlotException
      * @throws \TYPO3\CMS\Extbase\SignalSlot\Exception\InvalidSlotReturnException
-     * @return void
      */
     protected function initSignalSlotDispatcher($slotName): void
     {
@@ -686,7 +675,6 @@ class VoteController extends ActionController
      * @param \Thucke\ThRating\Domain\Model\Vote $vote the vote this selection is for
      * @throws \Thucke\ThRating\Exception\RecordNotFoundException
      * @throws \TYPO3\CMS\Core\Exception
-     * @return void
      * @ignorevalidation $vote
      */
     protected function initVoting(Vote $vote = null)
@@ -728,10 +716,8 @@ class VoteController extends ActionController
 
     /**
      * Check preconditions for settings
-     *
-     * @return void
      */
-    protected function initSettings():void
+    protected function initSettings(): void
     {
         $this->logger->log(LogLevel::DEBUG, 'Entry initSettings');
 
@@ -801,8 +787,6 @@ class VoteController extends ActionController
     /**
      * Build array of possible AJAX selection configuration
      * @param \Thucke\ThRating\Domain\Model\Vote $vote the vote this selection is for
-     *
-     * @return void
      */
     protected function setAjaxSelections(\Thucke\ThRating\Domain\Model\Vote $vote): void
     {
@@ -837,7 +821,6 @@ class VoteController extends ActionController
      * Fill all variables for FLUID
      *
      * @throws \Thucke\ThRating\Exception\InvalidAggregateRatingSchemaTypeException
-     * @return void
      */
     protected function fillSummaryView(): void
     {
@@ -897,7 +880,6 @@ class VoteController extends ActionController
      *
      * @throws InvalidStoragePageException if plugin.tx_thrating.storagePid has not been set
      * @throws FeUserStoragePageException if plugin.tx_felogin_pi1.storagePid has not been set
-     * @return void
      */
     protected function setStoragePids(): void
     {
@@ -934,7 +916,6 @@ class VoteController extends ActionController
 
     /**
      * @param array $frameworkConfiguration
-     * @return void
      */
     protected function setFrameworkConfiguration(array $frameworkConfiguration): void
     {
@@ -955,7 +936,6 @@ class VoteController extends ActionController
      * @param string $messageTitle
      * @param string $severity
      * @param array $additionalInfo
-     * @return    void
      */
     private function logFlashMessage(string $messageText, string $messageTitle, string $severity, array $additionalInfo): void
     {
@@ -1085,7 +1065,6 @@ class VoteController extends ActionController
      *
      * @param    array $signalSlotMessage array containing signal information
      * @param    array $customContent array by reference to return pre and post content
-     * @return    void
      */
     /** @noinspection PhpUnused */
     public function afterRatinglinkActionHandler(/** @noinspection PhpUnusedParameterInspection */ $signalSlotMessage, &$customContent)
@@ -1102,7 +1081,6 @@ class VoteController extends ActionController
      *
      * @param    array $signalSlotMessage array containing signal information
      * @param    array $customContent array by reference to return pre and post content
-     * @return    void
      */
     /** @noinspection PhpUnusedParameterInspection */
     /** @noinspection PhpUnused */

@@ -55,7 +55,6 @@ class VoteValidator extends AbstractValidator
      * If the given Vote is valid
      *
      * @param \Thucke\ThRating\Domain\Model\Vote $vote The vote
-     * @return void
      */
     protected function isValid($vote)
     {

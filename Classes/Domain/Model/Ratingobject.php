@@ -87,7 +87,6 @@ class Ratingobject extends AbstractEntity
 
     /**
      * @param \Thucke\ThRating\Domain\Repository\StepconfRepository $stepconfRepository
-     * @return void
      */
     /** @noinspection PhpUnused */
     public function injectStepconfRepository(StepconfRepository $stepconfRepository): void
@@ -102,7 +101,6 @@ class Ratingobject extends AbstractEntity
 
     /**
      * @param	\Thucke\ThRating\Service\ExtensionHelperService $extensionHelperService
-     * @return	void
      */
     /** @noinspection PhpUnused */
     public function injectExtensionHelperService(ExtensionHelperService $extensionHelperService): void
@@ -116,7 +114,6 @@ class Ratingobject extends AbstractEntity
      * @param	string	$ratefield The rating objects field name
      * @validate 	$ratetable StringLength(minimum = 3, maximum = 60)
      * @validate	$ratefield StringLength(minimum = 3, maximum = 60)
-     * @return 	void
      */
     public function __construct($ratetable = null, $ratefield = null)
     {
@@ -131,7 +128,6 @@ class Ratingobject extends AbstractEntity
 
     /**
      * Initializes a new ratingobject
-     * @return void
      */
     public function initializeObject(): void
     {
@@ -149,7 +145,6 @@ class Ratingobject extends AbstractEntity
      * Sets the rating table name
      *
      * @param string $ratetable
-     * @return void
      */
     public function setRatetable($ratetable): void
     {
@@ -170,7 +165,6 @@ class Ratingobject extends AbstractEntity
      * Sets the rating field name
      *
      * @param string $ratefield
-     * @return void
      */
     public function setRatefield($ratefield): void
     {
@@ -191,7 +185,6 @@ class Ratingobject extends AbstractEntity
      * Adds a rating to this object
      *
      * @param \Thucke\ThRating\Domain\Model\Rating $rating
-     * @return void
      */
     /** @noinspection PhpUnused */
     public function addRating(Rating $rating): void
@@ -205,7 +198,6 @@ class Ratingobject extends AbstractEntity
      * Remove a rating from this object
      *
      * @param \Thucke\ThRating\Domain\Model\Rating $rating The rating to be removed
-     * @return void
      */
     /** @noinspection PhpUnused */
     public function removeRating(Rating $rating): void
@@ -215,8 +207,6 @@ class Ratingobject extends AbstractEntity
 
     /**
      * Remove all ratings from this object
-     *
-     * @return void
      */
     /** @noinspection PhpUnused */
     public function removeAllRatings(): void
@@ -228,7 +218,6 @@ class Ratingobject extends AbstractEntity
      * Adds a stepconf to this object
      *
      * @param \Thucke\ThRating\Domain\Model\Stepconf $stepconf
-     * @return void
      */
     public function addStepconf(Stepconf $stepconf): void
     {
@@ -243,7 +232,6 @@ class Ratingobject extends AbstractEntity
      * Sets all ratings of this ratingobject
      *
      * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Thucke\ThRating\Domain\Model\Stepconf> $stepconfs The step configurations for this ratingobject
-     * @return void
      */
     /** @noinspection PhpUnused */
     public function setStepconfs(ObjectStorage $stepconfs): void
@@ -265,7 +253,6 @@ class Ratingobject extends AbstractEntity
      * Sets all ratings of this ratingobject
      *
      * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Thucke\ThRating\Domain\Model\Rating> $ratings The ratings of the organization
-     * @return void
      */
     /** @noinspection PhpUnused */
     public function setRatings(ObjectStorage $ratings): void

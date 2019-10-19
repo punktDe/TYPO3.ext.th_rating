@@ -88,7 +88,6 @@ class CookieService extends AbstractExtensionService
      * @param    int $cookieExpire expire time for the cookie
      *
      * @throws \TYPO3\CMS\Core\Exception
-     * @return    void
      */
     public function setVoteCookie($cookieName, $cookieValue, $cookieExpire = 0)
     {
@@ -102,16 +101,16 @@ class CookieService extends AbstractExtensionService
             // If the cookie lifetime is set, use it:
             $cookieExpire = $GLOBALS['EXEC_TIME'] + $cookieExpire;
             // Use the secure option when the current request is served by a secure connection:
-            $cookieSecure = (bool) $settings['cookieSecure'] && \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SSL');
+            $cookieSecure = (bool)$settings['cookieSecure'] && \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SSL');
             // Deliver cookies only via HTTP and prevent possible XSS by JavaScript:
-            $cookieHttpOnly = (bool) $settings['cookieHttpOnly'];
+            $cookieHttpOnly = (bool)$settings['cookieHttpOnly'];
 
             // Do not set cookie if cookieSecure is set to "1" (force HTTPS) and no secure channel is used:
-            if ((int) $settings['cookieSecure'] !== 1 || \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SSL')) {
+            if ((int)$settings['cookieSecure'] !== 1 || \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SSL')) {
                 setcookie(
                     $cookieName,
                     $cookieValue,
-                    (int) $cookieExpire,
+                    (int)$cookieExpire,
                     $cookiePath,
                     $cookieDomain,
                     $cookieSecure,

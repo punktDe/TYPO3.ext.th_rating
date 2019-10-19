@@ -59,7 +59,6 @@ class RatingImage extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
 
     /**
      * @param \TYPO3\CMS\Frontend\Imaging\GifBuilder $gifBuilder
-     * @return void
      */
     public function injectGifBuilder(\TYPO3\CMS\Frontend\Imaging\GifBuilder $gifBuilder): void
     {
@@ -71,7 +70,6 @@ class RatingImage extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * Constructs a new image object
      *
      * @param mixed	$conf	either an array consisting of GIFBUILDER typoscript or a plain string having the filename
-     * @return void
      */
     public function __construct($conf = null)
     {
@@ -83,7 +81,6 @@ class RatingImage extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
 
     /**
      * Initializes the new vote object
-     * @return void
      */
     public function initializeObject(): void
     {
@@ -97,7 +94,6 @@ class RatingImage extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * Sets the typoscript configuration for the GIFBUILDER object
      *
      * @param mixed	$conf	either an array consisting of GIFBUILDER typoscript or a plain string having the filename
-     * @return void
      */
     public function setConf($conf): void
     {
@@ -132,7 +128,6 @@ class RatingImage extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * Sets the filename of the image
      *
      * @param string $imageFile
-     * @return void
      */
     public function setImageFile($imageFile): void
     {

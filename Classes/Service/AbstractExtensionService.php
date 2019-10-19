@@ -49,7 +49,6 @@ class AbstractExtensionService implements \TYPO3\CMS\Core\SingletonInterface
      * Constructor
      * @param \TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager
      * @param \Thucke\ThRating\Service\LoggingService $loggingService
-     * @return void
      */
     public function __construct(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager, LoggingService $loggingService)
     {

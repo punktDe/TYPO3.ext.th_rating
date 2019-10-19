@@ -53,7 +53,6 @@ class RatingValidator extends AbstractValidator
      * If the given Rating is valid
      *
      * @param \Thucke\ThRating\Domain\Model\Rating $rating The rating
-     * @return void
      */
     protected function isValid($rating)
     {

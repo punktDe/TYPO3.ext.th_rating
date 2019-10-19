@@ -70,7 +70,6 @@ class DynamicCssEvaluator
      * @param $_funcRef
      * @param $params
      * @param null $pObj
-     * @return void
      */
     public function clearCachePostProc($_funcRef, $params, $pObj = null)
     {

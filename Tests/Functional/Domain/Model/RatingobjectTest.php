@@ -42,7 +42,7 @@ class RatingobjectTest extends UnitTestCase
     /**
      * @var Ratingobject
      */
-    protected $fixture = null;
+    protected $fixture;
 
     public function setUp()
     {

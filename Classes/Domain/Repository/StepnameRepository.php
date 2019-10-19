@@ -45,7 +45,6 @@ class StepnameRepository extends Repository
 
     /**
      * Initialize this repository
-     * @return void
      */
     /** @noinspection PhpUnused */
     public function initializeObject(): void
@@ -195,8 +194,6 @@ class StepnameRepository extends Repository
 
     /**
      * Set default query settings to find ALL records
-     *
-     * @return    void
      */
     public function clearQuerySettings(): void
     {
