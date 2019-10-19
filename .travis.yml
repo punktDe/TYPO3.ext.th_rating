@@ -68,7 +68,7 @@ script:
   - >
     echo;
     echo "Running Sonar";
-    sonar-scanner -Dproject.settings=Build/.sonar-project.properties
+    sonar-scanner
 
   - >
     echo;
