@@ -45,7 +45,6 @@ class Typo3VersionViewHelper extends AbstractViewHelper
         $this->t3VersionNumber = GeneralUtility::makeInstance(VersionNumberUtility::class)->getCurrentTypo3Version();
         $this->registerArgument('testVersion', 'string', 'The version number to check against', true);
         $this->registerArgument('testOperator', 'string', 'The operator', true);
-
     }
 
     /**
@@ -58,6 +57,7 @@ class Typo3VersionViewHelper extends AbstractViewHelper
     {
         $testVersion = $this->arguments['testVersion'];
         $testOperator = $this->arguments['testOperator'];
+
         return version_compare($this->t3VersionNumber, $testVersion, $testOperator);
     }
 }

@@ -2,11 +2,11 @@
 namespace Thucke\ThRating\Domain\Model;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Configuration\ConfigurationManager;
 use TYPO3\CMS\Extbase\Configuration\Exception\InvalidConfigurationTypeException;
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
-use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
-use TYPO3\CMS\Extbase\Configuration\ConfigurationManager;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
+use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
 
 /***************************************************************
 *  Copyright notice
@@ -115,16 +115,19 @@ class Vote extends AbstractEntity
 
     /**
      * Initializes the new vote object
-     * @return void
      * @throws \TYPO3\CMS\Extbase\Configuration\Exception\InvalidConfigurationTypeException
+     * @return void
      */
     public function initializeObject(): void
     {
         if (empty($this->objectManager)) {
             $this->objectManager = GeneralUtility::makeInstance(ObjectManager::class);
         }
-        $this->settings = $this->objectManager->get(ConfigurationManager::class)->getConfiguration('Settings',
-            'thRating', 'pi1');
+        $this->settings = $this->objectManager->get(ConfigurationManager::class)->getConfiguration(
+            'Settings',
+            'thRating',
+            'pi1'
+        );
         //\TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump($this,get_class($this).' initializeObject');
     }
 

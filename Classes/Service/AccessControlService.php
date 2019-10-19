@@ -1,5 +1,5 @@
-<?php /** @noinspection PhpFullyQualifiedNameUsageInspection */
-
+<?php
+/** @noinspection PhpFullyQualifiedNameUsageInspection */
 namespace Thucke\ThRating\Service;
 
 /***************************************************************
@@ -42,6 +42,7 @@ class AccessControlService extends AbstractExtensionService
      * @param \TYPO3\CMS\Extbase\Domain\Repository\FrontendUserRepository $frontendUserRepository
      * @return void
      */
+
     /** @noinspection PhpUnused */
     public function injectFrontendUserRepository(\TYPO3\CMS\Extbase\Domain\Repository\FrontendUserRepository $frontendUserRepository)
     {
@@ -57,6 +58,7 @@ class AccessControlService extends AbstractExtensionService
      * @param \Thucke\ThRating\Domain\Repository\VoterRepository $voterRepository
      * @return void
      */
+
     /** @noinspection PhpUnused */
     public function injectVoterRepository(\Thucke\ThRating\Domain\Repository\VoterRepository $voterRepository)
     {
@@ -87,6 +89,7 @@ class AccessControlService extends AbstractExtensionService
     /**
      * @return bool
      */
+
     /** @noinspection PhpUnused */
     public function backendAdminIsLoggedIn()
     {
@@ -104,6 +107,7 @@ class AccessControlService extends AbstractExtensionService
     /**
      * @return array
      */
+
     /** @noinspection PhpUnused */
     public function getFrontendUserGroups()
     {
@@ -117,6 +121,7 @@ class AccessControlService extends AbstractExtensionService
     /**
      * @return int|null
      */
+
     /** @noinspection PhpUnused */
     public function getFrontendUserUid()
     {
@@ -131,6 +136,7 @@ class AccessControlService extends AbstractExtensionService
      * @param mixed $voter
      * @return \TYPO3\CMS\Extbase\Domain\Model\FrontendUser
      */
+
     /** @noinspection PhpUnused */
     public function getFrontendUser($voter = null)
     {

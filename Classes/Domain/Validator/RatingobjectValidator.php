@@ -1,5 +1,5 @@
-<?php /** @noinspection PhpFullyQualifiedNameUsageInspection */
-
+<?php
+/** @noinspection PhpFullyQualifiedNameUsageInspection */
 namespace Thucke\ThRating\Domain\Validator;
 
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;

@@ -40,8 +40,8 @@ class StepnameRepository extends Repository
         TABLE_NAME = 'tx_thrating_domain_model_stepname';
     protected const STEPCONF_NAME = 'stepconf';
     protected const SYS_LANG_UID_LITERAL = 'sys_language_uid';
-    protected     /** @noinspection PhpUnused */
-        $defaultOrderings = [ self::SYS_LANG_UID_LITERAL => QueryInterface::ORDER_ASCENDING];
+    /** @noinspection PhpUnused */
+    protected $defaultOrderings = [ self::SYS_LANG_UID_LITERAL => QueryInterface::ORDER_ASCENDING];
 
     /**
      * Initialize this repository
@@ -92,10 +92,10 @@ class StepnameRepository extends Repository
         $query->getQuerySettings()->setRespectSysLanguage(false);
         $query->matching(
             $query->logicalAnd(
-            [$query->equals(self::STEPCONF_NAME, $stepname->getStepconf()->getUid()),
+                [$query->equals(self::STEPCONF_NAME, $stepname->getStepconf()->getUid()),
                         $query->equals(self::SYS_LANG_UID_LITERAL, $stepname->get_languageUid()), ]
+            )
         )
-                    )
                 ->setLimit(1);
         $queryResult = $query->execute();
         if (count($queryResult) !== 0) {
@@ -118,7 +118,7 @@ class StepnameRepository extends Repository
         $query	->getQuerySettings()->setRespectSysLanguage(false);
         $query	->matching(
             $query->equals(self::STEPCONF_NAME, $stepname->getStepconf()->getUid())
-                    );
+        );
         $queryResult = $query
             ->execute(true)
             ->toArray();  /** instead of setReturnRawQueryResult(true); */

@@ -1,14 +1,12 @@
 <?php
 /** @noinspection PhpUnnecessaryFullyQualifiedNameInspection */
 /** @noinspection PhpFullyQualifiedNameUsageInspection */
-
 namespace Thucke\ThRating\Domain\Repository;
 
 use Thucke\ThRating\Domain\Model\Ratingobject;
 use Thucke\ThRating\Domain\Validator\RatingobjectValidator;
 use Thucke\ThRating\Exception\RecordNotFoundException;
 use Thucke\ThRating\Service\ExtensionHelperService;
-use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
 use TYPO3\CMS\Extbase\Persistence\Repository;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 
@@ -67,9 +65,9 @@ class RatingobjectRepository extends Repository
      * @param string $ratetable The tablename of the ratingobject
      * @param string $ratefield The fieldname of the ratingobject
      * @param bool $addIfNotFound Set to true if new objects should instantly be added
-     * @return \Thucke\ThRating\Domain\Model\Ratingobject The ratingobject
      * @throws \Thucke\ThRating\Exception\RecordNotFoundException
      * @throws \TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException
+     * @return \Thucke\ThRating\Domain\Model\Ratingobject The ratingobject
      */
     public function findMatchingTableAndField($ratetable, $ratefield, $addIfNotFound = false): Ratingobject
     {
@@ -79,10 +77,10 @@ class RatingobjectRepository extends Repository
         $query = $this->createQuery();
         $query->matching($query->logicalAnd([
             $query->equals('ratetable', $ratetable),
-            $query->equals('ratefield', $ratefield)
+            $query->equals('ratefield', $ratefield),
         ]))->setLimit(1);
 
-        /** @var \TYPO3\CMS\Extbase\Persistence\QueryResultInterface  $queryResult */
+        /** @var \TYPO3\CMS\Extbase\Persistence\QueryResultInterface $queryResult */
         $queryResult = $query->execute();
 
         if (count($queryResult) !== 0) {
@@ -98,13 +96,15 @@ class RatingobjectRepository extends Repository
         } else {
             throw new RecordNotFoundException(LocalizationUtility::translate('recordNotFound', 'ThRating'), 1567962473);
         }
+
         return $foundRow;
     }
 
     /**
      * Finds the specific ratingobject by giving table and fieldname
      *
-     * @param boolean   Switch to fetch ALL entries regardless of their pid
+     * @param bool   Switch to fetch ALL entries regardless of their pid
+     * @param mixed $ignoreStoragePage
      * @return \TYPO3\CMS\Extbase\Persistence\QueryResultInterface|array All ratingobjects of the site
      */
     /** @noinspection PhpMissingParentCallCommonInspection */
@@ -112,6 +112,7 @@ class RatingobjectRepository extends Repository
     {
         $query = $this->createQuery();
         $query->getQuerySettings()->setRespectStoragePage(!$ignoreStoragePage);
+
         return $query->execute();
     }
 }

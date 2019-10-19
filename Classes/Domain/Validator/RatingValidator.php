@@ -61,15 +61,19 @@ class RatingValidator extends AbstractValidator
         if (!$this->isEmpty($rating) && $rating instanceof Rating) {
             $ratedobjectuid = $rating->getRatedobjectuid();
             if (empty($ratedobjectuid)) {
-                $this->addError(LocalizationUtility::translate('error.validator.rating.ratedobjectuid', 'ThRating'),
-                    1283536994);
+                $this->addError(
+                    LocalizationUtility::translate('error.validator.rating.ratedobjectuid', 'ThRating'),
+                    1283536994
+                );
             }
             if (!$rating->getRatingobject() instanceof Ratingobject) {
-                $this->addError(LocalizationUtility::translate('error.validator.rating.ratingobject', 'ThRating'),
-                    1283538549);
+                $this->addError(
+                    LocalizationUtility::translate('error.validator.rating.ratingobject', 'ThRating'),
+                    1283538549
+                );
             }
         } else {
-            $this->addError(LocalizationUtility::translate('error.validator.rating.empty', 'ThRating'),1568138421);
+            $this->addError(LocalizationUtility::translate('error.validator.rating.empty', 'ThRating'), 1568138421);
         }
     }
 }

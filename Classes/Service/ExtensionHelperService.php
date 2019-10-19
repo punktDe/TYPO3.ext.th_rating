@@ -1,29 +1,29 @@
-<?php /** @noinspection PhpFullyQualifiedNameUsageInspection */
-
+<?php
+/** @noinspection PhpFullyQualifiedNameUsageInspection */
 namespace Thucke\ThRating\Service;
 
 use Thucke\ThRating\Domain\Model\Rating;
+use Thucke\ThRating\Domain\Model\RatingImage;
 use Thucke\ThRating\Domain\Model\Ratingobject;
 use Thucke\ThRating\Domain\Model\Stepconf;
 use Thucke\ThRating\Domain\Model\Stepname;
-use Thucke\ThRating\Domain\Model\RatingImage;
 use Thucke\ThRating\Domain\Model\Vote;
 use Thucke\ThRating\Domain\Repository\RatingobjectRepository;
 use Thucke\ThRating\Domain\Repository\RatingRepository;
 use Thucke\ThRating\Domain\Repository\SyslangRepository;
 use Thucke\ThRating\Domain\Repository\VoteRepository;
-use Thucke\ThRating\Domain\Validator\VoteValidator;
 use Thucke\ThRating\Domain\Validator\RatingobjectValidator;
 use Thucke\ThRating\Domain\Validator\RatingValidator;
 use Thucke\ThRating\Domain\Validator\StepconfValidator;
+use Thucke\ThRating\Domain\Validator\VoteValidator;
 use Thucke\ThRating\Evaluation\DynamicCssEvaluator;
 use TYPO3\CMS\Core\Log\Logger;
+use TYPO3\CMS\Core\Log\LogLevel;
+use TYPO3\CMS\Core\Utility\ArrayUtility;
+use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
-use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
-use TYPO3\CMS\Core\Utility\ArrayUtility;
-use TYPO3\CMS\Core\Log\LogLevel;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
 /***************************************************************
@@ -68,6 +68,7 @@ class ExtensionHelperService extends AbstractExtensionService
      * @param \Thucke\ThRating\Domain\Repository\RatingobjectRepository $ratingobjectRepository
      * @return void
      */
+
     /** @noinspection PhpUnused */
     public function injectRatingobjectRepository(RatingobjectRepository $ratingobjectRepository): void
     {
@@ -83,6 +84,7 @@ class ExtensionHelperService extends AbstractExtensionService
      * @param \Thucke\ThRating\Domain\Repository\RatingRepository $ratingRepository
      * @return void
      */
+
     /** @noinspection PhpUnused */
     public function injectRatingRepository(RatingRepository $ratingRepository): void
     {
@@ -97,6 +99,7 @@ class ExtensionHelperService extends AbstractExtensionService
     /**
      * @param \Thucke\ThRating\Domain\Repository\VoteRepository $voteRepository
      */
+
     /** @noinspection PhpUnused */
     public function injectVoteRepository(VoteRepository $voteRepository): void
     {
@@ -111,6 +114,7 @@ class ExtensionHelperService extends AbstractExtensionService
     /**
      * @param AccessControlService $accessControllService
      */
+
     /** @noinspection PhpUnused */
     public function injectAccessControlService(AccessControlService $accessControllService): void
     {
@@ -125,6 +129,7 @@ class ExtensionHelperService extends AbstractExtensionService
     /**
      * @param \Thucke\ThRating\Domain\Validator\StepconfValidator $stepconfValidator
      */
+
     /** @noinspection PhpUnused */
     public function injectStepconfValidator(StepconfValidator $stepconfValidator): void
     {
@@ -215,9 +220,9 @@ class ExtensionHelperService extends AbstractExtensionService
      * Returns a new or existing ratingobject
      *
      * @param array $settings
-     * @return \Thucke\ThRating\Domain\Model\Ratingobject
      * @throws \Thucke\ThRating\Exception\RecordNotFoundException
      * @throws \TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException
+     * @return \Thucke\ThRating\Domain\Model\Ratingobject
      */
     public function getRatingobject(array $settings): Ratingobject
     {
@@ -231,8 +236,12 @@ class ExtensionHelperService extends AbstractExtensionService
             }
             $settings = $this->completeConfigurationSettings($settings);
             $ratingobject = $this->ratingobjectRepository->findMatchingTableAndField(
-                $settings['ratetable'], $settings['ratefield'], RatingobjectRepository::ADD_IF_NOT_FOUND);
+                $settings['ratetable'],
+                $settings['ratefield'],
+                RatingobjectRepository::ADD_IF_NOT_FOUND
+            );
         }
+
         return $ratingobject;
     }
 
@@ -417,6 +426,7 @@ class ExtensionHelperService extends AbstractExtensionService
             //do not recreate file if it has greater than zero length
             if ($fstat[7] !== 0) {
                 $this->logger->log(LogLevel::DEBUG, 'Dynamic CSS file exists - exiting');
+
                 return $messageArray;
             }
         }

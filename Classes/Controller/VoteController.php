@@ -1,34 +1,34 @@
-<?php /** @noinspection PhpUnnecessaryFullyQualifiedNameInspection */
+<?php
+/** @noinspection PhpUnnecessaryFullyQualifiedNameInspection */
 
 /** @noinspection PhpFullyQualifiedNameUsageInspection */
-
 namespace Thucke\ThRating\Controller;
 
-use Thucke\ThRating\Exception\FeUserStoragePageException;
-use Thucke\ThRating\Exception\InvalidStoragePageException;
-use Thucke\ThRating\View\JsonView;
-use Thucke\ThRating\Domain\Model\Vote;
 use Thucke\ThRating\Domain\Model\Rating;
 use Thucke\ThRating\Domain\Model\Stepconf;
-use Thucke\ThRating\Domain\Repository\VoteRepository;
+use Thucke\ThRating\Domain\Model\Vote;
 use Thucke\ThRating\Domain\Repository\RatingobjectRepository;
 use Thucke\ThRating\Domain\Repository\StepconfRepository;
-use Thucke\ThRating\Domain\Validator\VoteValidator;
+use Thucke\ThRating\Domain\Repository\VoteRepository;
 use Thucke\ThRating\Domain\Validator\RatingValidator;
 use Thucke\ThRating\Domain\Validator\StepconfValidator;
+use Thucke\ThRating\Domain\Validator\VoteValidator;
+use Thucke\ThRating\Exception\FeUserStoragePageException;
+use Thucke\ThRating\Exception\InvalidStoragePageException;
 use Thucke\ThRating\Service\AccessControlService;
-use Thucke\ThRating\Service\RichSnippetService;
+use Thucke\ThRating\Service\CookieService;
 use Thucke\ThRating\Service\ExtensionHelperService;
 use Thucke\ThRating\Service\ExtensionManagementService;
-use Thucke\ThRating\Service\CookieService;
+use Thucke\ThRating\Service\RichSnippetService;
+use Thucke\ThRating\View\JsonView;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Log\LogLevel;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
-use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
+use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 
 /***************************************************************
  *  Copyright notice
@@ -197,11 +197,11 @@ class VoteController extends ActionController
      */
     protected $ratingobjectRepository;
 
-    /** @noinspection PhpUnused */
     /**
      * @param \Thucke\ThRating\Domain\Repository\RatingobjectRepository $ratingobjectRepository
      * @return void
      */
+    /** @noinspection PhpUnused */
     public function injectRatingobjectRepository(RatingobjectRepository $ratingobjectRepository): void
     {
         $this->ratingobjectRepository = $ratingobjectRepository;
@@ -212,11 +212,11 @@ class VoteController extends ActionController
      */
     protected $stepconfRepository;
 
-    /** @noinspection PhpUnused */
     /**
      * @param \Thucke\ThRating\Domain\Repository\StepconfRepository $stepconfRepository
      * @return void
      */
+    /** @noinspection PhpUnused */
     public function injectStepconfRepository(StepconfRepository $stepconfRepository): void
     {
         $this->stepconfRepository = $stepconfRepository;
@@ -227,11 +227,11 @@ class VoteController extends ActionController
      */
     protected $stepconfValidator;
 
-    /** @noinspection PhpUnused */
     /**
      * @param \Thucke\ThRating\Domain\Validator\StepconfValidator $stepconfValidator
      * @return    void
      */
+    /** @noinspection PhpUnused */
     public function injectStepconfValidator(StepconfValidator $stepconfValidator): void
     {
         $this->stepconfValidator = $stepconfValidator;
@@ -242,11 +242,11 @@ class VoteController extends ActionController
      */
     protected $extensionHelperService;
 
-    /** @noinspection PhpUnused */
     /**
      * @param \Thucke\ThRating\Service\ExtensionHelperService $extensionHelperService
      * @return void
      */
+    /** @noinspection PhpUnused */
     public function injectExtensionHelperService(ExtensionHelperService $extensionHelperService): void
     {
         $this->extensionHelperService = $extensionHelperService;
@@ -260,16 +260,16 @@ class VoteController extends ActionController
     {
     }
 
-    /** @noinspection PhpMissingParentCallCommonInspection */
     /**
      * Initializes the current action
      *
-     * @return void
      * @throws FeUserStoragePageException
      * @throws InvalidStoragePageException*
      * @throws \Exception
      * @throws \TYPO3\CMS\Extbase\Mvc\Exception\NoSuchArgumentException
+     * @return void
      */
+    /** @noinspection PhpMissingParentCallCommonInspection */
     protected function initializeAction(): void
     {
         //instantiate the logger
@@ -311,9 +311,9 @@ class VoteController extends ActionController
     /**
      * Index action for this controller.
      *
-     * @return string The rendered view
      * @throws \TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException
      * @throws \TYPO3\CMS\Extbase\Persistence\Exception\InvalidQueryException
+     * @return string The rendered view
      */
     public function indexAction()
     {
@@ -355,10 +355,10 @@ class VoteController extends ActionController
      * Displays the vote of the current user
      *
      * @param \Thucke\ThRating\Domain\Model\Vote $vote
-     * @return string The rendered voting
      * @throws \TYPO3\CMS\Core\Exception
      * @throws \Thucke\ThRating\Exception\InvalidAggregateRatingSchemaTypeException
      * @throws \Thucke\ThRating\Exception\RecordNotFoundException
+     * @return string The rendered voting
      */
     /** @noinspection PhpUnused */
     public function showAction(\Thucke\ThRating\Domain\Model\Vote $vote = null)
@@ -466,11 +466,11 @@ class VoteController extends ActionController
      * A classic SELECT input form will be provided to AJAX-submit the vote
      *
      * @param \Thucke\ThRating\Domain\Model\Vote $vote The new vote (used on callback from createAction)
-     * @return string The rendered view
-     * @ignorevalidation $vote
      * @throws \Thucke\ThRating\Exception\InvalidAggregateRatingSchemaTypeException*@throws \Thucke\ThRating\Exception\RecordNotFoundException
      * @throws \TYPO3\CMS\Core\Exception
      * @throws \Thucke\ThRating\Exception\RecordNotFoundException
+     * @return string The rendered view
+     * @ignorevalidation $vote
      */
     /** @noinspection PhpUnused */
     public function newAction(Vote $vote = null)
@@ -496,14 +496,14 @@ class VoteController extends ActionController
      * A graphic starrating object containing links will be provided to AJAX-submit the vote
      *
      * @param \Thucke\ThRating\Domain\Model\Vote $vote The new vote
-     * @return string The rendered view
-     * @ignorevalidation $vote
      * @throws \TYPO3\CMS\Extbase\Mvc\Exception\NoSuchArgumentException
      * @throws \TYPO3\CMS\Extbase\SignalSlot\Exception\InvalidSlotException
      * @throws \TYPO3\CMS\Extbase\SignalSlot\Exception\InvalidSlotReturnException
      * @throws \Thucke\ThRating\Exception\InvalidAggregateRatingSchemaTypeException*
      * @throws \Thucke\ThRating\Exception\RecordNotFoundException
      * @throws \TYPO3\CMS\Core\Exception
+     * @return string The rendered view
+     * @ignorevalidation $vote
      */
     //http://localhost:8503/index.php?id=71&tx_thrating_pi1[controller]=Vote&tx_thrating_pi1[action]=ratinglinks
     public function ratinglinksAction(Vote $vote = null)
@@ -516,21 +516,21 @@ class VoteController extends ActionController
         $this->logger->log(LogLevel::DEBUG, 'Exit ratinglinksAction');
     }
 
-    /** @noinspection PhpUnused */
     /**
      * Handle graphic pollings
      * Graphic bars containing links will be provided to AJAX-submit the polling
      *
      * @param \Thucke\ThRating\Domain\Model\Vote $vote The new vote
-     * @return string The rendered view
-     * @ignorevalidation $vote
      * @throws \TYPO3\CMS\Extbase\Mvc\Exception\NoSuchArgumentException
      * @throws \TYPO3\CMS\Extbase\SignalSlot\Exception\InvalidSlotException
      * @throws \TYPO3\CMS\Extbase\SignalSlot\Exception\InvalidSlotReturnException
      * @throws \Thucke\ThRating\Exception\InvalidAggregateRatingSchemaTypeException*
      * @throws \TYPO3\CMS\Core\Exception
      * @throws \Thucke\ThRating\Exception\RecordNotFoundException
+     * @return string The rendered view
+     * @ignorevalidation $vote
      */
+    /** @noinspection PhpUnused */
     public function pollingAction(Vote $vote = null)
     {
         //\TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump($this->view,get_class($this).' pollingAction');
@@ -543,21 +543,21 @@ class VoteController extends ActionController
         $this->logger->log(LogLevel::DEBUG, 'Exit pollingAction');
     }
 
-    /** @noinspection PhpUnused */
     /**
      * Handle mark action
      * An icon containing for the mark action will be provided for AJAX-submission
      *
      * @param \Thucke\ThRating\Domain\Model\Vote $vote The new vote
-     * @return string The rendered view
-     * @ignorevalidation $vote
      * @throws \TYPO3\CMS\Extbase\Mvc\Exception\NoSuchArgumentException
      * @throws \TYPO3\CMS\Extbase\SignalSlot\Exception\InvalidSlotException
      * @throws \TYPO3\CMS\Extbase\SignalSlot\Exception\InvalidSlotReturnException
      * @throws \Thucke\ThRating\Exception\InvalidAggregateRatingSchemaTypeException*
      * @throws \TYPO3\CMS\Core\Exception
      * @throws \Thucke\ThRating\Exception\RecordNotFoundException
+     * @return string The rendered view
+     * @ignorevalidation $vote
      */
+    /** @noinspection PhpUnused */
     public function markAction(\Thucke\ThRating\Domain\Model\Vote $vote = null)
     {
         $this->logger->log(LogLevel::DEBUG, 'Entry markAction');
@@ -574,11 +574,11 @@ class VoteController extends ActionController
      * A graphic starrating object containing links will be provided to AJAX-submit the vote
      *
      * @param \Thucke\ThRating\Domain\Model\Vote $vote The new vote
-     * @return string The rendered view
-     * @ignorevalidation $vote
      * @throws \Thucke\ThRating\Exception\InvalidAggregateRatingSchemaTypeException*@throws \Thucke\ThRating\Exception\RecordNotFoundException
      * @throws \TYPO3\CMS\Core\Exception
      * @throws \Thucke\ThRating\Exception\RecordNotFoundException
+     * @return string The rendered view
+     * @ignorevalidation $vote
      */
     //http://localhost:8503/index.php?id=71&tx_thrating_pi1[controller]=Vote&tx_thrating_pi1[action]=ratinglinks
     public function graphicActionHelper(Vote $vote = null)
@@ -684,10 +684,10 @@ class VoteController extends ActionController
      * Check preconditions for rating
      *
      * @param \Thucke\ThRating\Domain\Model\Vote $vote the vote this selection is for
-     * @return void
-     * @ignorevalidation $vote
      * @throws \Thucke\ThRating\Exception\RecordNotFoundException
      * @throws \TYPO3\CMS\Core\Exception
+     * @return void
+     * @ignorevalidation $vote
      */
     protected function initVoting(Vote $vote = null)
     {
@@ -822,7 +822,7 @@ class VoteController extends ActionController
                         'ratingName' => $this->ratingName,
                         'settings' => json_encode($this->settings),
                         'actionName' => strtolower($this->request->getControllerActionName()),
-                        self::AJAX_REFERENCE_ID => $this->ajaxSelections['ajaxRef']
+                        self::AJAX_REFERENCE_ID => $this->ajaxSelections['ajaxRef'],
                     ])
                 );
                 $this->ajaxSelections['json'][$key] = (string)$stepConf;
@@ -923,8 +923,8 @@ class VoteController extends ActionController
      * Generates a random number
      * used as the unique iddentifier for AJAX objects
      *
-     * @return int
      * @throws \Exception
+     * @return int
      */
     protected function getRandomId()
     {
@@ -1104,7 +1104,6 @@ class VoteController extends ActionController
      * @param    array $customContent array by reference to return pre and post content
      * @return    void
      */
-
     /** @noinspection PhpUnusedParameterInspection */
     /** @noinspection PhpUnused */
     public function afterCreateActionHandler(/** @noinspection PhpUnusedParameterInspection */ $signalSlotMessage, &$customContent)

@@ -89,30 +89,33 @@ class RatingRepositoryTest extends FunctionalTestCase
         $this->subject->setDefaultQuerySettings($this->getDefaultQuerySettings());
         $this->subject->injectPersistenceManager($this->persistenceManager);
         $this->ratingobject = $this->createRatingobjectRepository()->findByUid(1);
-
     }
 
     /**
      * @return Typo3QuerySettings
      */
-    protected function getDefaultQuerySettings(): Typo3QuerySettings {
+    protected function getDefaultQuerySettings(): Typo3QuerySettings
+    {
         /** @var \TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings $defaultQuerySettings */
         $defaultQuerySettings = $this->objectManager->get(Typo3QuerySettings::class);
         //$defaultQuerySettings->setRespectStoragePage(false);
-        $defaultQuerySettings->setStoragePageIds(array(1));
+        $defaultQuerySettings->setStoragePageIds([1]);
+
         return $defaultQuerySettings;
     }
 
     /**
      * @return RatingobjectRepository
      */
-    protected function createRatingobjectRepository(): RatingobjectRepository {
+    protected function createRatingobjectRepository(): RatingobjectRepository
+    {
         $ratingobjectRepository = $this->objectManager->get(RatingobjectRepository::class);
         $ratingobjectRepository->injectPersistenceManager($this->persistenceManager);
         $ratingobjectRepository->setDefaultQuerySettings($this->getDefaultQuerySettings());
-        return $ratingobjectRepository;
 
+        return $ratingobjectRepository;
     }
+
     /**
      * @test
      * @throws IllegalObjectTypeException
@@ -126,8 +129,11 @@ class RatingRepositoryTest extends FunctionalTestCase
         $this->subject->add($model);
         $this->persistenceManager->persistAll();
 
-        $databaseRow = $this->getDatabaseConnection()->selectSingleRow('*', 'tx_thrating_domain_model_rating',
-            'uid = ' . $model->getUid());
+        $databaseRow = $this->getDatabaseConnection()->selectSingleRow(
+            '*',
+            'tx_thrating_domain_model_rating',
+            'uid = ' . $model->getUid()
+        );
         $this->assertSame(1, $databaseRow['ratingobject']);
     }
 
@@ -166,5 +172,4 @@ class RatingRepositoryTest extends FunctionalTestCase
         $foundRow = $this->subject->findMatchingObjectAndUid($this->ratingobject, 4, true);
         $this->assertEquals(5, $foundRow->getUid());
     }
-
 }

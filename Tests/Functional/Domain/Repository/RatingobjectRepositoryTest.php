@@ -89,11 +89,13 @@ class RatingobjectRepositoryTest extends FunctionalTestCase
     /**
      * @return Typo3QuerySettings
      */
-    protected function getDefaultQuerySettings(): Typo3QuerySettings {
+    protected function getDefaultQuerySettings(): Typo3QuerySettings
+    {
         /** @var \TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings $defaultQuerySettings */
         $defaultQuerySettings = $this->objectManager->get(Typo3QuerySettings::class);
         //$defaultQuerySettings->setRespectStoragePage(false);
-        $defaultQuerySettings->setStoragePageIds(array(1));
+        $defaultQuerySettings->setStoragePageIds([1]);
+
         return $defaultQuerySettings;
     }
 
@@ -110,8 +112,11 @@ class RatingobjectRepositoryTest extends FunctionalTestCase
         $this->subject->add($model);
         $this->persistenceManager->persistAll();
 
-        $databaseRow = $this->getDatabaseConnection()->selectSingleRow('*', 'tx_thrating_domain_model_ratingobject',
-            'uid = ' . $model->getUid());
+        $databaseRow = $this->getDatabaseConnection()->selectSingleRow(
+            '*',
+            'tx_thrating_domain_model_ratingobject',
+            'uid = ' . $model->getUid()
+        );
         $this->assertSame($ratetable, $databaseRow['ratetable']);
     }
 
@@ -160,5 +165,4 @@ class RatingobjectRepositoryTest extends FunctionalTestCase
         $this->expectException(RecordNotFoundException::class);
         $this->subject->findMatchingTableAndField('testTable', 'testFieldNewAdded');
     }
-
 }

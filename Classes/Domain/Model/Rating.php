@@ -142,7 +142,7 @@ class Rating extends AbstractEntity
      * @param int|null $ratedobjectuid
      * @throws \TYPO3\CMS\Extbase\Configuration\Exception\InvalidConfigurationTypeException
      */
-    public function __construct(Ratingobject    $ratingobject = null, $ratedobjectuid = null)
+    public function __construct(Ratingobject $ratingobject = null, $ratedobjectuid = null)
     {
         if ($ratingobject) {
             $this->setRatingobject($ratingobject);
@@ -155,8 +155,8 @@ class Rating extends AbstractEntity
 
     /**
      * Initializes a new rating object
-     * @return void
      * @throws \TYPO3\CMS\Extbase\Configuration\Exception\InvalidConfigurationTypeException
+     * @return void
      */
     public function initializeObject(): void
     {

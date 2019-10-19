@@ -1,10 +1,10 @@
 <?php
 namespace Thucke\ThRating\Domain\Model;
 
+use Thucke\ThRating\Domain\Repository\RatingRepository;
 use Thucke\ThRating\Domain\Repository\StepconfRepository;
 use Thucke\ThRating\Service\ExtensionHelperService;
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
-use Thucke\ThRating\Domain\Repository\RatingRepository;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 
 /***************************************************************

@@ -1,13 +1,13 @@
 <?php
 namespace Thucke\ThRating\Domain\Model;
 
+use Thucke\ThRating\Domain\Repository\StepconfRepository;
 use Thucke\ThRating\Domain\Repository\StepnameRepository;
 use Thucke\ThRating\Service\ExtensionHelperService;
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
 use TYPO3\CMS\Extbase\Persistence\Generic\LazyLoadingProxy;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
-use Thucke\ThRating\Domain\Repository\StepconfRepository;
 
 /***************************************************************
 *  Copyright notice

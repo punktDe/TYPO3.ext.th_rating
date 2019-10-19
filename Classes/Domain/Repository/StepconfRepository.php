@@ -1,5 +1,5 @@
-<?php /** @noinspection PhpUnnecessaryFullyQualifiedNameInspection */
-
+<?php
+/** @noinspection PhpUnnecessaryFullyQualifiedNameInspection */
 namespace Thucke\ThRating\Domain\Repository;
 
 use Thucke\ThRating\Domain\Model\Ratingobject;
@@ -38,8 +38,8 @@ use TYPO3\CMS\Extbase\Persistence\Repository;
  */
 class StepconfRepository extends Repository
 {
-    protected     /** @noinspection PhpUnused */
-        $defaultOrderings = ['steporder' => QueryInterface::ORDER_ASCENDING];
+    /** @noinspection PhpUnused */
+    protected $defaultOrderings = ['steporder' => QueryInterface::ORDER_ASCENDING];
 
     /**
      * Initialize this repository
@@ -68,7 +68,7 @@ class StepconfRepository extends Repository
         /** @noinspection NullPointerExceptionInspection */
         $query->matching($query->logicalAnd([
             $query->equals('ratingobject', $stepconf->getRatingobject()->getUid()),
-            $query->equals('steporder', $stepconf->getSteporder())
+            $query->equals('steporder', $stepconf->getSteporder()),
         ]))->setLimit(1);
         $queryResult = $query->execute();
 
@@ -90,8 +90,9 @@ class StepconfRepository extends Repository
      */
     public function existStepconf(Stepconf $stepconf): bool
     {
-        $foundRow =  $this->findStepconfObject($stepconf);
+        $foundRow = $this->findStepconfObject($stepconf);
         $stepconfValidator = $this->objectManager->get(StepconfValidator::class);
+
         return !$stepconfValidator->validate($foundRow)->hasErrors();
     }
 }

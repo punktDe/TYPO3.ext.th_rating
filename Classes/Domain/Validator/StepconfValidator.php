@@ -1,18 +1,16 @@
-<?php /** @noinspection PhpFullyQualifiedNameUsageInspection */
-
+<?php
+/** @noinspection PhpFullyQualifiedNameUsageInspection */
 /** @noinspection PhpUnnecessaryFullyQualifiedNameInspection */
-
 namespace Thucke\ThRating\Domain\Validator;
 
-use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
-use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
-use TYPO3\CMS\Extbase\Validation\Validator\AbstractValidator;
-use TYPO3\CMS\Extbase\Persistence\Exception\InvalidQueryException;
-use Thucke\ThRating\Domain\Repository\StepconfRepository;
-use Thucke\ThRating\Domain\Repository\StepnameRepository;
 use Thucke\ThRating\Domain\Model\Ratingobject;
 use Thucke\ThRating\Domain\Model\Stepconf;
-
+use Thucke\ThRating\Domain\Repository\StepconfRepository;
+use Thucke\ThRating\Domain\Repository\StepnameRepository;
+use TYPO3\CMS\Extbase\Persistence\Exception\InvalidQueryException;
+use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
+use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
+use TYPO3\CMS\Extbase\Validation\Validator\AbstractValidator;
 
 /***************************************************************
  *  Copyright notice
@@ -99,7 +97,7 @@ class StepconfValidator extends AbstractValidator
                 $this->validateStepnames($stepconf);
             }
         } else {
-            $this->addError(LocalizationUtility::translate('error.validator.stepconf.empty', 'ThRating'),1568139528);
+            $this->addError(LocalizationUtility::translate('error.validator.stepconf.empty', 'ThRating'), 1568139528);
         }
     }
 
@@ -108,10 +106,13 @@ class StepconfValidator extends AbstractValidator
      * @param Stepconf $stepconf
      * @return void
      */
-    protected function checkRatingobject(Stepconf $stepconf): void {
+    protected function checkRatingobject(Stepconf $stepconf): void
+    {
         if (!$stepconf->getRatingobject() instanceof Ratingobject) {
-            $this->addError(LocalizationUtility::translate('error.validator.stepconf.ratingobject', 'ThRating'),
-                1284700846);
+            $this->addError(
+                LocalizationUtility::translate('error.validator.stepconf.ratingobject', 'ThRating'),
+                1284700846
+            );
         }
     }
 
@@ -120,17 +121,23 @@ class StepconfValidator extends AbstractValidator
      * @param Stepconf $stepconf
      * @return void
      */
-    protected function checkSteporder(Stepconf $stepconf): void {
+    protected function checkSteporder(Stepconf $stepconf): void
+    {
         $steporder = $stepconf->getSteporder();
         if (empty($steporder)) {
-            $this->addError(LocalizationUtility::translate('error.validator.stepconf.steps', 'ThRating'),
-                1284700903);
+            $this->addError(
+                LocalizationUtility::translate('error.validator.stepconf.steps', 'ThRating'),
+                1284700903
+            );
+
             return;
         }
 
         if (!is_int($stepconf->getSteporder()) || $stepconf->getSteporder() < 1) {
-            $this->addError(LocalizationUtility::translate('error.validator.stepconf.invalidSteporderNumber',
-                'ThRating'), 1368123953);
+            $this->addError(LocalizationUtility::translate(
+                'error.validator.stepconf.invalidSteporderNumber',
+                'ThRating'
+            ), 1368123953);
         }
 
         //check if given steporder is valid (integer, maximum +1)
@@ -138,8 +145,10 @@ class StepconfValidator extends AbstractValidator
         $maxSteporderStepconfobject = $this->stepconfRepository->findByRatingobject($stepconf->getRatingobject());
         $maxSteporder = $maxSteporderStepconfobject[$maxSteporderStepconfobject->count() - 1]->getSteporder();
         if ($stepconf->getSteporder() > $maxSteporder + 1) {
-            $this->addError(LocalizationUtility::translate('error.validator.stepconf.maxSteporder', 'ThRating'),
-                1368123970);
+            $this->addError(
+                LocalizationUtility::translate('error.validator.stepconf.maxSteporder', 'ThRating'),
+                1368123970
+            );
         }
     }
 
@@ -147,9 +156,9 @@ class StepconfValidator extends AbstractValidator
      * If the given step is valid
      *
      * @param Stepconf $stepconf
-     * @return void
      * @throws InvalidQueryException
      * @throws \TYPO3\CMS\Extbase\Persistence\Exception\InvalidQueryException
+     * @return void
      */
     protected function validateStepnames($stepconf): void
     {
@@ -167,17 +176,26 @@ class StepconfValidator extends AbstractValidator
             /** @var \Thucke\ThRating\Domain\Model\Stepname|object $defaultName */
             $defaultName = $this->stepnameRepository->findDefaultStepname($firstStepname);
             if (!$defaultName->isValid()) {
-                $this->addError(LocalizationUtility::translate('error.validator.stepconf.defaultStepname',
-                    'ThRating', [$firstStepname->getStepconf()->getUid()]), 1384374165);
+                $this->addError(LocalizationUtility::translate(
+                    'error.validator.stepconf.defaultStepname',
+                    'ThRating',
+                    [$firstStepname->getStepconf()->getUid()]
+                ), 1384374165);
             } else {
                 //Finally check on language consistency
                 $checkConsistency = $this->stepnameRepository->checkConsistency($firstStepname);
                 if ($checkConsistency['doubleLang']) {
-                    $this->addError(LocalizationUtility::translate('error.validator.stepconf.doubleLangEntry',
-                        'ThRating', [$firstStepname->getStepconf()->getUid()]), 1384374589);
+                    $this->addError(LocalizationUtility::translate(
+                        'error.validator.stepconf.doubleLangEntry',
+                        'ThRating',
+                        [$firstStepname->getStepconf()->getUid()]
+                    ), 1384374589);
                 } elseif ($checkConsistency['existLang']) {
-                    $this->addError(LocalizationUtility::translate('error.validator.stepconf.notExistingLanguage',
-                        'ThRating', [$firstStepname->getUid()]), 1384374589);
+                    $this->addError(LocalizationUtility::translate(
+                        'error.validator.stepconf.notExistingLanguage',
+                        'ThRating',
+                        [$firstStepname->getUid()]
+                    ), 1384374589);
                 }
             }
         }

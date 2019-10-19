@@ -1,7 +1,6 @@
-<?php /** @noinspection PhpUnnecessaryFullyQualifiedNameInspection */
-
+<?php
+/** @noinspection PhpUnnecessaryFullyQualifiedNameInspection */
 /** @noinspection PhpFullyQualifiedNameUsageInspection */
-
 namespace Thucke\ThRating\Domain\Validator;
 
 use Thucke\ThRating\Domain\Model\Stepconf;

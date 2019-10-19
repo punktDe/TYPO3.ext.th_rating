@@ -16,6 +16,12 @@
 Rating AX
 =========
 
+[![Latest Stable Version](https://img.shields.io/packagist/v/thucke/th-rating.svg)](https://packagist.org/packages/thucke/th-rating)
+[![License](https://img.shields.io/packagist/l/thucke/th-rating.svg)](https://packagist.org/packages/thucke/th-rating)
+[![Downloads](https://img.shields.io/packagist/dt/thucke/th-rating)](https://packagist.org/packages/thucke/th-rating)
+[![PHP](https://img.shields.io/packagist/php-v/thucke/th-rating.svg)](https://packagist.org/packages/thucke/th-rating)
+[![Issues](https://img.shields.io/github/issues/thucke/TYPO3.ext.th_rating)](https://github.com/thucke/TYPO3.ext.th_rating/issues)
+
 Guide to the TYPO3 extension to make ratings of any content object.
 
 :Repository:  https://github.com/thucke/TYPO3.ext.th_rating

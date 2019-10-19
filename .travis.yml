@@ -1,0 +1,51 @@
+language: php
+
+php:
+  - 7.2
+  - 7.3
+
+sudo: true
+
+branches:
+  except:
+    - documentation-draft
+    - experimental
+
+env:
+  global:
+    - typo3DatabaseHost=localhost typo3DatabaseName=typo3 typo3DatabaseUsername=travis typo3DatabasePassword=''
+
+cache:
+  directories:
+    - .Build/vendor
+    - $HOME/.composer/cache
+
+before_install:
+  - phpenv config-rm xdebug.ini || echo "xdebug not available"
+
+notifications:
+  email:
+    recipients:
+      - github@thucke.de
+    on_success: change
+    on_failure: change
+
+before_script:
+  - Build/Scripts/runTests.sh -s composerInstall -p $TRAVIS_PHP_VERSION
+
+script:
+  - >
+    echo "Running composer validate"
+    Build/Scripts/runTests.sh -s composerValidate -p $TRAVIS_PHP_VERSION
+
+  - >
+    echo "Running unit tests";
+    Build/Scripts/runTests.sh -s unit -p $TRAVIS_PHP_VERSION
+
+  - >
+    echo "Running functional tests";
+    Build/Scripts/runTests.sh -s functional -p $TRAVIS_PHP_VERSION
+
+  - >
+    echo "Running php lint";
+    Build/Scripts/runTests.sh -s lint -p $TRAVIS_PHP_VERSION

@@ -23,12 +23,19 @@
 	"require" : {
 		"php" : ">=7.1 <7.4",
 		"typo3/cms-core" : ">=8.7.7 <9.6",
+		"typo3/cms-extbase" : ">=8.7.7 <9.6",
+		"typo3/cms-fluid" : ">=8.7.7 <9.6",
 		"sjbr/static-info-tables" : ">=6.2.0 <7.0"
 	},
 	"require-dev": {
+		"typo3/cms-about" : ">=8.7.7 <9.6",
+		"typo3/cms-install" : ">=8.7.7 <9.6",
+		"typo3/cms-frontend" : ">=8.7.7 <9.6",
+		"typo3/cms-fluid-styled-content" : ">=8.7.7 <9.6",
 		"roave/security-advisories": "dev-master",
 		"friendsofphp/php-cs-fixer": "^2.0",
-		"nimut/testing-framework": "^1.0 || ^2.0 || ^3.0 || ^4.0"
+		"nimut/testing-framework": "^1.0 || ^2.0 || ^3.0 || ^4.0",
+		"codeception/codeception": "^2.4"
 	},
 	"autoload" : {
 		"psr-4" : {
@@ -59,6 +66,7 @@
 		},
 		"typo3/cms": {
 			"cms-package-dir": "{$vendor-dir}/typo3/cms",
+			"app-dir": ".Build",
 			"web-dir": ".Build/Web",
 			"extension-key": "th_rating"
 		}

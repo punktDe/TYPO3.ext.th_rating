@@ -77,7 +77,7 @@ class RatingRepository extends Repository
         $queryResult = $query->execute();
         if ($queryResult->count() !== 0) {
             $foundRow = $queryResult->getFirst();
-            //Cope with an obvious bug in TYPO3 6.1 that $queryResult->getFirst() doesnt return the fully loaded object
+        //Cope with an obvious bug in TYPO3 6.1 that $queryResult->getFirst() doesnt return the fully loaded object
             /* If ( \TYPO3\CMS\Core\Utility\VersionNumberUtility::convertVersionNumberToInteger(TYPO3_version) < 6002000 ) {
                 $dummy = \TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump($foundRow, 'dummy', 2, true, false, true);
             } */

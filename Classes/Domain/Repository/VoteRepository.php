@@ -89,7 +89,7 @@ class VoteRepository extends Repository
     public function countAnonymousByMatchingRatingAndVote($rating = null, $stepconf = null, $anonymousVoter = null): int
     {
         /** @var int $count */
-        $count=0;
+        $count = 0;
 
         if ($anonymousVoter !== null) {
             $query = $this->createQuery();
@@ -97,11 +97,12 @@ class VoteRepository extends Repository
                 $query->logicalAnd([
                     $query->equals('rating', $rating->getUid()),
                     $query->equals('vote', $stepconf->getUid()),
-                    $query->equals('voter', $anonymousVoter)
+                    $query->equals('voter', $anonymousVoter),
                 ])
             );
-            $count=count($query->execute());
+            $count = count($query->execute());
         }
+
         return $count;
     }
 }

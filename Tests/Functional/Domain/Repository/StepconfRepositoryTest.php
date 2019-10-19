@@ -25,17 +25,17 @@ namespace Thucke\ThRating\Tests\Functional\Domain\Repository;
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
 
+use Nimut\TestingFramework\Exception\Exception;
+use Nimut\TestingFramework\TestCase\FunctionalTestCase;
+use Thucke\ThRating\Domain\Model\Ratingobject;
+use Thucke\ThRating\Domain\Model\Stepconf;
+use Thucke\ThRating\Domain\Repository\RatingobjectRepository;
+use Thucke\ThRating\Domain\Repository\StepconfRepository;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException;
 use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
 use TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings;
-use Nimut\TestingFramework\Exception\Exception;
-use Nimut\TestingFramework\TestCase\FunctionalTestCase;
-use Thucke\ThRating\Domain\Model\Stepconf;
-use Thucke\ThRating\Domain\Model\Ratingobject;
-use Thucke\ThRating\Domain\Repository\RatingobjectRepository;
-use Thucke\ThRating\Domain\Repository\StepconfRepository;
 
 /**
  * Testcases for RatingRepository
@@ -88,30 +88,33 @@ class StepconfRepositoryTest extends FunctionalTestCase
         $this->subject = $this->objectManager->get(StepconfRepository::class);
         $this->subject->injectPersistenceManager($this->persistenceManager);
         $this->ratingobject = $this->createRatingobjectRepository()->findByUid(1);
-
     }
 
     /**
      * @return Typo3QuerySettings
      */
-    protected function getDefaultQuerySettings(): Typo3QuerySettings {
+    protected function getDefaultQuerySettings(): Typo3QuerySettings
+    {
         /** @var \TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings $defaultQuerySettings */
         $defaultQuerySettings = $this->objectManager->get(Typo3QuerySettings::class);
         //$defaultQuerySettings->setRespectStoragePage(false);
-        $defaultQuerySettings->setStoragePageIds(array(1));
+        $defaultQuerySettings->setStoragePageIds([1]);
+
         return $defaultQuerySettings;
     }
 
     /**
      * @return RatingobjectRepository
      */
-    protected function createRatingobjectRepository(): RatingobjectRepository {
+    protected function createRatingobjectRepository(): RatingobjectRepository
+    {
         $ratingobjectRepository = $this->objectManager->get(RatingobjectRepository::class);
         $ratingobjectRepository->injectPersistenceManager($this->persistenceManager);
         $ratingobjectRepository->setDefaultQuerySettings($this->getDefaultQuerySettings());
-        return $ratingobjectRepository;
 
+        return $ratingobjectRepository;
     }
+
     /**
      * @test
      * @throws IllegalObjectTypeException
@@ -124,8 +127,11 @@ class StepconfRepositoryTest extends FunctionalTestCase
         $this->subject->add($model);
         $this->persistenceManager->persistAll();
 
-        $databaseRow = $this->getDatabaseConnection()->selectSingleRow('*', 'tx_thrating_domain_model_stepconf',
-            'uid = ' . $model->getUid());
+        $databaseRow = $this->getDatabaseConnection()->selectSingleRow(
+            '*',
+            'tx_thrating_domain_model_stepconf',
+            'uid = ' . $model->getUid()
+        );
         $this->assertSame($steporder, $databaseRow['steporder']);
     }
 
@@ -166,6 +172,5 @@ class StepconfRepositoryTest extends FunctionalTestCase
 
         $notExistingModelEntry = new Stepconf($this->ratingobject, 5);
         $this->assertFalse($this->subject->existStepconf($notExistingModelEntry));
-
     }
 }

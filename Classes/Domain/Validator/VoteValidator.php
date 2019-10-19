@@ -1,12 +1,12 @@
-<?php /** @noinspection PhpUnnecessaryFullyQualifiedNameInspection */
-
+<?php
+/** @noinspection PhpUnnecessaryFullyQualifiedNameInspection */
 namespace Thucke\ThRating\Domain\Validator;
 
-use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
-use TYPO3\CMS\Extbase\Validation\Validator\AbstractValidator;
 use Thucke\ThRating\Domain\Model\Stepconf;
 use Thucke\ThRating\Domain\Model\Vote;
 use Thucke\ThRating\Domain\Model\Voter;
+use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
+use TYPO3\CMS\Extbase\Validation\Validator\AbstractValidator;
 
 /***************************************************************
  *  Copyright notice
@@ -67,17 +67,21 @@ class VoteValidator extends AbstractValidator
             } else {
                 //a vote must have a valid voter
                 if (!$vote->getVoter() instanceof Voter) {
-                    $this->addError(LocalizationUtility::translate('error.validator.vote.voter', 'ThRating'),
-                        1283540684);
+                    $this->addError(
+                        LocalizationUtility::translate('error.validator.vote.voter', 'ThRating'),
+                        1283540684
+                    );
                 }
                 //check if the given vote is a valid step for this ratingobject
                 if (!$vote->getRating()->getRatingobject()->getStepconfs()->contains($vote->getVote())) {
-                    $this->addError(LocalizationUtility::translate('error.validator.vote.stepconf', 'ThRating'),
-                        1283612492);
+                    $this->addError(
+                        LocalizationUtility::translate('error.validator.vote.stepconf', 'ThRating'),
+                        1283612492
+                    );
                 }
             }
         } else {
-            $this->addError(LocalizationUtility::translate('error.validator.vote.empty', 'ThRating'),1568141014);
+            $this->addError(LocalizationUtility::translate('error.validator.vote.empty', 'ThRating'), 1568141014);
         }
     }
 
@@ -89,7 +93,8 @@ class VoteValidator extends AbstractValidator
      */
     public function isObjSet($vote)
     {
-        $result= !$this->isEmpty($vote) && $vote instanceof Vote;
+        $result = !$this->isEmpty($vote) && $vote instanceof Vote;
+
         return $result;
     }
 }

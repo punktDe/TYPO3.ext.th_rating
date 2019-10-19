@@ -1,7 +1,7 @@
-<?php /** @noinspection PhpFullyQualifiedNameUsageInspection */
+<?php
+/** @noinspection PhpFullyQualifiedNameUsageInspection */
 
 /** @noinspection PhpUnnecessaryFullyQualifiedNameInspection */
-
 namespace Thucke\ThRating\Tests\Unit;
 
 /*
