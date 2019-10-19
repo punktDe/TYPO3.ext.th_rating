@@ -38,7 +38,7 @@ install:
     composer show;
   - >
     echo;
-    echo Restoring conposer.json;
+    echo Restoring composer.json;
     git checkout .;
   - export TYPO3_PATH_WEB=$PWD/.Build/Web
 
@@ -50,9 +50,13 @@ notifications:
     on_failure: change
 
 before_script:
-  - Build/Scripts/runTests.sh -s composerInstall -p $TRAVIS_PHP_VERSION
+  #Build/Scripts/runTests.sh -s composerInstall -p $TRAVIS_PHP_VERSION
 
 script:
+  - >
+    echo;
+    echo "Running the unit tests";
+    composer ci:tests:unit;
   - >
     echo "Running unit tests";
     Build/Scripts/runTests.sh -s unit -p $TRAVIS_PHP_VERSION
