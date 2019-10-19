@@ -1,5 +1,7 @@
 language: php
 
+dist: trusty
+
 matrix:
   fast_finish: true
   include:
@@ -36,11 +38,6 @@ notifications:
       - github@thucke.de
     on_success: change
     on_failure: change
-
-branches:
-  except:
-    - documentation-draft
-    - experimental
 
 env:
   global:
