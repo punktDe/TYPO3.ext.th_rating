@@ -7,16 +7,27 @@ matrix:
       env: TYPO3_VERSION=^9
     - php: 7.2
       env: TYPO3_VERSION=^8
+
+sudo: false
+
 addons:
   apt:
     packages:
       - parallel
 
-sudo: false
+services:
+  - mysql
 
 cache:
   directories:
     - $HOME/.composer/cache
+
+notifications:
+  email:
+    recipients:
+      - github@thucke.de
+    on_success: change
+    on_failure: change
 
 branches:
   except:
@@ -30,41 +41,19 @@ env:
 before_install:
   - composer self-update
   - composer --version
-  - phpenv config-rm xdebug.ini || echo "xdebug not available"
-
-install:
-  - >
-    composer require --no-update "typo3/minimal:$TYPO3_VERSION";
-    composer show;
-  - >
-    echo;
-    echo Restoring composer.json;
-    git checkout .;
-  - export TYPO3_PATH_WEB=$PWD/.Build/Web
-
-notifications:
-  email:
-    recipients:
-      - github@thucke.de
-    on_success: change
-    on_failure: change
 
 before_script:
-  #Build/Scripts/runTests.sh -s composerInstall -p $TRAVIS_PHP_VERSION
+  - phpenv config-rm xdebug.ini || echo "xdebug not available"
+  - composer require typo3/minimal=$TYPO3_VERSION
+  # Restore composer.json
+  - git checkout composer.json
+  - export TYPO3_PATH_WEB=$PWD/.Build/Web
+
+install:
+  - composer install
 
 script:
   - >
     echo;
-    echo "Running the unit tests";
-    composer ci:tests:unit;
-  - >
     echo "Running unit tests";
-    Build/Scripts/runTests.sh -s unit -p $TRAVIS_PHP_VERSION
-
-  - >
-    echo "Running functional tests";
-    Build/Scripts/runTests.sh -s functional -p $TRAVIS_PHP_VERSION
-
-  - >
-    echo "Running php lint";
-    Build/Scripts/runTests.sh -s lint -p $TRAVIS_PHP_VERSION
+    .Build/bin/phpunit --colors -c .Build/vendor/nimut/testing-framework/res/Configuration/UnitTests.xml Tests/Unit/
