@@ -126,7 +126,7 @@ function handleReceivedVote(jsonData)  {
   let targetObj = document.getElementById(ajaxTargetId); //find target object in DOM
   let flashMessages = jsonData.flashMessages; //save flash-messages
 
-    jQuery(targetObj).removeClass("loading");
+  jQuery(targetObj).removeClass("loading");
 	jQuery('*[data-role="onCurrentRateActive"]',targetObj).show();					//unhide element
 	jQuery('*[data-role="onCurrentRateHidden"]',targetObj).hide();					//hide element
 
@@ -215,7 +215,7 @@ function fadeFlashMessage() {
  * Switch stepname visibility
  */
 function switchStepname( linkObj, hoverIn ) {
-	stepname = jQuery(linkObj).attr('title');
+	const stepname = jQuery(linkObj).attr('title');
 	if ( hoverIn ) {
 		const stepnameObj = jQuery(linkObj).parents('div.tx-thrating-ratinglinks').children('div.stepnameTooltip').first();
 		jQuery(stepnameObj).html(stepname).addClass('stepnameTooltipOn').removeClass('stepnameTooltip');
@@ -230,7 +230,7 @@ function switchStepname( linkObj, hoverIn ) {
  * Adjust font size to fit in polling bars
  */
 function adjustHeights(currElem) {
-	let fontstep = 1;
+	const fontstep = 1;
 	if (jQuery(currElem).height()>jQuery(currElem).parent().height() || jQuery(currElem).width()>jQuery(currElem).parent().width()) {
 		jQuery('.currentPollText').css('font-size',(jQuery(currElem).css('font-size').substr(0,2)-fontstep) + 'px');
 		adjustHeights(jQuery(currElem));
