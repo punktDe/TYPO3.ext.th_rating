@@ -60,6 +60,11 @@ before_script:
 script:
   - >
     echo;
+    echo "Running Sonar";
+    sonar-scanner -Dproject.settings=Build/.sonar_project.properties -Dsonar.verbose=true
+
+  - >
+    echo;
     echo "Running unit tests";
     .Build/bin/phpunit --colors -c .Build/vendor/nimut/testing-framework/res/Configuration/UnitTests.xml Tests/Unit/
 
@@ -67,11 +72,6 @@ script:
     echo;
     echo "Running php lint";
     find . -name \*.php ! -path "./.Build/*" | parallel --gnu php -d display_errors=stderr -l {} > /dev/null \;
-
-  - >
-    echo;
-    echo "Running Sonar";
-    sonar-scanner -Dproject.settings=Build/.sonar_project.properties
 
   - >
     echo;
