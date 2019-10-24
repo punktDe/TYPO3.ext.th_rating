@@ -1,6 +1,10 @@
 <?php
 namespace Thucke\ThRating\Domain\Model;
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
+use TYPO3\CMS\Frontend\Imaging\GifBuilder;
+
 /***************************************************************
 *  Copyright notice
 *
@@ -27,13 +31,13 @@ namespace Thucke\ThRating\Domain\Model;
 /**
  * Model for rating votes
  *
- * @author		Thomas Hucke <thucke@web.de>
- * @copyright 	Copyright belongs to the respective authors
- * @license 	http://opensource.org/licenses/gpl-license.php GNU Public License, version 2
- * @scope 		beta
+ * @author  Thomas Hucke <thucke@web.de>
+ * @copyright  Copyright belongs to the respective authors
+ * @license  http://opensource.org/licenses/gpl-license.php GNU Public License, version 2
+ * @scope   beta
  * @entity
  */
-class RatingImage extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
+class RatingImage extends AbstractEntity
 {
     /**
      * @var bool
@@ -53,14 +57,14 @@ class RatingImage extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      */
     protected $conf;
     /**
-     * @var \TYPO3\CMS\Frontend\Imaging\GifBuilder
+     * @var GifBuilder
      */
     protected $gifBuilder;
 
     /**
-     * @param \TYPO3\CMS\Frontend\Imaging\GifBuilder $gifBuilder
+     * @param GifBuilder $gifBuilder
      */
-    public function injectGifBuilder(\TYPO3\CMS\Frontend\Imaging\GifBuilder $gifBuilder): void
+    public function injectGifBuilder(GifBuilder $gifBuilder): void
     {
         $this->gifBuilder = $gifBuilder;
         $this->gifBuilder->init();
@@ -69,7 +73,7 @@ class RatingImage extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
      * Constructs a new image object
      *
-     * @param mixed	$conf	either an array consisting of GIFBUILDER typoscript or a plain string having the filename
+     * @param mixed $conf either an array consisting of GIFBUILDER typoscript or a plain string having the filename
      */
     public function __construct($conf = null)
     {
@@ -86,14 +90,14 @@ class RatingImage extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     {
         if (empty($this->gifBuilder)) {
             /** @noinspection PhpParamsInspection */
-            $this->injectGifBuilder(\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\Imaging\GifBuilder::class));
+            $this->injectGifBuilder(GeneralUtility::makeInstance(GifBuilder::class));
         }
     }
 
     /**
      * Sets the typoscript configuration for the GIFBUILDER object
      *
-     * @param mixed	$conf	either an array consisting of GIFBUILDER typoscript or a plain string having the filename
+     * @param mixed $conf either an array consisting of GIFBUILDER typoscript or a plain string having the filename
      */
     public function setConf($conf): void
     {
@@ -162,7 +166,7 @@ class RatingImage extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
      * Generates the image using the given typoscript
      *
-     * @return	bool			The result; true if the given the image has been created successfully; otherwise false
+     * @return bool   The result; true if the given the image has been created successfully; otherwise false
      */
     public function generateImage(): bool
     {
@@ -185,7 +189,7 @@ class RatingImage extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
      * Returns the filename of the image
      *
-     * @var bool	switch if absolute path should be returned
+     * @var bool switch if absolute path should be returned
      * @return array('width','height')
      */
     public function getImageDimensions(): array

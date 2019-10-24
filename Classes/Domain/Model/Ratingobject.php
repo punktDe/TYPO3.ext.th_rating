@@ -33,11 +33,11 @@ use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 /**
  * Aggregate object for rating of content objects
  *
- * @version 	$Id:$
- * @author		Thomas Hucke <thucke@web.de>
- * @copyright 	Copyright belongs to the respective authors
- * @license 	http://opensource.org/licenses/gpl-license.php GNU Public License, version 2
- * @scope 		beta
+ * @version  $Id:$
+ * @author  Thomas Hucke <thucke@web.de>
+ * @copyright  Copyright belongs to the respective authors
+ * @license  http://opensource.org/licenses/gpl-license.php GNU Public License, version 2
+ * @scope   beta
  * @entity
  */
 class Ratingobject extends AbstractEntity
@@ -100,7 +100,7 @@ class Ratingobject extends AbstractEntity
     protected $extensionHelperService;
 
     /**
-     * @param	\Thucke\ThRating\Service\ExtensionHelperService $extensionHelperService
+     * @param \Thucke\ThRating\Service\ExtensionHelperService $extensionHelperService
      */
     /** @noinspection PhpUnused */
     public function injectExtensionHelperService(ExtensionHelperService $extensionHelperService): void
@@ -110,10 +110,10 @@ class Ratingobject extends AbstractEntity
 
     /**
      * Constructs a new rating object
-     * @param	string	$ratetable The rating objects table name
-     * @param	string	$ratefield The rating objects field name
-     * @validate 	$ratetable StringLength(minimum = 3, maximum = 60)
-     * @validate	$ratefield StringLength(minimum = 3, maximum = 60)
+     * @param string $ratetable The rating objects table name
+     * @param string $ratefield The rating objects field name
+     * @validate  $ratetable StringLength(minimum = 3, maximum = 60)
+     * @validate $ratefield StringLength(minimum = 3, maximum = 60)
      */
     public function __construct($ratetable = null, $ratefield = null)
     {
@@ -231,7 +231,8 @@ class Ratingobject extends AbstractEntity
     /**
      * Sets all ratings of this ratingobject
      *
-     * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Thucke\ThRating\Domain\Model\Stepconf> $stepconfs The step configurations for this ratingobject
+     * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Thucke\ThRating\Domain\Model\Stepconf> $stepconfs
+     *        The step configurations for this ratingobject
      */
     /** @noinspection PhpUnused */
     public function setStepconfs(ObjectStorage $stepconfs): void
@@ -252,7 +253,8 @@ class Ratingobject extends AbstractEntity
     /**
      * Sets all ratings of this ratingobject
      *
-     * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Thucke\ThRating\Domain\Model\Rating> $ratings The ratings of the organization
+     * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Thucke\ThRating\Domain\Model\Rating> $ratings
+     *          The ratings of the organization
      */
     /** @noinspection PhpUnused */
     public function setRatings(ObjectStorage $ratings): void

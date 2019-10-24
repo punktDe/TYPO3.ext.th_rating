@@ -1,4 +1,5 @@
 <?php
+/** @noinspection PhpUnnecessaryFullyQualifiedNameInspection */
 /** @noinspection PhpFullyQualifiedNameUsageInspection */
 namespace Thucke\ThRating\Service;
 
@@ -23,6 +24,8 @@ use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
+use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
+use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 
@@ -163,12 +166,23 @@ class ExtensionHelperService extends AbstractExtensionService
      */
     public function initializeObject(): void
     {
-        $this->settings = $this->configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_SETTINGS, 'thrating', 'pi1');
-        $frameworkConfiguration = $this->configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK, 'thrating', 'pi1');
+        $this->settings = $this->configurationManager->getConfiguration(
+            ConfigurationManagerInterface::CONFIGURATION_TYPE_SETTINGS,
+            'thrating',
+            'pi1'
+        );
+        $frameworkConfiguration = $this->configurationManager->getConfiguration(
+            ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK,
+            'thrating',
+            'pi1'
+        );
 
         if (!empty($frameworkConfiguration['ratings'])) {
             //Merge extension ratingConfigurations with customer added ones
-            ArrayUtility::mergeRecursiveWithOverrule($this->settings['ratingConfigurations'], $frameworkConfiguration['ratings']);
+            ArrayUtility::mergeRecursiveWithOverrule(
+                $this->settings['ratingConfigurations'],
+                $frameworkConfiguration['ratings']
+            );
         }
     }
 
@@ -186,8 +200,8 @@ class ExtensionHelperService extends AbstractExtensionService
     /**
      * Returns the completed settings array
      *
-     * @param	array	$settings
-     * @return	array
+     * @param array $settings
+     * @return array
      */
     private function completeConfigurationSettings(array $settings): array
     {
@@ -195,9 +209,12 @@ class ExtensionHelperService extends AbstractExtensionService
 
         /** @var array $currentRecord */
         if (!empty($cObj->currentRecord)) {
-            $currentRecord = explode(':', $cObj->currentRecord);	//build array [0=>cObj tablename, 1=> cObj uid] - initialize with content information (usage as normal content)
+            /* build array [0=>cObj tablename, 1=> cObj uid] - initialize with content information
+             (usage as normal content) */
+            $currentRecord = explode(':', $cObj->currentRecord);
         } else {
-            $currentRecord = ['pages', $GLOBALS['TSFE']->page['uid']];	//build array [0=>cObj tablename, 1=> cObj uid] - initialize with page info if used by typoscript
+            //build array [0=>cObj tablename, 1=> cObj uid] - initialize with page info if used by typoscript
+            $currentRecord = ['pages', $GLOBALS['TSFE']->page['uid']];
         }
 
         if (empty($settings['ratetable'])) {
@@ -245,8 +262,8 @@ class ExtensionHelperService extends AbstractExtensionService
     /**
      * Returns a new or existing ratingobject
      *
-     * @param	array	$stepconfArray
-     * @return	\Thucke\ThRating\Domain\Model\Stepconf
+     * @param array $stepconfArray
+     * @return \Thucke\ThRating\Domain\Model\Stepconf
      */
     public function createStepconf(array $stepconfArray): Stepconf
     {
@@ -273,8 +290,9 @@ class ExtensionHelperService extends AbstractExtensionService
 
         if (!empty($stepnameArray['languageIso2Code'])) {
             //check if additional language flag exists in current website
-            /** @var \Thucke\ThRating\Domain\Model\Syslang|\TYPO3\CMS\Extbase\Persistence\QueryResultInterface $languageObject */
-            $languageObject = $this->objectManager->get(SyslangRepository::class)->findByStaticLangIsocode($stepnameArray['languageIso2Code']);
+            /** @var \Thucke\ThRating\Domain\Model\Syslang|QueryResultInterface $languageObject */
+            $languageObject = $this->objectManager->get(SyslangRepository::class)
+                ->findByStaticLangIsocode($stepnameArray['languageIso2Code']);
             if ($languageObject->count() > 0) {
                 $stepname->set_languageUid($languageObject->getFirst()->getUid());
             } else {
@@ -291,10 +309,10 @@ class ExtensionHelperService extends AbstractExtensionService
     /**
      * Returns a new or existing rating
      *
-     * @param	array	$settings
-     * @param	\Thucke\ThRating\Domain\Model\Ratingobject	$ratingobject
-     * @throws 	\TYPO3\CMS\Core\Exception
-     * @return	\Thucke\ThRating\Domain\Model\Rating
+     * @param array $settings
+     * @param \Thucke\ThRating\Domain\Model\Ratingobject $ratingobject
+     * @throws  \TYPO3\CMS\Core\Exception
+     * @return \Thucke\ThRating\Domain\Model\Rating
      */
     public function getRating(array $settings, Ratingobject $ratingobject = null): Rating
     {
@@ -305,7 +323,12 @@ class ExtensionHelperService extends AbstractExtensionService
         } elseif ($settings['ratedobjectuid'] && !$this->objectManager->get(RatingobjectValidator::class)
                 ->validate($ratingobject)->hasErrors()) {
             //get rating according to given row
-            $rating = $this->ratingRepository->findMatchingObjectAndUid($ratingobject, $settings['ratedobjectuid'], RatingRepository::ADD_IF_NOT_FOUND);
+            /** @noinspection NullPointerExceptionInspection */
+            $rating = $this->ratingRepository->findMatchingObjectAndUid(
+                $ratingobject,
+                $settings['ratedobjectuid'],
+                RatingRepository::ADD_IF_NOT_FOUND
+            );
         } else {
             throw new \TYPO3\CMS\Core\Exception(
                 'Incomplete configuration setting. Either \'rating\' or \'ratedobjectuid\' are missing.',
@@ -319,10 +342,10 @@ class ExtensionHelperService extends AbstractExtensionService
     /**
      * Returns a new or existing vote
      *
-     * @param									$prefixId
-     * @param	array							$settings
-     * @param	\Thucke\ThRating\Domain\Model\Rating	$rating
-     * @return	\Thucke\ThRating\Domain\Model\Vote
+     * @param         $prefixId
+     * @param array       $settings
+     * @param \Thucke\ThRating\Domain\Model\Rating $rating
+     * @return \Thucke\ThRating\Domain\Model\Vote
      */
     public function getVote($prefixId, array $settings, Rating $rating): Vote
     {
@@ -366,8 +389,8 @@ class ExtensionHelperService extends AbstractExtensionService
      * Get a logger instance
      * The configuration of the logger is modified by extension typoscript config
      *
-     * @param	string	$name the class name which this logger is for
-     * @return 	\TYPO3\CMS\Core\Log\Logger
+     * @param string $name the class name which this logger is for
+     * @return  \TYPO3\CMS\Core\Log\Logger
      */
     public function getLogger($name = null): Logger
     {
@@ -381,8 +404,8 @@ class ExtensionHelperService extends AbstractExtensionService
     /**
      * Update and persist attached objects to the repository
      *
-     * @param	string	$repository
-     * @param	\TYPO3\CMS\Extbase\DomainObject\AbstractEntity	$objectToPersist
+     * @param string $repository
+     * @param \TYPO3\CMS\Extbase\DomainObject\AbstractEntity $objectToPersist
      */
     public function persistRepository($repository, AbstractEntity $objectToPersist): void
     {
@@ -430,7 +453,7 @@ class ExtensionHelperService extends AbstractExtensionService
 
         foreach ($allRatingobjects as $ratingobject) {
             $ratingobjectUid = $ratingobject->getUid();
-            /** @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Thucke\ThRating\Domain\Model\Stepconf> $stepconfObjects */
+            /** @var ObjectStorage<\Thucke\ThRating\Domain\Model\Stepconf> $stepconfObjects */
             $stepconfObjects = $ratingobject->getStepconfs();
             $stepcount = count($stepconfObjects);
             if (!$stepcount) {
@@ -455,7 +478,7 @@ class ExtensionHelperService extends AbstractExtensionService
             $sumStepWeights = 0;
 
             $stepconfs = $stepconfObjects->toArray();
-            foreach ($stepconfs as $stepconf) {	//stepconfs are already sorted by steporder
+            foreach ($stepconfs as $stepconf) { //stepconfs are already sorted by steporder
                 //just do checks here that all steps are OK
                 if (!$this->stepconfValidator->validate($stepconf)->hasErrors()) {
                     /** @var \Thucke\ThRating\Domain\Model\Stepconf $stepconf */
@@ -492,15 +515,22 @@ class ExtensionHelperService extends AbstractExtensionService
                     continue;
                 }
                 $subURI = substr(PATH_site, strlen($_SERVER['DOCUMENT_ROOT']) + 1);
-                $basePath = $this->getTypoScriptFrontendController()->baseUrl ?: '//' . $_SERVER['HTTP_HOST'] . '/' . $subURI;
+                $basePath = $this->getTypoScriptFrontendController()->baseUrl ?: '//' .
+                    $_SERVER['HTTP_HOST'] . '/' . $subURI;
 
                 $this->ratingImage = $this->objectManager->get(RatingImage::class);
                 $this->ratingImage->setConf($ratingConfig['imagefile']);
                 $filename = $this->ratingImage->getImageFile();
                 if (empty($filename)) {
                     $messageArray[] = [
-                        'messageText' => LocalizationUtility::translate('flash.vote.renderCSS.defaultImage', 'ThRating'),
-                        'messageTitle' => LocalizationUtility::translate('flash.heading.warning', 'ThRating'),
+                        'messageText' => LocalizationUtility::translate(
+                            'flash.vote.renderCSS.defaultImage',
+                            'ThRating'
+                        ),
+                        'messageTitle' => LocalizationUtility::translate(
+                            'flash.heading.warning',
+                            'ThRating'
+                        ),
                         'severity' => 'WARNING',
                         'additionalInfo' => ['errorCode' => 1403192702,
                                     'ratingName' => $ratingName,
@@ -510,7 +540,7 @@ class ExtensionHelperService extends AbstractExtensionService
                     $this->ratingImage->setConf($ratingConfig['imagefile']);
                     $filename = $this->ratingImage->getImageFile();
                 }
-                $filenameUri = $basePath . '/' . $filename;		//prepend host basepath if no URL is given
+                $filenameUri = $basePath . '/' . $filename;  //prepend host basepath if no URL is given
 
                 $imageDimensions = $this->ratingImage->getImageDimensions();
                 $height = $imageDimensions['height'];
@@ -533,19 +563,25 @@ class ExtensionHelperService extends AbstractExtensionService
                         $height *= $sumStepWeights;
                     }
                     $cssFile .= $mainId . ' { width:' . $width . 'px; height:' . $height . 'px; }' . chr(10);
-                    $cssFile .= $mainId . ', ' . $mainId . ' span:hover, ' . $mainId . ' span:active, ' . $mainId . ' span:focus, ' . $mainId . ' .current-rating {	background:url(' . $filenameUri . ') right bottom repeat-y;	}' . chr(10);
-                    $cssFile .= $mainId . ' span, ' . $mainId . ' .current-rating { width:' . $width . 'px; }' . chr(10);
+                    $cssFile .= $mainId . ', ' . $mainId . ' span:hover, ' . $mainId . ' span:active, ' . $mainId .
+                        ' span:focus, ' . $mainId . ' .current-rating { background:url(' . $filenameUri .
+                        ') right bottom repeat-y; }' . chr(10);
+                    $cssFile .= $mainId . ' span, ' . $mainId . ' .current-rating { width:' . $width . 'px; }' .
+                        chr(10);
                 } else {
                     $height = round($height / 3, 1);
                     if (!$ratingConfig['barimage']) {
                         $width *= $sumStepWeights;
                     }
                     $cssFile .= $mainId . ' { width:' . $width . 'px; height:' . $height . 'px; }' . chr(10);
-                    $cssFile .= $mainId . ', ' . $mainId . ' span:hover, ' . $mainId . ' span:active, ' . $mainId . ' span:focus, ' . $mainId . ' .current-rating {	background:url(' . $filenameUri . ') 0 0 repeat-x;	}' . chr(10);
-                    $cssFile .= $mainId . ' span, ' . $mainId . ' .current-rating { height:' . $height . 'px; line-height:' . $height . 'px; }' . chr(10);
+                    $cssFile .= $mainId . ', ' . $mainId . ' span:hover, ' . $mainId . ' span:active, ' . $mainId .
+                        ' span:focus, ' . $mainId . ' .current-rating { background:url(' . $filenameUri .
+                        ') 0 0 repeat-x; }' . chr(10);
+                    $cssFile .= $mainId . ' span, ' . $mainId . ' .current-rating { height:' . $height .
+                        'px; line-height:' . $height . 'px; }' . chr(10);
                     //calculate widths/heights related to stepweights
                 }
-                $cssFile .= $mainId . ' .current-poll {	background:url(' . $filenameUri . ');	}' . chr(10);
+                $cssFile .= $mainId . ' .current-poll { background:url(' . $filenameUri . '); }' . chr(10);
             }
 
             //calculate widths/heights related to stepweights
@@ -556,16 +592,24 @@ class ExtensionHelperService extends AbstractExtensionService
                 $sumWeights += $stepWeight;
                 $zIndex = $stepcount - $i + 2;  //add 2 to override .current-poll and .currentPollText
                 //configure rating and polling styles for steps
-                $oneStepPart = round($stepWeight * 100 / $sumStepWeights, 1);	//calculate single width of ratingstep
-                $cssFile .= 'span.RObj' . $ratingobjectUid . '-StpOdr' . $i . '-ratingpoll-normal { width:' . $oneStepPart . '%; z-index:' . $zIndex . '; margin-left:' . $stepPart . '%;}' . chr(10);
-                $cssFile .= 'span.RObj' . $ratingobjectUid . '-StpOdr' . $i . '-ratingpoll-tilt { height:' . $oneStepPart . '%; z-index:' . $zIndex . '; margin-bottom:' . $stepPart . '%; }' . chr(10);
-                $cssFile .= 'li.RObj' . $ratingobjectUid . '-StpOdr' . $i . '-currentpoll-normal { width:' . $oneStepPart . '%; margin-left:' . $stepPart . '%; }' . chr(10);
-                $cssFile .= 'li.RObj' . $ratingobjectUid . '-StpOdr' . $i . '-currentpoll-normal span { width:100%; }' . chr(10);
-                $cssFile .= 'li.RObj' . $ratingobjectUid . '-StpOdr' . $i . '-currentpoll-tilt { height:' . $oneStepPart . '%; margin-bottom:' . $stepPart . '%; }' . chr(10);
-                $cssFile .= 'li.RObj' . $ratingobjectUid . '-StpOdr' . $i . '-currentpoll-tilt span { height:100%; }' . chr(10);
-                $stepPart = round($sumWeights * 100 / $sumStepWeights, 1);	//calculate sum of widths to this ratingstep
-                $cssFile .= 'span.RObj' . $ratingobjectUid . '-StpOdr' . $i . '-ratingstep-normal { width:' . $stepPart . '%; z-index:' . $zIndex . '; }' . chr(10);
-                $cssFile .= 'span.RObj' . $ratingobjectUid . '-StpOdr' . $i . '-ratingstep-tilt { height:' . $stepPart . '%; z-index:' . $zIndex . '; }' . chr(10);
+                $oneStepPart = round($stepWeight * 100 / $sumStepWeights, 1); //calculate single width of ratingstep
+                $cssFile .= 'span.RObj' . $ratingobjectUid . '-StpOdr' . $i . '-ratingpoll-normal { width:' .
+                    $oneStepPart . '%; z-index:' . $zIndex . '; margin-left:' . $stepPart . '%;}' . chr(10);
+                $cssFile .= 'span.RObj' . $ratingobjectUid . '-StpOdr' . $i . '-ratingpoll-tilt { height:' .
+                    $oneStepPart . '%; z-index:' . $zIndex . '; margin-bottom:' . $stepPart . '%; }' . chr(10);
+                $cssFile .= 'li.RObj' . $ratingobjectUid . '-StpOdr' . $i . '-currentpoll-normal { width:' .
+                    $oneStepPart . '%; margin-left:' . $stepPart . '%; }' . chr(10);
+                $cssFile .= 'li.RObj' . $ratingobjectUid . '-StpOdr' . $i . '-currentpoll-normal span { width:100%; }' .
+                    chr(10);
+                $cssFile .= 'li.RObj' . $ratingobjectUid . '-StpOdr' . $i . '-currentpoll-tilt { height:' .
+                    $oneStepPart . '%; margin-bottom:' . $stepPart . '%; }' . chr(10);
+                $cssFile .= 'li.RObj' . $ratingobjectUid . '-StpOdr' . $i . '-currentpoll-tilt span { height:100%; }' .
+                    chr(10);
+                $stepPart = round($sumWeights * 100 / $sumStepWeights, 1); //calculate sum of widths to this ratingstep
+                $cssFile .= 'span.RObj' . $ratingobjectUid . '-StpOdr' . $i . '-ratingstep-normal { width:' .
+                    $stepPart . '%; z-index:' . $zIndex . '; }' . chr(10);
+                $cssFile .= 'span.RObj' . $ratingobjectUid . '-StpOdr' . $i . '-ratingstep-tilt { height:' .
+                    $stepPart . '%; z-index:' . $zIndex . '; }' . chr(10);
                 $i++;
             }
             //reset variables for next iteration

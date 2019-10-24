@@ -1,4 +1,5 @@
 <?php
+/** @noinspection PhpUnnecessaryFullyQualifiedNameInspection */
 namespace Thucke\ThRating\Domain\Repository;
 
 use Thucke\ThRating\Domain\Model\Rating;
@@ -66,20 +67,25 @@ class RatingRepository extends Repository
      * @validate $ratingobject \Thucke\ThRating\Domain\Validator\RatingobjectValidator
      * @validate $ratedobjectuid NumberRange(minimum = 1)
      */
-    public function findMatchingObjectAndUid(Ratingobject $ratingobject, $ratedobjectuid, $addIfNotFound = false): Rating
+    public function findMatchingObjectAndUid(
+        Ratingobject $ratingobject,
+        $ratedobjectuid,
+        $addIfNotFound = false
+    ): Rating
     {
         /** @var \Thucke\ThRating\Domain\Model\Rating $foundRow */
         $foundRow = $this->objectManager->get(Rating::class);
 
         $query = $this->createQuery();
-        $query->matching($query->logicalAnd([$query->equals('ratingobject', $ratingobject->getUid()), $query->equals('ratedobjectuid', $ratedobjectuid)]))->setLimit(1);
+        $query->matching($query->logicalAnd(
+            [
+                $query->equals('ratingobject', $ratingobject->getUid()),
+                $query->equals('ratedobjectuid', $ratedobjectuid)
+            ]
+        ))->setLimit(1);
         $queryResult = $query->execute();
         if ($queryResult->count() !== 0) {
             $foundRow = $queryResult->getFirst();
-        //Cope with an obvious bug in TYPO3 6.1 that $queryResult->getFirst() doesnt return the fully loaded object
-            /* If ( \TYPO3\CMS\Core\Utility\VersionNumberUtility::convertVersionNumberToInteger(TYPO3_version) < 6002000 ) {
-                $dummy = \TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump($foundRow, 'dummy', 2, true, false, true);
-            } */
         } elseif ($addIfNotFound) {
             $foundRow->setRatingobject($ratingobject);
             $foundRow->setRatedobjectuid($ratedobjectuid);

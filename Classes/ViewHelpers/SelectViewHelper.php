@@ -36,10 +36,16 @@ class SelectViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\SelectViewHelpe
     /**
      * Renders the rating select form
      */
+    /** @noinspection PhpMissingParentCallCommonInspection */
     public function initializeArguments()
     {
         $this->registerArgument('additionalOptions', 'array', 'Associative array with values to prepend');
-        $this->registerArgument('options', 'array', 'Associative array with internal IDs as key, and the values are displayed in the select box. Can be combined with or replaced by child f:form.select.* nodes.');
+        $this->registerArgument(
+            'options',
+            'array',
+            'Associative array with internal IDs as key, and the values are displayed in the select box.'.
+                'Can be combined with or replaced by child f:form.select.* nodes.'
+        );
         $this->registerTagAttribute('name', 'string', 'HTML name of this element');
         $this->registerTagAttribute('class', 'string', 'CSS class(es) for this element');
         $this->registerTagAttribute('onchange', 'string', 'Optional event handler');
@@ -57,7 +63,7 @@ class SelectViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\SelectViewHelpe
         foreach ($this->arguments['additionalOptions'] as $key => $value) {
             $additionalOptions[utf8_encode('{"value":' . $key . '}')] = $value;
         }
-        //TODO delete deprecated $array = \TYPO3\CMS\Core\Utility\GeneralUtility::array_merge($options, $additionalOptions);
+        //TODO delete deprecated $array = GeneralUtility::array_merge($options, $additionalOptions);
         $array = $additionalOptions + $options;
         ksort($array);
 

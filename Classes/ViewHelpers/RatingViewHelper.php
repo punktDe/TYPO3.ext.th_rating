@@ -2,6 +2,7 @@
 namespace Thucke\ThRating\ViewHelpers;
 
 use Thucke\ThRating\Service\ExtensionHelperService;
+use TYPO3\CMS\Core\Log\LogLevel;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
@@ -62,12 +63,13 @@ class RatingViewHelper extends AbstractViewHelper
     protected $escapeOutput = false;
 
     /**
-     * @var \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController contains a backup of the current['TSFE'] if used in BE mode
+     * @var \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController
+     *      contains a backup of the current['TSFE'] if used in BE mode
      */
     protected static $tsfeBackup;
 
     /**
-     * @var \TYPO3\CMS\Core\Log\Logger	$logger
+     * @var \TYPO3\CMS\Core\Log\Logger $logger
      */
     protected $logger;
 
@@ -100,7 +102,11 @@ class RatingViewHelper extends AbstractViewHelper
      * @throws \TYPO3\CMS\Fluid\Core\ViewHelper\Exception
      * @return mixed
      */
-    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
+    public static function renderStatic(
+        array $arguments,
+        \Closure $renderChildrenClosure,
+        RenderingContextInterface $renderingContext
+    )
     {
         $typoscriptObjectPath = 'plugin.tx_thrating';
         $ratedobjectuid = $arguments['ratedobjectuid'];
@@ -115,7 +121,7 @@ class RatingViewHelper extends AbstractViewHelper
         //instantiate the logger
         $logger = $extensionHelperService->getLogger(__CLASS__);
         $logger->log(
-            \TYPO3\CMS\Core\Log\LogLevel::DEBUG,
+            LogLevel::DEBUG,
             'Entry point',
             [
                 'Viewhelper parameters' => [
@@ -125,7 +131,8 @@ class RatingViewHelper extends AbstractViewHelper
                     'ratefield' => $ratefield,
                     'ratedobjectuid' => $ratedobjectuid,
                     'display' => $display, ],
-                'typoscript' => static::getConfigurationManager()->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT),
+                'typoscript' => static::getConfigurationManager()
+                    ->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT),
             ]
         );
 
@@ -136,11 +143,12 @@ class RatingViewHelper extends AbstractViewHelper
 
         $pathSegments = GeneralUtility::trimExplode('.', $typoscriptObjectPath);
         $lastSegment = array_pop($pathSegments);
-        $setup = static::getConfigurationManager()->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT);
+        $setup = static::getConfigurationManager()
+            ->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT);
         foreach ($pathSegments as $segment) {
             if (!array_key_exists($segment . '.', $setup)) {
                 $logger->log(
-                    \TYPO3\CMS\Core\Log\LogLevel::CRITICAL,
+                    LogLevel::CRITICAL,
                     'TypoScript object path does not exist',
                     [
                         'Typoscript object path' => htmlspecialchars($typoscriptObjectPath),
@@ -173,13 +181,17 @@ class RatingViewHelper extends AbstractViewHelper
             $setup[$lastSegment . '.']['settings.']['ratetable'] = $ratetable;
             $setup[$lastSegment . '.']['settings.']['ratefield'] = $ratefield;
         } else {
-            $logger->log(\TYPO3\CMS\Core\Log\LogLevel::CRITICAL, 'ratingobject not specified or ratetable/ratfield not set', ['errorCode' => 1399727698]);
+            $logger->log(
+                LogLevel::CRITICAL,
+                'ratingobject not specified or ratetable/ratfield not set',
+                ['errorCode' => 1399727698]
+            );
             throw new Exception('ratingobject not specified or ratetable/ratfield not set', 1399727698);
         }
         if (!empty($ratedobjectuid)) {
             $setup[$lastSegment . '.']['settings.']['ratedobjectuid'] = $ratedobjectuid;
         } else {
-            $logger->log(\TYPO3\CMS\Core\Log\LogLevel::CRITICAL, 'ratedobjectuid not set', ['errorCode' => 1304624408]);
+            $logger->log(LogLevel::CRITICAL, 'ratedobjectuid not set', ['errorCode' => 1304624408]);
             throw new Exception('ratedobjectuid not set', 1304624408);
         }
         if (!empty($display)) {
@@ -187,7 +199,7 @@ class RatingViewHelper extends AbstractViewHelper
         }
 
         $logger->log(
-            \TYPO3\CMS\Core\Log\LogLevel::DEBUG,
+            LogLevel::DEBUG,
             'Single contentObjectRenderer to get',
             [
                 'contentObjectRenderer type' => $setup[$lastSegment],
@@ -199,8 +211,8 @@ class RatingViewHelper extends AbstractViewHelper
             static::resetFrontendEnvironment();
         }
 
-        $logger->log(\TYPO3\CMS\Core\Log\LogLevel::INFO, 'Generated content', ['content' => $content]);
-        $logger->log(\TYPO3\CMS\Core\Log\LogLevel::DEBUG, 'Exit point');
+        $logger->log(LogLevel::INFO, 'Generated content', ['content' => $content]);
+        $logger->log(LogLevel::DEBUG, 'Exit point');
 
         return $content;
     }
@@ -234,7 +246,8 @@ class RatingViewHelper extends AbstractViewHelper
 
     /**
      * Sets the $TSFE->cObjectDepthCounter in Backend mode
-     * This somewhat hacky work around is currently needed because the cObjGetSingle() function of \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer relies on this setting
+     * This somewhat hacky work around is currently needed because the cObjGetSingle() function
+     * of \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer relies on this setting
      */
     protected static function simulateFrontendEnvironment(): void
     {

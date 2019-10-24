@@ -1,6 +1,9 @@
 <?php
+/** @noinspection PhpUnnecessaryFullyQualifiedNameInspection */
 /** @noinspection PhpFullyQualifiedNameUsageInspection */
 namespace Thucke\ThRating\Service;
+
+use TYPO3\CMS\Extbase\Domain\Repository\FrontendUserRepository;
 
 /***************************************************************
 *  Copyright notice
@@ -34,7 +37,7 @@ namespace Thucke\ThRating\Service;
 class AccessControlService extends AbstractExtensionService
 {
     /**
-     * @var \TYPO3\CMS\Extbase\Domain\Repository\FrontendUserRepository	$frontendUserRepository
+     * @var \TYPO3\CMS\Extbase\Domain\Repository\FrontendUserRepository $frontendUserRepository
      */
     protected $frontendUserRepository;
 
@@ -43,13 +46,13 @@ class AccessControlService extends AbstractExtensionService
      */
 
     /** @noinspection PhpUnused */
-    public function injectFrontendUserRepository(\TYPO3\CMS\Extbase\Domain\Repository\FrontendUserRepository $frontendUserRepository)
+    public function injectFrontendUserRepository(FrontendUserRepository $frontendUserRepository)
     {
         $this->frontendUserRepository = $frontendUserRepository;
     }
 
     /**
-     * @var \Thucke\ThRating\Domain\Repository\VoterRepository	$voterRepository
+     * @var \Thucke\ThRating\Domain\Repository\VoterRepository $voterRepository
      */
     protected $voterRepository;
 
@@ -66,8 +69,8 @@ class AccessControlService extends AbstractExtensionService
     /**
      * Tests, if the given person is logged into the frontend
      *
-     * @param	\TYPO3\CMS\Extbase\Domain\Model\FrontendUser	$person	The person
-     * @return	bool    The result; true if the given person is logged in; otherwise false
+     * @param \TYPO3\CMS\Extbase\Domain\Model\FrontendUser $person The person
+     * @return bool    The result; true if the given person is logged in; otherwise false
      */
     public function isLoggedIn(\TYPO3\CMS\Extbase\Domain\Model\FrontendUser $person = null)
     {
@@ -77,7 +80,7 @@ class AccessControlService extends AbstractExtensionService
         if (is_object($person)) {
             if ($person->getUid() &&
                     ($person->getUid() === $this->getFrontendUserUid())) {
-                return true;	//treat anonymous user also as logged in
+                return true; //treat anonymous user also as logged in
             }
         }
 

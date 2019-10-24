@@ -34,8 +34,8 @@ use TYPO3\CMS\Extbase\Validation\Validator\AbstractValidator;
 /**
  * A validator for Ratingobjects
  *
- * @author		Thomas Hucke <thucke@web.de>
- * @copyright 	Copyright belongs to the respective author
+ * @author  Thomas Hucke <thucke@web.de>
+ * @copyright  Copyright belongs to the respective author
  * @scope singleton
  */
 class RatingobjectValidator extends AbstractValidator
@@ -53,10 +53,22 @@ class RatingobjectValidator extends AbstractValidator
         $ratefield = $ratingobject->getRatefield();
 
         if (empty($ratetable)) {
-            $this->addError(LocalizationUtility::translate('error.validator.ratingobject_table_extbase', 'ThRating'), 1283528638);
+            $this->addError(
+                LocalizationUtility::translate(
+                    'error.validator.ratingobject_table_extbase',
+                    'ThRating'
+                ),
+                1283528638
+            );
         }
         if (empty($ratefield)) {
-            $this->addError(LocalizationUtility::translate('error.validator.ratingobject_field_extbase', 'ThRating'), 1283536038);
+            $this->addError(
+                LocalizationUtility::translate(
+                    'error.validator.ratingobject_field_extbase',
+                    'ThRating'
+                ),
+                1283536038
+            );
         }
     }
 }

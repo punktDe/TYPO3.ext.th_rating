@@ -36,10 +36,10 @@ use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 /**
  * Model for object rating
  *
- * @author		Thomas Hucke <thucke@web.de>
- * @copyright 	Copyright belongs to the respective authors
- * @license 	http://opensource.org/licenses/gpl-license.php GNU Public License, version 2
- * @scope 		beta
+ * @author  Thomas Hucke <thucke@web.de>
+ * @copyright  Copyright belongs to the respective authors
+ * @license  http://opensource.org/licenses/gpl-license.php GNU Public License, version 2
+ * @scope   beta
  * @entity
  */
 class Rating extends AbstractEntity
@@ -77,7 +77,7 @@ class Rating extends AbstractEntity
     protected $objectManager;
 
     /**
-     * @param \TYPO3\CMS\Extbase\Object\ObjectManagerInterface	$objectManager
+     * @param \TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager
      */
     /** @noinspection PhpUnused */
     public function injectObjectManager(ObjectManagerInterface $objectManager): void
@@ -104,7 +104,7 @@ class Rating extends AbstractEntity
     protected $extensionHelperService;
 
     /**
-     * @param	\Thucke\ThRating\Service\ExtensionHelperService $extensionHelperService
+     * @param \Thucke\ThRating\Service\ExtensionHelperService $extensionHelperService
      */
     /** @noinspection PhpUnused */
     public function injectExtensionHelperService(ExtensionHelperService $extensionHelperService): void
@@ -117,12 +117,12 @@ class Rating extends AbstractEntity
      *
      * Redundant information to enhance performance in displaying calculated information
      * This is a JSON encoded string with the following keys
-     *	- votecounts(1...n)	vote counts of the specific ratingstep
+     * - votecounts(1...n) vote counts of the specific ratingstep
      * It be updated every time a vote is created, changed or deleted.
      * Specific handling must be defined when ratingsteps are added or removed or stepweights are changed
      * Calculation of ratings:
-     *	currentrate = (  sum of all ( stepweight(n) * votecounts(n) ) ) / number of all votes
-     *	currentwidth = round (currentrate * 100 / number of ratingsteps, 1)
+     * currentrate = (  sum of all ( stepweight(n) * votecounts(n) ) ) / number of all votes
+     * currentwidth = round (currentrate * 100 / number of ratingsteps, 1)
      *
      * @var string
      */
@@ -159,7 +159,9 @@ class Rating extends AbstractEntity
         if (empty($this->objectManager)) {
             $this->objectManager = GeneralUtility::makeInstance(ObjectManager::class);
         }
-        $this->settings = $this->objectManager->get(ConfigurationManager::class)->getConfiguration('Settings', 'thRating', 'pi1');
+        $this->settings = $this->objectManager
+            ->get(ConfigurationManager::class)
+            ->getConfiguration('Settings', 'thRating', 'pi1');
 
         //Initialize vote storage if rating is new
         if (!is_object($this->votes)) {
@@ -181,7 +183,7 @@ class Rating extends AbstractEntity
     /**
      * Returns the ratingobject this rating is part of
      *
-     * @return	\Thucke\ThRating\Domain\Model\Ratingobject The ratingobject this rating is part of
+     * @return \Thucke\ThRating\Domain\Model\Ratingobject The ratingobject this rating is part of
      */
     public function getRatingobject(): Ratingobject
     {
@@ -280,9 +282,14 @@ class Rating extends AbstractEntity
         foreach ($this->getRatingobject()->getStepconfs() as $stepConf) {
             $stepOrder = $stepConf->getSteporder();
             $voteCount = $this->voteRepository->countByMatchingRatingAndVote($this, $stepConf);
-            $anonymousCount = $this->voteRepository->countAnonymousByMatchingRatingAndVote($this, $stepConf, $this->settings['mapAnonymous']);
+            $anonymousCount = $this->voteRepository->countAnonymousByMatchingRatingAndVote(
+                $this,
+                $stepConf,
+                $this->settings['mapAnonymous']
+            );
             $currentratesDecoded['weightedVotes'][$stepOrder] = $voteCount * $stepConf->getStepweight();
-            $currentratesDecoded['sumWeightedVotes'][$stepOrder] = $currentratesDecoded['weightedVotes'][$stepOrder] * $stepOrder;
+            $currentratesDecoded['sumWeightedVotes'][$stepOrder] =
+                $currentratesDecoded['weightedVotes'][$stepOrder] * $stepOrder;
             $numAllVotes += $voteCount;
             $numAllAnonymousVotes += $anonymousCount;
         }
@@ -371,8 +378,14 @@ class Rating extends AbstractEntity
                 //set current polling styles to zero percent and prevent division by zero error in lower formula
                 $currentPollDimensions[$stepConf->getStepOrder()]['pctValue'] = 0;
             } else {
-                //calculate current polling styles -> holds a percent value for usage in CSS to display polling relations
-                $currentPollDimensions[$stepConf->getStepOrder()]['pctValue'] = round(($currentratesDecoded['weightedVotes'][$stepConf->getStepOrder()] * 100) / $sumAllWeightedVotes, 1);
+                /* calculate current polling styles -> holds a percent value for usage in CSS
+                   to display polling relations */
+                $currentPollDimensions[$stepConf->getStepOrder()]['pctValue'] =
+                    round(
+                        ($currentratesDecoded['weightedVotes'][$stepConf->getStepOrder()] * 100) /
+                        $sumAllWeightedVotes,
+                        1
+                    );
             }
         }
 

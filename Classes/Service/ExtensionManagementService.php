@@ -1,6 +1,9 @@
 <?php
 namespace Thucke\ThRating\Service;
 
+use TYPO3\CMS\Core\Log\LogLevel;
+use Thucke\ThRating\Domain\Model\Stepconf;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -56,8 +59,14 @@ class ExtensionManagementService extends AbstractExtensionService
      */
     public function makeRatable($tablename, $fieldname, $stepcount)
     {
-        $this->logger->log(\TYPO3\CMS\Core\Log\LogLevel::INFO, 'makeRatable called', ['tablename' => $tablename, 'fieldname' => $fieldname, 'stepcount' => $stepcount]);
-        $ratingobject = $this->extensionHelperService->getRatingobject(['ratetable' => $tablename, 'ratefield' => $fieldname]);
+        $this->logger->log(
+            LogLevel::INFO,
+            'makeRatable called',
+            ['tablename' => $tablename, 'fieldname' => $fieldname, 'stepcount' => $stepcount]
+        );
+        $ratingobject = $this->extensionHelperService->getRatingobject(
+            ['ratetable' => $tablename, 'ratefield' => $fieldname]
+        );
 
         //create a new default stepconf having stepweight 1 for each step
         for ($i = 1; $i <= $stepcount; $i++) {
@@ -84,26 +93,59 @@ class ExtensionManagementService extends AbstractExtensionService
      * @throws \TYPO3\CMS\Extbase\Persistence\Exception\InvalidQueryException
      * @return  bool
      */
-    public function setStepname(\Thucke\ThRating\Domain\Model\Stepconf $stepconf, $stepname, $languageIso2Code = 0, $allStepconfs = false)
+    public function setStepname(Stepconf $stepconf, $stepname, $languageIso2Code = 0, $allStepconfs = false)
     {
-        $this->logger->log(\TYPO3\CMS\Core\Log\LogLevel::INFO, 'setStepname called', ['stepconf' => $stepconf->getUid(), 'steporder' => $stepconf->getSteporder(), 'stepname' => $stepname, 'languageIso2Code' => $languageIso2Code, 'allStepconfs' => $allStepconfs]);
+        $this->logger->log(
+            LogLevel::INFO,
+            'setStepname called',
+            [
+                'stepconf' => $stepconf->getUid(),
+                'steporder' => $stepconf->getSteporder(),
+                'stepname' => $stepname,
+                'languageIso2Code' => $languageIso2Code,
+                'allStepconfs' => $allStepconfs
+            ]
+        );
         $success = true;
         if (!$allStepconfs) {
             //only add the one specific stepname
             $stepnameArray = ['stepname' => $stepname, 'languageIso2Code' => $languageIso2Code];
             $stepname = $this->extensionHelperService->createStepname($stepnameArray);
             if (!$stepconf->addStepname($stepname)) {
-                $this->logger->log(\TYPO3\CMS\Core\Log\LogLevel::WARNING, 'Stepname entry for language already exists', ['stepconf' => $stepconf->getUid(), 'steporder' => $stepconf->getSteporder(), 'stepname' => $stepname, 'languageIso2Code' => $languageIso2Code, 'errorCode' => 1398972827]);
+                $this->logger->log(
+                    LogLevel::WARNING,
+                    'Stepname entry for language already exists',
+                    [
+                        'stepconf' => $stepconf->getUid(),
+                        'steporder' => $stepconf->getSteporder(),
+                        'stepname' => $stepname,
+                        'languageIso2Code' => $languageIso2Code,
+                        'errorCode' => 1398972827
+                    ]
+                );
                 $success = false;
             }
         } else {
             $ratingobject = $stepconf->getRatingobject();
             //add stepnames to every stepconf
             foreach ($ratingobject->getStepconfs() as $i => $loopStepConf) {
-                $stepnameArray = ['stepname' => $stepname . $loopStepConf->getSteporder(), 'languageIso2Code' => $languageIso2Code];
+                $stepnameArray = [
+                    'stepname' => $stepname . $loopStepConf->getSteporder(),
+                    'languageIso2Code' => $languageIso2Code
+                ];
                 $stepnameObject = $this->extensionHelperService->createStepname($stepnameArray);
                 if (!$loopStepConf->addStepname($stepnameObject) && $success) {
-                    $this->logger->log(\TYPO3\CMS\Core\Log\LogLevel::WARNING, 'Stepname entry for language already exists', ['stepconf' => $stepconf->getUid(), 'steporder' => $stepconf->getSteporder(), 'stepname' => $stepname, 'languageIso2Code' => $languageIso2Code, 'errorCode' => 1398972331]);
+                    $this->logger->log(
+                        LogLevel::WARNING,
+                        'Stepname entry for language already exists',
+                        [
+                            'stepconf' => $stepconf->getUid(),
+                            'steporder' => $stepconf->getSteporder(),
+                            'stepname' => $stepname,
+                            'languageIso2Code' => $languageIso2Code,
+                            'errorCode' => 1398972331
+                        ]
+                    );
                     $success = false;
                 }
             }
