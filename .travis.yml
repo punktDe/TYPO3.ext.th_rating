@@ -2,6 +2,9 @@ language: php
 
 dist: trusty
 
+git:
+  depth: false
+
 matrix:
   fast_finish: true
   include:
