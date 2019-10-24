@@ -30,10 +30,10 @@ use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 /**
  * Model for ratingstep configuration names
  *
- * @author		Thomas Hucke <thucke@web.de>
- * @copyright 	Copyright belongs to the respective authors
- * @license 	http://opensource.org/licenses/gpl-license.php GNU Public License, version 2
- * @scope 		beta
+ * @author  Thomas Hucke <thucke@web.de>
+ * @copyright  Copyright belongs to the respective authors
+ * @license  http://opensource.org/licenses/gpl-license.php GNU Public License, version 2
+ * @scope   beta
  * @entity
  */
 class Stepname extends AbstractEntity
@@ -105,7 +105,7 @@ class Stepname extends AbstractEntity
     /**
      * Returns the stepconf this rating is part of
      *
-     * @return	\Thucke\ThRating\Domain\Model\Stepconf The stepconf this rating is part of
+     * @return \Thucke\ThRating\Domain\Model\Stepconf The stepconf this rating is part of
      */
     public function getStepconf(): Stepconf
     {

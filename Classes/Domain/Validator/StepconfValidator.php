@@ -41,7 +41,7 @@ use TYPO3\CMS\Extbase\Validation\Validator\AbstractValidator;
 /**
  * A validator for Ratings
  *
- * @author		Thomas Hucke <thucke@web.de>
+ * @author  Thomas Hucke <thucke@web.de>
  * @copyright Copyright belongs to the respective authors
  * @scope singleton
  */
@@ -130,10 +130,13 @@ class StepconfValidator extends AbstractValidator
         }
 
         if (!is_int($stepconf->getSteporder()) || $stepconf->getSteporder() < 1) {
-            $this->addError(LocalizationUtility::translate(
-                'error.validator.stepconf.invalidSteporderNumber',
-                'ThRating'
-            ), 1368123953);
+            $this->addError(
+                LocalizationUtility::translate(
+                    'error.validator.stepconf.invalidSteporderNumber',
+                    'ThRating'
+                ),
+                1368123953
+            );
         }
 
         //check if given steporder is valid (integer, maximum +1)
@@ -171,26 +174,35 @@ class StepconfValidator extends AbstractValidator
             /** @var \Thucke\ThRating\Domain\Model\Stepname|object $defaultName */
             $defaultName = $this->stepnameRepository->findDefaultStepname($firstStepname);
             if (!$defaultName->isValid()) {
-                $this->addError(LocalizationUtility::translate(
-                    'error.validator.stepconf.defaultStepname',
-                    'ThRating',
-                    [$firstStepname->getStepconf()->getUid()]
-                ), 1384374165);
+                $this->addError(
+                    LocalizationUtility::translate(
+                        'error.validator.stepconf.defaultStepname',
+                        'ThRating',
+                        [$firstStepname->getStepconf()->getUid()]
+                    ),
+                    1384374165
+                );
             } else {
                 //Finally check on language consistency
                 $checkConsistency = $this->stepnameRepository->checkConsistency($firstStepname);
                 if ($checkConsistency['doubleLang']) {
-                    $this->addError(LocalizationUtility::translate(
-                        'error.validator.stepconf.doubleLangEntry',
-                        'ThRating',
-                        [$firstStepname->getStepconf()->getUid()]
-                    ), 1384374589);
+                    $this->addError(
+                        LocalizationUtility::translate(
+                            'error.validator.stepconf.doubleLangEntry',
+                            'ThRating',
+                            [$firstStepname->getStepconf()->getUid()]
+                        ),
+                        1384374589
+                    );
                 } elseif ($checkConsistency['existLang']) {
-                    $this->addError(LocalizationUtility::translate(
-                        'error.validator.stepconf.notExistingLanguage',
-                        'ThRating',
-                        [$firstStepname->getUid()]
-                    ), 1384374589);
+                    $this->addError(
+                        LocalizationUtility::translate(
+                            'error.validator.stepconf.notExistingLanguage',
+                            'ThRating',
+                            [$firstStepname->getUid()]
+                        ),
+                        1384374589
+                    );
                 }
             }
         }

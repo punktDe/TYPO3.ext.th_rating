@@ -114,8 +114,8 @@ class StepnameRepository extends Repository
     {
         /** @var \TYPO3\CMS\Extbase\Persistence\QueryInterface $query */
         $query = $this->createQuery();
-        $query	->getQuerySettings()->setRespectSysLanguage(false);
-        $query	->matching(
+        $query ->getQuerySettings()->setRespectSysLanguage(false);
+        $query ->matching(
             $query->equals(self::STEPCONF_NAME, $stepname->getStepconf()->getUid())
         );
         $queryResult = $query
@@ -167,7 +167,14 @@ class StepnameRepository extends Repository
 
         $query = $this->createQuery();
         $query->getQuerySettings()->setRespectSysLanguage(false);
-        $query->matching($query->logicalAnd([$query->equals(self::STEPCONF_NAME, $stepname->getStepconf()->getUid()), $query->in(self::SYS_LANG_UID_LITERAL, [0, -1])]))->setLimit(1);
+        $query->matching(
+            $query->logicalAnd(
+                [
+                    $query->equals(self::STEPCONF_NAME, $stepname->getStepconf()->getUid()),
+                    $query->in(self::SYS_LANG_UID_LITERAL, [0, -1])
+                ]
+            )
+        )->setLimit(1);
 
         /** @var QueryResultInterface $queryResult */
         $queryResult = $query->execute();
@@ -183,7 +190,7 @@ class StepnameRepository extends Repository
      * Finds the localized ratingstep entry by giving ratingobjectUid
      *
      * @param    Stepname $stepname The ratingname to look for
-     * @return    bool                                            true if stepconf having same steporder and _languageUid exists
+     * @return    bool  true if stepconf having same steporder and _languageUid exists
      */
     public function existStepname(Stepname $stepname): bool
     {

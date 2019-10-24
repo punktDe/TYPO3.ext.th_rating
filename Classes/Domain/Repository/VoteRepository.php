@@ -60,7 +60,14 @@ class VoteRepository extends Repository
         /** @var \TYPO3\CMS\Extbase\Persistence\QueryInterface $query */
         $query = $this->createQuery();
 
-        return $query->matching($query->logicalAnd([$query->equals('rating', $rating), $query->equals('voter', $voter)]))->execute()->getFirst();
+        return $query->matching(
+            $query->logicalAnd(
+                [
+                    $query->equals('rating', $rating),
+                    $query->equals('voter', $voter)
+                ]
+            )
+        )->execute()->getFirst();
     }
 
     /**
@@ -73,7 +80,12 @@ class VoteRepository extends Repository
     public function countByMatchingRatingAndVote($rating = null, $stepconf = null): int
     {
         $query = $this->createQuery();
-        $query->matching($query->logicalAnd([$query->equals('rating', $rating->getUid()), $query->equals('vote', $stepconf->getUid())]));
+        $query->matching($query->logicalAnd(
+            [
+                $query->equals('rating', $rating->getUid()),
+                $query->equals('vote', $stepconf->getUid())
+            ]
+        ));
 
         return count($query->execute());
     }

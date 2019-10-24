@@ -35,10 +35,10 @@ use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 /**
  * Model for ratingstep configuration
  *
- * @author		Thomas Hucke <thucke@web.de>
- * @copyright 	Copyright belongs to the respective authors
- * @license 	http://opensource.org/licenses/gpl-license.php GNU Public License, version 2
- * @scope 		beta
+ * @author  Thomas Hucke <thucke@web.de>
+ * @copyright  Copyright belongs to the respective authors
+ * @license  http://opensource.org/licenses/gpl-license.php GNU Public License, version 2
+ * @scope   beta
  * @entity
  */
 class Stepconf extends AbstractEntity
@@ -87,12 +87,12 @@ class Stepconf extends AbstractEntity
     protected $votes;
 
     /**
-     * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface	$objectManager
+     * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager
      */
     protected $objectManager;
 
     /**
-     * @param \TYPO3\CMS\Extbase\Object\ObjectManagerInterface	$objectManager
+     * @param \TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager
      */
     /** @noinspection PhpUnused */
     public function injectObjectManager(ObjectManagerInterface $objectManager): void
@@ -101,7 +101,7 @@ class Stepconf extends AbstractEntity
     }
 
     /**
-     * @var \Thucke\ThRating\Domain\Repository\StepnameRepository	$stepnameRepository
+     * @var \Thucke\ThRating\Domain\Repository\StepnameRepository $stepnameRepository
      */
     protected $stepnameRepository;
 
@@ -120,7 +120,7 @@ class Stepconf extends AbstractEntity
     protected $extensionHelperService;
 
     /**
-     * @param	\Thucke\ThRating\Service\ExtensionHelperService $extensionHelperService
+     * @param \Thucke\ThRating\Service\ExtensionHelperService $extensionHelperService
      */
     /** @noinspection PhpUnused */
     public function injectExtensionHelperService(ExtensionHelperService $extensionHelperService): void

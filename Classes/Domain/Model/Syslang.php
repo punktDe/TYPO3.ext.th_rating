@@ -63,7 +63,7 @@ class Syslang extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     }
 
     /**
-     * @return	string
+     * @return string
      */
     public function getTitle(): string
     {

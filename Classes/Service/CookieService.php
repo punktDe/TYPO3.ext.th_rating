@@ -70,10 +70,10 @@ class CookieService extends AbstractExtensionService
                 );
                 if ($matchCnt === false) {
                     $this->logger->log(
-                       LogLevel::ERROR,
-                       'getCookieDomain: The regular expression for the cookie domain contains errors.'.
-                       'The session is not shared across sub-domains.',
-                       ['cookieDomain' => $cookieDomain, 'errorCode' => 1399137882,]
+                        LogLevel::ERROR,
+                        'getCookieDomain: The regular expression for the cookie domain contains errors.'.
+                        'The session is not shared across sub-domains.',
+                        ['cookieDomain' => $cookieDomain, 'errorCode' => 1399137882,]
                     );
                 } elseif ($matchCnt) {
                     $result = $match[0];

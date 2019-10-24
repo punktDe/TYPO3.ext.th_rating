@@ -37,7 +37,7 @@ use TYPO3\CMS\Extbase\Validation\Validator\AbstractValidator;
 /**
  * A validator for Ratings
  *
- * @author		Thomas Hucke <thucke@web.de>
+ * @author  Thomas Hucke <thucke@web.de>
  * @copyright Copyright belongs to the respective authors
  * @scope singleton
  */
@@ -67,7 +67,10 @@ class StepnameValidator extends AbstractValidator
     {
         //a stepname object must have a stepconf
         if (!$stepname->getStepconf() instanceof Stepconf) {
-            $this->addError(LocalizationUtility::translate('error.validator.stepname.stepconf', 'ThRating'), 1382895072);
+            $this->addError(
+                LocalizationUtility::translate('error.validator.stepname.stepconf', 'ThRating'),
+                1382895072
+            );
         }
 
         //check if given languagecode exists in website
@@ -80,7 +83,10 @@ class StepnameValidator extends AbstractValidator
         if (!empty($langUid)) {
             $defaultStepname = $this->stepnameRepository->findDefaultStepname($stepname);
             if (!get_class($defaultStepname) === Stepname::class || $this->validate($defaultStepname)->hasErrors()) {
-                $this->addError(LocalizationUtility::translate('error.validator.stepname.defaultLang', 'ThRating'), 1382895097);
+                $this->addError(
+                    LocalizationUtility::translate('error.validator.stepname.defaultLang', 'ThRating'),
+                    1382895097
+                );
             }
         }
     }

@@ -34,10 +34,10 @@ use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
 /**
  * Model for rating votes
  *
- * @author		Thomas Hucke <thucke@web.de>
- * @copyright 	Copyright belongs to the respective authors
- * @license 	http://opensource.org/licenses/gpl-license.php GNU Public License, version 2
- * @scope 		beta
+ * @author  Thomas Hucke <thucke@web.de>
+ * @copyright  Copyright belongs to the respective authors
+ * @license  http://opensource.org/licenses/gpl-license.php GNU Public License, version 2
+ * @scope   beta
  * @entity
  */
 class Vote extends AbstractEntity
@@ -45,7 +45,7 @@ class Vote extends AbstractEntity
     /**
      * @var         \Thucke\ThRating\Domain\Model\Rating
      * @validate    \Thucke\ThRating\Domain\Validator\RatingValidator
-     * @validate 	NotEmpty
+     * @validate  NotEmpty
      */
     protected $rating;
 
@@ -77,7 +77,7 @@ class Vote extends AbstractEntity
     protected $objectManager;
 
     /**
-     * @param \TYPO3\CMS\Extbase\Object\ObjectManagerInterface	$objectManager
+     * @param \TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager
      */
     /** @noinspection PhpUnused */
     public function injectObjectManager(ObjectManagerInterface $objectManager): void
@@ -153,7 +153,7 @@ class Vote extends AbstractEntity
     /**
      * Sets the frontenduser of this vote
      *
-     * @param \Thucke\ThRating\Domain\Model\Voter $voter	The frontenduser
+     * @param \Thucke\ThRating\Domain\Model\Voter $voter The frontenduser
      */
     public function setVoter(Voter $voter): void
     {
@@ -209,7 +209,8 @@ class Vote extends AbstractEntity
     public function isAnonymous(): bool
     {
         if ($this->getVoter() instanceof Voter) {
-            $retVal = $this->getVoter()->getUid() === (int)$this->settings['mapAnonymous'] && !empty($this->settings['mapAnonymous']);
+            $retVal = $this->getVoter()->getUid() === (int)$this->settings['mapAnonymous'] &&
+                !empty($this->settings['mapAnonymous']);
         } else {
             $retVal = false;
         }
@@ -222,7 +223,7 @@ class Vote extends AbstractEntity
      * always false if cookie checks is deactivated
      *
      * @param string $prefixId Extension prefix to identify cookie
-     * @return 	bool
+     * @return  bool
      */
     public function hasAnonymousVote($prefixId = 'DummyPrefix'): bool
     {

@@ -1,6 +1,9 @@
 <?php
 namespace Thucke\ThRating\View;
 
+use TYPO3\CMS\Core\Messaging\FlashMessageRendererResolver;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -106,7 +109,7 @@ class JsonView extends \TYPO3\CMS\Extbase\Mvc\View\JsonView
      */
     public function getFlashMessages()
     {
-        return \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Messaging\FlashMessageRendererResolver::class)
+        return GeneralUtility::makeInstance(FlashMessageRendererResolver::class)
             ->resolve()
             ->render($this->controllerContext->getFlashMessageQueue()->getAllMessagesAndFlush());
     }
