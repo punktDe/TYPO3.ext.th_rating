@@ -134,7 +134,9 @@ function handleReceivedVote(jsonData)  {
 	if (jsonData.voting) {
 		jQuery('*[data-role="onVotingActive"]',targetObj).show();					//unhide element
 		jQuery('*[data-role="onVotingHidden"]',targetObj).hide();					//hide element
-		(jsonData.protected) ? jQuery('*[data-role="onRatedHidden"]',targetObj).hide() : false  ;
+		if (jsonData.protected) {
+		  jQuery('*[data-role="onRatedHidden"]',targetObj).hide()
+    }
 		try {
 			jQuery('.tx_thrating_ajax-votingStepname',targetObj).html(jsonData.voting.vote.stepname.stepname);
 		} catch (e) { //show steporder if not name is given
