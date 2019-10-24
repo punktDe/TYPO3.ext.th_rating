@@ -152,9 +152,6 @@ div.tx-thrating-ratinglinks ul{
     z-index:1;
     background-position: center bottom;
 }
-.thRating-tilt .current-poll{
-    z-index:1;
-}
 .tx-thrating-pi1-content{
 	position:relative;
 	width:0px;
@@ -227,9 +224,6 @@ div.tx-thrating-ratinglinks ul{
 }
 .tx-thrating-flash-message .alert-success h4 {
 	background-color: #75a049;
-}
-.tx-thrating-flash-message {
-	padding-top:3px;
 }
 .tx-thrating-flash-message li{
 	display:inline;
