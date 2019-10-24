@@ -36,11 +36,10 @@
 }
 
 .tx-thrating-singleton-message h4 {
-	padding:3px;
+	padding:1px;
 	margin:0;
 	background-color: #f87575;
     border: 1px dotted grey;
-	padding:1px;
 	font-weight:bold;
 }
 
