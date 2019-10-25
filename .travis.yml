@@ -14,7 +14,7 @@ env:
 stages:
   - static_checks
     script: skip
-  - name: test
+  - test
 
 jobs:
   fast_finish: true
