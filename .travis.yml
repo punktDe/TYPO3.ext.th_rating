@@ -6,15 +6,3 @@ php:
 env:
   - TYPO3_VERSION=^9
   - TYPO3_VERSION=^8
-  global:
-    - typo3DatabaseHost=localhost typo3DatabaseName=typo3 typo3DatabaseUsername=root typo3DatabasePassword=''
-
-# stages and ordering /w conditions
-stages:
-  - static_checks
-  - name: test
-    if: branch = master
-
-
-
-
