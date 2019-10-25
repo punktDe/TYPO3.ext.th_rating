@@ -11,14 +11,14 @@ env:
 
 # stages and ordering /w conditions
 stages:
-  - static checks
+  - static_checks
   - name: test
     if: branch = master
 
 jobs:
   fast_finish: true
   include:
-    - stage: static checks
+    - stage: static_checks
       name: "PHPLint"
       script:
         - >
