@@ -13,8 +13,7 @@ env:
 # stages and ordering /w conditions
 stages:
   - static_checks
-    script: skip
-  - test
+  - name: test
 
 jobs:
   fast_finish: true
@@ -28,12 +27,12 @@ jobs:
           echo "Running php lint";
           find . -name \*.php ! -path "./.Build/*" | parallel --gnu php -d display_errors=stderr -l {} > /dev/null \;
     - name: "SonarQube"
+      php: 7.2
       script:
         - >
           echo;
           echo "Running Sonar";
           sonar-scanner -Dproject.settings=Build/.sonar_project.properties -Dsonar.verbose=true
-
     - stage: test
       name: "Unit tests"
       script:
