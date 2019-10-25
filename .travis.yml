@@ -13,14 +13,15 @@ env:
 # stages and ordering /w conditions
 stages:
   - static_checks
+    script: skip
   - name: test
-    if: branch = master
 
 jobs:
   fast_finish: true
   include:
     - stage: static_checks
       name: "PHPLint"
+      php: 7.2
       script:
         - >
           echo;
