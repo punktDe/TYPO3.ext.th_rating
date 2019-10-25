@@ -16,43 +16,5 @@ stages:
     if: branch = master
 
 
-# specification of buil environment
-dist: bionic
-services:
-  - mysql
-addons:
-  apt:
-    packages:
-      - parallel
-  sonarcloud:
-    organization: "thucke"
-cache:
-  directories:
-    - $HOME/.composer/cache
-    - $HOME/.sonar/cache
-    - .Build/cache
-notifications:
-  email:
-    recipients:
-      - github@thucke.de
-    on_success: change
-    on_failure: change
-
-# Git disable shallow clones
-git:
-  depth: false
-
-# preparation of build environment
-before_install:
-  - composer self-update
-  - composer --version
-
-# preparation of script environment
-before_script:
-  - phpenv config-rm xdebug.ini || echo "xdebug not available"
-  - composer require typo3/minimal=$TYPO3_VERSION
-  # Restore composer.json
-  - git checkout composer.json
-  - export TYPO3_PATH_WEB=$PWD/.Build/Web
 
 
