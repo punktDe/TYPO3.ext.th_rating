@@ -1,5 +1,14 @@
 <?php
+/** @noinspection PhpUnnecessaryFullyQualifiedNameInspection */
+/** @noinspection PhpFullyQualifiedNameUsageInspection */
 namespace Thucke\ThRating\Domain\Repository;
+
+use Thucke\ThRating\Domain\Model\Ratingobject;
+use Thucke\ThRating\Domain\Validator\RatingobjectValidator;
+use Thucke\ThRating\Exception\RecordNotFoundException;
+use Thucke\ThRating\Service\ExtensionHelperService;
+use TYPO3\CMS\Extbase\Persistence\Repository;
+use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 
 /***************************************************************
  *  Copyright notice
@@ -27,12 +36,13 @@ namespace Thucke\ThRating\Domain\Repository;
 /**
  * A repository for rating objects
  */
-class RatingobjectRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
+class RatingobjectRepository extends Repository
 {
     /**
      * Defines name for function parameter
      */
-    const addIfNotFound = true;
+    public const     /** @noinspection PhpUnused */
+        ADD_IF_NOT_FOUND = true;
 
     /**
      * @var \Thucke\ThRating\Service\ExtensionHelperService
@@ -40,10 +50,10 @@ class RatingobjectRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
     protected $extensionHelperService;
 
     /**
-     * @param    \Thucke\ThRating\Service\ExtensionHelperService $extensionHelperService
-     * @return    void
+     * @param   \Thucke\ThRating\Service\ExtensionHelperService $extensionHelperService
      */
-    public function injectExtensionHelperService(\Thucke\ThRating\Service\ExtensionHelperService $extensionHelperService)
+    /** @noinspection PhpUnused */
+    public function injectExtensionHelperService(ExtensionHelperService $extensionHelperService): void
     {
         $this->extensionHelperService = $extensionHelperService;
     }
@@ -54,30 +64,36 @@ class RatingobjectRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
      * @param string $ratetable The tablename of the ratingobject
      * @param string $ratefield The fieldname of the ratingobject
      * @param bool $addIfNotFound Set to true if new objects should instantly be added
+     * @throws \Thucke\ThRating\Exception\RecordNotFoundException
      * @throws \TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException
      * @return \Thucke\ThRating\Domain\Model\Ratingobject The ratingobject
      */
-    public function findMatchingTableAndField($ratetable, $ratefield, $addIfNotFound = false)
+    public function findMatchingTableAndField($ratetable, $ratefield, $addIfNotFound = false): Ratingobject
     {
         /** @var \Thucke\ThRating\Domain\Model\Ratingobject $foundRow */
-        $foundRow = $this->objectManager->get(\Thucke\ThRating\Domain\Model\Ratingobject::class);
+        $foundRow = $this->objectManager->get(Ratingobject::class);
 
         $query = $this->createQuery();
-        $query->matching($query->logicalAnd([$query->equals('ratetable', $ratetable), $query->equals('ratefield', $ratefield)]))->setLimit(1);
+        $query->matching($query->logicalAnd([
+            $query->equals('ratetable', $ratetable),
+            $query->equals('ratefield', $ratefield),
+        ]))->setLimit(1);
 
+        /** @var \TYPO3\CMS\Extbase\Persistence\QueryResultInterface $queryResult */
         $queryResult = $query->execute();
-        if (count($queryResult) != 0) {
+
+        if (count($queryResult) !== 0) {
             $foundRow = $queryResult->getFirst();
-        } else {
-            if ($addIfNotFound) {
-                $foundRow->setRatetable($ratetable);
-                $foundRow->setRatefield($ratefield);
-                if (!$this->objectManager->get('Thucke\\ThRating\\Domain\\Validator\\RatingobjectValidator')->validate($foundRow)->hasErrors()) {
-                    $this->add($foundRow);
-                }
-                $this->extensionHelperService->persistRepository('Thucke\ThRating\Domain\Repository\RatingobjectRepository', $foundRow);
-                $foundRow = $this->findMatchingTableAndField($ratetable, $ratefield);
+        } elseif ($addIfNotFound) {
+            $foundRow->setRatetable($ratetable);
+            $foundRow->setRatefield($ratefield);
+            if (!$this->objectManager->get(RatingobjectValidator::class)->validate($foundRow)->hasErrors()) {
+                $this->add($foundRow);
             }
+            $this->extensionHelperService->persistRepository(self::class, $foundRow);
+            $foundRow = $this->findMatchingTableAndField($ratetable, $ratefield);
+        } else {
+            throw new RecordNotFoundException(LocalizationUtility::translate('recordNotFound', 'ThRating'), 1567962473);
         }
 
         return $foundRow;
@@ -86,17 +102,15 @@ class RatingobjectRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
     /**
      * Finds the specific ratingobject by giving table and fieldname
      *
-     * @param bool $respectStoragePage Set to true if storagepage should be ignored
+     * @param bool   Switch to fetch ALL entries regardless of their pid
+     * @param mixed $ignoreStoragePage
      * @return \TYPO3\CMS\Extbase\Persistence\QueryResultInterface|array All ratingobjects of the site
      */
-
     /** @noinspection PhpMissingParentCallCommonInspection */
-    public function findAll($respectStoragePage = false)
+    public function findAll($ignoreStoragePage = false)
     {
         $query = $this->createQuery();
-        if ($respectStoragePage) {
-            $query->getQuerySettings()->setRespectStoragePage(false);
-        }
+        $query->getQuerySettings()->setRespectStoragePage(!$ignoreStoragePage);
 
         return $query->execute();
     }

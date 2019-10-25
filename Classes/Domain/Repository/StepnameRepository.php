@@ -1,6 +1,13 @@
 <?php
 namespace Thucke\ThRating\Domain\Repository;
 
+use Thucke\ThRating\Domain\Model\Stepname;
+use TYPO3\CMS\Extbase\Persistence\Exception\InvalidQueryException;
+use TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings;
+use TYPO3\CMS\Extbase\Persistence\QueryInterface;
+use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
+use TYPO3\CMS\Extbase\Persistence\Repository;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -27,27 +34,30 @@ namespace Thucke\ThRating\Domain\Repository;
 /**
  * A repository for ratingstep configurations
  */
-class StepnameRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
+class StepnameRepository extends Repository
 {
-    protected const TABLE_NAME = 'tx_thrating_domain_model_stepname';
+    protected const /** @noinspection PhpUnused */
+        TABLE_NAME = 'tx_thrating_domain_model_stepname';
     protected const STEPCONF_NAME = 'stepconf';
     protected const SYS_LANG_UID_LITERAL = 'sys_language_uid';
-    protected $defaultOrderings = [ self::SYS_LANG_UID_LITERAL => \TYPO3\CMS\Extbase\Persistence\QueryInterface::ORDER_ASCENDING];
+    /** @noinspection PhpUnused */
+    protected $defaultOrderings = [ self::SYS_LANG_UID_LITERAL => QueryInterface::ORDER_ASCENDING];
 
     /**
-     * Initialze this repository
+     * Initialize this repository
      */
-    public function initializeObject()
+    /** @noinspection PhpUnused */
+    public function initializeObject(): void
     {
     }
 
     /**
      * Checks if stepname got a valid language code
      *
-     * @param    \Thucke\ThRating\Domain\Model\Stepname $stepname The stepname object
+     * @param    Stepname $stepname The stepname object
      * @return    bool
      */
-    public function checkStepnameLanguage(\Thucke\ThRating\Domain\Model\Stepname $stepname)
+    public function checkStepnameLanguage(Stepname $stepname): bool
     {
         $stepnameLang = $stepname->get_languageUid();
         if ($stepnameLang > 0) {
@@ -69,22 +79,22 @@ class StepnameRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
     /**
      * Finds the given stepconf object in the repository
      *
-     * @param    \Thucke\ThRating\Domain\Model\Stepname $stepname The ratingname to look for
-     * @return    \Thucke\ThRating\Domain\Model\Stepname|object
-     * @var \Thucke\ThRating\Domain\Model\Stepname $foundRow
+     * @param    Stepname $stepname The ratingname to look for
+     * @return    Stepname|object
+     * @var Stepname $foundRow
      */
-    public function findStepnameObject(\Thucke\ThRating\Domain\Model\Stepname $stepname)
+    public function findStepnameObject(Stepname $stepname)
     {
-        $foundRow = $this->objectManager->get(\Thucke\ThRating\Domain\Model\Stepname::class);
+        $foundRow = $this->objectManager->get(Stepname::class);
 
         $query = $this->createQuery();
         $query->getQuerySettings()->setRespectSysLanguage(false);
         $query->matching(
             $query->logicalAnd(
-            [$query->equals(self::STEPCONF_NAME, $stepname->getStepconf()->getUid()),
+                [$query->equals(self::STEPCONF_NAME, $stepname->getStepconf()->getUid()),
                         $query->equals(self::SYS_LANG_UID_LITERAL, $stepname->get_languageUid()), ]
+            )
         )
-                    )
                 ->setLimit(1);
         $queryResult = $query->execute();
         if (count($queryResult) !== 0) {
@@ -97,17 +107,17 @@ class StepnameRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
     /**
      * Check on double language entries
      *
-     * @param    \Thucke\ThRating\Domain\Model\Stepname $stepname The ratingname to look for
+     * @param    Stepname $stepname The ratingname to look for
      * @return    array    return values false says OK
      */
-    public function checkConsistency(\Thucke\ThRating\Domain\Model\Stepname $stepname)
+    public function checkConsistency(Stepname $stepname): array
     {
         /** @var \TYPO3\CMS\Extbase\Persistence\QueryInterface $query */
         $query = $this->createQuery();
-        $query	->getQuerySettings()->setRespectSysLanguage(false);
-        $query	->matching(
+        $query ->getQuerySettings()->setRespectSysLanguage(false);
+        $query ->matching(
             $query->equals(self::STEPCONF_NAME, $stepname->getStepconf()->getUid())
-                    );
+        );
         $queryResult = $query
             ->execute(true)
             ->toArray();  /** instead of setReturnRawQueryResult(true); */
@@ -146,20 +156,27 @@ class StepnameRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
     /**
      * Finds the default language stepconf by giving ratingobject and steporder
      *
-     * @param   \Thucke\ThRating\Domain\Model\Stepname $stepname The ratingname to look for
-     * @throws  \TYPO3\CMS\Extbase\Persistence\Exception\InvalidQueryException
-     * @return  \Thucke\ThRating\Domain\Model\Stepname|object       The stepname in default language
-     * @var \Thucke\ThRating\Domain\Model\Stepname $foundRow
+     * @param   Stepname $stepname The ratingname to look for
+     * @throws  InvalidQueryException
+     * @return  Stepname|object       The stepname in default language
+     * @var Stepname $foundRow
      */
     public function findDefaultStepname($stepname)
     {
-        $foundRow = $this->objectManager->get(\Thucke\ThRating\Domain\Model\Stepname::class);
+        $foundRow = $this->objectManager->get(Stepname::class);
 
         $query = $this->createQuery();
         $query->getQuerySettings()->setRespectSysLanguage(false);
-        $query->matching($query->logicalAnd([$query->equals(self::STEPCONF_NAME, $stepname->getStepconf()->getUid()), $query->in(self::SYS_LANG_UID_LITERAL, [0, -1])]))->setLimit(1);
+        $query->matching(
+            $query->logicalAnd(
+                [
+                    $query->equals(self::STEPCONF_NAME, $stepname->getStepconf()->getUid()),
+                    $query->in(self::SYS_LANG_UID_LITERAL, [0, -1])
+                ]
+            )
+        )->setLimit(1);
 
-        /** @var \TYPO3\CMS\Extbase\Persistence\QueryResultInterface $queryResult */
+        /** @var QueryResultInterface $queryResult */
         $queryResult = $query->execute();
 
         if (count($queryResult) !== 0) {
@@ -172,25 +189,23 @@ class StepnameRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
     /**
      * Finds the localized ratingstep entry by giving ratingobjectUid
      *
-     * @param    \Thucke\ThRating\Domain\Model\Stepname $stepname The ratingname to look for
-     * @return    bool                                            true if stepconf having same steporder and _languageUid exists
+     * @param    Stepname $stepname The ratingname to look for
+     * @return    bool  true if stepconf having same steporder and _languageUid exists
      */
-    public function existStepname(\Thucke\ThRating\Domain\Model\Stepname $stepname)
+    public function existStepname(Stepname $stepname): bool
     {
         $lookForStepname = $this->findStepnameObject($stepname);
 
-        return $lookForStepname instanceof \Thucke\ThRating\Domain\Model\Stepname;
+        return $lookForStepname instanceof Stepname;
     }
 
     /**
      * Set default query settings to find ALL records
-     *
-     * @return    void
      */
-    public function clearQuerySettings()
+    public function clearQuerySettings(): void
     {
-        /** @var \TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings $querySettings */
-        $querySettings = $this->objectManager->get(\TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings::class);
+        /** @var Typo3QuerySettings $querySettings */
+        $querySettings = $this->objectManager->get(Typo3QuerySettings::class);
         $querySettings->setRespectSysLanguage(false);
         $querySettings->setIgnoreEnableFields(true);
         $this->setDefaultQuerySettings($querySettings);

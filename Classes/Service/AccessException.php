@@ -1,6 +1,8 @@
 <?php
 namespace Thucke\ThRating\Service;
 
+use TYPO3\CMS\Extbase\Exception;
+
 /***************************************************************
 *  Copyright notice
 *
@@ -32,6 +34,6 @@ namespace Thucke\ThRating\Service;
  *
  * @version $ID: $
  */
-class AccessException extends \TYPO3\CMS\Extbase\Exception
+class AccessException extends Exception
 {
 }

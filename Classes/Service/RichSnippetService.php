@@ -1,9 +1,12 @@
 <?php
+/** @noinspection PhpFullyQualifiedNameUsageInspection */
 namespace Thucke\ThRating\Service;
 
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
+use TYPO3\CMS\Core\Log\LogLevel;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 
 /***************************************************************
  *  Copyright notice
@@ -78,17 +81,21 @@ class RichSnippetService extends AbstractExtensionService
      */
     public function setRichSnippetConfig(array $settings)
     {
-        $this->logger->log(\TYPO3\CMS\Core\Log\LogLevel::DEBUG, 'setRichSnippetConfig Entry point', $settings);
+        $this->logger->log(LogLevel::DEBUG, 'setRichSnippetConfig Entry point', $settings);
         $this->richSnippetConfig['tablename'] = $settings['ratetable'];
         $this->richSnippetConfig['richSnippetFields'] = $settings['richSnippetFields'];
 
         if (is_array($this->richSnippetConfig['richSnippetFields'])) {
-            $this->logger->log(\TYPO3\CMS\Core\Log\LogLevel::DEBUG, 'setRichSnippetConfig Exit point', $this->richSnippetConfig['richSnippetFields']);
+            $this->logger->log(
+                LogLevel::DEBUG,
+                'setRichSnippetConfig Exit point',
+                $this->richSnippetConfig['richSnippetFields']
+            );
 
             return true;
         }
 
-        $this->logger->log(\TYPO3\CMS\Core\Log\LogLevel::DEBUG, 'setRichSnippetConfig Exit point');
+        $this->logger->log(LogLevel::DEBUG, 'setRichSnippetConfig Exit point');
 
         return false;
     }
@@ -96,6 +103,7 @@ class RichSnippetService extends AbstractExtensionService
     /**
      * @return string
      */
+    /** @noinspection PhpUnused */
     public function getRichSnippetConfig()
     {
         return json_encode($this->richSnippetConfig);
@@ -104,6 +112,7 @@ class RichSnippetService extends AbstractExtensionService
     /**
      * @return string
      */
+    /** @noinspection PhpUnused */
     public function getSchema()
     {
         return $this->schema;
@@ -112,7 +121,6 @@ class RichSnippetService extends AbstractExtensionService
     /**
      * @param string $schema
      * @throws \Thucke\ThRating\Exception\InvalidAggregateRatingSchemaTypeException if parameter is invalid
-     * @return void
      */
     public function setSchema($schema)
     {
@@ -121,7 +129,10 @@ class RichSnippetService extends AbstractExtensionService
                 $this->schema = $schema;
             } else {
                 throw new \Thucke\ThRating\Exception\InvalidAggregateRatingSchemaTypeException(
-                    \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('error.richSnippetConfiguration.AggregateRatingPropertySchema', 'ThRating'),
+                    LocalizationUtility::translate(
+                        'error.richSnippetConfiguration.AggregateRatingPropertySchema',
+                        'ThRating'
+                    ),
                     1521487362
                 );
             }
@@ -131,6 +142,7 @@ class RichSnippetService extends AbstractExtensionService
     /**
      * @return string
      */
+    /** @noinspection PhpUnused */
     public function getAnchor()
     {
         return $this->anchor;
@@ -138,7 +150,6 @@ class RichSnippetService extends AbstractExtensionService
 
     /**
      * @param string $anchor
-     * @return void
      */
     public function setAnchor($anchor)
     {
@@ -146,9 +157,7 @@ class RichSnippetService extends AbstractExtensionService
     }
 
     /**
-     * @param string
      * @param mixed $name
-     * @return void
      */
     public function setName($name)
     {
@@ -186,10 +195,10 @@ class RichSnippetService extends AbstractExtensionService
      */
     public function getRichSnippetObject($uid)
     {
-        $this->logger->log(\TYPO3\CMS\Core\Log\LogLevel::DEBUG, 'getRichSnippetObject Entry point');
+        $this->logger->log(LogLevel::DEBUG, 'getRichSnippetObject Entry point');
         $this->setSchema($this->richSnippetConfig['richSnippetFields']['aggregateRatingSchemaType']);
         if (empty($this->richSnippetConfig['richSnippetFields']['name'])) {
-            $this->logger->log(\TYPO3\CMS\Core\Log\LogLevel::DEBUG, 'No name field defined - skipping database access');
+            $this->logger->log(LogLevel::DEBUG, 'No name field defined - skipping database access');
             unset($this->name, $this->description);
         } else {
             /** @var QueryBuilder $queryBuilder */
@@ -205,11 +214,11 @@ class RichSnippetService extends AbstractExtensionService
                 ->execute()
                 ->fetch();
 
-            $this->logger->log(\TYPO3\CMS\Core\Log\LogLevel::DEBUG, 'Data fetched', $row);
+            $this->logger->log(LogLevel::DEBUG, 'Data fetched', $row);
             $this->setName($row[$this->richSnippetConfig['richSnippetFields']['name']]);
             $this->setDescription($row[$this->richSnippetConfig['richSnippetFields']['description']]);
         }
-        $this->logger->log(\TYPO3\CMS\Core\Log\LogLevel::DEBUG, 'getRichSnippetObject Exit point', (array) $this);
+        $this->logger->log(LogLevel::DEBUG, 'getRichSnippetObject Exit point', (array)$this);
 
         return $this;
     }

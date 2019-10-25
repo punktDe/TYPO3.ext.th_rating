@@ -1,6 +1,16 @@
 <?php
 namespace Thucke\ThRating\Tests\Domain\Model;
 
+use Nimut\TestingFramework\TestCase\UnitTestCase;
+use Thucke\ThRating\Domain\Model\Rating;
+use Thucke\ThRating\Domain\Model\Ratingobject;
+use Thucke\ThRating\Domain\Model\Stepconf;
+use Thucke\ThRating\Domain\Model\Vote;
+use Thucke\ThRating\Domain\Repository\StepconfRepository;
+use Thucke\ThRating\Domain\Repository\VoteRepository;
+use Thucke\ThRating\Domain\Validator\RatingValidator;
+use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
+
 /***************************************************************
 *  Copyright notice
 *
@@ -34,9 +44,8 @@ namespace Thucke\ThRating\Tests\Domain\Model;
  * @scope 		alpha
  * @entity
  */
-class RatingTest extends \TYPO3\CMS\Core\Tests\BaseTestCase
+class RatingTest extends UnitTestCase
 {
-
     /**
      * @var string Put the extension name here
      */
@@ -45,18 +54,34 @@ class RatingTest extends \TYPO3\CMS\Core\Tests\BaseTestCase
     /**
      * @var \Thucke\ThRating\Domain\Model\Rating
      */
-    protected $fixture = null;
+    protected $fixture;
+    /**
+     * @var \Thucke\ThRating\Domain\Model\Ratingobject
+     */
+    protected $ratingobject;
+    /**
+     * @var \Thucke\ThRating\Domain\Model\Stepconf
+     */
+    private $stepconf;
 
     public function setUp()
     {
-        $this->ratingobject = \TYPO3\CMS\Core\Tests\BaseTestCase::getMock('Thucke\\ThRating\\Domain\\Model\\Ratingobject', [], ['tt_news', 'uid']);
-        $this->stepconf = \TYPO3\CMS\Core\Tests\BaseTestCase::getMock('Thucke\\ThRating\\Domain\\Model\\Stepconf', [], [$this->ratingobject, 1]);
+        $this->ratingobject = $this->getMockBuilder(Ratingobject::class)
+            ->setConstructorArgs(['tt_news', 'uid'])
+            ->getMock();
+        $this->stepconf = $this->getMockBuilder(Stepconf::class)
+            ->setConstructorArgs([$this->ratingobject, 1])
+            ->getMock();
         $this->stepconf->setStepweight(2);
-        $mockStepconfRepository = \TYPO3\CMS\Core\Tests\BaseTestCase::getMock('Thucke\\ThRating\\Domain\\Repository\\StepconfRepository', [], [], '', false);
+        $mockStepconfRepository = $this->getMockBuilder(StepconfRepository::class)
+            ->disableOriginalConstructor()
+            ->getMock();
         $this->ratingobject->injectStepconfRepository($mockStepconfRepository);
         $this->ratingobject->addStepconf($this->stepconf);
-        $this->fixture = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Thucke\\ThRating\\Domain\\Model\\Rating', $this->ratingobject, 1);
-        $mockVoteRepository = \TYPO3\CMS\Core\Tests\BaseTestCase::getMock('Thucke\\ThRating\\Domain\\Repository\\VoteRepository', [], [], '', false);
+        $this->fixture = new Rating($this->ratingobject, 1);
+        $mockVoteRepository = $this->getMockBuilder(VoteRepository::class)
+            ->disableOriginalConstructor()
+            ->getMock();
         $this->fixture->injectVoteRepository($mockVoteRepository);
     }
 
@@ -71,8 +96,8 @@ class RatingTest extends \TYPO3\CMS\Core\Tests\BaseTestCase
      */
     public function anInstanceOfTheRatingCanBeConstructed()
     {
-        $this->assertEquals($this->ratingobject, $this->fixture->getRatingobject());
-        $this->assertEquals(1, $this->fixture->getRatedobjectuid());
+        static::assertEquals($this->ratingobject, $this->fixture->getRatingobject());
+        static::assertEquals(1, $this->fixture->getRatedobjectuid());
     }
 
     /**
@@ -81,8 +106,8 @@ class RatingTest extends \TYPO3\CMS\Core\Tests\BaseTestCase
      */
     public function theValidatorCheckIsGood()
     {
-        $validator = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Thucke\\ThRating\\Domain\\Validator\\RatingValidator');
-        $this->assertTrue($validator->isValid($this->fixture));
+        $validator = new RatingValidator();
+        static::assertTrue($validator->validate($this->fixture));
     }
 
     /**
@@ -91,8 +116,8 @@ class RatingTest extends \TYPO3\CMS\Core\Tests\BaseTestCase
      */
     public function theVotesAreInitializedAsEmptyObjectStorage()
     {
-        $this->assertEquals('TYPO3\\CMS\\Extbase\\Persistence\\ObjectStorage', get_class($this->fixture->getVotes()));
-        $this->assertEquals(0, count($this->fixture->getVotes()));
+        static::assertInstanceOf(ObjectStorage::class, $this->fixture->getVotes());
+        static::assertCount(0, $this->fixture->getVotes());
     }
 
     /**
@@ -101,10 +126,12 @@ class RatingTest extends \TYPO3\CMS\Core\Tests\BaseTestCase
      */
     public function aVoteCanBeAdded()
     {
-        $vote = $this->getMock('Thucke\\ThRating\\Domain\\Model\\Vote', [], [], '', false);
+        $vote = (Vote::class)($this->getMockBuilder(Vote::class)
+            ->disableOriginalConstructor()
+            ->getMock());
         //$vote = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('Thucke\\ThRating\\Domain\\Model\\Vote');
         $vote->setVote(3);
         $this->fixture->addVote($vote);
-        $this->assertTrue($this->fixture->getVotes()->contains($vote));
+        static::assertTrue($this->fixture->getVotes()->contains($vote));
     }
 }

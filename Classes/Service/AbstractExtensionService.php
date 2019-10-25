@@ -1,6 +1,9 @@
 <?php
 namespace Thucke\ThRating\Service;
 
+use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
+use TYPO3\CMS\Core\SingletonInterface;
+
 /***************************************************************
 *  Copyright notice
 *
@@ -30,7 +33,7 @@ namespace Thucke\ThRating\Service;
  * @version $Id:$
  * @license http://opensource.org/licenses/gpl-license.php GNU protected License, version 2
  */
-class AbstractExtensionService implements \TYPO3\CMS\Core\SingletonInterface
+class AbstractExtensionService implements SingletonInterface
 {
     /**
      * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface
@@ -49,9 +52,8 @@ class AbstractExtensionService implements \TYPO3\CMS\Core\SingletonInterface
      * Constructor
      * @param \TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager
      * @param \Thucke\ThRating\Service\LoggingService $loggingService
-     * @return void
      */
-    public function __construct(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager, LoggingService $loggingService)
+    public function __construct(ObjectManagerInterface $objectManager, LoggingService $loggingService)
     {
         $this->objectManager = $objectManager;
         $this->loggingService = $loggingService;

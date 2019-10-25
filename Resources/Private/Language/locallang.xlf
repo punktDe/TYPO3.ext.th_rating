@@ -138,6 +138,9 @@
 			<trans-unit id="tca.model.ratingobject.ratings" xml:space="preserve">
 				<source>Ratings</source>
 			</trans-unit>
+			<trans-unit id="tca.model.ratingobject.stepconfs" xml:space="preserve">
+				<source>Retingstep configuration</source>
+			</trans-unit>
 			<trans-unit id="tca.model.stepconf.ratingobject" xml:space="preserve">
 				<source>Rating Object</source>
 			</trans-unit>
@@ -219,11 +222,17 @@
 			<trans-unit id="error.validator.stepconf.notExistingLanguage" xml:space="preserve">
 				<source>Stepname %s one language does not exist in this website.</source>
 			</trans-unit>
+			<trans-unit id="error.validator.stepconf.empty" xml:space="preserve">
+				<source>Empty stepconf</source>
+			</trans-unit>
 			<trans-unit id="error.validator.rating.ratedobjectuid" xml:space="preserve">
 				<source>Missing UID in rating.</source>
 			</trans-unit>
 			<trans-unit id="error.validator.rating.ratingobject" xml:space="preserve">
 				<source>False ratingobject in rating</source>
+			</trans-unit>
+			<trans-unit id="error.validator.rating.empty" xml:space="preserve">
+				<source>Empty rating</source>
 			</trans-unit>
 			<trans-unit id="error.validator.vote.vote" xml:space="preserve">
 				<source>Missing vote</source>
@@ -233,6 +242,9 @@
 			</trans-unit>
 			<trans-unit id="error.validator.vote.stepconf" xml:space="preserve">
 				<source>False voting reference in vote</source>
+			</trans-unit>
+			<trans-unit id="error.validator.vote.empty" xml:space="preserve">
+				<source>Empty vote</source>
 			</trans-unit>
 			<trans-unit id="error.validator.stepname.stepconf" xml:space="preserve">
 				<source>False stepconf reference in stepname</source>

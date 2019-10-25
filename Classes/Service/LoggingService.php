@@ -1,5 +1,13 @@
 <?php
+/** @noinspection PhpUnnecessaryFullyQualifiedNameInspection */
 namespace Thucke\ThRating\Service;
+
+use TYPO3\CMS\Core\Log\Logger;
+use TYPO3\CMS\Core\Log\LogManager;
+use TYPO3\CMS\Core\Log\Writer\DatabaseWriter;
+use TYPO3\CMS\Core\Log\Writer\FileWriter;
+use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
+use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
 
 /***************************************************************
 *  Copyright notice
@@ -44,13 +52,12 @@ class LoggingService
     /**
      * Constructor
      * Must overrule the abstract class method to avoid self referencing
-     * @param	\TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager
-     * @param	\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager,
-     * @return void
+     * @param \TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager
+     * @param \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager,
      */
     public function __construct(
-        \TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager,
-        \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager
+        ObjectManagerInterface $objectManager,
+        ConfigurationManagerInterface $configurationManager
     ) {
         $this->objectManager = $objectManager;
         $this->configurationManager = $configurationManager;
@@ -60,26 +67,32 @@ class LoggingService
      * Get a logger instance
      * The configuration of the logger is modified by extension typoscript config
      *
-     * @param	string	$name the class name which this logger is for
-     * @return 	\TYPO3\CMS\Core\Log\Logger
+     * @param string $name the class name which this logger is for
+     * @return  \TYPO3\CMS\Core\Log\Logger
      */
-    public function getLogger($name): \TYPO3\CMS\Core\Log\Logger
+    public function getLogger($name): Logger
     {
         /** @var array $writerConfiguration */
         $writerConfiguration = $GLOBALS['TYPO3_CONF_VARS']['LOG']['Thucke']['ThRating']['writerConfiguration'];
-        $settings = $this->configurationManager->getConfiguration(\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_SETTINGS, 'thRating', 'pi1');
+        $settings = $this->configurationManager->getConfiguration(
+            ConfigurationManagerInterface::CONFIGURATION_TYPE_SETTINGS,
+            'thRating',
+            'pi1'
+        );
         if (is_array($settings['logging'])) {
             foreach ($settings['logging'] as $logLevel => $logConfig) {
                 /** @var string $levelUppercase */
                 $levelUppercase = strtoupper($logLevel);
 
                 if (!empty($logConfig['file'])) {
-                    $writerConfiguration[constant('\TYPO3\CMS\Core\Log\LogLevel::' . $levelUppercase)][\TYPO3\CMS\Core\Log\Writer\FileWriter::class] =
-                        ['logFile' => $logConfig['file']];
+                    $writerConfiguration[
+                        constant('\TYPO3\CMS\Core\Log\LogLevel::' . $levelUppercase)
+                    ][FileWriter::class] = ['logFile' => $logConfig['file']];
                 }
                 if (!empty($logConfig['database'])) {
-                    $writerConfiguration[constant('\TYPO3\CMS\Core\Log\LogLevel::' . $levelUppercase)][\TYPO3\CMS\Core\Log\Writer\DatabaseWriter::class] =
-                        ['table' => $logConfig['table']];
+                    $writerConfiguration[
+                        constant('\TYPO3\CMS\Core\Log\LogLevel::' . $levelUppercase)
+                    ][DatabaseWriter::class] =['table' => $logConfig['table']];
                 }
             }
         }
@@ -88,6 +101,6 @@ class LoggingService
             $GLOBALS['TYPO3_CONF_VARS']['LOG']['Thucke']['ThRating']['writerConfiguration'] = $writerConfiguration;
         }
 
-        return $this->objectManager->get(\TYPO3\CMS\Core\Log\LogManager::class)->getLogger($name);
+        return $this->objectManager->get(LogManager::class)->getLogger($name);
     }
 }

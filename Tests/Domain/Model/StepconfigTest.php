@@ -36,7 +36,6 @@ namespace Thucke\ThRating\Tests\Domain\Model;
  */
 class StepconfigTest extends \TYPO3\CMS\Core\Tests\BaseTestCase
 {
-
     /**
      * @var string Put the extension name here
      */
@@ -70,7 +69,7 @@ class StepconfigTest extends \TYPO3\CMS\Core\Tests\BaseTestCase
         $this->assertSame($this->ratingobject, $this->stepconf->getRatingobject());
         $this->assertEquals(1, $this->stepconf->getSteporder());
         $this->assertEquals(2, $this->stepconf->getStepweight());
-        $this->assertEquals('1', strval($this->stepconf->getStepname()));
+        $this->assertEquals('1', (string)($this->stepconf->getStepname()));
     }
 
     /**
@@ -79,7 +78,7 @@ class StepconfigTest extends \TYPO3\CMS\Core\Tests\BaseTestCase
      */
     public function toStringReturnsSteporder()
     {
-        $this->assertEquals($this->stepconf, strval($this->stepconf->getStepname()));
+        $this->assertEquals($this->stepconf, (string)($this->stepconf->getStepname()));
     }
 
     /**
@@ -90,8 +89,8 @@ class StepconfigTest extends \TYPO3\CMS\Core\Tests\BaseTestCase
     {
         $this->stepconf->addStepname($this->stepname);
         $this->markTestIncomplete(
-          'This test has not been implemented yet. - ' . strval($this->stepconf->getStepname())
+            'This test has not been implemented yet. - ' . (string)($this->stepconf->getStepname())
         );
-        $this->assertEquals('Step1', strval($this->stepconf->getStepname()));
+        $this->assertEquals('Step1', (string)($this->stepconf->getStepname()));
     }
 }

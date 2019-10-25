@@ -1,6 +1,9 @@
 <?php
 namespace Thucke\ThRating\Domain\Model;
 
+use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
+use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
+
 /***************************************************************
 *  Copyright notice
 *
@@ -27,13 +30,13 @@ namespace Thucke\ThRating\Domain\Model;
 /**
  * Model for ratingstep configuration names
  *
- * @author		Thomas Hucke <thucke@web.de>
- * @copyright 	Copyright belongs to the respective authors
- * @license 	http://opensource.org/licenses/gpl-license.php GNU Public License, version 2
- * @scope 		beta
+ * @author  Thomas Hucke <thucke@web.de>
+ * @copyright  Copyright belongs to the respective authors
+ * @license  http://opensource.org/licenses/gpl-license.php GNU Public License, version 2
+ * @scope   beta
  * @entity
  */
-class Stepname extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
+class Stepname extends AbstractEntity
 {
     /**
      * @var \Thucke\ThRating\Domain\Model\Stepconf
@@ -66,7 +69,7 @@ class Stepname extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
 
     /**
      * Constructs a new stepconfig object
-     * @param Stepconf|null $stepconf
+     * @param \Thucke\ThRating\Domain\Model\Stepconf|null $stepconf
      * @param null $stepname
      */
     public function __construct(Stepconf $stepconf = null, $stepname = null)
@@ -82,9 +85,8 @@ class Stepname extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
 
     /**
      * Initializes a new stepconf object
-     * @return void
      */
-    public function initializeObject()
+    public function initializeObject(): void
     {
         //\TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump($this,get_class($this).' initializeObject');
     }
@@ -93,9 +95,8 @@ class Stepname extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * Sets the stepconf this rating is part of
      *
      * @param \Thucke\ThRating\Domain\Model\Stepconf $stepconf The Rating
-     * @return void
      */
-    public function setStepconf(Stepconf $stepconf)
+    public function setStepconf(Stepconf $stepconf): void
     {
         $this->stepconf = $stepconf;
         $this->setPid($stepconf->getPid());
@@ -104,9 +105,9 @@ class Stepname extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
      * Returns the stepconf this rating is part of
      *
-     * @return	\Thucke\ThRating\Domain\Model\Stepconf The stepconf this rating is part of
+     * @return \Thucke\ThRating\Domain\Model\Stepconf The stepconf this rating is part of
      */
-    public function getStepconf()
+    public function getStepconf(): Stepconf
     {
         return $this->stepconf;
     }
@@ -115,9 +116,8 @@ class Stepname extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * Sets the stepconfig name
      *
      * @param string $stepname
-     * @return void
      */
-    public function setStepname($stepname)
+    public function setStepname($stepname): void
     {
         $this->stepname = $stepname;
     }
@@ -128,15 +128,16 @@ class Stepname extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      *
      * @return string Stepconfig name
      */
-    public function getStepname()
+    /** @noinspection PhpUnused */
+    public function getStepname(): string
     {
         $value = $this->stepname;
-        if (strtoupper(substr($value, 0, 4)) == 'LLL:') {
+        if (stripos($value, 'LLL:') === 0) {
             $value = 'stepnames.' . substr($value, 4);
-            $value = \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate($value, 'ThRating');
+            $value = LocalizationUtility::translate($value, 'ThRating');
         }
         if (empty($value)) {
-            $value = strval($this->getStepconf()->getSteporder());
+            $value = (string)$this->getStepconf()->getSteporder();
         }
 
         return $value;
@@ -145,25 +146,24 @@ class Stepname extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
      * @return int
      */
-    public function getL18nParent()
+    /** @noinspection PhpUnused */
+    public function getL18nParent(): int
     {
         return $this->l18nParent;
     }
 
     /**
      * @param $l18nParent
-     * @return void
      */
-    public function setL18nParent($l18nParent)
+    public function setL18nParent($l18nParent): void
     {
         $this->l18nParent = $l18nParent;
     }
 
     /**
      * @param int $_languageUid
-     * @return void
      */
-    public function set_languageUid($_languageUid)
+    public function set_languageUid($_languageUid): void
     {
         $this->_languageUid = $_languageUid;
     }
@@ -171,7 +171,7 @@ class Stepname extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
      * @return int
      */
-    public function get_languageUid()
+    public function get_languageUid(): int
     {
         return $this->_languageUid;
     }
@@ -179,7 +179,7 @@ class Stepname extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
      * @return bool
      */
-    public function isValid()
+    public function isValid(): bool
     {
         return !empty($this->stepconf);
     }
@@ -189,7 +189,7 @@ class Stepname extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      *
      * @return string
      */
-    public function __toString()
+    public function __toString(): string
     {
         return $this->getStepname();
     }

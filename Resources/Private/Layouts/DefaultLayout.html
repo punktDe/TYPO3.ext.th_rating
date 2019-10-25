@@ -46,7 +46,7 @@
 				<f:render partial="InfoBlock" arguments="{voting:voting, anonymousVoting:anonymousVoting, voter:voter, ratingName:ratingName}"/>
 			</f:else></f:if>
 		</div>
-		</f:then></f:if>	
+		</f:then></f:if>
 	</f:then><f:else>
 		<p style="white-space:nowrap;">
 			<f:translate key='fluid.layout.default.noRatingSteps' default='fluid.layout.default.noRatingSteps'/>
@@ -60,7 +60,7 @@
 	</div>
 </div>
 </f:then></f:if>
-<f:comment><!--
+<f:comment>
 	<thr:Typo3Version testVersion='7.3' testOperator='<=' />
 Rating: <f:format.number decimals="1" decimalSeparator="," thousandsSeparator=".">{rating.currentRates.currentrate}</f:format.number> of {stepCount}. <f:count>{rating.votes}</f:count> vote(s).
 *************************************************************************************************
@@ -83,4 +83,4 @@ Rating: <f:format.number decimals="1" decimalSeparator="," thousandsSeparator=".
 * {postContent}			- 	HTML formatted content that will be includes AFTER extension content (changed by AJAX)
 * {richSnippetObject}	- 	schema.org object supporting properties [name, description, url]
 *************************************************************************************************
---></f:comment>
+</f:comment>

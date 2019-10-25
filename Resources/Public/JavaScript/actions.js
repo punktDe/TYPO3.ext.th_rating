@@ -26,10 +26,9 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
-/**
- * Global vars
- */
+// noinspection JSUnusedGlobalSymbols
 const constRatingFadeOut = 400;
+// noinspection JSUnusedGlobalSymbols
 const constRatingFadein = 300;
 const constDelayFlashMessage = 0;
 const constFlashMessageFadein = 200;
@@ -58,23 +57,23 @@ jQuery(document).ready(function() {
  * Initialize all event listeners
  */
 function initBinding() {
-  //clear existing events and re-create them later
-  jQuery('span.ajaxLink').off('click');
-  jQuery('select.ajaxLink').off('change');
+	//clear existing events and re-create them later
+	jQuery('span.ajaxLink').off('click');
+	jQuery('select.ajaxLink').off('change');
 
-  jQuery('span.ajaxLink').hover( function() {  { switchStepname(this,true); } }, function() {  { switchStepname(this,false); } });
-  jQuery('span.ajaxLink').one('click', function() {
-    submitVoteForm(jQuery.parseJSON(jQuery('input:first',this).val()));
-    return false;
-  });
+	jQuery('span.ajaxLink').hover( function() {  { switchStepname(this,true); } }, function() {  { switchStepname(this,false); } });
+	jQuery('span.ajaxLink').one('click', function() {
+		submitVoteForm(jQuery.parseJSON(jQuery('input:first',this).val()));
+		return false;
+	});
 
-  //handle all changes of selection inputs
-  jQuery('select.ajaxLink').attr("disabled", false);
-  jQuery('select.ajaxLink').one('change', function() {
-    //value is like '{"value":2,"voter":1,"rating":2,"ajaxRef":3599914}'
-    submitVoteForm(jQuery.parseJSON(this.value));
-    return false;
-  });
+	//handle all changes of selection inputs
+	jQuery('select.ajaxLink').attr("disabled", false);
+	jQuery('select.ajaxLink').one('change', function() {
+		//value is like '{"value":2,"voter":1,"rating":2,"ajaxRef":3599914}'
+		submitVoteForm(jQuery.parseJSON(this.value));
+		return false;
+	});
 }
 
 /**
@@ -83,31 +82,33 @@ function initBinding() {
  * ... being called by multiple event handlers
  */
 function submitVoteForm( choosenValue ) {
-  let targetObj = document.getElementById(choosenValue.ajaxRef);
-  jQuery(targetObj).addClass("loading");
-  jQuery("select",targetObj).prop('disabled','disabled');
-  let targetFormElements = document.forms["vote"].elements;
-  targetFormElements["tx_thrating_pi1[__referrer][@action]"].value = choosenValue.actionName;
-  targetFormElements["tx_thrating_pi1[vote][vote]"].value = choosenValue.value;
-  targetFormElements["tx_thrating_pi1[vote][voter]"].value = choosenValue.voter;
-  targetFormElements["tx_thrating_pi1[vote][rating]"].value = choosenValue.rating;
-  targetFormElements["tx_thrating_pi1[settings]"].value = choosenValue.settings;
-  targetFormElements["tx_thrating_pi1[ajaxRef]"].value = choosenValue.ajaxRef;
-  jQuery('#vote').submit();
+		let targetObj = document.getElementById(choosenValue.ajaxRef);
+		jQuery(targetObj).addClass("loading");
+		jQuery("select",targetObj).prop('disabled','disabled');
+		let targetFormElements = document.forms["vote"].elements;
+		targetFormElements["tx_thrating_pi1[__referrer][@action]"].value = choosenValue.actionName;
+		targetFormElements["tx_thrating_pi1[vote][vote]"].value = choosenValue.value;
+		targetFormElements["tx_thrating_pi1[vote][voter]"].value = choosenValue.voter;
+		targetFormElements["tx_thrating_pi1[vote][rating]"].value = choosenValue.rating;
+		targetFormElements["tx_thrating_pi1[settings]"].value = choosenValue.settings;
+		targetFormElements["tx_thrating_pi1[ajaxRef]"].value = choosenValue.ajaxRef;
+		jQuery('#vote').submit();
 }
 
 /**
  * jQuery pre-submit callback
  */
+// noinspection JSUnusedLocalSymbols
 function checkVoteSubmission(formData, jqForm, options) {
 	for (let i = 0; i < formData.length; ++i) {
-		if (formData[i]["name"] === "tx_thrating_pi1[vote][vote]" && formData[i]["value"] === 0) {
+		if (formData[i]["name"] == "tx_thrating_pi1[vote][vote]" && formData[i]["value"] == 0) {
 			//alert("Choose a valid rating");
 			initBinding();
 			// return false to prevent the form from being submitted;
 			return false;
 		}
-		if (formData[i]["name"] === "tx_thrating_pi1[ajaxRef]") {
+		if (formData[i]["name"] == "tx_thrating_pi1[ajaxRef]") {
+      // noinspection JSUnusedLocalSymbols
       let ajaxTargetId = formData[i]["value"];
     }
 	}
@@ -133,7 +134,9 @@ function handleReceivedVote(jsonData)  {
 	if (jsonData.voting) {
 		jQuery('*[data-role="onVotingActive"]',targetObj).show();					//unhide element
 		jQuery('*[data-role="onVotingHidden"]',targetObj).hide();					//hide element
-		(jsonData.protected) ? jQuery('*[data-role="onRatedHidden"]',targetObj).hide() : false;
+		if (jsonData.protected) {
+		  jQuery('*[data-role="onRatedHidden"]',targetObj).hide()
+    }
 		try {
 			jQuery('.tx_thrating_ajax-votingStepname',targetObj).html(jsonData.voting.vote.stepname.stepname);
 		} catch (e) { //show steporder if not name is given
@@ -212,15 +215,14 @@ function fadeFlashMessage() {
  * Switch stepname visibility
  */
 function switchStepname( linkObj, hoverIn ) {
-  let stepname = jQuery(linkObj).attr('title');
-  let stepnameObj;
-  if (hoverIn) {
-    stepnameObj = jQuery(linkObj).parents('div.tx-thrating-ratinglinks').children('div.stepnameTooltip').first();
-    jQuery(stepnameObj).html(stepname).addClass('stepnameTooltipOn').removeClass('stepnameTooltip');
-  } else {
-    stepnameObj = jQuery(linkObj).parents('div.tx-thrating-ratinglinks').children('div.stepnameTooltipOn').first();
-    jQuery(stepnameObj).html('&nbsp;').removeClass('stepnameTooltipOn').addClass('stepnameTooltip');
-  }
+	const stepname = jQuery(linkObj).attr('title');
+	if ( hoverIn ) {
+		const stepnameObj = jQuery(linkObj).parents('div.tx-thrating-ratinglinks').children('div.stepnameTooltip').first();
+		jQuery(stepnameObj).html(stepname).addClass('stepnameTooltipOn').removeClass('stepnameTooltip');
+	} else {
+		const stepnameObj = jQuery(linkObj).parents('div.tx-thrating-ratinglinks').children('div.stepnameTooltipOn').first();
+		jQuery(stepnameObj).html('&nbsp;').removeClass('stepnameTooltipOn').addClass('stepnameTooltip');
+	}
 }
 
 
@@ -228,9 +230,9 @@ function switchStepname( linkObj, hoverIn ) {
  * Adjust font size to fit in polling bars
  */
 function adjustHeights(currElem) {
-  const fontstep = 1;
-  if (jQuery(currElem).height()>jQuery(currElem).parent().height() || jQuery(currElem).width()>jQuery(currElem).parent().width()) {
-		jQuery('.currentPollText').css('font-size',((jQuery(currElem).css('font-size').substr(0,2)-fontstep)) + 'px');
+	const fontstep = 1;
+	if (jQuery(currElem).height()>jQuery(currElem).parent().height() || jQuery(currElem).width()>jQuery(currElem).parent().width()) {
+		jQuery('.currentPollText').css('font-size',(jQuery(currElem).css('font-size').substr(0,2)-fontstep) + 'px');
 		adjustHeights(jQuery(currElem));
 	}
 }

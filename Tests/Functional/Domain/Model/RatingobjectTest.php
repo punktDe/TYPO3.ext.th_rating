@@ -1,6 +1,9 @@
 <?php
 namespace Thucke\ThRating\Tests\Unit\Domain\Model;
 
+use Nimut\TestingFramework\TestCase\UnitTestCase;
+use Thucke\ThRating\Domain\Model\Ratingobject;
+
 /***************************************************************
 *  Copyright notice
 *
@@ -34,31 +37,31 @@ namespace Thucke\ThRating\Tests\Unit\Domain\Model;
  * @scope 		alpha
  * @entity
  */
-class RatingobjectTest extends \TYPO3\CMS\Core\Tests\BaseTestCase
+class RatingobjectTest extends UnitTestCase
 {
-
     /**
-     * @var \Thucke\ThRating\Domain\Model\Ratingobject
+     * @var Ratingobject
      */
-    protected $fixture = null;
+    protected $fixture;
 
     public function setUp()
     {
-        $this->fixture = new \Thucke\ThRating\Domain\Model\Ratingobject();
+        parent::setUp();
+        $this->fixture = new Ratingobject('tt_news', 'uid');
     }
 
     public function tearDown()
     {
         unset($this->fixture);
+        parent::tearDown();
     }
 
     /**
      * Checks construction of a new rating object
-     * @test
      */
-    public function doTestTheTest()
+    public function testConstructor()
     {
-        $this->assertEquals('tt_news', $this->fixture->getRatetable());
-        $this->assertEquals('uid', $this->fixture->getRatefield());
+        static::assertEquals('tt_news', $this->fixture->getRatetable());
+        static::assertEquals('uid', $this->fixture->getRatefield());
     }
 }

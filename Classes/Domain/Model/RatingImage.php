@@ -1,6 +1,10 @@
 <?php
 namespace Thucke\ThRating\Domain\Model;
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
+use TYPO3\CMS\Frontend\Imaging\GifBuilder;
+
 /***************************************************************
 *  Copyright notice
 *
@@ -27,13 +31,13 @@ namespace Thucke\ThRating\Domain\Model;
 /**
  * Model for rating votes
  *
- * @author		Thomas Hucke <thucke@web.de>
- * @copyright 	Copyright belongs to the respective authors
- * @license 	http://opensource.org/licenses/gpl-license.php GNU Public License, version 2
- * @scope 		beta
+ * @author  Thomas Hucke <thucke@web.de>
+ * @copyright  Copyright belongs to the respective authors
+ * @license  http://opensource.org/licenses/gpl-license.php GNU Public License, version 2
+ * @scope   beta
  * @entity
  */
-class RatingImage extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
+class RatingImage extends AbstractEntity
 {
     /**
      * @var bool
@@ -53,15 +57,14 @@ class RatingImage extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      */
     protected $conf;
     /**
-     * @var \TYPO3\CMS\Frontend\Imaging\GifBuilder
+     * @var GifBuilder
      */
     protected $gifBuilder;
 
     /**
-     * @param \TYPO3\CMS\Frontend\Imaging\GifBuilder $gifBuilder
-     * @return void
+     * @param GifBuilder $gifBuilder
      */
-    public function injectGifBuilder(\TYPO3\CMS\Frontend\Imaging\GifBuilder $gifBuilder)
+    public function injectGifBuilder(GifBuilder $gifBuilder): void
     {
         $this->gifBuilder = $gifBuilder;
         $this->gifBuilder->init();
@@ -70,8 +73,7 @@ class RatingImage extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
      * Constructs a new image object
      *
-     * @param mixed	$conf	either an array consisting of GIFBUILDER typoscript or a plain string having the filename
-     * @return void
+     * @param mixed $conf either an array consisting of GIFBUILDER typoscript or a plain string having the filename
      */
     public function __construct($conf = null)
     {
@@ -83,23 +85,21 @@ class RatingImage extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
 
     /**
      * Initializes the new vote object
-     * @return void
      */
-    public function initializeObject()
+    public function initializeObject(): void
     {
         if (empty($this->gifBuilder)) {
             /** @noinspection PhpParamsInspection */
-            $this->injectGifBuilder(\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Frontend\Imaging\GifBuilder::class));
+            $this->injectGifBuilder(GeneralUtility::makeInstance(GifBuilder::class));
         }
     }
 
     /**
      * Sets the typoscript configuration for the GIFBUILDER object
      *
-     * @param mixed	$conf	either an array consisting of GIFBUILDER typoscript or a plain string having the filename
-     * @return void
+     * @param mixed $conf either an array consisting of GIFBUILDER typoscript or a plain string having the filename
      */
-    public function setConf($conf)
+    public function setConf($conf): void
     {
         switch (gettype($conf)) {
             case 'string':
@@ -119,7 +119,7 @@ class RatingImage extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      *
      * @return array
      */
-    public function getConf()
+    public function getConf(): array
     {
         if (empty($this->conf)) {
             return [];
@@ -132,9 +132,8 @@ class RatingImage extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * Sets the filename of the image
      *
      * @param string $imageFile
-     * @return void
      */
-    public function setImageFile($imageFile)
+    public function setImageFile($imageFile): void
     {
         $fullImagePath = PATH_site . $imageFile;
         if (file_exists($fullImagePath)) {
@@ -150,11 +149,10 @@ class RatingImage extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
      * Returns the filename of the image
      *
-     * @var bool	switch if absolute path should be returned
      * @param mixed $fullPath
      * @return string
      */
-    public function getImageFile($fullPath = false)
+    public function getImageFile($fullPath = false): string
     {
         $checkedFile = $this->gifBuilder->checkFile($this->imageFile);
         if (empty($checkedFile)) {
@@ -168,9 +166,9 @@ class RatingImage extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
      * Generates the image using the given typoscript
      *
-     * @return	bool			The result; true if the given the image has been created successfully; otherwise false
+     * @return bool   The result; true if the given the image has been created successfully; otherwise false
      */
-    public function generateImage()
+    public function generateImage(): bool
     {
         if (!empty($this->conf)) {
             $this->gifBuilder->start($this->getConf(), []);
@@ -191,10 +189,10 @@ class RatingImage extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
      * Returns the filename of the image
      *
-     * @var bool	switch if absolute path should be returned
+     * @var bool switch if absolute path should be returned
      * @return array('width','height')
      */
-    public function getImageDimensions()
+    public function getImageDimensions(): array
     {
         if ($this->isBuilderObject) {
             [$width, $height] = $this->gifBuilder->getImageDimensions($this->imageFile);
@@ -210,7 +208,7 @@ class RatingImage extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      *
      * @return string
      */
-    public function __toString()
+    public function __toString(): string
     {
         return $this->imageFile;
     }

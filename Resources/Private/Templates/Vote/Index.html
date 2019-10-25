@@ -3,14 +3,14 @@
 
 	<div style="width: 500px;">Number of ratingobjecs: <f:count
 		subject="{ratingobjects}" />
-	<p><span style="font-size: 0.6em"> A <b>ratingobject</b> is
+	<p><span style="font-size: 0.6em"> A <strong>ratingobject</strong> is
 	the unique identified combination out of
 	<ul>
 		<li>tablename</li>
 		<li>fieldname</li>
 	</ul>
 	</span></p>
-	<p><span style="font-size: 0.6em"> A <b>rating</b> is the
+	<p><span style="font-size: 0.6em"> A <strong>rating</strong> is the
 	unique identified combination out of
 	<ul>
 		<li>ratingobject</li>
@@ -21,14 +21,17 @@
 	<f:if condition="{ratingobjects}">
 		<f:then>
 			<table style="width: 100%;">
+				<caption>
+					<p>Index of all ratingobjects</p>
+				</caption>
 				<tr>
-					<th title="RateTable">RateTable</th>
-					<th title="Ratefield">Ratefield</th>
-					<th title="Ratingobject">RObj</th>
-					<th title="RatedobjectUid">RatedObj Uid</th>
-					<th title="Rating">Rating</th>
-					<th title="Current Rating">Cur Rating</th>
-					<th title="Votecount">Votecount</th>
+					<th scope="col" title="RateTable">RateTable</th>
+					<th scope="col" title="Ratefield">Ratefield</th>
+					<th scope="col" title="Ratingobject">RObj</th>
+					<th scope="col" title="RatedobjectUid">RatedObj Uid</th>
+					<th scope="col" title="Rating">Rating</th>
+					<th scope="col" title="Current Rating">Cur Rating</th>
+					<th scope="col" title="Votecount">Votecount</th>
 				</tr>
 				<f:for each="{ratingobjects}" as="ratingobject">
 					<f:if condition="{ratingobject.ratings}">

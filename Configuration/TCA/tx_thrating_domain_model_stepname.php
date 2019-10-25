@@ -70,7 +70,10 @@ $GLOBALS['TCA']['tx_thrating_domain_model_stepname'] = [
                 'items' => [
                     ['', 0], ],
                 'foreign_table' => 'tx_thrating_domain_model_stepname',
-                'foreign_table_where' => 'AND {#tx_thrating_domain_model_stepname}.{#uid}=###REC_FIELD_l18n_parent### AND {#tx_thrating_domain_model_stepname}.{#sys_language_uid} IN (-1,0)', ], ],
+                'foreign_table_where' => 'AND {#tx_thrating_domain_model_stepname}.{#uid}=###REC_FIELD_l18n_parent###' .
+                    'AND {#tx_thrating_domain_model_stepname}.{#sys_language_uid} IN (-1,0)',
+                ],
+            ],
         'l18n_diffsource' => [
             'config' => [
                 'type' => 'passthrough', ], ], ],

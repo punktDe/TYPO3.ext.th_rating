@@ -1,6 +1,11 @@
 <?php
 namespace Thucke\ThRating\Domain\Repository;
 
+use Thucke\ThRating\Domain\Model\Rating;
+use Thucke\ThRating\Domain\Model\Vote;
+use Thucke\ThRating\Domain\Model\Voter;
+use TYPO3\CMS\Extbase\Persistence\Repository;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -27,46 +32,60 @@ namespace Thucke\ThRating\Domain\Repository;
 /**
  * A repository for votes
  */
-class VoteRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
+class VoteRepository extends Repository
 {
     /**
      * Defines name for function parameter
      */
-    const addIfNotFound = true;
+    public const     /** @noinspection PhpUnused */
+        ADD_IF_NOT_FOUND = true;
 
     /**
-     * Initialze this repository
+     * Initialize this repository
      */
-    public function initializeObject()
+    /** @noinspection PhpUnused */
+    public function initializeObject(): void
     {
     }
 
     /**
      * Finds the voting by giving the rating and voter objects
      *
-     * @param    \Thucke\ThRating\Domain\Model\Rating $rating   The concerned ratingobject
-     * @param    \Thucke\ThRating\Domain\Model\Voter $voter     The Uid of the rated row
-     * @return    \Thucke\ThRating\Domain\Model\Vote|object     The voting
+     * @param    Rating $rating   The concerned ratingobject
+     * @param    Voter $voter     The Uid of the rated row
+     * @return   Vote|object     The voting
      */
     public function findMatchingRatingAndVoter($rating = null, $voter = null)
     {
         /** @var \TYPO3\CMS\Extbase\Persistence\QueryInterface $query */
         $query = $this->createQuery();
 
-        return $query->matching($query->logicalAnd([$query->equals('rating', $rating), $query->equals('voter', $voter)]))->execute()->getFirst();
+        return $query->matching(
+            $query->logicalAnd(
+                [
+                    $query->equals('rating', $rating),
+                    $query->equals('voter', $voter)
+                ]
+            )
+        )->execute()->getFirst();
     }
 
     /**
      * Counts all votings by giving the rating and ratingstep
      *
-     * @param    \Thucke\ThRating\Domain\Model\Rating $rating The concerned ratingobject
+     * @param    Rating $rating The concerned ratingobject
      * @param    \Thucke\ThRating\Domain\Model\Stepconf $stepconf The stepconf object
      * @return    int
      */
-    public function countByMatchingRatingAndVote($rating = null, $stepconf = null)
+    public function countByMatchingRatingAndVote($rating = null, $stepconf = null): int
     {
         $query = $this->createQuery();
-        $query->matching($query->logicalAnd([$query->equals('rating', $rating->getUid()), $query->equals('vote', $stepconf->getUid())]));
+        $query->matching($query->logicalAnd(
+            [
+                $query->equals('rating', $rating->getUid()),
+                $query->equals('vote', $stepconf->getUid())
+            ]
+        ));
 
         return count($query->execute());
     }
@@ -74,20 +93,28 @@ class VoteRepository extends \TYPO3\CMS\Extbase\Persistence\Repository
     /**
      * Counts all anonymous votings by giving the rating and ratingstep
      *
-     * @param    \Thucke\ThRating\Domain\Model\Rating $rating The concerned ratingobject
+     * @param    Rating $rating The concerned ratingobject
      * @param    \Thucke\ThRating\Domain\Model\Stepconf $stepconf The stepconf object
      * @param    int $anonymousVoter UID of the anonymous account
      * @return    int
      */
-    public function countAnonymousByMatchingRatingAndVote($rating = null, $stepconf = null, $anonymousVoter = null)
+    public function countAnonymousByMatchingRatingAndVote($rating = null, $stepconf = null, $anonymousVoter = null): int
     {
-        if (!empty($anonymousVoter)) {
-            $query = $this->createQuery();
-            $query->matching($query->logicalAnd([$query->equals('rating', $rating->getUid()), $query->equals('vote', $stepconf->getUid()), $query->equals('voter', $anonymousVoter)]));
+        /** @var int $count */
+        $count = 0;
 
-            return count($query->execute());
+        if ($anonymousVoter !== null) {
+            $query = $this->createQuery();
+            $query->matching(
+                $query->logicalAnd([
+                    $query->equals('rating', $rating->getUid()),
+                    $query->equals('vote', $stepconf->getUid()),
+                    $query->equals('voter', $anonymousVoter),
+                ])
+            );
+            $count = count($query->execute());
         }
 
-        return 0;
+        return $count;
     }
 }

@@ -1,6 +1,11 @@
 <?php
 namespace Thucke\ThRating\Domain\Validator;
 
+use Thucke\ThRating\Domain\Model\Rating;
+use Thucke\ThRating\Domain\Model\Ratingobject;
+use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
+use TYPO3\CMS\Extbase\Validation\Validator\AbstractValidator;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -34,37 +39,40 @@ namespace Thucke\ThRating\Domain\Validator;
  * @copyright    Copyright belongs to the respective authors
  * @scope singleton
  */
-class RatingValidator extends \TYPO3\CMS\Extbase\Validation\Validator\AbstractValidator
+class RatingValidator extends AbstractValidator
 {
+    /**
+     * This validator always needs to be executed even if the given value is empty.
+     * See AbstractValidator::validate()
+     *
+     * @var bool
+     */
+    protected $acceptsEmptyValues = false;
+
     /**
      * If the given Rating is valid
      *
      * @param \Thucke\ThRating\Domain\Model\Rating $rating The rating
-     * @return void
      */
     protected function isValid($rating)
     {
-        $ratedobjectuid = $rating->getRatedobjectuid();
-        if (empty($ratedobjectuid)) {
-            $this->addError(\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('error.validator.rating.ratedobjectuid', 'ThRating'), 1283536994);
-
-            return;
+        /** @noinspection NotOptimalIfConditionsInspection */
+        if (!$this->isEmpty($rating) && $rating instanceof Rating) {
+            $ratedobjectuid = $rating->getRatedobjectuid();
+            if (empty($ratedobjectuid)) {
+                $this->addError(
+                    LocalizationUtility::translate('error.validator.rating.ratedobjectuid', 'ThRating'),
+                    1283536994
+                );
+            }
+            if (!$rating->getRatingobject() instanceof Ratingobject) {
+                $this->addError(
+                    LocalizationUtility::translate('error.validator.rating.ratingobject', 'ThRating'),
+                    1283538549
+                );
+            }
+        } else {
+            $this->addError(LocalizationUtility::translate('error.validator.rating.empty', 'ThRating'), 1568138421);
         }
-        if (!$rating->getRatingobject() instanceof \Thucke\ThRating\Domain\Model\Ratingobject) {
-            $this->addError(\TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('error.validator.rating.ratingobject', 'ThRating'), 1283538549);
-
-            return;
-        }
-    }
-
-    /**
-     * If the given Rating is set
-     *
-     * @param \Thucke\ThRating\Domain\Model\Rating $rating The rating
-     * @return bool
-     */
-    public function isObjSet($rating)
-    {
-        return !$this->isEmpty($rating) && get_class($rating) == \Thucke\ThRating\Domain\Model\Rating::class;
     }
 }

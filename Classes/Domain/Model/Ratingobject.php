@@ -1,6 +1,12 @@
 <?php
 namespace Thucke\ThRating\Domain\Model;
 
+use Thucke\ThRating\Domain\Repository\RatingRepository;
+use Thucke\ThRating\Domain\Repository\StepconfRepository;
+use Thucke\ThRating\Service\ExtensionHelperService;
+use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
+use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
+
 /***************************************************************
 *  Copyright notice
 *
@@ -27,14 +33,14 @@ namespace Thucke\ThRating\Domain\Model;
 /**
  * Aggregate object for rating of content objects
  *
- * @version 	$Id:$
- * @author		Thomas Hucke <thucke@web.de>
- * @copyright 	Copyright belongs to the respective authors
- * @license 	http://opensource.org/licenses/gpl-license.php GNU Public License, version 2
- * @scope 		beta
+ * @version  $Id:$
+ * @author  Thomas Hucke <thucke@web.de>
+ * @copyright  Copyright belongs to the respective authors
+ * @license  http://opensource.org/licenses/gpl-license.php GNU Public License, version 2
+ * @scope   beta
  * @entity
  */
-class Ratingobject extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
+class Ratingobject extends AbstractEntity
 {
     /**
      * Table name of the cObj
@@ -81,34 +87,33 @@ class Ratingobject extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
 
     /**
      * @param \Thucke\ThRating\Domain\Repository\StepconfRepository $stepconfRepository
-     * @return void
      */
-    public function injectStepconfRepository(\Thucke\ThRating\Domain\Repository\StepconfRepository $stepconfRepository)
+    /** @noinspection PhpUnused */
+    public function injectStepconfRepository(StepconfRepository $stepconfRepository): void
     {
         $this->stepconfRepository = $stepconfRepository;
     }
 
     /**
-     * @var \Thucke\ThRating\Service\ExtensionHelperService
+     * @var  \Thucke\ThRating\Service\ExtensionHelperService
      */
     protected $extensionHelperService;
 
     /**
-     * @param	\Thucke\ThRating\Service\ExtensionHelperService $extensionHelperService
-     * @return	void
+     * @param \Thucke\ThRating\Service\ExtensionHelperService $extensionHelperService
      */
-    public function injectExtensionHelperService(\Thucke\ThRating\Service\ExtensionHelperService $extensionHelperService)
+    /** @noinspection PhpUnused */
+    public function injectExtensionHelperService(ExtensionHelperService $extensionHelperService): void
     {
         $this->extensionHelperService = $extensionHelperService;
     }
 
     /**
      * Constructs a new rating object
-     * @param	string	$ratetable The rating objects table name
-     * @param	string	$ratefield The rating objects field name
-     * @validate 	$ratetable StringLength(minimum = 3, maximum = 60)
-     * @validate	$ratefield StringLength(minimum = 3, maximum = 60)
-     * @return 	void
+     * @param string $ratetable The rating objects table name
+     * @param string $ratefield The rating objects field name
+     * @validate  $ratetable StringLength(minimum = 3, maximum = 60)
+     * @validate $ratefield StringLength(minimum = 3, maximum = 60)
      */
     public function __construct($ratetable = null, $ratefield = null)
     {
@@ -123,17 +128,16 @@ class Ratingobject extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
 
     /**
      * Initializes a new ratingobject
-     * @return void
      */
-    public function initializeObject()
+    public function initializeObject(): void
     {
         //Initialize rating storage if ratingobject is new
         if (!is_object($this->ratings)) {
-            $this->ratings = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
+            $this->ratings = new ObjectStorage();
         }
         //Initialize stepconf storage if ratingobject is new
         if (!is_object($this->stepconfs)) {
-            $this->stepconfs = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
+            $this->stepconfs = new ObjectStorage();
         }
     }
 
@@ -141,9 +145,8 @@ class Ratingobject extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * Sets the rating table name
      *
      * @param string $ratetable
-     * @return void
      */
-    public function setRatetable($ratetable)
+    public function setRatetable($ratetable): void
     {
         $this->ratetable = $ratetable;
     }
@@ -153,7 +156,7 @@ class Ratingobject extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      *
      * @return string Rating object table name
      */
-    public function getRatetable()
+    public function getRatetable(): string
     {
         return $this->ratetable;
     }
@@ -162,9 +165,8 @@ class Ratingobject extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      * Sets the rating field name
      *
      * @param string $ratefield
-     * @return void
      */
-    public function setRatefield($ratefield)
+    public function setRatefield($ratefield): void
     {
         $this->ratefield = $ratefield;
     }
@@ -174,56 +176,54 @@ class Ratingobject extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      *
      * @return string Rating object field name
      */
-    public function getRatefield()
+    public function getRatefield(): string
     {
         return $this->ratefield;
     }
 
     /**
-     * Adds a raiting to this object
+     * Adds a rating to this object
      *
-     * @param Rating $rating
-     * @return void
+     * @param \Thucke\ThRating\Domain\Model\Rating $rating
      */
-    public function addRating(Rating $rating)
+    /** @noinspection PhpUnused */
+    public function addRating(Rating $rating): void
     {
         $this->ratings->attach($rating);
-        $this->extensionHelperService->persistRepository('Thucke\ThRating\Domain\Repository\RatingRepository', $rating);
+        $this->extensionHelperService->persistRepository(RatingRepository::class, $rating);
         $this->extensionHelperService->clearDynamicCssFile();
     }
 
     /**
-     * Remove a raiting from this object
+     * Remove a rating from this object
      *
-     * @param Rating $rating The rating to be removed
-     * @return void
+     * @param \Thucke\ThRating\Domain\Model\Rating $rating The rating to be removed
      */
-    public function removeRating(Rating $rating)
+    /** @noinspection PhpUnused */
+    public function removeRating(Rating $rating): void
     {
         $this->ratings->detach($rating);
     }
 
     /**
-     * Remove all raitings from this object
-     *
-     * @return void
+     * Remove all ratings from this object
      */
-    public function removeAllRatings()
+    /** @noinspection PhpUnused */
+    public function removeAllRatings(): void
     {
-        $this->ratings = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
+        $this->ratings = new ObjectStorage();
     }
 
     /**
      * Adds a stepconf to this object
      *
-     * @param Stepconf $stepconf
-     * @return void
+     * @param \Thucke\ThRating\Domain\Model\Stepconf $stepconf
      */
-    public function addStepconf(Stepconf $stepconf)
+    public function addStepconf(Stepconf $stepconf): void
     {
         if (!$this->stepconfRepository->existStepconf($stepconf)) {
             $this->stepconfs->attach($stepconf);
-            $this->extensionHelperService->persistRepository('Thucke\ThRating\Domain\Repository\StepconfRepository', $stepconf);
+            $this->extensionHelperService->persistRepository(StepconfRepository::class, $stepconf);
             $this->extensionHelperService->clearDynamicCssFile();
         }
     }
@@ -231,10 +231,11 @@ class Ratingobject extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
      * Sets all ratings of this ratingobject
      *
-     * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Thucke\ThRating\Domain\Model\Stepconf> $stepconfs The step configurations for this ratingobject
-     * @return void
+     * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Thucke\ThRating\Domain\Model\Stepconf> $stepconfs
+     *        The step configurations for this ratingobject
      */
-    public function setStepconfs(\TYPO3\CMS\Extbase\Persistence\ObjectStorage $stepconfs)
+    /** @noinspection PhpUnused */
+    public function setStepconfs(ObjectStorage $stepconfs): void
     {
         $this->stepconfs = $stepconfs;
     }
@@ -252,10 +253,11 @@ class Ratingobject extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
     /**
      * Sets all ratings of this ratingobject
      *
-     * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Thucke\ThRating\Domain\Model\Rating> $ratings The ratings of the organization
-     * @return void
+     * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Thucke\ThRating\Domain\Model\Rating> $ratings
+     *          The ratings of the organization
      */
-    public function setRatings(\TYPO3\CMS\Extbase\Persistence\ObjectStorage $ratings)
+    /** @noinspection PhpUnused */
+    public function setRatings(ObjectStorage $ratings): void
     {
         $this->ratings = $ratings;
     }
@@ -265,6 +267,7 @@ class Ratingobject extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity
      *
      * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Thucke\ThRating\Domain\Model\Rating>
      */
+    /** @noinspection PhpUnused */
     public function getRatings()
     {
         return clone $this->ratings;
