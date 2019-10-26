@@ -4,52 +4,34 @@ php:
   - 7.2
   - 7.3
 env:
-  - TYPO3_VERSION=^9
-  - TYPO3_VERSION=^8
   global:
     - typo3DatabaseHost=localhost typo3DatabaseName=typo3 typo3DatabaseUsername=root typo3DatabasePassword=''
+  matrix:
+    - TYPO3_VERSION=^9
+    - TYPO3_VERSION=^8
+services:
+  - mysql
+script: ./Build/Scripts/runTravisTests.sh -s fulltest
 
 # stages and ordering /w conditions
 stages:
-  - static checks
+  - name: static checks
   - name: test
-    if: branch = master
+    if: branch IN (master, develop) OR branch =~ ^release.*$ OR commit_message =~ force_tests
 
-jobs:
+matrix:
   fast_finish: true
   include:
     - stage: static checks
       name: "PHPLint"
-      script:
-        - >
-          echo;
-          echo "Running php lint";
-          find . -name \*.php ! -path "./.Build/*" | parallel --gnu php -d display_errors=stderr -l {} > /dev/null \;
+      php: 7.2
+      script: ./Build/Scripts/runTravisTests.sh -s lint
     - name: "SonarQube"
-      script:
-        - >
-          echo;
-          echo "Running Sonar";
-          sonar-scanner -Dproject.settings=Build/.sonar_project.properties -Dsonar.verbose=true
-
-    - stage: test
-      name: "Unit tests"
-      script:
-        - >
-          echo;
-          echo "Running unit tests";
-          .Build/bin/phpunit --colors -c .Build/vendor/nimut/testing-framework/res/Configuration/UnitTests.xml Tests/Unit/
-    - name: "Functional tests"
-      script:
-        - >
-          echo;
-          echo "Running functional tests";
-          find 'Tests/Functional' -wholename '*Test.php' | parallel --gnu 'echo; echo "Running functional test suite {}"; .Build/bin/phpunit --colors  -c .Build/vendor/nimut/testing-framework/res/Configuration/FunctionalTests.xml {}'
+      php: 7.2
+      script: sonar-scanner -Dproject.settings=Build/.sonar_project.properties -Dsonar.verbose=true
 
 # specification of buil environment
 dist: bionic
-services:
-  - mysql
 addons:
   apt:
     packages:
@@ -71,18 +53,3 @@ notifications:
 # Git disable shallow clones
 git:
   depth: false
-
-# preparation of build environment
-before_install:
-  - composer self-update
-  - composer --version
-
-# preparation of script environment
-before_script:
-  - phpenv config-rm xdebug.ini || echo "xdebug not available"
-  - composer require typo3/minimal=$TYPO3_VERSION
-  # Restore composer.json
-  - git checkout composer.json
-  - export TYPO3_PATH_WEB=$PWD/.Build/Web
-
-
