@@ -41,14 +41,6 @@ Options:
             - lint: PHP linting
             - unit (default): PHP unit tests
 
-    -d <mariadb|mssql|postgres|sqlite>
-        Only with -s functional
-        Specifies on which DBMS tests are performed
-            - mariadb (default): use mariadb
-            - mssql: use mssql microsoft sql server
-            - postgres: use postgres
-            - sqlite: use sqlite
-
     -p <7.2|7.3>
         Specifies the PHP minor version to be used
             - 7.2 (default): use PHP 7.2
@@ -101,25 +93,13 @@ OPTIND=1
 # Array for invalid options
 INVALID_OPTIONS=();
 # Simple option parsing based on getopts (! not getopt)
-while getopts ":s:d:p:e:xy:hv" OPT; do
+while getopts ":s:e:hv" OPT; do
     case ${OPT} in
         s)
             TEST_SUITE=${OPTARG}
             ;;
-        d)
-            DBMS=${OPTARG}
-            ;;
-        p)
-            PHP_VERSION=${OPTARG}
-            ;;
         e)
             EXTRA_TEST_OPTIONS=${OPTARG}
-            ;;
-        x)
-            PHP_XDEBUG_ON=1
-            ;;
-        y)
-            PHP_XDEBUG_PORT=${OPTARG}
             ;;
         h)
             echo "${HELP}"
@@ -150,17 +130,6 @@ fi
 
 # Set $1 to first mass argument, this is the optional test file or test directory to execute
 shift $((OPTIND - 1))
-case ${TEST_SUITE} in
-    acceptance)
-        TEST_FILE="Web/typo3conf/ext/th_rating/Tests/Acceptance"
-        ;;
-    functional)
-        TEST_FILE="Web/typo3conf/ext/th_rating/Tests/Functional"
-        ;;
-    unit)
-        TEST_FILE="Web/typo3conf/ext/th_rating/Tests/Unit"
-        ;;
-esac
 
 if [ ${SCRIPT_VERBOSE} -eq 1 ]; then
     set -x
@@ -186,7 +155,6 @@ case ${TEST_SUITE} in
     functional)
         setUpDockerComposeDotEnv
         find 'Tests/Functional' -wholename '*Test.php' | parallel --gnu 'echo; echo "Running functional test suite {}"; .Build/bin/phpunit --colors  -c .Build/vendor/nimut/testing-framework/res/Configuration/FunctionalTests.xml {}'
-        echo $PWD
         ;;
     lint)
         find . -name \*.php ! -path "./.Build/*" | parallel --gnu php -d display_errors=stderr -l {} > /dev/null \;
@@ -194,6 +162,11 @@ case ${TEST_SUITE} in
     unit)
         setUpDockerComposeDotEnv
         .Build/bin/phpunit --colors -c .Build/vendor/nimut/testing-framework/res/Configuration/UnitTests.xml Tests/Unit/
+        ;;
+    fulltest)
+        setUpDockerComposeDotEnv
+        .Build/bin/phpunit --colors -c .Build/vendor/nimut/testing-framework/res/Configuration/UnitTests.xml Tests/Unit/
+        find 'Tests/Functional' -wholename '*Test.php' | parallel --gnu 'echo; echo "Running functional test suite {}"; .Build/bin/phpunit --colors  -c .Build/vendor/nimut/testing-framework/res/Configuration/FunctionalTests.xml {}'
         ;;
     php-cs-fixer)
         setUpDockerComposeDotEnv

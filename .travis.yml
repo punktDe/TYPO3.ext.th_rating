@@ -1,8 +1,18 @@
 language: php
 
+php:
+  - 7.2
+  - 7.3
 env:
   global:
     - typo3DatabaseHost=localhost typo3DatabaseName=typo3 typo3DatabaseUsername=root typo3DatabasePassword=''
+  jobs:
+    - TYPO3_VERSION=^9
+    - TYPO3_VERSION=^8
+script: ./Build/Scripts/runTravisTests.sh -s fulltest
+
+services:
+  - mysql
 
 # stages and ordering /w conditions
 stages:
@@ -13,56 +23,27 @@ stages:
 jobs:
   fast_finish: true
   include:
-    - stage: unit tests
+    - stage: tests
       name: "PHP 7.2 T3v8"
       php: 7.2
       env:
         - TYPO3_VERSION=^8
-      script: ./Build/Scripts/runTravisTests.sh -s unit
+      script: ./Build/Scripts/runTravisTests.sh -s fulltest
     - name: "PHP 7.3 T3v8"
       php: 7.3
       env:
         - TYPO3_VERSION=^8
-      script: ./Build/Scripts/runTravisTests.sh -s unit
+      script: ./Build/Scripts/runTravisTests.sh -s fulltest
     - name: "PHP 7.2 T3v9"
       php: 7.2
       env:
         - TYPO3_VERSION=^9
-      script: ./Build/Scripts/runTravisTests.sh -s unit
+      script: ./Build/Scripts/runTravisTests.sh -s fulltest
     - name: "PHP 7.3 T3v9"
       php: 7.3
       env:
         - TYPO3_VERSION=^9
-      script: ./Build/Scripts/runTravisTests.sh -s unit
-    - stage: functional tests
-      name: "PHP 7.2 T3v8"
-      php: 7.2
-      env:
-        - TYPO3_VERSION=^8
-      services:
-        - mysql
-      script: ./Build/Scripts/runTravisTests.sh -s functional
-    - name: "PHP 7.3 T3v8"
-      php: 7.3
-      env:
-        - TYPO3_VERSION=^8
-      services:
-        - mysql
-      script: ./Build/Scripts/runTravisTests.sh -s functional
-    - name: "PHP 7.2 T3v9"
-      php: 7.2
-      env:
-        - TYPO3_VERSION=^9
-      services:
-        - mysql
-      script: ./Build/Scripts/runTravisTests.sh -s functional
-    - name: "PHP 7.3 T3v9"
-      php: 7.3
-      env:
-        - TYPO3_VERSION=^9
-      services:
-        - mysql
-      script: ./Build/Scripts/runTravisTests.sh -s functional
+      script: ./Build/Scripts/runTravisTests.sh -s fulltest
     - stage: static checks
       name: "PHPLint"
       php: 7.2
