@@ -10,6 +10,19 @@ env:
     - TYPO3_VERSION=^9
     - TYPO3_VERSION=^8
 
+- name: "Unit tests"
+  script:
+    - >
+      echo;
+      echo "Running unit tests";
+      .Build/bin/phpunit --colors -c .Build/vendor/nimut/testing-framework/res/Configuration/UnitTests.xml Tests/Unit/
+- name: "Functional tests"
+  script:
+    - >
+      echo;
+      echo "Running functional tests";
+      find 'Tests/Functional' -wholename '*Test.php' | parallel --gnu 'echo; echo "Running functional test suite {}"; .Build/bin/phpunit --colors  -c .Build/vendor/nimut/testing-framework/res/Configuration/FunctionalTests.xml {}'
+
 # stages and ordering /w conditions
 stages:
   - static_checks
@@ -33,20 +46,7 @@ jobs:
           echo;
           echo "Running Sonar";
           sonar-scanner -Dproject.settings=Build/.sonar_project.properties -Dsonar.verbose=true
-    - stage: test
-      name: "Unit tests"
-      script:
-        - >
-          echo;
-          echo "Running unit tests";
-          .Build/bin/phpunit --colors -c .Build/vendor/nimut/testing-framework/res/Configuration/UnitTests.xml Tests/Unit/
-    - name: "Functional tests"
-      script:
-        - >
-          echo;
-          echo "Running functional tests";
-          find 'Tests/Functional' -wholename '*Test.php' | parallel --gnu 'echo; echo "Running functional test suite {}"; .Build/bin/phpunit --colors  -c .Build/vendor/nimut/testing-framework/res/Configuration/FunctionalTests.xml {}'
-
+          
 # specification of buil environment
 dist: bionic
 services:
