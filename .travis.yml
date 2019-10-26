@@ -22,13 +22,13 @@ script:
 
 # stages and ordering /w conditions
 stages:
-  - static_checks
+  - static checks
   - name: test
 
 jobs:
   fast_finish: true
   include:
-    - stage: static_checks
+    - stage: static checks
       name: "PHPLint"
       php: 7.2
       script:
