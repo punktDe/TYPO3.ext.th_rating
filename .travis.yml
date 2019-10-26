@@ -16,8 +16,8 @@ script: ./Build/Scripts/runTravisTests.sh -s fulltest
 # stages and ordering /w conditions
 stages:
   - static checks
-  - unit tests
-  - functional tests
+  - test
+    if: branch IN (master, develop) OR  branch=~ /^release.*$/ OR commit_message =~ /force_tests/
 
 matrix:
   fast_finish: true
