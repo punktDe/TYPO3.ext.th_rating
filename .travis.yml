@@ -1,27 +1,67 @@
 language: php
 
-php:
-  - 7.2
-  - 7.3
 env:
   global:
     - typo3DatabaseHost=localhost typo3DatabaseName=typo3 typo3DatabaseUsername=root typo3DatabasePassword=''
-  jobs:
-    - TYPO3_VERSION=^9
-    - TYPO3_VERSION=^8
 
 # stages and ordering /w conditions
 stages:
   - static checks
-  - name: test
+  - unit tests
+  - functional tests
 
 jobs:
   fast_finish: true
   include:
-    - stage: test
-      name: "Unittests"
+    - stage: unit tests
+      name: "PHP 7.2 T3v8"
+      php: 7.2
+      env:
+        - TYPO3_VERSION=^8
       script: ./Build/Scripts/runTravisTests.sh -s unit
-    - name: "Functional tests"
+    - name: "PHP 7.3 T3v8"
+      php: 7.3
+      env:
+        - TYPO3_VERSION=^8
+      script: ./Build/Scripts/runTravisTests.sh -s unit
+    - name: "PHP 7.2 T3v9"
+      php: 7.2
+      env:
+        - TYPO3_VERSION=^9
+      script: ./Build/Scripts/runTravisTests.sh -s unit
+    - name: "PHP 7.3 T3v9"
+      php: 7.3
+      env:
+        - TYPO3_VERSION=^9
+      script: ./Build/Scripts/runTravisTests.sh -s unit
+    - stage: functional tests
+      name: "PHP 7.2 T3v8"
+      php: 7.2
+      env:
+        - TYPO3_VERSION=^8
+      services:
+        - mysql
+      script: ./Build/Scripts/runTravisTests.sh -s functional
+    - name: "PHP 7.3 T3v8"
+      php: 7.3
+      env:
+        - TYPO3_VERSION=^8
+      services:
+        - mysql
+      script: ./Build/Scripts/runTravisTests.sh -s functional
+    - name: "PHP 7.2 T3v9"
+      php: 7.2
+      env:
+        - TYPO3_VERSION=^9
+      services:
+        - mysql
+      script: ./Build/Scripts/runTravisTests.sh -s functional
+    - name: "PHP 7.3 T3v9"
+      php: 7.3
+      env:
+        - TYPO3_VERSION=^9
+      services:
+        - mysql
       script: ./Build/Scripts/runTravisTests.sh -s functional
     - stage: static checks
       name: "PHPLint"
@@ -33,8 +73,6 @@ jobs:
 
 # specification of buil environment
 dist: bionic
-services:
-  - mysql
 addons:
   apt:
     packages:
@@ -56,18 +94,3 @@ notifications:
 # Git disable shallow clones
 git:
   depth: false
-
-# preparation of build environment
-before_install:
-  - composer self-update
-  - composer --version
-
-# preparation of script environment
-before_script:
-  - phpenv config-rm xdebug.ini || echo "xdebug not available"
-  - composer require typo3/minimal=$TYPO3_VERSION
-  # Restore composer.json
-  - git checkout composer.json
-  - export TYPO3_PATH_WEB=$PWD/.Build/Web
-
-

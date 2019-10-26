@@ -94,7 +94,6 @@ EOF
 # Go to the directory this script is located, so everything else is relative
 # to this dir, no matter from where this script is called.
 THIS_SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
-cd "$THIS_SCRIPT_DIR" || exit 1
 
 # Option parsing
 # Reset in case getopts has been used previously in the shell
