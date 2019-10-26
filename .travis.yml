@@ -17,7 +17,6 @@ script: ./Build/Scripts/runTravisTests.sh -s fulltest
 stages:
   - static checks
   - test
-    if: branch IN (master, develop)
 
 matrix:
   fast_finish: true
