@@ -9,8 +9,6 @@ env:
   matrix:
     - TYPO3_VERSION=^9
     - TYPO3_VERSION=^8
-services:
-  - mysql
 script: ./Build/Scripts/runTravisTests.sh -s fulltest
 
 # stages and ordering /w conditions
@@ -22,6 +20,9 @@ stages:
 matrix:
   fast_finish: true
   include:
+    - test:
+      services:
+        - mysql
     - stage: static checks
       name: "PHPLint"
       php: 7.2
