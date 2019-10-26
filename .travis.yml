@@ -17,7 +17,7 @@ script: ./Build/Scripts/runTravisTests.sh -s fulltest
 stages:
   - static checks
   - test
-    if: branch IN (master, develop) OR  branch=~ /^release.*$/ OR commit_message =~ /force_tests/
+    if: branch IN (master, develop) OR branch =~ ^release.*$ OR commit_message =~ force_tests
 
 matrix:
   fast_finish: true
