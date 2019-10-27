@@ -16,7 +16,7 @@
 if [ "$TRAVIS_REPO_SLUG" == "thucke/TYPO3.ext.th_rating" ] && [ "$TRAVIS_PULL_REQUEST" == "false" ] && [ "$TRAVIS_BRANCH" == "doxygen" ]; then
 
     # Get to the Travis build directory, configure git and clone the repo
-    popd $HOME
+    pushd $HOME
     git config --global user.email "travis@travis-ci.org"
     git config --global user.name "travis-ci"
     git clone --quiet --branch=gh-pages https://${GITHUB_TOKEN}@github.com/thucke/TYPO3.ext.th_rating.git gh-pages
