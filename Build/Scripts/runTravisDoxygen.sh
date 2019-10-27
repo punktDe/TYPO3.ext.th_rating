@@ -19,8 +19,7 @@ THIS_SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
 cd "$THIS_SCRIPT_DIR"
 
 if [ "$TRAVIS_REPO_SLUG" == "thucke/TYPO3.ext.th_rating" ] && [ "$TRAVIS_PULL_REQUEST" == "false" ] && [ "$TRAVIS_BRANCH" == "doxygen" ]; then
-    set -x
-
+    echo -e "Starting Doxygen html generation.\n"
     mkdir -p $HOME/build/doxygen
     #copy current doxygen configuration to statix place
     cp ../.doxygen $HOME/build/doxygen
@@ -33,16 +32,19 @@ if [ "$TRAVIS_REPO_SLUG" == "thucke/TYPO3.ext.th_rating" ] && [ "$TRAVIS_PULL_RE
 
     # cleanup documentation
     pushd gh-pages
-    git rm -rf *
+    git rm -rf * >/dev/null
     popd
 
     # generate new documentation
     cd doxygen
-    doxygen .doxygen
-    mv -f html/* $HOME/build/gh-pages
+    echo -e "Starting Doxygen html generation.\n"
+    doxygen .doxygen >/dev/null
+    echo -e "Moving Doxygen html to gh-pages branch.\n"
+    mv -f html/* $HOME/build/gh-pages >/dev/null
 
     # Commit and Push the Changes
     cd $HOME/build/gh-pages
+    echo -e "Publishing gh-pages branch.\n"
     git add -f .
     git commit -m "Latest doxygen generated doc on successful travis build $TRAVIS_BUILD_NUMBER auto-pushed to gh-pages"
     git push -fq origin gh-pages
