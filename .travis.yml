@@ -18,6 +18,7 @@ stages:
   - name: static checks
   - name: test
     if: branch IN (master, develop) OR branch =~ ^release.*$ OR commit_message =~ force_tests
+  - name: doxygen
 
 matrix:
   fast_finish: true
@@ -29,6 +30,9 @@ matrix:
     - name: "SonarQube"
       php: 7.2
       script: sonar-scanner -Dproject.settings=Build/.sonar_project.properties -Dsonar.verbose=true
+    - stage: doxygen
+      php: 7.2
+      script: ./Build/Scripts/createDoxygen.sh
 
 # specification of buil environment
 dist: bionic
@@ -64,6 +68,3 @@ deploy:
   local_dir: Documentation/Doxygen/html
   on:
     branch: gh-pages
-
-after_success:
-  - ./Build/Scripts/createDoxygen.sh
