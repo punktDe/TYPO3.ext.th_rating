@@ -13,19 +13,34 @@
 # [ "$TRAVIS_BRANCH" == "master" ]
 # If it’s merged to master, we want to publish doc for it.
 
+# Go to the directory this script is located, so everything else is relative
+# to this dir, no matter from where this script is called.
+THIS_SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
+cd "$THIS_SCRIPT_DIR"
+
 if [ "$TRAVIS_REPO_SLUG" == "thucke/TYPO3.ext.th_rating" ] && [ "$TRAVIS_PULL_REQUEST" == "false" ] && [ "$TRAVIS_BRANCH" == "doxygen" ]; then
     set -x
+
+    mkdir -p $HOME/doxygen
+    #copy current doxygen configuration to statix place
+    cp ../.doxygen $HOME/doxygen
+
     # Get to the Travis build directory, configure git and clone the repo
     pushd $HOME
     #git config --global user.email "travis@travis-ci.org"
     #git config --global user.name "travis-ci"
     git clone --branch=gh-pages https://${GITHUB_TOKEN}@github.com/thucke/TYPO3.ext.th_rating.git gh-pages
 
-    # Commit and Push the Changes
-    cd gh-pages/Documentation/Doxygen
-    git rm -rf ./html
-    doxygen BUILD
+    # cleanup documentation
+    git rm -rf gh-pages/*
 
+    # generate new documentation
+    cd doxygen
+    doxygen .doxygen
+    mv html/* $HOME/gh-pages
+
+    # Commit and Push the Changes
+    cd $HOME/gh-pages
     git add -f .
     git commit -m "Latest doxygen generated doc on successful travis build $TRAVIS_BUILD_NUMBER auto-pushed to gh-pages"
     git push -fq origin gh-pages
@@ -33,5 +48,4 @@ if [ "$TRAVIS_REPO_SLUG" == "thucke/TYPO3.ext.th_rating" ] && [ "$TRAVIS_PULL_RE
     echo -e "Published Doxygen html to gh-pages.\n"
 
     popd
-
 fi
