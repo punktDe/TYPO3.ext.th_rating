@@ -21,12 +21,12 @@ cd "$THIS_SCRIPT_DIR"
 if [ "$TRAVIS_REPO_SLUG" == "thucke/TYPO3.ext.th_rating" ] && [ "$TRAVIS_PULL_REQUEST" == "false" ] && [ "$TRAVIS_BRANCH" == "doxygen" ]; then
     set -x
 
-    mkdir -p $HOME/doxygen
+    mkdir -p $HOME/build/doxygen
     #copy current doxygen configuration to statix place
-    cp ../.doxygen $HOME/doxygen
+    cp ../.doxygen $HOME/build/doxygen
 
     # Get to the Travis build directory, configure git and clone the repo
-    pushd $HOME
+    pushd $HOME/build
     #git config --global user.email "travis@travis-ci.org"
     #git config --global user.name "travis-ci"
     git clone --branch=gh-pages https://${GITHUB_TOKEN}@github.com/thucke/TYPO3.ext.th_rating.git gh-pages
@@ -37,10 +37,10 @@ if [ "$TRAVIS_REPO_SLUG" == "thucke/TYPO3.ext.th_rating" ] && [ "$TRAVIS_PULL_RE
     # generate new documentation
     cd doxygen
     doxygen .doxygen
-    mv html/* $HOME/gh-pages
+    mv -f html/* $HOME/build/gh-pages
 
     # Commit and Push the Changes
-    cd $HOME/gh-pages
+    cd $HOME/build/gh-pages
     git add -f .
     git commit -m "Latest doxygen generated doc on successful travis build $TRAVIS_BUILD_NUMBER auto-pushed to gh-pages"
     git push -fq origin gh-pages

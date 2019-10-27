@@ -36,7 +36,7 @@ matrix:
     - stage: doxygen
       name: "Doxygen generation"
       php: 7.2
-      script: ./Build/Scripts/createDoxygen.sh
+      script: ./Build/Scripts/runTravisDoxygen.sh
 
 # specification of build environment
 dist: bionic
