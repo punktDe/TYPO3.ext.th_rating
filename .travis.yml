@@ -24,13 +24,14 @@ matrix:
   fast_finish: true
   include:
     - stage: static checks
-      name: "PHPLint"
+      #name: "PHPLint"
+      #php: 7.2
+      #script: ./Build/Scripts/runTravisTests.sh -s lint
+    #- name: "SonarQube"
       php: 7.2
-      script: ./Build/Scripts/runTravisTests.sh -s lint
-    - name: "SonarQube"
-      php: 7.2
-      sonarcloud:
-        organization: "thucke"
+      addons:
+        sonarcloud:
+          organization: "thucke"
       script: sonar-scanner -Dproject.settings=Build/.sonar_project.properties -Dsonar.verbose=true
     - stage: doxygen
       name: "Doxygen generation"
