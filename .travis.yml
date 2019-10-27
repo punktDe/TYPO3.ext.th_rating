@@ -33,6 +33,7 @@ matrix:
         sonarcloud:
           organization: "thucke"
       script: sonar-scanner -Dproject.settings=Build/.sonar_project.properties -Dsonar.verbose=true
+
     #- stage: doxygen
     #  name: "Doxygen generation"
     #  php: 7.2
