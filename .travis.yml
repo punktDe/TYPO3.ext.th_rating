@@ -29,12 +29,15 @@ matrix:
       script: ./Build/Scripts/runTravisTests.sh -s lint
     - name: "SonarQube"
       php: 7.2
+      sonarcloud:
+        organization: "thucke"
       script: sonar-scanner -Dproject.settings=Build/.sonar_project.properties -Dsonar.verbose=true
     - stage: doxygen
+      name: "Doxygen generation"
       php: 7.2
       script: ./Build/Scripts/createDoxygen.sh
 
-# specification of buil environment
+# specification of build environment
 dist: bionic
 addons:
   apt:
@@ -42,8 +45,6 @@ addons:
       - parallel
       - doxygen
       - graphviz
-sonarcloud:
-    organization: "thucke"
 cache:
   directories:
     - $HOME/.composer/cache
