@@ -32,7 +32,9 @@ if [ "$TRAVIS_REPO_SLUG" == "thucke/TYPO3.ext.th_rating" ] && [ "$TRAVIS_PULL_RE
     git clone --branch=gh-pages https://${GITHUB_TOKEN}@github.com/thucke/TYPO3.ext.th_rating.git gh-pages
 
     # cleanup documentation
-    git rm -rf gh-pages/*
+    pushd gh-pages
+    git rm -rf *
+    popd
 
     # generate new documentation
     cd doxygen
