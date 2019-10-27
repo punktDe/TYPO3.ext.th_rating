@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-set -x
 
 # see https://benlimmer.com/2013/12/26/automatically-publish-javadoc-to-gh-pages-with-travis-ci/
 # [ "$TRAVIS_REPO_SLUG" == "thucke/TYPO3.ext.th_rating" ]
@@ -15,11 +14,11 @@ set -x
 # If it’s merged to master, we want to publish doc for it.
 
 if [ "$TRAVIS_REPO_SLUG" == "thucke/TYPO3.ext.th_rating" ] && [ "$TRAVIS_PULL_REQUEST" == "false" ] && [ "$TRAVIS_BRANCH" == "doxygen" ]; then
-
+    set -x
     # Get to the Travis build directory, configure git and clone the repo
     pushd $HOME
-    git config --global user.email "travis@travis-ci.org"
-    git config --global user.name "travis-ci"
+    #git config --global user.email "travis@travis-ci.org"
+    #git config --global user.name "travis-ci"
     git clone --branch=gh-pages https://${GITHUB_TOKEN}@github.com/thucke/TYPO3.ext.th_rating.git gh-pages
 
     # Commit and Push the Changes
