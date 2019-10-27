@@ -18,7 +18,7 @@ stages:
   - name: static checks
   - name: test
     if: branch IN (master, develop) OR branch =~ ^release.*$ OR commit_message =~ force_tests
-  - name: doxygen
+  #- name: doxygen
 
 matrix:
   fast_finish: true
@@ -33,10 +33,10 @@ matrix:
         sonarcloud:
           organization: "thucke"
       script: sonar-scanner -Dproject.settings=Build/.sonar_project.properties -Dsonar.verbose=true
-    - stage: doxygen
-      name: "Doxygen generation"
-      php: 7.2
-      script: ./Build/Scripts/createDoxygen.sh
+    #- stage: doxygen
+    #  name: "Doxygen generation"
+    #  php: 7.2
+    #  script: ./Build/Scripts/createDoxygen.sh
 
 # specification of build environment
 dist: bionic
@@ -62,11 +62,11 @@ notifications:
 git:
   depth: false
 
-deploy:
-  provider: pages
-  skip_cleanup: true
-  github_token: $GITHUB_TOKEN  # Set in the settings page of your repository, as a secure variable
-  keep_history: true
-  local_dir: Documentation/Doxygen/html
-  on:
-    branch: gh-pages
+#deploy:
+#  provider: pages
+#  skip_cleanup: true
+#  github_token: $GITHUB_TOKEN  # Set in the settings page of your repository, as a secure variable
+#  keep_history: true
+#  local_dir: Documentation/Doxygen/html
+#  on:
+#    branch: gh-pages

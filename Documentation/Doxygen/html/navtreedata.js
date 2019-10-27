@@ -24,6 +24,7 @@ for the JavaScript code in this file
 var NAVTREE =
 [
   [ "Rating AX", "index.html", [
+    [ "Test List", "test.html", null ],
     [ "Todo List", "todo.html", null ],
     [ "Namespaces", "namespaces.html", [
       [ "Namespace List", "namespaces.html", "namespaces_dup" ]
@@ -34,7 +35,7 @@ var NAVTREE =
       [ "Class Hierarchy", "hierarchy.html", "hierarchy" ],
       [ "Data Fields", "functions.html", [
         [ "All", "functions.html", "functions_dup" ],
-        [ "Functions", "functions_func.html", null ],
+        [ "Functions", "functions_func.html", "functions_func" ],
         [ "Variables", "functions_vars.html", null ]
       ] ]
     ] ],
@@ -47,7 +48,8 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "AbstractExtensionService_8php.html",
-"classThucke_1_1ThRating_1_1Domain_1_1Model_1_1Vote.html#a1e7b2580aa378d9676b1212e012a177f"
+"classThucke_1_1ThRating_1_1Domain_1_1Model_1_1Stepname.html#aacec21ae496ce841d74932c15e8e3ade",
+"dir_227700083d62d0e4b103a545959782df.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

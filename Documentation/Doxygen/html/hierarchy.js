@@ -3,6 +3,10 @@ var hierarchy =
     [ "AbstractEntity", null, [
       [ "Syslang", "classThucke_1_1ThRating_1_1Domain_1_1Model_1_1Syslang.html", null ]
     ] ],
+    [ "BaseTestCase", null, [
+      [ "StepconfigTest", "classThucke_1_1ThRating_1_1Tests_1_1Domain_1_1Model_1_1StepconfigTest.html", null ],
+      [ "VoteTest", "classThucke_1_1ThRating_1_1Tests_1_1Domain_1_1Model_1_1VoteTest.html", null ]
+    ] ],
     [ "DynamicCssEvaluator", "classThucke_1_1ThRating_1_1Evaluation_1_1DynamicCssEvaluator.html", null ],
     [ "Exception", null, [
       [ "Exception", "classThucke_1_1ThRating_1_1ViewHelpers_1_1Exception.html", null ]
@@ -55,6 +59,11 @@ var hierarchy =
     [ "FrontendUserRepository", null, [
       [ "VoterRepository", "classThucke_1_1ThRating_1_1Domain_1_1Repository_1_1VoterRepository.html", null ]
     ] ],
+    [ "FunctionalTestCase", null, [
+      [ "RatingobjectRepositoryTest", "classThucke_1_1ThRating_1_1Tests_1_1Functional_1_1Domain_1_1Repository_1_1RatingobjectRepositoryTest.html", null ],
+      [ "RatingRepositoryTest", "classThucke_1_1ThRating_1_1Tests_1_1Functional_1_1Domain_1_1Repository_1_1RatingRepositoryTest.html", null ],
+      [ "StepconfRepositoryTest", "classThucke_1_1ThRating_1_1Tests_1_1Functional_1_1Domain_1_1Repository_1_1StepconfRepositoryTest.html", null ]
+    ] ],
     [ "Repository", null, [
       [ "RatingobjectRepository", "classThucke_1_1ThRating_1_1Domain_1_1Repository_1_1RatingobjectRepository.html", null ],
       [ "RatingRepository", "classThucke_1_1ThRating_1_1Domain_1_1Repository_1_1RatingRepository.html", null ],
@@ -71,5 +80,12 @@ var hierarchy =
         [ "ExtensionManagementService", "classThucke_1_1ThRating_1_1Service_1_1ExtensionManagementService.html", null ],
         [ "RichSnippetService", "classThucke_1_1ThRating_1_1Service_1_1RichSnippetService.html", null ]
       ] ]
+    ] ],
+    [ "UnitTestCase", null, [
+      [ "RatingTest", "classThucke_1_1ThRating_1_1Tests_1_1Domain_1_1Model_1_1RatingTest.html", null ],
+      [ "RatingobjectTest", "classThucke_1_1ThRating_1_1Tests_1_1Unit_1_1Domain_1_1Model_1_1RatingobjectTest.html", null ]
+    ] ],
+    [ "ViewHelperBaseTestcase", null, [
+      [ "Typo3VersionViewHelperTest", "classThucke_1_1ThRating_1_1Tests_1_1Unit_1_1Typo3VersionViewHelperTest.html", null ]
     ] ]
 ];

@@ -8,5 +8,6 @@ var searchData=
   ['configuration_5fexclude',['CONFIGURATION_EXCLUDE',['../classThucke_1_1ThRating_1_1View_1_1JsonView.html#aa44a19a8b1ce0c574dd65e8c129ebb77',1,'Thucke::ThRating::View::JsonView']]],
   ['cookieservice',['CookieService',['../classThucke_1_1ThRating_1_1Service_1_1CookieService.html',1,'Thucke::ThRating::Service']]],
   ['cookieservice_2ephp',['CookieService.php',['../CookieService_8php.html',1,'']]],
-  ['countbymatchingratingandvote',['countByMatchingRatingAndVote',['../classThucke_1_1ThRating_1_1Domain_1_1Repository_1_1VoteRepository.html#a904c0b0b0e1e07b905b8759046721169',1,'Thucke::ThRating::Domain::Repository::VoteRepository']]]
+  ['countbymatchingratingandvote',['countByMatchingRatingAndVote',['../classThucke_1_1ThRating_1_1Domain_1_1Repository_1_1VoteRepository.html#a904c0b0b0e1e07b905b8759046721169',1,'Thucke::ThRating::Domain::Repository::VoteRepository']]],
+  ['createratingobjectrepository',['createRatingobjectRepository',['../classThucke_1_1ThRating_1_1Tests_1_1Functional_1_1Domain_1_1Repository_1_1RatingRepositoryTest.html#a49926e69c02e315229d490249ce22575',1,'Thucke\ThRating\Tests\Functional\Domain\Repository\RatingRepositoryTest\createRatingobjectRepository()'],['../classThucke_1_1ThRating_1_1Tests_1_1Functional_1_1Domain_1_1Repository_1_1StepconfRepositoryTest.html#a49926e69c02e315229d490249ce22575',1,'Thucke\ThRating\Tests\Functional\Domain\Repository\StepconfRepositoryTest\createRatingobjectRepository()']]]
 ];
