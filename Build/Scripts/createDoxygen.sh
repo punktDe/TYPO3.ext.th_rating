@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+set -x
 
 # see https://benlimmer.com/2013/12/26/automatically-publish-javadoc-to-gh-pages-with-travis-ci/
 # [ "$TRAVIS_REPO_SLUG" == "thucke/TYPO3.ext.th_rating" ]
@@ -19,7 +20,7 @@ if [ "$TRAVIS_REPO_SLUG" == "thucke/TYPO3.ext.th_rating" ] && [ "$TRAVIS_PULL_RE
     pushd $HOME
     git config --global user.email "travis@travis-ci.org"
     git config --global user.name "travis-ci"
-    git clone --quiet --branch=gh-pages https://${GITHUB_TOKEN}@github.com/thucke/TYPO3.ext.th_rating.git gh-pages
+    git clone --branch=gh-pages https://${GITHUB_TOKEN}@github.com/thucke/TYPO3.ext.th_rating.git gh-pages
 
     # Commit and Push the Changes
     cd gh-pages/Documentation/Doxygen
