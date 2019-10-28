@@ -1,6 +1,21 @@
 #!/usr/bin/env bash
 
+# ---------------------------------------------------------------------------------------------
+# Preparation for publishing to github pages
+# ---------------------------------------------------------------------------------------------
+# 1. Create a local brach gh-pages
+#    git checkout --orphan gh-pages
+# 2. You may remove all the stuff in this branch and add your html
+#       # preview files to be deleted
+#       $ git rm -rf --dry-run .
+#       # actually delete the files
+#       $ git rm -rf .
+# 3. Push the new branch to Github
+#    git push -u origin gh-pages
+
+# ---------------------------------------------------------------------------------------------
 # see https://benlimmer.com/2013/12/26/automatically-publish-javadoc-to-gh-pages-with-travis-ci/
+# ---------------------------------------------------------------------------------------------
 # [ "$TRAVIS_REPO_SLUG" == "thucke/TYPO3.ext.th_rating" ]
 # We want this to only happen from our repo, not forks.
 # Since people will clone this script when they fork the repo, we don’t want them to be able to publish doc
