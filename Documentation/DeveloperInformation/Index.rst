@@ -22,6 +22,12 @@ The extension provides some features supporting developers embedding Rating AX i
    LocalizationSupport
    ExtensionManagementService
 
+Resources for This Guide
+========================
+
+* `Doxygen generated on Github<http://thucke.github.io/TYPO3.ext.th_rating/>`__
+
+
 
 |phpstorm.png|
 

@@ -9,3 +9,5 @@ Resources for This Guide
   (list of warnings)
 * `Issues on Github <https://github.com/thucke/TYPO3.ext.th_rating/issues>`__
   (or click on "Related links", "Issues")
+* `Doxygen generated on Github<http://thucke.github.io/TYPO3.ext.th_rating/>`__
+
