@@ -315,8 +315,9 @@ class VoteController extends ActionController
     /**
      * Index action for this controller.
      *
-     * @throws \TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException
      * @throws \TYPO3\CMS\Extbase\Persistence\Exception\InvalidQueryException
+     * @throws \Thucke\ThRating\Exception\RecordNotFoundException
+     * @throws \TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException
      * @return string The rendered view
      */
     public function indexAction()
@@ -325,7 +326,7 @@ class VoteController extends ActionController
         //update foreign table for each rating
         foreach ($this->ratingobjectRepository->findAll() as $ratingobject) {
             foreach ($ratingobject->getRatings() as $rating) {
-                $this->setForeignRatingValues((Rating::class)($rating));
+                $this->setForeignRatingValues($rating);
             }
         }
         $this->view->assign('ratingobjects', $this->ratingobjectRepository->findAll());
@@ -336,14 +337,14 @@ class VoteController extends ActionController
             ->makeRatable('TestTable', 'TestField', 4);
         //add descriptions in default language to each stepconf
         $this->objectManager->get(ExtensionManagementService::class)->setStepname(
-            (Stepconf::class)($ratingobject->getStepconfs()->current()),
+            $ratingobject->getStepconfs()->current(),
             'Automatic generated entry ',
             0,
             true
         );
         //add descriptions in german language to each stepconf
         $this->objectManager->get(ExtensionManagementService::class)->setStepname(
-            (Stepconf::class)($ratingobject->getStepconfs()->current()),
+            $ratingobject->getStepconfs()->current(),
             'Automatischer Eintrag ',
             43,
             true
@@ -480,64 +481,62 @@ class VoteController extends ActionController
                         'vote' => (string)$vote->getVote()
                     ]
                 );
-            } else {
-                if (!empty($this->settings['enableReVote']) &&
-                    !$this->voteValidator->validate($matchVote)->hasErrors()) {
-                    /** @var \Thucke\ThRating\Domain\Model\Stepconf $matchVoteStepconf */
-                    $matchVoteStepconf = $matchVote->getVote();
-                    /** @var \Thucke\ThRating\Domain\Model\Stepconf $newVoteStepconf */
-                    $newVoteStepconf = $vote->getVote();
-                    if ($matchVoteStepconf !== $newVoteStepconf) {
-                        //do update of existing vote
-                        $this->logFlashMessage(
-                            LocalizationUtility::translate(
-                                'flash.vote.create.updateExistingVote',
-                                'ThRating',
-                                [$matchVoteStepconf->getSteporder(), (string)$matchVoteStepconf]
-                            ),
-                            LocalizationUtility::translate('flash.heading.ok', 'ThRating'),
-                            'DEBUG',
-                            [
-                                'voter UID' => $vote->getVoter()->getUid(),
-                                'ratingobject UID' => $vote->getRating()->getRatingobject()->getUid(),
-                                'rating' => $vote->getRating()->getUid(),
-                                'vote UID' => $vote->getUid(),
-                                'new vote' => (string)$vote->getVote(),
-                                'old vote' => (string)$matchVoteStepconf
-                            ]
-                        );
-                        $vote->getRating()->updateVote($matchVote, $vote);
-                    } else {
-                        $this->logFlashMessage(
-                            LocalizationUtility::translate('flash.vote.create.noUpdateSameVote', 'ThRating'),
-                            LocalizationUtility::translate('flash.heading.warning', 'ThRating'),
-                            'WARNING',
-                            [
-                                'voter UID' => $vote->getVoter()->getUid(),
-                                'ratingobject UID' => $vote->getRating()->getRatingobject()->getUid(),
-                                'rating' => $vote->getRating()->getUid(),
-                                'vote UID' => $vote->getUid(),
-                                'new vote' => (string)$newVoteStepconf,
-                                'old vote' => (string)$matchVoteStepconf
-                            ]
-                        );
-                    }
-                } else {
-                    //display message that rating has been already done
-                    $vote = $matchVote;
+            } elseif (!empty($this->settings['enableReVote']) &&
+                !$this->voteValidator->validate($matchVote)->hasErrors()) {
+                /** @var \Thucke\ThRating\Domain\Model\Stepconf $matchVoteStepconf */
+                $matchVoteStepconf = $matchVote->getVote();
+                /** @var \Thucke\ThRating\Domain\Model\Stepconf $newVoteStepconf */
+                $newVoteStepconf = $vote->getVote();
+                if ($matchVoteStepconf !== $newVoteStepconf) {
+                    //do update of existing vote
                     $this->logFlashMessage(
-                        LocalizationUtility::translate('flash.vote.create.alreadyRated', 'ThRating'),
-                        LocalizationUtility::translate('flash.heading.notice', 'ThRating'),
-                        'NOTICE',
+                        LocalizationUtility::translate(
+                            'flash.vote.create.updateExistingVote',
+                            'ThRating',
+                            [$matchVoteStepconf->getSteporder(), (string)$matchVoteStepconf]
+                        ),
+                        LocalizationUtility::translate('flash.heading.ok', 'ThRating'),
+                        'DEBUG',
                         [
-                            'errorCode' => 1403202280,
                             'voter UID' => $vote->getVoter()->getUid(),
                             'ratingobject UID' => $vote->getRating()->getRatingobject()->getUid(),
                             'rating' => $vote->getRating()->getUid(),
-                            'vote UID' => $vote->getUid()
+                            'vote UID' => $vote->getUid(),
+                            'new vote' => (string)$vote->getVote(),
+                            'old vote' => (string)$matchVoteStepconf
+                        ]
+                    );
+                    $vote->getRating()->updateVote($matchVote, $vote);
+                } else {
+                    $this->logFlashMessage(
+                        LocalizationUtility::translate('flash.vote.create.noUpdateSameVote', 'ThRating'),
+                        LocalizationUtility::translate('flash.heading.warning', 'ThRating'),
+                        'WARNING',
+                        [
+                            'voter UID' => $vote->getVoter()->getUid(),
+                            'ratingobject UID' => $vote->getRating()->getRatingobject()->getUid(),
+                            'rating' => $vote->getRating()->getUid(),
+                            'vote UID' => $vote->getUid(),
+                            'new vote' => (string)$newVoteStepconf,
+                            'old vote' => (string)$matchVoteStepconf
                         ]
                     );
                 }
+            } else {
+                //display message that rating has been already done
+                $vote = $matchVote;
+                $this->logFlashMessage(
+                    LocalizationUtility::translate('flash.vote.create.alreadyRated', 'ThRating'),
+                    LocalizationUtility::translate('flash.heading.notice', 'ThRating'),
+                    'NOTICE',
+                    [
+                        'errorCode' => 1403202280,
+                        'voter UID' => $vote->getVoter()->getUid(),
+                        'ratingobject UID' => $vote->getRating()->getRatingobject()->getUid(),
+                        'rating' => $vote->getRating()->getUid(),
+                        'vote UID' => $vote->getUid()
+                    ]
+                );
             }
             $this->vote = $vote;
         } else {
@@ -808,7 +807,7 @@ class VoteController extends ActionController
                 $signalSlotMessage['voter'] = $this->vote->getVoter()->getUid();
                 $signalSlotMessage['votingStep'] = $this->vote->getVote()->getSteporder();
                 $signalSlotMessage['votingName'] = (string)$this->vote->getVote()->getStepname();
-                $signalSlotMessage['anonymousVote'] = (bool)$this->vote->isAnonymous();
+                $signalSlotMessage['anonymousVote'] = $this->vote->isAnonymous();
             }
             $this->logger->log(
                 LogLevel::INFO,
@@ -996,7 +995,7 @@ class VoteController extends ActionController
      */
     protected function setAjaxSelections(Vote $vote): void
     {
-        if ($vote->getVoter() instanceof Voter && empty($this->settings['displayOnly'])) {
+        if (empty($this->settings['displayOnly']) && $vote->getVoter() instanceof Voter) {
             //cleanup settings to reduce data size in POST form
             $tmpDisplayConfig = $this->settings['ratingConfigurations'][$this->settings['display']];
             unset($this->settings['defaultObject'], $this->settings['ratingConfigurations']);
@@ -1068,6 +1067,7 @@ class VoteController extends ActionController
             );
         }
         if (!$this->voteValidator->validate($this->vote)->hasErrors()) {
+            /** @noinspection NotOptimalIfConditionsInspection */
             if ((!$this->vote->isAnonymous() &&
                     $this->vote->getVoter()->getUid() === $this->accessControllService->getFrontendUserUid()
                 ) || ($this->vote->isAnonymous() && ($this->vote->hasAnonymousVote($this->prefixId) ||
@@ -1233,7 +1233,7 @@ class VoteController extends ActionController
         $table = $rating->getRatingobject()->getRatetable();
         $lockedFieldnames = $this->getLockedfieldnames($table);
         $rateField = $rating->getRatingobject()->getRatefield();
-        if (!in_array($rateField, $lockedFieldnames, false) && !empty($GLOBALS['TCA'][$table]['columns'][$rateField])) {
+        if (!empty($GLOBALS['TCA'][$table]['columns'][$rateField]) && !in_array($rateField, $lockedFieldnames, false)) {
             $rateUid = $rating->getRatedobjectuid();
             $currentRatesArray = $rating->getCurrentrates();
             if (empty($this->settings['foreignFieldArrayUpdate'])) {

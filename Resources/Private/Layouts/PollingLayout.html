@@ -1,8 +1,9 @@
 {namespace thr=Thucke\ThRating\ViewHelpers}
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers">
 <f:if condition="{ajaxRef}"><f:then>
 <div class="tx-thrating-pi1-content {settings.ratingContext}" id='{ajaxRef}'>
 	<div id='{richSnippetObject.anchor}' class='tx-thrating-staticPreContent'><f:format.raw>{staticPreContent}</f:format.raw></div>
-	<div class='tx-thrating-content' aria-life="polite" aria-atomic="false" aria-relevant="text">
+	<div class='tx-thrating-content' aria-live="polite" aria-atomic="false" aria-relevant="text">
 		<div class='tx-thrating-preContent'><f:format.raw>{preContent}</f:format.raw></div>
 	<f:if condition="{stepCount} > 0"><f:then>
 		<span class="dummy4focus" tabindex="-1"></span>
@@ -38,12 +39,12 @@
 		<div class='tx-thrating-postContent'><f:format.raw>{postContent}</f:format.raw></div>
 	</div>
 	<div class='tx-thrating-staticPostContent'><f:format.raw>{staticPostContent}</f:format.raw></div>
-	<div class='tx-thrating-flash-message' aria-life="assertive" aria-atomic="false" aria-relevant="text">
+	<div class='tx-thrating-flash-message' aria-live="assertive" aria-atomic="false" aria-relevant="text">
         <f:flashMessages />
 	</div>
 </div>
 </f:then></f:if>
-<f:comment>
+<f:comment><!--
 Rating: <f:format.number decimals="1" decimalSeparator="," thousandsSeparator=".">{rating.currentRates.currentrate}</f:format.number> of {stepCount}. <f:count>{rating.votes}</f:count> vote(s).
 *************************************************************************************************
 * Forwarded variables
@@ -63,4 +64,6 @@ Rating: <f:format.number decimals="1" decimalSeparator="," thousandsSeparator=".
 * {preContent}			- 	HTML formatted content that will be includes IN FRONT OF extension content (changed by AJAX)
 * {postContent}			- 	HTML formatted content that will be includes AFTER extension content (changed by AJAX)
 *************************************************************************************************
+-->
 </f:comment>
+</html>
