@@ -1,8 +1,9 @@
 {namespace thr=Thucke\ThRating\ViewHelpers}
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers">
 <f:if condition="{ajaxRef}"><f:then>
 <div class="tx-thrating-pi1-content {settings.ratingContext}" id='{ajaxRef}'>
 	<div id='{richSnippetObject.anchor}' class='tx-thrating-staticPreContent'><f:format.raw>{staticPreContent}</f:format.raw></div>
-	<div class='tx-thrating-content' aria-life="polite" aria-atomic="false" aria-relevant="text">
+	<div class='tx-thrating-content' aria-live="polite" aria-atomic="false" aria-relevant="text">
 		<div class='tx-thrating-preContent'><f:format.raw>{preContent}</f:format.raw></div>
 	<f:if condition="{stepCount} > 0"><f:then>
 		<span class="dummy4focus" tabindex="-1"></span>
@@ -40,7 +41,7 @@
 				<br/>
 			</f:then></f:if>
 			<f:if condition="{actionMethodName}=='MarkAction'"><f:then>
-				<f:comment>Display nothing if we are in likesMode - Users rating is already shown in content section</f:comment>
+				<f:comment><!--Display nothing if we are in likesMode - Users rating is already shown in content section--></f:comment>
 			</f:then><f:else>
 				<f:render partial="UsersRating" arguments="{voting:voting, ratingClass:ratingClass, ratingobject:rating.ratingobject, ratingName:ratingName, stepCount:stepCount, usersRate:usersRate}"/>
 				<f:render partial="InfoBlock" arguments="{voting:voting, anonymousVoting:anonymousVoting, voter:voter, ratingName:ratingName}"/>
@@ -55,12 +56,12 @@
 		<div class='tx-thrating-postContent'><f:format.raw>{postContent}</f:format.raw></div>
 	</div>
 	<div class='tx-thrating-staticPostContent'><f:format.raw>{staticPostContent}</f:format.raw></div>
-	<div class='tx-thrating-flash-message' aria-life="assertive" aria-atomic="false" aria-relevant="text">
+	<div class='tx-thrating-flash-message' aria-live="assertive" aria-atomic="false" aria-relevant="text">
         <f:flashMessages />
 	</div>
 </div>
 </f:then></f:if>
-<f:comment>
+<f:comment><!--
 	<thr:Typo3Version testVersion='7.3' testOperator='<=' />
 Rating: <f:format.number decimals="1" decimalSeparator="," thousandsSeparator=".">{rating.currentRates.currentrate}</f:format.number> of {stepCount}. <f:count>{rating.votes}</f:count> vote(s).
 *************************************************************************************************
@@ -83,4 +84,6 @@ Rating: <f:format.number decimals="1" decimalSeparator="," thousandsSeparator=".
 * {postContent}			- 	HTML formatted content that will be includes AFTER extension content (changed by AJAX)
 * {richSnippetObject}	- 	schema.org object supporting properties [name, description, url]
 *************************************************************************************************
+-->
 </f:comment>
+</html>

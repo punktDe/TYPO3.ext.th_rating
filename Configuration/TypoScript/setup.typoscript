@@ -98,11 +98,12 @@ plugin.tx_thrating {
 
 
 #########################################################################
-# Static extension configuration - do not override!!					#
+# Static extension configuration - do not override!!					          #
 #########################################################################
 plugin.tx_thrating {
   persistence.enhancedLazyLoadingStrategy = 0
   settings {
+    showMissingStepconfError = {$plugin.tx_thrating.config.showMissingStepconfError}
     showNoFEUser = {$plugin.tx_thrating.config.showNoFEUser}
     mapAnonymous = {$plugin.tx_thrating.config.mapAnonymous}
     cookieLifetime = {$plugin.tx_thrating.config.cookieLifetime}

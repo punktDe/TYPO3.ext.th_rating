@@ -60,6 +60,7 @@ plugin.tx_thrating.config
    ==================================== ====================================== ===============
    loadJQuery_                          Switch to load jQuery                  boolean
    showNoFEUser_                        Display switch                         boolean
+   showMissingStepconfError_            Display switch                         boolean
    cookieLifetime_                      Cookie protection lifetime             int
    mapAnonymous_                        Map UID to anonymous user              int
    ==================================== ====================================== ===============
@@ -100,6 +101,25 @@ showNoFEUser
 
    Description
       Enable (1) / Disable (0) info if no FE user is logged on
+
+   Default
+      :ts:`0`
+
+
+showMissingStepconfError
+""""""""""""""""""""""""
+
+.. container:: table-row
+
+   Property
+      showMissingStepconfError
+
+   Data type
+      :ref:`t3tsref:data-type-boolean`
+
+   Description
+      Enable (1) / Disable (0) info if a ratingobject has no stepconf configured.
+      If disabled the message will only show up in the extension logfile.
 
    Default
       :ts:`0`
