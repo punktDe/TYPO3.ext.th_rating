@@ -52,9 +52,10 @@ class RatingValidator extends AbstractValidator
     /**
      * If the given Rating is valid
      *
-     * @param \Thucke\ThRating\Domain\Model\Rating $rating The rating
+     * @param \Thucke\ThRating\Domain\Model\Rating $rating
+     * @noinspection PhpUnnecessaryFullyQualifiedNameInspection
      */
-    protected function isValid($rating)
+    protected function isValid($rating): void
     {
         /** @noinspection NotOptimalIfConditionsInspection */
         if (!$this->isEmpty($rating) && $rating instanceof Rating) {
