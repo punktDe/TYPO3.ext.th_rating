@@ -43,9 +43,9 @@ use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
 class Vote extends AbstractEntity
 {
     /**
-     * @var         \Thucke\ThRating\Domain\Model\Rating
-     * @validate    \Thucke\ThRating\Domain\Validator\RatingValidator
-     * @validate  NotEmpty
+     * @var      \Thucke\ThRating\Domain\Model\Rating
+     * @validate \Thucke\ThRating\Domain\Validator\RatingValidator
+     * @validate NotEmpty
      */
     protected $rating;
 
@@ -60,9 +60,9 @@ class Vote extends AbstractEntity
     /**
      * The actual voting of this object
      *
-     * @var         \Thucke\ThRating\Domain\Model\Stepconf
-     * @validate    \Thucke\ThRating\Domain\Validator\StepconfValidator
-     * @validate    NotEmpty
+     * @var      \Thucke\ThRating\Domain\Model\Stepconf
+     * @validate \Thucke\ThRating\Domain\Validator\StepconfValidator
+     * @validate NotEmpty
      */
     protected $vote;
 

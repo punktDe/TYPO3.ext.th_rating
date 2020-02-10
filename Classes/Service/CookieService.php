@@ -2,7 +2,6 @@
 /** @noinspection PhpTraditionalSyntaxArrayLiteralInspection */
 namespace Thucke\ThRating\Service;
 
-use TYPO3\CMS\Core\Exception;
 use TYPO3\CMS\Core\Log\LogLevel;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 

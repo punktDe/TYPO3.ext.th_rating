@@ -311,8 +311,9 @@ class ExtensionHelperService extends AbstractExtensionService
      *
      * @param array $settings
      * @param \Thucke\ThRating\Domain\Model\Ratingobject $ratingobject
-     * @throws  \TYPO3\CMS\Core\Exception
      * @return \Thucke\ThRating\Domain\Model\Rating
+     * @throws \TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException
+     * @throws \Thucke\ThRating\Service\Exception
      */
     public function getRating(array $settings, Ratingobject $ratingobject = null): Rating
     {
@@ -330,12 +331,11 @@ class ExtensionHelperService extends AbstractExtensionService
                 RatingRepository::ADD_IF_NOT_FOUND
             );
         } else {
-            throw new \TYPO3\CMS\Core\Exception(
+            throw new \Thucke\ThRating\Service\Exception(
                 'Incomplete configuration setting. Either \'rating\' or \'ratedobjectuid\' are missing.',
                 1398351336
             );
         }
-
         return $rating;
     }
 

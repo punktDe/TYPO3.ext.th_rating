@@ -1,4 +1,5 @@
-<?php
+<?php /** @noinspection ALL */
+
 namespace Thucke\ThRating\Tests\Unit\Domain\Model;
 
 use Nimut\TestingFramework\TestCase\UnitTestCase;
@@ -59,7 +60,7 @@ class RatingobjectTest extends UnitTestCase
     /**
      * Checks construction of a new rating object
      */
-    public function testConstructor()
+    public function testConstructor(): void
     {
         static::assertEquals('tt_news', $this->fixture->getRatetable());
         static::assertEquals('uid', $this->fixture->getRatefield());
