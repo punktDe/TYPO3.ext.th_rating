@@ -1,3 +1,4 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers">
 <div id="tx-thrating-pi1-singleton">
 	<f:form method="post" controller="Vote" action="create" name="vote" id="vote" object="{vote}" pageType="1349058974">
 		<f:form.hidden property="vote" />
@@ -7,7 +8,7 @@
 		<f:form.hidden name="ajaxRef" value="filled_by_JS"/>
 	</f:form>
 	<div class='tx-thrating-singleton-message'>
-        <div class='tx-thrating-flash-message' aria-life="assertive" aria-atomic="false" aria-relevant="text">
+        <div class='tx-thrating-flash-message' aria-live="assertive" aria-atomic="false" aria-relevant="text">
             <f:flashMessages />
         </div>
 	</div>
@@ -25,3 +26,4 @@
 ******************************************************************************************
 -->
 </f:comment>
+</html>

@@ -1,3 +1,4 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers">
 <f:comment><!-- display check --></f:comment>
 <f:if condition="{settings.fluid.partials.usersRating.showTextInfo}"><f:then>
 	<span data-role="onVotingActive" style="{f:if(condition: voting, then: '', else: 'display:none;')}">
@@ -8,11 +9,11 @@
 <f:if condition="{settings.fluid.partials.usersRating.showGraphicInfo}"><f:then>
 	<div class='tx-thrating-ratinglinks thRating-RObj{ratingobject.uid}-{ratingName}'>
 		<ul class='thRating thRating-{ratingClass}'>
-			<li class="current-rating {f:if(condition: '{0: ratingClass} == {0: \'tilt\'}', then: 'tx_thrating_ajax-usersRateHeight', else: 'tx_thrating_ajax-usersRateWidth')}" 
+			<li class="current-rating {f:if(condition: '{0: ratingClass} == {0: \'tilt\'}', then: 'tx_thrating_ajax-usersRateHeight', else: 'tx_thrating_ajax-usersRateWidth')}"
 				style="{f:if(condition: '{0: ratingClass} == {0: \'tilt\'}', then: 'height:{usersRate}', else: 'width:{usersRate}')}" title="<f:translate key='fluid.partial.usersRating.usersRate' default='fluid.partial.usersRating.usersRate' arguments='{1:voting, 2:voting.vote.steporder, 3:stepCount}'/>">
 				<f:translate key='fluid.partial.usersRating.usersRate' default='fluid.partial.usersRating.usersRate' arguments='{1:voting, 2:voting.vote.steporder, 3:stepCount}'/>
 			</li>
-		</ul>	
+		</ul>
 	</div>
 </f:then></f:if>
 <f:comment>
@@ -30,3 +31,4 @@
 ******************************************************************************************
 -->
 </f:comment>
+</html>

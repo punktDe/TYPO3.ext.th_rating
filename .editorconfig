@@ -3,29 +3,21 @@
 # top-most EditorConfig file
 root = true
 
-[{*.rst,*.rst.txt}]
-charset = utf-8
-end_of_line = lf
-insert_final_newline = true
-trim_trailing_whitespace = true
-indent_style = space
-indent_size = 3
-
-# MD-Files
-[*.md]
-charset = utf-8
-end_of_line = lf
-insert_final_newline = true
-trim_trailing_whitespace = true
-indent_style = space
-indent_size = 4
-
 # Unix-style newlines with a newline ending every file
 [*]
 charset = utf-8
 end_of_line = lf
 insert_final_newline = true
 trim_trailing_whitespace = true
+
+[{*.rst,*.rst.txt}]
+indent_style = space
+indent_size = 3
+
+# MD-Files
+[*.md]
+indent_style = space
+indent_size = 4
 
 # CSS-Files
 [*.css]
@@ -36,47 +28,17 @@ indent_style = tab
 indent_style = tab
 indent_size = 2
 
-# TMPL-Files
-[*.tmpl]
-indent_style = tab
-
-# SCSS-Files
-[*.scss]
-indent_style = space
-
-# TS/JS-Files
-[*.ts]
-indent_style = space
-indent_size = 2
+# JS-Files
 [*.js]
 indent_style = space
 indent_size = 2
-
-# JSON-Files
-[*.json]
-indent_style = tab
 
 # PHP-Files
 [*.php]
 indent_style = space
 
-# YAML-Files
-[{*.yaml,*.yml}]
-indent_style = space
-indent_size = 2
-
-# package.json
-# .travis.yml
-# bower.json
-[{package.json,.travis.yml,bower.json}]
-indent_style = space
-indent_size = 2
-
 # TypoScript
 [*.typoscript]
-indent_style = space
-indent_size = 2
-[*.tsconfig]
 indent_style = space
 indent_size = 2
 

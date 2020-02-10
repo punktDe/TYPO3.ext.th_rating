@@ -63,12 +63,14 @@ class RatingViewHelper extends AbstractViewHelper
     protected $escapeOutput = false;
 
     /**
+     * @noinspection PhpUnnecessaryFullyQualifiedNameInspection
      * @var \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController
      *      contains a backup of the current['TSFE'] if used in BE mode
      */
     protected static $tsfeBackup;
 
     /**
+     * @noinspection PhpFullyQualifiedNameUsageInspection
      * @var \TYPO3\CMS\Core\Log\Logger $logger
      */
     protected $logger;
@@ -79,6 +81,7 @@ class RatingViewHelper extends AbstractViewHelper
     protected $typoScriptSetup;
 
     /**
+     * @noinspection PhpUnnecessaryFullyQualifiedNameInspection
      * @var \Thucke\ThRating\Service\ExtensionHelperService
      */
     protected $extensionHelperService;
@@ -99,8 +102,9 @@ class RatingViewHelper extends AbstractViewHelper
      * @param array $arguments
      * @param \Closure $renderChildrenClosure
      * @param RenderingContextInterface $renderingContext
-     * @throws \TYPO3\CMS\Fluid\Core\ViewHelper\Exception
      * @return mixed
+     * @throws \TYPO3\CMS\Fluid\Core\ViewHelper\Exception
+     * @noinspection PhpFullyQualifiedNameUsageInspection
      */
     public static function renderStatic(
         array $arguments,
@@ -218,7 +222,7 @@ class RatingViewHelper extends AbstractViewHelper
     }
 
     /**
-     * @return ExtensionHelperService
+     * @return \Thucke\ThRating\Service\ExtensionHelperService
      */
     protected static function getExtensionHelperService(): ExtensionHelperService
     {
@@ -226,17 +230,17 @@ class RatingViewHelper extends AbstractViewHelper
     }
 
     /**
-     * @return ConfigurationManagerInterface
+     * @return object|\TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface
      */
-    protected static function getConfigurationManager(): ConfigurationManagerInterface
+    protected static function getConfigurationManager()
     {
         return GeneralUtility::makeInstance(ObjectManager::class)->get(ConfigurationManagerInterface::class);
     }
 
     /**
-     * @return ContentObjectRenderer
+     * @return \TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer
      */
-    protected static function getContentObjectRenderer()
+    protected static function getContentObjectRenderer(): ContentObjectRenderer
     {
         return GeneralUtility::makeInstance(
             ContentObjectRenderer::class,
@@ -252,6 +256,7 @@ class RatingViewHelper extends AbstractViewHelper
     protected static function simulateFrontendEnvironment(): void
     {
         static::$tsfeBackup = $GLOBALS['TSFE'] ?? null;
+        /** @noinspection PhpFullyQualifiedNameUsageInspection */
         $GLOBALS['TSFE'] = new \stdClass();
         $GLOBALS['TSFE']->cObj = GeneralUtility::makeInstance(ContentObjectRenderer::class);
         $GLOBALS['TSFE']->cObjectDepthCounter = 100;

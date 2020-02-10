@@ -315,17 +315,18 @@ class VoteController extends ActionController
     /**
      * Index action for this controller.
      *
-     * @throws \TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException
      * @throws \TYPO3\CMS\Extbase\Persistence\Exception\InvalidQueryException
+     * @throws \Thucke\ThRating\Exception\RecordNotFoundException
+     * @throws \TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException
      * @return string The rendered view
      */
-    public function indexAction()
+    public function indexAction(): ?string
     {
         /** @var \Thucke\ThRating\Domain\Model\Ratingobject $ratingobject */
         //update foreign table for each rating
         foreach ($this->ratingobjectRepository->findAll() as $ratingobject) {
             foreach ($ratingobject->getRatings() as $rating) {
-                $this->setForeignRatingValues((Rating::class)($rating));
+                $this->setForeignRatingValues($rating);
             }
         }
         $this->view->assign('ratingobjects', $this->ratingobjectRepository->findAll());
@@ -336,14 +337,14 @@ class VoteController extends ActionController
             ->makeRatable('TestTable', 'TestField', 4);
         //add descriptions in default language to each stepconf
         $this->objectManager->get(ExtensionManagementService::class)->setStepname(
-            (Stepconf::class)($ratingobject->getStepconfs()->current()),
+            $ratingobject->getStepconfs()->current(),
             'Automatic generated entry ',
             0,
             true
         );
         //add descriptions in german language to each stepconf
         $this->objectManager->get(ExtensionManagementService::class)->setStepname(
-            (Stepconf::class)($ratingobject->getStepconfs()->current()),
+            $ratingobject->getStepconfs()->current(),
             'Automatischer Eintrag ',
             43,
             true
@@ -352,9 +353,9 @@ class VoteController extends ActionController
 
     /**
      * Includes the hidden form to handle AJAX requests
+     * @noinspection PhpUnused
      */
-    /** @noinspection PhpUnused */
-    public function singletonAction()
+    public function singletonAction(): void
     {
         $this->logger->log(LogLevel::DEBUG, 'Entry singletonAction');
 
@@ -376,13 +377,13 @@ class VoteController extends ActionController
      * Displays the vote of the current user
      *
      * @param \Thucke\ThRating\Domain\Model\Vote $vote
+     * @return string
      * @throws \TYPO3\CMS\Core\Exception
      * @throws \Thucke\ThRating\Exception\InvalidAggregateRatingSchemaTypeException
      * @throws \Thucke\ThRating\Exception\RecordNotFoundException
-     * @return string The rendered voting
+     * @noinspection PhpUnused
      */
-    /** @noinspection PhpUnused */
-    public function showAction(\Thucke\ThRating\Domain\Model\Vote $vote = null)
+    public function showAction(\Thucke\ThRating\Domain\Model\Vote $vote = null): ?string
     {
         $this->logger->log(LogLevel::DEBUG, 'Entry showAction');
         //is_object($vote) && \TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump($vote->getUid(),'showAction');
@@ -413,9 +414,9 @@ class VoteController extends ActionController
      * @throws \TYPO3\CMS\Extbase\Mvc\Exception\StopActionException
      * @throws \TYPO3\CMS\Extbase\SignalSlot\Exception\InvalidSlotException
      * @throws \TYPO3\CMS\Extbase\SignalSlot\Exception\InvalidSlotReturnException
+     * @noinspection PhpUnused
      */
-    /** @noinspection PhpUnused */
-    public function createAction(\Thucke\ThRating\Domain\Model\Vote $vote)
+    public function createAction(\Thucke\ThRating\Domain\Model\Vote $vote): void
     {
         //http://localhost:8503/index.php?id=71&tx_thrating_pi1[controller]=Vote&tx_thrating_pi1[action]=create&
         //tx_thrating_pi1[vote][rating]=1&tx_thrating_pi1[vote][voter]=1&tx_thrating_pi1[vote][vote]=1
@@ -480,64 +481,62 @@ class VoteController extends ActionController
                         'vote' => (string)$vote->getVote()
                     ]
                 );
-            } else {
-                if (!empty($this->settings['enableReVote']) &&
-                    !$this->voteValidator->validate($matchVote)->hasErrors()) {
-                    /** @var \Thucke\ThRating\Domain\Model\Stepconf $matchVoteStepconf */
-                    $matchVoteStepconf = $matchVote->getVote();
-                    /** @var \Thucke\ThRating\Domain\Model\Stepconf $newVoteStepconf */
-                    $newVoteStepconf = $vote->getVote();
-                    if ($matchVoteStepconf !== $newVoteStepconf) {
-                        //do update of existing vote
-                        $this->logFlashMessage(
-                            LocalizationUtility::translate(
-                                'flash.vote.create.updateExistingVote',
-                                'ThRating',
-                                [$matchVoteStepconf->getSteporder(), (string)$matchVoteStepconf]
-                            ),
-                            LocalizationUtility::translate('flash.heading.ok', 'ThRating'),
-                            'DEBUG',
-                            [
-                                'voter UID' => $vote->getVoter()->getUid(),
-                                'ratingobject UID' => $vote->getRating()->getRatingobject()->getUid(),
-                                'rating' => $vote->getRating()->getUid(),
-                                'vote UID' => $vote->getUid(),
-                                'new vote' => (string)$vote->getVote(),
-                                'old vote' => (string)$matchVoteStepconf
-                            ]
-                        );
-                        $vote->getRating()->updateVote($matchVote, $vote);
-                    } else {
-                        $this->logFlashMessage(
-                            LocalizationUtility::translate('flash.vote.create.noUpdateSameVote', 'ThRating'),
-                            LocalizationUtility::translate('flash.heading.warning', 'ThRating'),
-                            'WARNING',
-                            [
-                                'voter UID' => $vote->getVoter()->getUid(),
-                                'ratingobject UID' => $vote->getRating()->getRatingobject()->getUid(),
-                                'rating' => $vote->getRating()->getUid(),
-                                'vote UID' => $vote->getUid(),
-                                'new vote' => (string)$newVoteStepconf,
-                                'old vote' => (string)$matchVoteStepconf
-                            ]
-                        );
-                    }
-                } else {
-                    //display message that rating has been already done
-                    $vote = $matchVote;
+            } elseif (!empty($this->settings['enableReVote']) &&
+                !$this->voteValidator->validate($matchVote)->hasErrors()) {
+                /** @var \Thucke\ThRating\Domain\Model\Stepconf $matchVoteStepconf */
+                $matchVoteStepconf = $matchVote->getVote();
+                /** @var \Thucke\ThRating\Domain\Model\Stepconf $newVoteStepconf */
+                $newVoteStepconf = $vote->getVote();
+                if ($matchVoteStepconf !== $newVoteStepconf) {
+                    //do update of existing vote
                     $this->logFlashMessage(
-                        LocalizationUtility::translate('flash.vote.create.alreadyRated', 'ThRating'),
-                        LocalizationUtility::translate('flash.heading.notice', 'ThRating'),
-                        'NOTICE',
+                        LocalizationUtility::translate(
+                            'flash.vote.create.updateExistingVote',
+                            'ThRating',
+                            [$matchVoteStepconf->getSteporder(), (string)$matchVoteStepconf]
+                        ),
+                        LocalizationUtility::translate('flash.heading.ok', 'ThRating'),
+                        'DEBUG',
                         [
-                            'errorCode' => 1403202280,
                             'voter UID' => $vote->getVoter()->getUid(),
                             'ratingobject UID' => $vote->getRating()->getRatingobject()->getUid(),
                             'rating' => $vote->getRating()->getUid(),
-                            'vote UID' => $vote->getUid()
+                            'vote UID' => $vote->getUid(),
+                            'new vote' => (string)$vote->getVote(),
+                            'old vote' => (string)$matchVoteStepconf
+                        ]
+                    );
+                    $vote->getRating()->updateVote($matchVote, $vote);
+                } else {
+                    $this->logFlashMessage(
+                        LocalizationUtility::translate('flash.vote.create.noUpdateSameVote', 'ThRating'),
+                        LocalizationUtility::translate('flash.heading.warning', 'ThRating'),
+                        'WARNING',
+                        [
+                            'voter UID' => $vote->getVoter()->getUid(),
+                            'ratingobject UID' => $vote->getRating()->getRatingobject()->getUid(),
+                            'rating' => $vote->getRating()->getUid(),
+                            'vote UID' => $vote->getUid(),
+                            'new vote' => (string)$newVoteStepconf,
+                            'old vote' => (string)$matchVoteStepconf
                         ]
                     );
                 }
+            } else {
+                //display message that rating has been already done
+                $vote = $matchVote;
+                $this->logFlashMessage(
+                    LocalizationUtility::translate('flash.vote.create.alreadyRated', 'ThRating'),
+                    LocalizationUtility::translate('flash.heading.notice', 'ThRating'),
+                    'NOTICE',
+                    [
+                        'errorCode' => 1403202280,
+                        'voter UID' => $vote->getVoter()->getUid(),
+                        'ratingobject UID' => $vote->getRating()->getRatingobject()->getUid(),
+                        'rating' => $vote->getRating()->getUid(),
+                        'vote UID' => $vote->getUid()
+                    ]
+                );
             }
             $this->vote = $vote;
         } else {
@@ -576,14 +575,14 @@ class VoteController extends ActionController
      * A classic SELECT input form will be provided to AJAX-submit the vote
      *
      * @param \Thucke\ThRating\Domain\Model\Vote $vote The new vote (used on callback from createAction)
+     * @return void
      * @throws \Thucke\ThRating\Exception\InvalidAggregateRatingSchemaTypeException
      * @throws \TYPO3\CMS\Core\Exception
      * @throws \Thucke\ThRating\Exception\RecordNotFoundException
-     * @return string The rendered view
      * @ignorevalidation $vote
+     * @noinspection PhpUnused
      */
-    /** @noinspection PhpUnused */
-    public function newAction(Vote $vote = null)
+    public function newAction(Vote $vote = null): void
     {
         $this->logger->log(LogLevel::DEBUG, 'Entry newAction');
         //find vote using additional information
@@ -608,17 +607,17 @@ class VoteController extends ActionController
      * A graphic starrating object containing links will be provided to AJAX-submit the vote
      *
      * @param \Thucke\ThRating\Domain\Model\Vote $vote The new vote
+     * @return void
      * @throws \TYPO3\CMS\Extbase\Mvc\Exception\NoSuchArgumentException
      * @throws \TYPO3\CMS\Extbase\SignalSlot\Exception\InvalidSlotException
      * @throws \TYPO3\CMS\Extbase\SignalSlot\Exception\InvalidSlotReturnException
      * @throws \Thucke\ThRating\Exception\InvalidAggregateRatingSchemaTypeException*
      * @throws \Thucke\ThRating\Exception\RecordNotFoundException
      * @throws \TYPO3\CMS\Core\Exception
-     * @return string The rendered view
      * @ignorevalidation $vote
      */
     //http://localhost:8503/index.php?id=71&tx_thrating_pi1[controller]=Vote&tx_thrating_pi1[action]=ratinglinks
-    public function ratinglinksAction(Vote $vote = null)
+    public function ratinglinksAction(Vote $vote = null): void
     {
         //\TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump($this->view,get_class($this).' ratinglinksAction');
         $this->logger->log(LogLevel::DEBUG, 'Entry ratinglinksAction');
@@ -634,17 +633,17 @@ class VoteController extends ActionController
      * Graphic bars containing links will be provided to AJAX-submit the polling
      *
      * @param \Thucke\ThRating\Domain\Model\Vote $vote The new vote
+     * @return void
      * @throws \TYPO3\CMS\Extbase\Mvc\Exception\NoSuchArgumentException
      * @throws \TYPO3\CMS\Extbase\SignalSlot\Exception\InvalidSlotException
      * @throws \TYPO3\CMS\Extbase\SignalSlot\Exception\InvalidSlotReturnException
      * @throws \Thucke\ThRating\Exception\InvalidAggregateRatingSchemaTypeException*
      * @throws \TYPO3\CMS\Core\Exception
      * @throws \Thucke\ThRating\Exception\RecordNotFoundException
-     * @return string The rendered view
      * @ignorevalidation $vote
+     * @noinspection PhpUnused
      */
-    /** @noinspection PhpUnused */
-    public function pollingAction(Vote $vote = null)
+    public function pollingAction(Vote $vote = null): void
     {
         //\TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump($this->view,get_class($this).' pollingAction');
         $this->logger->log(LogLevel::DEBUG, 'Entry pollingAction');
@@ -667,11 +666,11 @@ class VoteController extends ActionController
      * @throws \Thucke\ThRating\Exception\InvalidAggregateRatingSchemaTypeException*
      * @throws \TYPO3\CMS\Core\Exception
      * @throws \Thucke\ThRating\Exception\RecordNotFoundException
-     * @return string The rendered view
+     * @return void
      * @ignorevalidation $vote
      */
     /** @noinspection PhpUnused */
-    public function markAction(\Thucke\ThRating\Domain\Model\Vote $vote = null)
+    public function markAction(\Thucke\ThRating\Domain\Model\Vote $vote = null): void
     {
         $this->logger->log(LogLevel::DEBUG, 'Entry markAction');
         $this->settings['ratingConfigurations']['default'] = $this->settings['defaultRatingConfiguration']['mark'];
@@ -690,11 +689,11 @@ class VoteController extends ActionController
      * @throws \Thucke\ThRating\Exception\InvalidAggregateRatingSchemaTypeException*
      * @throws \TYPO3\CMS\Core\Exception
      * @throws \Thucke\ThRating\Exception\RecordNotFoundException
-     * @return string The rendered view
+     * @return void
      * @ignorevalidation $vote
      */
     //http://localhost:8503/index.php?id=71&tx_thrating_pi1[controller]=Vote&tx_thrating_pi1[action]=ratinglinks
-    public function graphicActionHelper(Vote $vote = null)
+    public function graphicActionHelper(Vote $vote = null): void
     {
         $this->logger->log(LogLevel::DEBUG, 'Entry graphicActionHelper');
         $this->initSettings();
@@ -808,7 +807,7 @@ class VoteController extends ActionController
                 $signalSlotMessage['voter'] = $this->vote->getVoter()->getUid();
                 $signalSlotMessage['votingStep'] = $this->vote->getVote()->getSteporder();
                 $signalSlotMessage['votingName'] = (string)$this->vote->getVote()->getStepname();
-                $signalSlotMessage['anonymousVote'] = (bool)$this->vote->isAnonymous();
+                $signalSlotMessage['anonymousVote'] = $this->vote->isAnonymous();
             }
             $this->logger->log(
                 LogLevel::INFO,
@@ -996,7 +995,7 @@ class VoteController extends ActionController
      */
     protected function setAjaxSelections(Vote $vote): void
     {
-        if ($vote->getVoter() instanceof Voter && empty($this->settings['displayOnly'])) {
+        if (empty($this->settings['displayOnly']) && $vote->getVoter() instanceof Voter) {
             //cleanup settings to reduce data size in POST form
             $tmpDisplayConfig = $this->settings['ratingConfigurations'][$this->settings['display']];
             unset($this->settings['defaultObject'], $this->settings['ratingConfigurations']);
@@ -1068,6 +1067,7 @@ class VoteController extends ActionController
             );
         }
         if (!$this->voteValidator->validate($this->vote)->hasErrors()) {
+            /** @noinspection NotOptimalIfConditionsInspection */
             if ((!$this->vote->isAnonymous() &&
                     $this->vote->getVoter()->getUid() === $this->accessControllService->getFrontendUserUid()
                 ) || ($this->vote->isAnonymous() && ($this->vote->hasAnonymousVote($this->prefixId) ||
@@ -1233,7 +1233,7 @@ class VoteController extends ActionController
         $table = $rating->getRatingobject()->getRatetable();
         $lockedFieldnames = $this->getLockedfieldnames($table);
         $rateField = $rating->getRatingobject()->getRatefield();
-        if (!in_array($rateField, $lockedFieldnames, false) && !empty($GLOBALS['TCA'][$table]['columns'][$rateField])) {
+        if (!empty($GLOBALS['TCA'][$table]['columns'][$rateField]) && !in_array($rateField, $lockedFieldnames, false)) {
             $rateUid = $rating->getRatedobjectuid();
             $currentRatesArray = $rating->getCurrentrates();
             if (empty($this->settings['foreignFieldArrayUpdate'])) {

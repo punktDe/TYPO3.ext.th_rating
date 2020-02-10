@@ -8,6 +8,8 @@ plugin.tx_thrating {
 		cookieLifetime = 0
 		# cat=plugin.tx_thrating/enable/b; type=boolean; label=Info on not logged in user: make message visible (set to 1 - global setting)
 		showNoFEUser = 0
+    # cat=plugin.tx_thrating/enable/b; type=boolean; label=Error if a ratingobject has no stepconf: make message visible in FE (set to 1 - global setting)
+    showMissingStepconfError = 0
 	}
 	settings {
 		# cat=plugin.tx_thrating//a; type=int; label=General storage page where all records are stored

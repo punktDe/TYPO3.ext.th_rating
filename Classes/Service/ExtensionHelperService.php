@@ -311,8 +311,9 @@ class ExtensionHelperService extends AbstractExtensionService
      *
      * @param array $settings
      * @param \Thucke\ThRating\Domain\Model\Ratingobject $ratingobject
-     * @throws  \TYPO3\CMS\Core\Exception
      * @return \Thucke\ThRating\Domain\Model\Rating
+     * @throws \TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException
+     * @throws \Thucke\ThRating\Service\Exception
      */
     public function getRating(array $settings, Ratingobject $ratingobject = null): Rating
     {
@@ -330,12 +331,11 @@ class ExtensionHelperService extends AbstractExtensionService
                 RatingRepository::ADD_IF_NOT_FOUND
             );
         } else {
-            throw new \TYPO3\CMS\Core\Exception(
+            throw new \Thucke\ThRating\Service\Exception(
                 'Incomplete configuration setting. Either \'rating\' or \'ratedobjectuid\' are missing.',
                 1398351336
             );
         }
-
         return $rating;
     }
 
@@ -457,19 +457,47 @@ class ExtensionHelperService extends AbstractExtensionService
             $stepconfObjects = $ratingobject->getStepconfs();
             $stepcount = count($stepconfObjects);
             if (!$stepcount) {
-                $messageArray[] = [
-                    'messageText' => LocalizationUtility::translate(
-                        'flash.renderCSS.noStepconf',
-                        'ThRating',
-                        [1 => $ratingobject->getUid(), 2 => $ratingobject->getPid()]
-                    ),
-                    'messageTitle' => LocalizationUtility::translate('flash.configuration.error', 'ThRating'),
-                    'severity' => 'ERROR',
-                    'additionalInfo' => ['errorCode' => 1384705470,
-                        'ratingobject UID' => $ratingobject->getUid(),
-                        'ratingobject PID' => $ratingobject->getPid(), ], ];
-
-                return $messageArray;
+                if ($this->settings['showMissingStepconfError']) {
+                    //show error message in GUI
+                    $messageArray[] = [
+                        'messageText' => LocalizationUtility::translate(
+                            'flash.renderCSS.noStepconf',
+                            'ThRating',
+                            [
+                                1 => $ratingobject->getUid(),
+                                2 => $ratingobject->getPid()
+                            ]
+                        ),
+                        'messageTitle' => LocalizationUtility::translate(
+                            'flash.configuration.error',
+                            'ThRating'
+                        ),
+                        'severity' => 'ERROR',
+                        'additionalInfo' => [
+                            'errorCode' => 1384705470,
+                            'ratingobject UID' => $ratingobject->getUid(),
+                            'ratingobject PID' => $ratingobject->getPid(),
+                        ],
+                    ];
+                } else {
+                    //only log message
+                    $this->logger->log(
+                        LogLevel::ERROR,
+                        LocalizationUtility::translate(
+                            'flash.renderCSS.noStepconf',
+                            'ThRating',
+                            [
+                                1 => $ratingobject->getUid(),
+                                2 => $ratingobject->getPid()
+                            ]
+                        ),
+                        [
+                            'errorCode' => 1384705470,
+                            'ratingobject UID' => $ratingobject->getUid(),
+                            'ratingobject PID' => $ratingobject->getPid(),
+                        ]
+                    );
+                }
             }
 
             /** @var array $stepWeights */
@@ -494,19 +522,19 @@ class ExtensionHelperService extends AbstractExtensionService
                             'additionalInfo' => ['errorCode' => $errorMessage->getCode(),
                                                       'errorMessage' => $errorMessage->getMessage(), ], ];
                     }
-
-                    return $messageArray;
                 }
             }
             $this->logger->log(
                 LogLevel::INFO,
                 'Ratingobject data',
                 [
-                            'ratingobject UID' => $ratingobject->getUid(),
-                            'ratingobject PID' => $ratingobject->getPid(),
-                            'stepcount' => $stepcount,
-                            'stepWeights' => $stepWeights,
-                            'sumStepWeights' => $sumStepWeights, ]
+                    'ratingobject UID' => $ratingobject->getUid(),
+                    'ratingobject PID' => $ratingobject->getPid(),
+                    'stepcount' => $stepcount,
+                    'stepWeights' => $stepWeights,
+                    'sumStepWeights' => $sumStepWeights,
+                    'messageCount' => count($messageArray)
+                ]
             );
 
             //generate CSS for all ratings out of TSConfig
