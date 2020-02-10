@@ -9,6 +9,9 @@ var hierarchy =
     ] ],
     [ "DynamicCssEvaluator", "classThucke_1_1ThRating_1_1Evaluation_1_1DynamicCssEvaluator.html", null ],
     [ "Exception", null, [
+      [ "Exception", "classThucke_1_1ThRating_1_1Service_1_1Exception.html", [
+        [ "AccessException", "classThucke_1_1ThRating_1_1Service_1_1AccessException.html", null ]
+      ] ],
       [ "Exception", "classThucke_1_1ThRating_1_1ViewHelpers_1_1Exception.html", null ]
     ] ],
     [ "FrontendUser", null, [
@@ -53,8 +56,7 @@ var hierarchy =
         [ "InvalidAggregateRatingSchemaTypeException", "classThucke_1_1ThRating_1_1Exception_1_1InvalidAggregateRatingSchemaTypeException.html", null ],
         [ "InvalidStoragePageException", "classThucke_1_1ThRating_1_1Exception_1_1InvalidStoragePageException.html", null ],
         [ "RecordNotFoundException", "classThucke_1_1ThRating_1_1Exception_1_1RecordNotFoundException.html", null ]
-      ] ],
-      [ "AccessException", "classThucke_1_1ThRating_1_1Service_1_1AccessException.html", null ]
+      ] ]
     ] ],
     [ "FrontendUserRepository", null, [
       [ "VoterRepository", "classThucke_1_1ThRating_1_1Domain_1_1Repository_1_1VoterRepository.html", null ]

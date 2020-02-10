@@ -12,6 +12,9 @@ var dir_cdd69ede3f0bec21724cdb2c0433a1e0 =
     [ "CookieService.php", "CookieService_8php.html", [
       [ "CookieService", "classThucke_1_1ThRating_1_1Service_1_1CookieService.html", "classThucke_1_1ThRating_1_1Service_1_1CookieService" ]
     ] ],
+    [ "Exception.php", "Service_2Exception_8php.html", [
+      [ "Exception", "classThucke_1_1ThRating_1_1Service_1_1Exception.html", null ]
+    ] ],
     [ "ExtensionHelperService.php", "ExtensionHelperService_8php.html", [
       [ "ExtensionHelperService", "classThucke_1_1ThRating_1_1Service_1_1ExtensionHelperService.html", "classThucke_1_1ThRating_1_1Service_1_1ExtensionHelperService" ]
     ] ],
