@@ -29,7 +29,7 @@ use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
-use TYPO3\CMS\Extbase\Annotation\IgnoreValidation;
+use TYPO3\CMS\Extbase\Annotation as Extbase;
 
 /***************************************************************
  *  Copyright notice
@@ -579,7 +579,8 @@ class VoteController extends ActionController
      * A classic SELECT input form will be provided to AJAX-submit the vote
      *
      * @param \Thucke\ThRating\Domain\Model\Vote $vote The new vote (used on callback from createAction)
-     * @IgnoreValidation("vote")
+     * @ignorevalidation $vote
+     * @Extbase\IgnoreValidation("vote")
      * @return void
      * @throws \Thucke\ThRating\Exception\InvalidAggregateRatingSchemaTypeException
      * @throws \TYPO3\CMS\Core\Exception
@@ -611,7 +612,8 @@ class VoteController extends ActionController
      * A graphic starrating object containing links will be provided to AJAX-submit the vote
      *
      * @param \Thucke\ThRating\Domain\Model\Vote $vote The new vote
-     * @IgnoreValidation("vote")
+     * @ignorevalidation $vote
+     * @Extbase\IgnoreValidation("vote")
      * @return void
      * @throws \TYPO3\CMS\Extbase\Mvc\Exception\NoSuchArgumentException
      * @throws \TYPO3\CMS\Extbase\SignalSlot\Exception\InvalidSlotException
@@ -637,7 +639,8 @@ class VoteController extends ActionController
      * Graphic bars containing links will be provided to AJAX-submit the polling
      *
      * @param \Thucke\ThRating\Domain\Model\Vote $vote The new vote
-     * @IgnoreValidation("vote")
+     * @ignorevalidation $vote
+     * @Extbase\IgnoreValidation("vote")
      * @return void
      * @throws \TYPO3\CMS\Extbase\Mvc\Exception\NoSuchArgumentException
      * @throws \TYPO3\CMS\Extbase\SignalSlot\Exception\InvalidSlotException
@@ -664,7 +667,8 @@ class VoteController extends ActionController
      * An icon containing for the mark action will be provided for AJAX-submission
      *
      * @param \Thucke\ThRating\Domain\Model\Vote $vote The new vote
-     * @IgnoreValidation("vote")
+     * @ignorevalidation $vote
+     * @Extbase\IgnoreValidation("vote")
      * @return void
      * @throws \TYPO3\CMS\Extbase\Mvc\Exception\NoSuchArgumentException
      * @throws \TYPO3\CMS\Extbase\SignalSlot\Exception\InvalidSlotException
@@ -690,7 +694,8 @@ class VoteController extends ActionController
      * A graphic starrating object containing links will be provided to AJAX-submit the vote
      *
      * @param \Thucke\ThRating\Domain\Model\Vote $vote The new vote
-     * @IgnoreValidation("vote")
+     * @ignorevalidation $vote
+     * @Extbase\IgnoreValidation("vote")
      * @return void
      * @throws \Thucke\ThRating\Exception\InvalidAggregateRatingSchemaTypeException*
      * @throws \TYPO3\CMS\Core\Exception
