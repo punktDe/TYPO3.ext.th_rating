@@ -3,6 +3,7 @@ namespace Thucke\ThRating\View;
 
 use TYPO3\CMS\Core\Messaging\FlashMessageRendererResolver;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3Fluid\Fluid\Core\ViewHelper\TagBuilder;
 
 /***************************************************************
  *  Copyright notice
@@ -42,9 +43,17 @@ class JsonView extends \TYPO3\CMS\Extbase\Mvc\View\JsonView
      * Tag builder instance
      *
      * @var \TYPO3\CMS\Fluid\Core\ViewHelper\TagBuilder
-     * @inject
      */
     protected $tag;
+
+    /**
+     * @param TagBuilder $tag
+     * @noinspection PhpUnused
+     */
+    public function injectTag(TagBuilder $tag):void
+    {
+        $this->tag = $tag;
+    }
 
     /**
      * Only variables whose name is contained in this array will be rendered
