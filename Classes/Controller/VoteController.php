@@ -287,7 +287,7 @@ class VoteController extends ActionController
             $this->request->setFormat('json');
             //read unique AJAX identification on AJAX request
             $this->ajaxSelections['ajaxRef'] = $this->request->getArgument(self::AJAX_REFERENCE_ID);
-            $this->settings = json_decode($this->request->getArgument('settings'), true, 512, JSON_THROW_ON_ERROR);
+            $this->settings = json_decode($this->request->getArgument('settings'), true, 512, PHP_MINOR_VERSION>=3 ? JSON_THROW_ON_ERROR : null);
             $frameworkConfiguration['settings'] = $this->settings;
             $this->initSettings();
             $this->logger->log(
@@ -1016,10 +1016,10 @@ class VoteController extends ActionController
                         'voter' => $vote->getVoter()->getUid(),
                         'rating' => $vote->getRating()->getUid(),
                         'ratingName' => $this->ratingName,
-                        'settings' => json_encode($this->settings, JSON_THROW_ON_ERROR, 512),
+                        'settings' => json_encode($this->settings, PHP_MINOR_VERSION>=3 ? JSON_THROW_ON_ERROR : null, 512),
                         'actionName' => strtolower($this->request->getControllerActionName()),
                         self::AJAX_REFERENCE_ID => $this->ajaxSelections['ajaxRef'],
-                    ], JSON_THROW_ON_ERROR, 512)
+                    ], PHP_MINOR_VERSION>=3 ? JSON_THROW_ON_ERROR : null, 512)
                 );
                 $this->ajaxSelections['json'][$key] = (string)$stepConf;
                 $this->ajaxSelections['steporder'][$stepConf->getSteporder()]['step'] = $stepConf;
