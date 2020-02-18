@@ -7,6 +7,7 @@ use TYPO3\CMS\Extbase\Configuration\Exception\InvalidConfigurationTypeException;
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
+use TYPO3\CMS\Extbase\Annotation as Extbase;
 
 /***************************************************************
 *  Copyright notice
@@ -46,23 +47,26 @@ class Vote extends AbstractEntity
      * @var      \Thucke\ThRating\Domain\Model\Rating
      * @validate \Thucke\ThRating\Domain\Validator\RatingValidator
      * @validate NotEmpty
+     * @Extbase\Validate("NotEmpty")
      */
     protected $rating;
 
     /**
      * The voter of this object
      *
-     * @var    \Thucke\ThRating\Domain\Model\Voter
      * @validate NotEmpty
+     * @Extbase\Validate("NotEmpty")
+     * @var    \Thucke\ThRating\Domain\Model\Voter
      */
     protected $voter;
 
     /**
      * The actual voting of this object
      *
-     * @var      \Thucke\ThRating\Domain\Model\Stepconf
      * @validate \Thucke\ThRating\Domain\Validator\StepconfValidator
      * @validate NotEmpty
+     * @Extbase\Validate("NotEmpty")
+     * @var      \Thucke\ThRating\Domain\Model\Stepconf
      */
     protected $vote;
 
@@ -92,7 +96,6 @@ class Vote extends AbstractEntity
      * @param \Thucke\ThRating\Domain\Model\Voter|null $voter
      * @param \Thucke\ThRating\Domain\Model\Stepconf|null $vote
      * @throws InvalidConfigurationTypeException
-     * return void
      */
     /** @noinspection PhpUnused */
     public function __construct(
@@ -163,7 +166,7 @@ class Vote extends AbstractEntity
     /**
      * Returns the frontenduser of this vote
      *
-     * @return \Thucke\ThRating\Domain\Model\Voter    The frontenduser of this vote
+     * @return \Thucke\ThRating\Domain\Model\Voter
      */
     public function getVoter(): Voter
     {

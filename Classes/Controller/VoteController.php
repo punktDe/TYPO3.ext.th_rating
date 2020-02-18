@@ -579,7 +579,7 @@ class VoteController extends ActionController
      * A classic SELECT input form will be provided to AJAX-submit the vote
      *
      * @param \Thucke\ThRating\Domain\Model\Vote $vote The new vote (used on callback from createAction)
-     * @IgnoreValidation $vote
+     * @IgnoreValidation("vote")
      * @return void
      * @throws \Thucke\ThRating\Exception\InvalidAggregateRatingSchemaTypeException
      * @throws \TYPO3\CMS\Core\Exception
@@ -611,7 +611,7 @@ class VoteController extends ActionController
      * A graphic starrating object containing links will be provided to AJAX-submit the vote
      *
      * @param \Thucke\ThRating\Domain\Model\Vote $vote The new vote
-     * @IgnoreValidation $vote
+     * @IgnoreValidation("vote")
      * @return void
      * @throws \TYPO3\CMS\Extbase\Mvc\Exception\NoSuchArgumentException
      * @throws \TYPO3\CMS\Extbase\SignalSlot\Exception\InvalidSlotException
@@ -637,7 +637,7 @@ class VoteController extends ActionController
      * Graphic bars containing links will be provided to AJAX-submit the polling
      *
      * @param \Thucke\ThRating\Domain\Model\Vote $vote The new vote
-     * @IgnoreValidation $vote
+     * @IgnoreValidation("vote")
      * @return void
      * @throws \TYPO3\CMS\Extbase\Mvc\Exception\NoSuchArgumentException
      * @throws \TYPO3\CMS\Extbase\SignalSlot\Exception\InvalidSlotException
@@ -664,7 +664,7 @@ class VoteController extends ActionController
      * An icon containing for the mark action will be provided for AJAX-submission
      *
      * @param \Thucke\ThRating\Domain\Model\Vote $vote The new vote
-     * @IgnoreValidation $vote
+     * @IgnoreValidation("vote")
      * @return void
      * @throws \TYPO3\CMS\Extbase\Mvc\Exception\NoSuchArgumentException
      * @throws \TYPO3\CMS\Extbase\SignalSlot\Exception\InvalidSlotException
@@ -690,7 +690,7 @@ class VoteController extends ActionController
      * A graphic starrating object containing links will be provided to AJAX-submit the vote
      *
      * @param \Thucke\ThRating\Domain\Model\Vote $vote The new vote
-     * @IgnoreValidation $vote
+     * @IgnoreValidation("vote")
      * @return void
      * @throws \Thucke\ThRating\Exception\InvalidAggregateRatingSchemaTypeException*
      * @throws \TYPO3\CMS\Core\Exception

@@ -8,6 +8,7 @@ use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
 use TYPO3\CMS\Extbase\Persistence\Generic\LazyLoadingProxy;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
+use TYPO3\CMS\Extbase\Annotation as Extbase;
 
 /***************************************************************
 *  Copyright notice
@@ -44,18 +45,20 @@ use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 class Stepconf extends AbstractEntity
 {
     /**
-     * @var \Thucke\ThRating\Domain\Model\Ratingobject
      * @validate \Thucke\ThRating\Domain\Validator\RatingobjectValidator
      * @validate NotEmpty
+     * @Extbase\Validate("NotEmpty")
+     * @var \Thucke\ThRating\Domain\Model\Ratingobject
      */
     protected $ratingobject;
 
     /**
      * The order of this config entry
      *
-     * @var int discrete order of ratingsteps
      * @validate NumberRange(minimum = 1)
      * @validate NotEmpty
+     * @Extbase\Validate("NotEmpty")
+     * @var int discrete order of ratingsteps
      */
     protected $steporder;
 
@@ -70,19 +73,19 @@ class Stepconf extends AbstractEntity
     /**
      * The value of this config entry
      *
-     * @var \Thucke\ThRating\Domain\Model\Stepname
      * @validate \Thucke\ThRating\Domain\Validator\StepnameValidator
      * @lazy
      * @cascade remove
+     * @var \Thucke\ThRating\Domain\Model\Stepname
      */
     protected $stepname;
 
     /**
      * The ratings of this object
      *
-     * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Thucke\ThRating\Domain\Model\Vote>
      * @lazy
      * @cascade remove
+     * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Thucke\ThRating\Domain\Model\Vote>
      */
     protected $votes;
 
