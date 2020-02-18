@@ -29,6 +29,7 @@ use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
+use TYPO3\CMS\Extbase\Annotation\IgnoreValidation;
 
 /***************************************************************
  *  Copyright notice
@@ -287,7 +288,7 @@ class VoteController extends ActionController
             $this->request->setFormat('json');
             //read unique AJAX identification on AJAX request
             $this->ajaxSelections['ajaxRef'] = $this->request->getArgument(self::AJAX_REFERENCE_ID);
-            $this->settings = json_decode($this->request->getArgument('settings'), true, 512, JSON_THROW_ON_ERROR);
+            $this->settings = json_decode($this->request->getArgument('settings'), true, 512, PHP_MINOR_VERSION>=3 ? JSON_THROW_ON_ERROR : null);
             $frameworkConfiguration['settings'] = $this->settings;
             $this->initSettings();
             $this->logger->log(
@@ -578,7 +579,7 @@ class VoteController extends ActionController
      * A classic SELECT input form will be provided to AJAX-submit the vote
      *
      * @param \Thucke\ThRating\Domain\Model\Vote $vote The new vote (used on callback from createAction)
-     * @ignorevalidation $vote
+     * @IgnoreValidation $vote
      * @return void
      * @throws \Thucke\ThRating\Exception\InvalidAggregateRatingSchemaTypeException
      * @throws \TYPO3\CMS\Core\Exception
@@ -610,7 +611,7 @@ class VoteController extends ActionController
      * A graphic starrating object containing links will be provided to AJAX-submit the vote
      *
      * @param \Thucke\ThRating\Domain\Model\Vote $vote The new vote
-     * @ignorevalidation $vote
+     * @IgnoreValidation $vote
      * @return void
      * @throws \TYPO3\CMS\Extbase\Mvc\Exception\NoSuchArgumentException
      * @throws \TYPO3\CMS\Extbase\SignalSlot\Exception\InvalidSlotException
@@ -636,7 +637,7 @@ class VoteController extends ActionController
      * Graphic bars containing links will be provided to AJAX-submit the polling
      *
      * @param \Thucke\ThRating\Domain\Model\Vote $vote The new vote
-     * @ignorevalidation $vote
+     * @IgnoreValidation $vote
      * @return void
      * @throws \TYPO3\CMS\Extbase\Mvc\Exception\NoSuchArgumentException
      * @throws \TYPO3\CMS\Extbase\SignalSlot\Exception\InvalidSlotException
@@ -663,7 +664,7 @@ class VoteController extends ActionController
      * An icon containing for the mark action will be provided for AJAX-submission
      *
      * @param \Thucke\ThRating\Domain\Model\Vote $vote The new vote
-     * @ignorevalidation $vote
+     * @IgnoreValidation $vote
      * @return void
      * @throws \TYPO3\CMS\Extbase\Mvc\Exception\NoSuchArgumentException
      * @throws \TYPO3\CMS\Extbase\SignalSlot\Exception\InvalidSlotException
@@ -689,7 +690,7 @@ class VoteController extends ActionController
      * A graphic starrating object containing links will be provided to AJAX-submit the vote
      *
      * @param \Thucke\ThRating\Domain\Model\Vote $vote The new vote
-     * @ignorevalidation $vote
+     * @IgnoreValidation $vote
      * @return void
      * @throws \Thucke\ThRating\Exception\InvalidAggregateRatingSchemaTypeException*
      * @throws \TYPO3\CMS\Core\Exception
@@ -1016,10 +1017,10 @@ class VoteController extends ActionController
                         'voter' => $vote->getVoter()->getUid(),
                         'rating' => $vote->getRating()->getUid(),
                         'ratingName' => $this->ratingName,
-                        'settings' => json_encode($this->settings, JSON_THROW_ON_ERROR, 512),
+                        'settings' => json_encode($this->settings, PHP_MINOR_VERSION>=3 ? JSON_THROW_ON_ERROR : null, 512),
                         'actionName' => strtolower($this->request->getControllerActionName()),
                         self::AJAX_REFERENCE_ID => $this->ajaxSelections['ajaxRef'],
-                    ], JSON_THROW_ON_ERROR, 512)
+                    ], PHP_MINOR_VERSION>=3 ? JSON_THROW_ON_ERROR : null, 512)
                 );
                 $this->ajaxSelections['json'][$key] = (string)$stepConf;
                 $this->ajaxSelections['steporder'][$stepConf->getSteporder()]['step'] = $stepConf;
