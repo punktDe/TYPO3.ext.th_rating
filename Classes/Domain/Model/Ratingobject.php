@@ -6,6 +6,7 @@ use Thucke\ThRating\Domain\Repository\StepconfRepository;
 use Thucke\ThRating\Service\ExtensionHelperService;
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
+use TYPO3\CMS\Extbase\Annotation as Extbase;
 
 /***************************************************************
 *  Copyright notice
@@ -46,9 +47,12 @@ class Ratingobject extends AbstractEntity
      * Table name of the cObj
      * Defaults to Typo3 tablename of pages
      *
-     * @var string
      * @validate StringLength(minimum = 3, maximum = 60)
+     * @Extbase\Validate("StringLength", options={"minimum": 3})
+     * @Extbase\Validate("StringLength", options={"maximum": 60})
      * @validate NotEmpty
+     * @Extbase\Validate("NotEmpty")
+     * @var string
      */
     protected $ratetable;
 
@@ -56,9 +60,9 @@ class Ratingobject extends AbstractEntity
      * Fieldname within the table of the cObj
      * Defaults to the field 'uid'
      *
-     * @var string
      * @validate StringLength(minimum = 3, maximum = 60)
      * @validate NotEmpty
+     * @var string
      */
     protected $ratefield;
 

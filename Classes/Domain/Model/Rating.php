@@ -9,6 +9,7 @@ use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
+use TYPO3\CMS\Extbase\Annotation as Extbase;
 
 /***************************************************************
 *  Copyright notice
@@ -47,27 +48,29 @@ class Rating extends AbstractEntity
     //TODO check deleted referenced records
 
     /**
-     * @var \Thucke\ThRating\Domain\Model\Ratingobject
      * @validate \Thucke\ThRating\Domain\Validator\RatingobjectValidator
      * @validate NotEmpty
+     * @Extbase\Validate("NotEmpty")
+     * @var \Thucke\ThRating\Domain\Model\Ratingobject
      */
     protected $ratingobject;
 
     /**
      * The ratings uid of this object
      *
-     * @var int
      * @validate NumberRange(minimum = 1)
      * @validate NotEmpty
+     * @Extbase\Validate("NotEmpty")
+     * @var int
      */
     protected $ratedobjectuid;
 
     /**
      * The ratings of this object
      *
-     * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Thucke\ThRating\Domain\Model\Vote>
      * @lazy
      * @cascade remove
+     * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Thucke\ThRating\Domain\Model\Vote>
      */
     protected $votes;
 

@@ -3,7 +3,7 @@ namespace Thucke\ThRating\Domain\Model;
 
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
-
+use TYPO3\CMS\Extbase\Annotation as Extbase;
 /***************************************************************
 *  Copyright notice
 *
@@ -39,9 +39,10 @@ use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 class Stepname extends AbstractEntity
 {
     /**
-     * @var \Thucke\ThRating\Domain\Model\Stepconf
      * @validate \Thucke\ThRating\Domain\Validator\StepconfValidator
      * @validate NotEmpty
+     * @Extbase\Validate("NotEmpty")
+     * @var \Thucke\ThRating\Domain\Model\Stepconf
      */
     protected $stepconf;
 
@@ -62,8 +63,9 @@ class Stepname extends AbstractEntity
 
     /**
      * _languageUid
-     * @var int
      * @validate NotEmpty
+     * @Extbase\Validate("NotEmpty")
+     * @var int
      */
     protected $_languageUid;
 
