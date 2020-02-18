@@ -1,4 +1,4 @@
-<?php
+<?php /** @noinspection PhpMissingFieldTypeInspection */
 /** @noinspection PhpUnnecessaryFullyQualifiedNameInspection */
 /** @noinspection PhpFullyQualifiedNameUsageInspection */
 namespace Thucke\ThRating\Controller;
@@ -52,7 +52,6 @@ use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
  *
  *  This copyright notice MUST APPEAR in all copies of the script!
  ***************************************************************/
-/** @noinspection PhpInconsistentReturnPointsInspection */
 
 /**
  * The Vote Controller
@@ -257,6 +256,7 @@ class VoteController extends ActionController
     /**
      * Initializes the current action
      *
+     * @return void
      * @throws FeUserStoragePageException
      * @throws InvalidStoragePageException*
      * @throws \Exception
@@ -287,7 +287,7 @@ class VoteController extends ActionController
             $this->request->setFormat('json');
             //read unique AJAX identification on AJAX request
             $this->ajaxSelections['ajaxRef'] = $this->request->getArgument(self::AJAX_REFERENCE_ID);
-            $this->settings = json_decode($this->request->getArgument('settings'), true);
+            $this->settings = json_decode($this->request->getArgument('settings'), true, 512, JSON_THROW_ON_ERROR);
             $frameworkConfiguration['settings'] = $this->settings;
             $this->initSettings();
             $this->logger->log(
@@ -315,14 +315,14 @@ class VoteController extends ActionController
     /**
      * Index action for this controller.
      *
+     * @return void
+     * @throws \TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException
      * @throws \TYPO3\CMS\Extbase\Persistence\Exception\InvalidQueryException
      * @throws \Thucke\ThRating\Exception\RecordNotFoundException
-     * @throws \TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException
-     * @return string The rendered view
      */
     public function indexAction()
     {
-        /** @var \Thucke\ThRating\Domain\Model\Ratingobject $ratingobject */
+        // @var \Thucke\ThRating\Domain\Model\Ratingobject $ratingobject
         //update foreign table for each rating
         foreach ($this->ratingobjectRepository->findAll() as $ratingobject) {
             foreach ($ratingobject->getRatings() as $rating) {
@@ -353,6 +353,8 @@ class VoteController extends ActionController
 
     /**
      * Includes the hidden form to handle AJAX requests
+     *
+     * @return void
      * @noinspection PhpUnused
      */
     public function singletonAction()
@@ -377,7 +379,7 @@ class VoteController extends ActionController
      * Displays the vote of the current user
      *
      * @param \Thucke\ThRating\Domain\Model\Vote $vote
-     * @return string
+     * @return void
      * @throws \TYPO3\CMS\Core\Exception
      * @throws \Thucke\ThRating\Exception\InvalidAggregateRatingSchemaTypeException
      * @throws \Thucke\ThRating\Exception\RecordNotFoundException
@@ -409,6 +411,7 @@ class VoteController extends ActionController
      * Creates a new vote
      *
      * @param  \Thucke\ThRating\Domain\Model\Vote $vote
+     * @return void
      * @throws \TYPO3\CMS\Core\Exception
      * @throws \TYPO3\CMS\Extbase\Mvc\Exception\NoSuchArgumentException
      * @throws \TYPO3\CMS\Extbase\Mvc\Exception\StopActionException
@@ -575,11 +578,11 @@ class VoteController extends ActionController
      * A classic SELECT input form will be provided to AJAX-submit the vote
      *
      * @param \Thucke\ThRating\Domain\Model\Vote $vote The new vote (used on callback from createAction)
+     * @ignorevalidation $vote
      * @return void
      * @throws \Thucke\ThRating\Exception\InvalidAggregateRatingSchemaTypeException
      * @throws \TYPO3\CMS\Core\Exception
      * @throws \Thucke\ThRating\Exception\RecordNotFoundException
-     * @ignorevalidation $vote
      * @noinspection PhpUnused
      */
     public function newAction(Vote $vote = null)
@@ -607,6 +610,7 @@ class VoteController extends ActionController
      * A graphic starrating object containing links will be provided to AJAX-submit the vote
      *
      * @param \Thucke\ThRating\Domain\Model\Vote $vote The new vote
+     * @ignorevalidation $vote
      * @return void
      * @throws \TYPO3\CMS\Extbase\Mvc\Exception\NoSuchArgumentException
      * @throws \TYPO3\CMS\Extbase\SignalSlot\Exception\InvalidSlotException
@@ -614,7 +618,6 @@ class VoteController extends ActionController
      * @throws \Thucke\ThRating\Exception\InvalidAggregateRatingSchemaTypeException*
      * @throws \Thucke\ThRating\Exception\RecordNotFoundException
      * @throws \TYPO3\CMS\Core\Exception
-     * @ignorevalidation $vote
      */
     //http://localhost:8503/index.php?id=71&tx_thrating_pi1[controller]=Vote&tx_thrating_pi1[action]=ratinglinks
     public function ratinglinksAction(Vote $vote = null)
@@ -633,6 +636,7 @@ class VoteController extends ActionController
      * Graphic bars containing links will be provided to AJAX-submit the polling
      *
      * @param \Thucke\ThRating\Domain\Model\Vote $vote The new vote
+     * @ignorevalidation $vote
      * @return void
      * @throws \TYPO3\CMS\Extbase\Mvc\Exception\NoSuchArgumentException
      * @throws \TYPO3\CMS\Extbase\SignalSlot\Exception\InvalidSlotException
@@ -640,7 +644,6 @@ class VoteController extends ActionController
      * @throws \Thucke\ThRating\Exception\InvalidAggregateRatingSchemaTypeException*
      * @throws \TYPO3\CMS\Core\Exception
      * @throws \Thucke\ThRating\Exception\RecordNotFoundException
-     * @ignorevalidation $vote
      * @noinspection PhpUnused
      */
     public function pollingAction(Vote $vote = null)
@@ -660,14 +663,14 @@ class VoteController extends ActionController
      * An icon containing for the mark action will be provided for AJAX-submission
      *
      * @param \Thucke\ThRating\Domain\Model\Vote $vote The new vote
+     * @ignorevalidation $vote
+     * @return void
      * @throws \TYPO3\CMS\Extbase\Mvc\Exception\NoSuchArgumentException
      * @throws \TYPO3\CMS\Extbase\SignalSlot\Exception\InvalidSlotException
      * @throws \TYPO3\CMS\Extbase\SignalSlot\Exception\InvalidSlotReturnException
      * @throws \Thucke\ThRating\Exception\InvalidAggregateRatingSchemaTypeException*
      * @throws \TYPO3\CMS\Core\Exception
      * @throws \Thucke\ThRating\Exception\RecordNotFoundException
-     * @return void
-     * @ignorevalidation $vote
      */
     /** @noinspection PhpUnused */
     public function markAction(\Thucke\ThRating\Domain\Model\Vote $vote = null)
@@ -686,11 +689,11 @@ class VoteController extends ActionController
      * A graphic starrating object containing links will be provided to AJAX-submit the vote
      *
      * @param \Thucke\ThRating\Domain\Model\Vote $vote The new vote
+     * @ignorevalidation $vote
+     * @return void
      * @throws \Thucke\ThRating\Exception\InvalidAggregateRatingSchemaTypeException*
      * @throws \TYPO3\CMS\Core\Exception
      * @throws \Thucke\ThRating\Exception\RecordNotFoundException
-     * @return void
-     * @ignorevalidation $vote
      */
     //http://localhost:8503/index.php?id=71&tx_thrating_pi1[controller]=Vote&tx_thrating_pi1[action]=ratinglinks
     public function graphicActionHelper(Vote $vote = null)
@@ -782,6 +785,7 @@ class VoteController extends ActionController
      *        'anonymousVote'    - boolean info if it was an anonymous rating
      *
      * @param string $slotName the slotname
+     * @return void
      * @throws \TYPO3\CMS\Extbase\Mvc\Exception\NoSuchArgumentException
      * @throws \TYPO3\CMS\Extbase\SignalSlot\Exception\InvalidSlotException
      * @throws \TYPO3\CMS\Extbase\SignalSlot\Exception\InvalidSlotReturnException
@@ -843,9 +847,9 @@ class VoteController extends ActionController
      * Check preconditions for rating
      *
      * @param \Thucke\ThRating\Domain\Model\Vote $vote the vote this selection is for
+     * @return void
      * @throws \Thucke\ThRating\Exception\RecordNotFoundException
      * @throws \TYPO3\CMS\Core\Exception
-     * @ignorevalidation $vote
      */
     protected function initVoting(Vote $vote = null)
     {
@@ -900,6 +904,8 @@ class VoteController extends ActionController
 
     /**
      * Check preconditions for settings
+     *
+     * @return void
      */
     protected function initSettings()
     {
@@ -991,7 +997,9 @@ class VoteController extends ActionController
 
     /**
      * Build array of possible AJAX selection configuration
+     *
      * @param \Thucke\ThRating\Domain\Model\Vote $vote the vote this selection is for
+     * @return void
      */
     protected function setAjaxSelections(Vote $vote)
     {
@@ -1003,16 +1011,15 @@ class VoteController extends ActionController
             //TODO: ?? $currentRates = $vote->getRating()->getCurrentrates();
 
             foreach ($vote->getRating()->getRatingobject()->getStepconfs() as $i => $stepConf) {
-                $key = utf8_encode(
-                    json_encode([
+                $key = utf8_encode(json_encode([
                         'value' => $stepConf->getUid(),
                         'voter' => $vote->getVoter()->getUid(),
                         'rating' => $vote->getRating()->getUid(),
                         'ratingName' => $this->ratingName,
-                        'settings' => json_encode($this->settings),
+                        'settings' => json_encode($this->settings, JSON_THROW_ON_ERROR, 512),
                         'actionName' => strtolower($this->request->getControllerActionName()),
                         self::AJAX_REFERENCE_ID => $this->ajaxSelections['ajaxRef'],
-                    ])
+                    ], JSON_THROW_ON_ERROR, 512)
                 );
                 $this->ajaxSelections['json'][$key] = (string)$stepConf;
                 $this->ajaxSelections['steporder'][$stepConf->getSteporder()]['step'] = $stepConf;
@@ -1029,6 +1036,7 @@ class VoteController extends ActionController
     /**
      * Fill all variables for FLUID
      *
+     * @return void
      * @throws \Thucke\ThRating\Exception\InvalidAggregateRatingSchemaTypeException
      */
     protected function fillSummaryView()
@@ -1105,6 +1113,7 @@ class VoteController extends ActionController
      * Checks all storagePid settings and
      * sets them to SITEROOT if zero or empty
      *
+     * @return void
      * @throws InvalidStoragePageException if plugin.tx_thrating.storagePid has not been set
      * @throws FeUserStoragePageException if plugin.tx_felogin_pi1.storagePid has not been set
      */
@@ -1144,8 +1153,8 @@ class VoteController extends ActionController
      * Generates a random number
      * used as the unique iddentifier for AJAX objects
      *
-     * @throws \Exception
      * @return int
+     * @throws \Exception
      */
     protected function getRandomId()
     {
@@ -1155,6 +1164,7 @@ class VoteController extends ActionController
 
     /**
      * @param array $frameworkConfiguration
+     * @return void
      */
     protected function setFrameworkConfiguration(array $frameworkConfiguration)
     {
@@ -1179,6 +1189,7 @@ class VoteController extends ActionController
      * @param string $messageTitle
      * @param string $severity
      * @param array $additionalInfo
+     * @return void
      */
     private function logFlashMessage(
         string $messageText,
@@ -1225,7 +1236,6 @@ class VoteController extends ActionController
      * Recommended field type is VARCHAR(255)
      *
      * @param Rating $rating The rating
-     *
      * @return bool
      */
     protected function setForeignRatingValues(Rating $rating)
@@ -1275,7 +1285,6 @@ class VoteController extends ActionController
      * Create a list of fieldnamed that must not be updated with ratingvalues
      *
      * @param    string $table tablename looking for system fields
-     *
      * @return array
      */
     protected function getLockedfieldnames($table)
@@ -1325,6 +1334,7 @@ class VoteController extends ActionController
      *
      * @param    array $signalSlotMessage array containing signal information
      * @param    array $customContent array by reference to return pre and post content
+     * @return void
      */
     /** @noinspection PhpUnused */
     public function afterRatinglinkActionHandler(
@@ -1345,6 +1355,7 @@ class VoteController extends ActionController
      *
      * @param    array $signalSlotMessage array containing signal information
      * @param    array $customContent array by reference to return pre and post content
+     * @return void
      */
     /** @noinspection PhpUnusedParameterInspection */
     /** @noinspection PhpUnused */
