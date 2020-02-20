@@ -1,6 +1,7 @@
 <?php
 namespace Thucke\ThRating\Domain\Model;
 
+use Thucke\ThRating\Utility\DeprecationHelperUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 use TYPO3\CMS\Frontend\Imaging\GifBuilder;
@@ -89,7 +90,6 @@ class RatingImage extends AbstractEntity
     public function initializeObject()
     {
         if (empty($this->gifBuilder)) {
-            /** @noinspection PhpParamsInspection */
             $this->injectGifBuilder(GeneralUtility::makeInstance(GifBuilder::class));
         }
     }
@@ -135,7 +135,8 @@ class RatingImage extends AbstractEntity
      */
     public function setImageFile($imageFile)
     {
-        $fullImagePath = PATH_site . $imageFile;
+
+        $fullImagePath = DeprecationHelperUtility::getPublicPath() . $imageFile;
         if (file_exists($fullImagePath)) {
             $this->imageFile = $imageFile;
             $this->isBuilderObject = false;
@@ -159,8 +160,7 @@ class RatingImage extends AbstractEntity
             //clear image if file doe not exist
             $this->setImageFile('xxx');
         }
-
-        return $fullPath ? PATH_site . '/' . $this->imageFile : $this->imageFile;
+        return $fullPath ? DeprecationHelperUtility::getPublicPath() . '/' . $this->imageFile : $this->imageFile;
     }
 
     /**

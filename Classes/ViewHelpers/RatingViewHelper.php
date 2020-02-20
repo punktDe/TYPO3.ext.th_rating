@@ -6,10 +6,10 @@ use TYPO3\CMS\Core\Log\LogLevel;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
-use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
 use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
+use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 
 /***************************************************************
@@ -103,7 +103,7 @@ class RatingViewHelper extends AbstractViewHelper
      * @param \Closure $renderChildrenClosure
      * @param RenderingContextInterface $renderingContext
      * @return mixed
-     * @throws \TYPO3\CMS\Fluid\Core\ViewHelper\Exception
+     * @throws \TYPO3Fluid\Fluid\Core\ViewHelper\Exception
      * @noinspection PhpFullyQualifiedNameUsageInspection
      */
     public static function renderStatic(
@@ -160,7 +160,7 @@ class RatingViewHelper extends AbstractViewHelper
                         'errorCode' => 1253191023, ]
                 );
 
-                throw new \TYPO3\CMS\Fluid\Core\ViewHelper\Exception(
+                throw new \TYPO3Fluid\Fluid\Core\ViewHelper\Exception(
                     'TypoScript object path "' . $typoscriptObjectPath . '" does not exist',
                     1549388144
                 );
@@ -169,7 +169,7 @@ class RatingViewHelper extends AbstractViewHelper
         }
 
         if (!isset($setup[$lastSegment])) {
-            throw new \TYPO3\CMS\Fluid\Core\ViewHelper\Exception(
+            throw new \TYPO3Fluid\Fluid\Core\ViewHelper\Exception(
                 'No Content Object definition found at TypoScript object path "' . $typoscriptObjectPath . '"',
                 1549388123
             );

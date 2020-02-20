@@ -28,6 +28,7 @@ use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
+use Thucke\ThRating\Utility\DeprecationHelperUtility;
 
 /***************************************************************
 *  Copyright notice
@@ -437,9 +438,10 @@ class ExtensionHelperService extends AbstractExtensionService
     {
         /** @var string $cssFile */
         $messageArray = [];
+
         //create file if it does not exist
-        if (file_exists(PATH_site . self::DYN_CSS_FILENAME)) {
-            $fstat = stat(PATH_site . self::DYN_CSS_FILENAME);
+        if (file_exists(DeprecationHelperUtility::getPublicPath() . self::DYN_CSS_FILENAME)) {
+            $fstat = stat(DeprecationHelperUtility::getPublicPath() . self::DYN_CSS_FILENAME);
             //do not recreate file if it has greater than zero length
             if ($fstat[7] !== 0) {
                 $this->logger->log(LogLevel::DEBUG, 'Dynamic CSS file exists - exiting');
@@ -542,7 +544,7 @@ class ExtensionHelperService extends AbstractExtensionService
                 if ($ratingName === 'default') {
                     continue;
                 }
-                $subURI = substr(PATH_site, strlen($_SERVER['DOCUMENT_ROOT']) + 1);
+                $subURI = substr(DeprecationHelperUtility::getPublicPath(), strlen($_SERVER['DOCUMENT_ROOT']) + 1);
                 $basePath = $this->getTypoScriptFrontendController()->baseUrl ?: '//' .
                     $_SERVER['HTTP_HOST'] . '/' . $subURI;
 
@@ -646,7 +648,7 @@ class ExtensionHelperService extends AbstractExtensionService
         }
 
         $this->logger->log(LogLevel::DEBUG, 'Saving CSS file', ['cssFile' => $cssFile]);
-        $fp = fopen(PATH_site . self::DYN_CSS_FILENAME, 'wb');
+        $fp = fopen(DeprecationHelperUtility::getPublicPath() . self::DYN_CSS_FILENAME, 'wb');
         fwrite($fp, $cssFile);
         fclose($fp);
 
