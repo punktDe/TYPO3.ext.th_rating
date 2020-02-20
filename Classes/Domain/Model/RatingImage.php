@@ -64,7 +64,7 @@ class RatingImage extends AbstractEntity
     /**
      * @param GifBuilder $gifBuilder
      */
-    public function injectGifBuilder(GifBuilder $gifBuilder): void
+    public function injectGifBuilder(GifBuilder $gifBuilder)
     {
         $this->gifBuilder = $gifBuilder;
         $this->gifBuilder->init();
@@ -86,7 +86,7 @@ class RatingImage extends AbstractEntity
     /**
      * Initializes the new vote object
      */
-    public function initializeObject(): void
+    public function initializeObject()
     {
         if (empty($this->gifBuilder)) {
             /** @noinspection PhpParamsInspection */
@@ -99,7 +99,7 @@ class RatingImage extends AbstractEntity
      *
      * @param mixed $conf either an array consisting of GIFBUILDER typoscript or a plain string having the filename
      */
-    public function setConf($conf): void
+    public function setConf($conf)
     {
         switch (gettype($conf)) {
             case 'string':
@@ -133,7 +133,7 @@ class RatingImage extends AbstractEntity
      *
      * @param string $imageFile
      */
-    public function setImageFile($imageFile): void
+    public function setImageFile($imageFile)
     {
         $fullImagePath = PATH_site . $imageFile;
         if (file_exists($fullImagePath)) {
@@ -152,7 +152,7 @@ class RatingImage extends AbstractEntity
      * @param mixed $fullPath
      * @return string
      */
-    public function getImageFile($fullPath = false): string
+    public function getImageFile($fullPath = false)
     {
         $checkedFile = $this->gifBuilder->checkFile($this->imageFile);
         if (empty($checkedFile)) {
@@ -168,7 +168,7 @@ class RatingImage extends AbstractEntity
      *
      * @return bool   The result; true if the given the image has been created successfully; otherwise false
      */
-    public function generateImage(): bool
+    public function generateImage()
     {
         if (!empty($this->conf)) {
             $this->gifBuilder->start($this->getConf(), []);
@@ -192,7 +192,7 @@ class RatingImage extends AbstractEntity
      * @var bool switch if absolute path should be returned
      * @return array('width','height')
      */
-    public function getImageDimensions(): array
+    public function getImageDimensions()
     {
         if ($this->isBuilderObject) {
             [$width, $height] = $this->gifBuilder->getImageDimensions($this->imageFile);
@@ -208,7 +208,7 @@ class RatingImage extends AbstractEntity
      *
      * @return string
      */
-    public function __toString(): string
+    public function __toString()
     {
         return $this->imageFile;
     }
