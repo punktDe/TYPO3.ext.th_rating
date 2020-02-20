@@ -26,7 +26,7 @@ namespace Thucke\ThRating\ViewHelpers;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\VersionNumberUtility;
-use TYPO3\CMS\Fluid\Core\ViewHelper\AbstractViewHelper;
+use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
  * The TYPO3 version viewhelper
@@ -50,7 +50,7 @@ class Typo3VersionViewHelper extends AbstractViewHelper
     /**
      * Gives the current TYPO3 version
      *
-     * @return string test result
+     * @return int|bool test result
      * @api
      */
     public function render()

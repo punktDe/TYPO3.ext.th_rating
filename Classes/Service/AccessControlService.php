@@ -4,6 +4,7 @@
 namespace Thucke\ThRating\Service;
 
 use TYPO3\CMS\Extbase\Domain\Repository\FrontendUserRepository;
+use Thucke\ThRating\Utility\DeprecationHelperUtility;
 
 /***************************************************************
 *  Copyright notice
@@ -89,27 +90,28 @@ class AccessControlService extends AbstractExtensionService
 
     /**
      * @return bool
+     * @throws \TYPO3\CMS\Core\Context\Exception\AspectNotFoundException
+     * @noinspection PhpUnused
      */
-
-    /** @noinspection PhpUnused */
     public function backendAdminIsLoggedIn()
     {
-        return $GLOBALS['TSFE']->beUserLogin === 1;
+        return DeprecationHelperUtility::contextLoggedInBeUser();
     }
 
     /**
      * @return bool
+     * @throws \TYPO3\CMS\Core\Context\Exception\AspectNotFoundException
      */
     public function hasLoggedInFrontendUser()
     {
-        return !empty($GLOBALS['TSFE']->loginUser);
+        return DeprecationHelperUtility::contextLoggedInFeUser();
     }
 
     /**
      * @return array
+     * @throws \TYPO3\CMS\Core\Context\Exception\AspectNotFoundException
+     * @noinspection PhpUnused
      */
-
-    /** @noinspection PhpUnused */
     public function getFrontendUserGroups()
     {
         if ($this->hasLoggedInFrontendUser()) {
