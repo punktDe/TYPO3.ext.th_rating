@@ -3,6 +3,7 @@ language: php
 php:
   - 7.2
   - 7.3
+  - 7.4
 env:
   global:
     - typo3DatabaseHost=localhost typo3DatabaseName=typo3 typo3DatabaseUsername=root typo3DatabasePassword=''
@@ -19,6 +20,7 @@ stages:
   - name: test
     if: branch IN (master, develop) OR branch =~ ^release.*$ OR commit_message =~ force_tests
   - name: doxygen
+    if: branch IN (master)
 
 matrix:
   fast_finish: true
