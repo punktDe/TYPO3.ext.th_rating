@@ -2,6 +2,7 @@
 namespace Thucke\ThRating\Domain\Model;
 
 use Thucke\ThRating\Utility\DeprecationHelperUtility;
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 use TYPO3\CMS\Frontend\Imaging\GifBuilder;
@@ -35,7 +36,6 @@ use TYPO3\CMS\Frontend\Imaging\GifBuilder;
  * @author  Thomas Hucke <thucke@web.de>
  * @copyright  Copyright belongs to the respective authors
  * @license  http://opensource.org/licenses/gpl-license.php GNU Public License, version 2
- * @scope   beta
  * @entity
  */
 class RatingImage extends AbstractEntity
@@ -68,7 +68,6 @@ class RatingImage extends AbstractEntity
     public function injectGifBuilder(GifBuilder $gifBuilder)
     {
         $this->gifBuilder = $gifBuilder;
-        $this->gifBuilder->init();
     }
 
     /**
@@ -136,7 +135,7 @@ class RatingImage extends AbstractEntity
     public function setImageFile($imageFile)
     {
 
-        $fullImagePath = DeprecationHelperUtility::getPublicPath() . $imageFile;
+        $fullImagePath = Environment::getPublicPath() .'/' . $imageFile;
         if (file_exists($fullImagePath)) {
             $this->imageFile = $imageFile;
             $this->isBuilderObject = false;
@@ -160,7 +159,7 @@ class RatingImage extends AbstractEntity
             //clear image if file doe not exist
             $this->setImageFile('xxx');
         }
-        return $fullPath ? DeprecationHelperUtility::getPublicPath() . '/' . $this->imageFile : $this->imageFile;
+        return $fullPath ? Environment::getPublicPath() . '/' . $this->imageFile : $this->imageFile;
     }
 
     /**

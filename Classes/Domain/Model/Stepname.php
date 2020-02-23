@@ -34,15 +34,12 @@ use TYPO3\CMS\Extbase\Annotation as Extbase;
  * @author  Thomas Hucke <thucke@web.de>
  * @copyright  Copyright belongs to the respective authors
  * @license  http://opensource.org/licenses/gpl-license.php GNU Public License, version 2
- * @scope   beta
  * @entity
  */
 class Stepname extends AbstractEntity
 {
     /**
-     * @validate \Thucke\ThRating\Domain\Validator\StepconfValidator
      * @Extbase\Validate("\Thucke\ThRating\Domain\Validator\StepconfValidator")
-     * @validate NotEmpty
      * @Extbase\Validate("NotEmpty")
      * @var \Thucke\ThRating\Domain\Model\Stepconf
      */
@@ -65,7 +62,6 @@ class Stepname extends AbstractEntity
 
     /**
      * _languageUid
-     * @validate NotEmpty
      * @Extbase\Validate("NotEmpty")
      * @var int
      */
@@ -74,7 +70,7 @@ class Stepname extends AbstractEntity
     /**
      * Constructs a new stepconfig object
      * @param \Thucke\ThRating\Domain\Model\Stepconf|null $stepconf
-     * @param null $stepname
+     * @param string|null $stepname
      */
     public function __construct(Stepconf $stepconf = null, $stepname = null)
     {

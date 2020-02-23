@@ -68,6 +68,7 @@ class VoteController extends ActionController
      * @var string
      */
     protected $viewFormatToObjectNameMap = ['json' => JsonView::class];
+    //TODO Breaking: #87511 - Remove $viewFormatToObjectNameMap property
 
     /**
      * @var \Thucke\ThRating\Domain\Model\Vote
@@ -579,7 +580,6 @@ class VoteController extends ActionController
      * A classic SELECT input form will be provided to AJAX-submit the vote
      *
      * @param \Thucke\ThRating\Domain\Model\Vote $vote The new vote (used on callback from createAction)
-     * @ignorevalidation $vote
      * @Extbase\IgnoreValidation("vote")
      * @return void
      * @throws \Thucke\ThRating\Exception\InvalidAggregateRatingSchemaTypeException
@@ -612,7 +612,6 @@ class VoteController extends ActionController
      * A graphic starrating object containing links will be provided to AJAX-submit the vote
      *
      * @param \Thucke\ThRating\Domain\Model\Vote $vote The new vote
-     * @ignorevalidation $vote
      * @Extbase\IgnoreValidation("vote")
      * @return void
      * @throws \TYPO3\CMS\Extbase\Mvc\Exception\NoSuchArgumentException
@@ -639,7 +638,6 @@ class VoteController extends ActionController
      * Graphic bars containing links will be provided to AJAX-submit the polling
      *
      * @param \Thucke\ThRating\Domain\Model\Vote $vote The new vote
-     * @ignorevalidation $vote
      * @Extbase\IgnoreValidation("vote")
      * @return void
      * @throws \TYPO3\CMS\Extbase\Mvc\Exception\NoSuchArgumentException
@@ -667,7 +665,6 @@ class VoteController extends ActionController
      * An icon containing for the mark action will be provided for AJAX-submission
      *
      * @param \Thucke\ThRating\Domain\Model\Vote $vote The new vote
-     * @ignorevalidation $vote
      * @Extbase\IgnoreValidation("vote")
      * @return void
      * @throws \TYPO3\CMS\Extbase\Mvc\Exception\NoSuchArgumentException
@@ -694,7 +691,6 @@ class VoteController extends ActionController
      * A graphic starrating object containing links will be provided to AJAX-submit the vote
      *
      * @param \Thucke\ThRating\Domain\Model\Vote $vote The new vote
-     * @ignorevalidation $vote
      * @Extbase\IgnoreValidation("vote")
      * @return void
      * @throws \Thucke\ThRating\Exception\InvalidAggregateRatingSchemaTypeException*

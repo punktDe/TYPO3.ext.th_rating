@@ -60,10 +60,8 @@ class RatingRepository extends Repository
     /**
      * Finds the specific rating by giving the object and row uid
      *
-     * @validate $ratingobject \Thucke\ThRating\Domain\Validator\RatingobjectValidator
      * @Extbase\Validate("\Thucke\ThRating\Domain\Validator\RatingobjectValidator", param="ratingobject")
      * @param    \Thucke\ThRating\Domain\Model\Ratingobject $ratingobject The concerned ratingobject
-     * @validate $ratedobjectuid NumberRange(minimum = 1)
      * @Extbase\Validate("NumberRange", options={"minimum": 1}, param="ratedobjectuid")
      * @param    int $ratedobjectuid The Uid of the rated row
      * @param    bool $addIfNotFound Set to true if new objects should instantly be added

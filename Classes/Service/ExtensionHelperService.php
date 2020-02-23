@@ -18,6 +18,7 @@ use Thucke\ThRating\Domain\Validator\RatingValidator;
 use Thucke\ThRating\Domain\Validator\StepconfValidator;
 use Thucke\ThRating\Domain\Validator\VoteValidator;
 use Thucke\ThRating\Evaluation\DynamicCssEvaluator;
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Log\Logger;
 use TYPO3\CMS\Core\Log\LogLevel;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
@@ -28,8 +29,6 @@ use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
-use Thucke\ThRating\Utility\DeprecationHelperUtility;
-
 /***************************************************************
 *  Copyright notice
 *
@@ -440,8 +439,8 @@ class ExtensionHelperService extends AbstractExtensionService
         $messageArray = [];
 
         //create file if it does not exist
-        if (file_exists(DeprecationHelperUtility::getPublicPath() . self::DYN_CSS_FILENAME)) {
-            $fstat = stat(DeprecationHelperUtility::getPublicPath() . self::DYN_CSS_FILENAME);
+        if (file_exists(Environment::getPublicPath() .'/' . self::DYN_CSS_FILENAME)) {
+            $fstat = stat(Environment::getPublicPath() .'/' . self::DYN_CSS_FILENAME);
             //do not recreate file if it has greater than zero length
             if ($fstat[7] !== 0) {
                 $this->logger->log(LogLevel::DEBUG, 'Dynamic CSS file exists - exiting');
@@ -544,7 +543,7 @@ class ExtensionHelperService extends AbstractExtensionService
                 if ($ratingName === 'default') {
                     continue;
                 }
-                $subURI = substr(DeprecationHelperUtility::getPublicPath(), strlen($_SERVER['DOCUMENT_ROOT']) + 1);
+                $subURI = substr(Environment::getPublicPath() .'/', strlen($_SERVER['DOCUMENT_ROOT']) + 1);
                 $basePath = $this->getTypoScriptFrontendController()->baseUrl ?: '//' .
                     $_SERVER['HTTP_HOST'] . '/' . $subURI;
 
@@ -648,7 +647,7 @@ class ExtensionHelperService extends AbstractExtensionService
         }
 
         $this->logger->log(LogLevel::DEBUG, 'Saving CSS file', ['cssFile' => $cssFile]);
-        $fp = fopen(DeprecationHelperUtility::getPublicPath() . self::DYN_CSS_FILENAME, 'wb');
+        $fp = fopen(Environment::getPublicPath() .'/' . self::DYN_CSS_FILENAME, 'wb');
         fwrite($fp, $cssFile);
         fclose($fp);
 

@@ -5,6 +5,8 @@
 
 #########################################################################
 # Configure table mapping for voter objects
+# Removed as of TYPO3 10.1
+# Replaced by \Thucke\ThRating\Configuration\Extbase\Persistence\Classes.php
 #########################################################################
 config.tx_extbase.legacy.enableLegacyFlashMessageHandling = 0
 config.tx_extbase.persistence.classes {

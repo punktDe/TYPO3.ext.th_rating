@@ -38,7 +38,6 @@ use TYPO3\CMS\Extbase\Annotation as Extbase;
  * @author  Thomas Hucke <thucke@web.de>
  * @copyright  Copyright belongs to the respective authors
  * @license  http://opensource.org/licenses/gpl-license.php GNU Public License, version 2
- * @scope   beta
  * @entity
  */
 class Ratingobject extends AbstractEntity
@@ -47,10 +46,8 @@ class Ratingobject extends AbstractEntity
      * Table name of the cObj
      * Defaults to Typo3 tablename of pages
      *
-     * @validate StringLength(minimum = 3, maximum = 60)
      * @Extbase\Validate("StringLength", options={"minimum": 3})
      * @Extbase\Validate("StringLength", options={"maximum": 60})
-     * @validate NotEmpty
      * @Extbase\Validate("NotEmpty")
      * @var string
      */
@@ -60,10 +57,8 @@ class Ratingobject extends AbstractEntity
      * Fieldname within the table of the cObj
      * Defaults to the field 'uid'
      *
-     * @validate StringLength(minimum = 3, maximum = 60)
      * @Extbase\Validate("StringLength", options={"minimum": 3})
      * @Extbase\Validate("StringLength", options={"maximum": 60})
-     * @validate NotEmpty
      * @Extbase\Validate("NotEmpty")
      * @var string
      */
@@ -72,9 +67,7 @@ class Ratingobject extends AbstractEntity
     /**
      * The stepconfs of this object
      *
-     * @lazy
      * @Extbase\ORM\Lazy
-     * @cascade remove
      * @Extbase\ORM\Cascade("remove")
      * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Thucke\ThRating\Domain\Model\Stepconf>
      */
@@ -83,9 +76,7 @@ class Ratingobject extends AbstractEntity
     /**
      * The ratings of this object
      *
-     * @lazy
      * @Extbase\ORM\Lazy
-     * @cascade remove
      * @Extbase\ORM\Cascade("remove")
      * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Thucke\ThRating\Domain\Model\Rating>
      */
@@ -123,10 +114,8 @@ class Ratingobject extends AbstractEntity
      * Constructs a new rating object
      * @param string $ratetable The rating objects table name
      * @param string $ratefield The rating objects field name
-     * @validate  $ratetable StringLength(minimum = 3, maximum = 60)
      * @Extbase\Validate("StringLength", options={"minimum": 3}, param="ratetable")
      * @Extbase\Validate("StringLength", options={"maximum": 60}, param="ratetable")
-     * @validate $ratefield StringLength(minimum = 3, maximum = 60)
      * @Extbase\Validate("StringLength", options={"minimum": 3}, param="ratefield")
      * @Extbase\Validate("StringLength", options={"maximum": 60}, param="ratefield")
      */

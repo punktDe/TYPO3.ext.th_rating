@@ -40,7 +40,6 @@ use TYPO3\CMS\Extbase\Annotation as Extbase;
  * @author  Thomas Hucke <thucke@web.de>
  * @copyright  Copyright belongs to the respective authors
  * @license  http://opensource.org/licenses/gpl-license.php GNU Public License, version 2
- * @scope   beta
  * @entity
  */
 class Rating extends AbstractEntity
@@ -48,9 +47,7 @@ class Rating extends AbstractEntity
     //TODO check deleted referenced records
 
     /**
-     * @validate \Thucke\ThRating\Domain\Validator\RatingobjectValidator
      * @Extbase\Validate("\Thucke\ThRating\Domain\Validator\RatingobjectValidator")
-     * @validate NotEmpty
      * @Extbase\Validate("NotEmpty")
      * @var \Thucke\ThRating\Domain\Model\Ratingobject
      */
@@ -59,9 +56,7 @@ class Rating extends AbstractEntity
     /**
      * The ratings uid of this object
      *
-     * @validate NumberRange(minimum = 1)
      * @Extbase\Validate("NumberRange", options={"minimum": 1})
-     * @validate NotEmpty
      * @Extbase\Validate("NotEmpty")
      * @var int
      */
@@ -70,9 +65,7 @@ class Rating extends AbstractEntity
     /**
      * The ratings of this object
      *
-     * @lazy
      * @Extbase\ORM\Lazy
-     * @cascade remove
      * @Extbase\ORM\Cascade("remove")
      * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Thucke\ThRating\Domain\Model\Vote>
      */

@@ -250,6 +250,7 @@ lib.thrating.ratingInstanceUrl {
 #########################################################################
 #include only if it is wanted by configuration
 [globalVar = LIT:1 = {$plugin.tx_thrating.config.loadJQuery}]
+[global]
   page.includeJSFooterlibs {
     jquery = //ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js
     jquery.compressed = 1
@@ -257,7 +258,6 @@ lib.thrating.ratingInstanceUrl {
     jquery.forceOnTop = 1
   }
 
-[global]
 page {
   includeJSFooter {
     jQueryFormPlugin = EXT:th_rating/Resources/Public/JavaScript/jquery.form.min.js

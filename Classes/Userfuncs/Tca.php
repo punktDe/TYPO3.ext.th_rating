@@ -15,7 +15,6 @@ use Thucke\ThRating\Domain\Repository\StepnameRepository;
 use Thucke\ThRating\Utility\DeprecationHelperUtility;
 use TYPO3\CMS\Extbase\Persistence\Generic\LazyLoadingProxy;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
-use TYPO3\CMS\Frontend\Page\PageRepository;
 use TYPO3\CMS\Core\TypoScript\ExtendedTemplateService;
 use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
 
@@ -218,7 +217,9 @@ class Tca
      */
     public function loadTypoScriptForBEModule($extKey, $pid)
     {
-        $rootLine = DeprecationHelperUtility::getRootLine($pid);
+        $rootLine = GeneralUtility::makeInstance(ObjectManager::class)
+            ->get(\TYPO3\CMS\Core\Utility\RootlineUtility\PageRepository::class, $pid)
+            ->get();
         $TSObj = $this->objectManager->get(ExtendedTemplateService::class);
         $TSObj->tt_track = 0;
         $TSObj->init();

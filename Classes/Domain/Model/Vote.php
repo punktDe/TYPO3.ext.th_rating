@@ -38,15 +38,12 @@ use TYPO3\CMS\Extbase\Annotation as Extbase;
  * @author  Thomas Hucke <thucke@web.de>
  * @copyright  Copyright belongs to the respective authors
  * @license  http://opensource.org/licenses/gpl-license.php GNU Public License, version 2
- * @scope   beta
  * @entity
  */
 class Vote extends AbstractEntity
 {
     /**
-     * @validate \Thucke\ThRating\Domain\Validator\RatingValidator
      * @Extbase\Validate("\Thucke\ThRating\Domain\Validator\RatingValidator")
-     * @validate NotEmpty
      * @Extbase\Validate("NotEmpty")
      * @var      \Thucke\ThRating\Domain\Model\Rating
      */
@@ -55,7 +52,6 @@ class Vote extends AbstractEntity
     /**
      * The voter of this object
      *
-     * @validate NotEmpty
      * @Extbase\Validate("NotEmpty")
      * @var    \Thucke\ThRating\Domain\Model\Voter
      */
@@ -64,9 +60,7 @@ class Vote extends AbstractEntity
     /**
      * The actual voting of this object
      *
-     * @validate \Thucke\ThRating\Domain\Validator\StepconfValidator
      * @Extbase\Validate("\Thucke\ThRating\Domain\Validator\StepconfValidator")
-     * @validate NotEmpty
      * @Extbase\Validate("NotEmpty")
      * @var      \Thucke\ThRating\Domain\Model\Stepconf
      */

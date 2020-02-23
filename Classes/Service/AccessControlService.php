@@ -3,6 +3,8 @@
 /** @noinspection PhpFullyQualifiedNameUsageInspection */
 namespace Thucke\ThRating\Service;
 
+use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Domain\Repository\FrontendUserRepository;
 use Thucke\ThRating\Utility\DeprecationHelperUtility;
 
@@ -95,7 +97,9 @@ class AccessControlService extends AbstractExtensionService
      */
     public function backendAdminIsLoggedIn()
     {
-        return DeprecationHelperUtility::contextLoggedInBeUser();
+        /** @var Context $context */
+        $context = GeneralUtility::makeInstance(Context::class, null);
+        return $context->getPropertyFromAspect('backend.user', 'isLoggedIn');
     }
 
     /**
@@ -104,7 +108,9 @@ class AccessControlService extends AbstractExtensionService
      */
     public function hasLoggedInFrontendUser()
     {
-        return DeprecationHelperUtility::contextLoggedInFeUser();
+        /** @var Context $context */
+        $context = GeneralUtility::makeInstance(Context::class, array());
+        return $context->getPropertyFromAspect('frontend.user', 'isLoggedIn');
     }
 
     /**

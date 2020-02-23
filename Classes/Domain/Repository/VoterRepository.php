@@ -36,7 +36,7 @@ class VoterRepository extends FrontendUserRepository
      * Initialze this repository
      */
     /** @noinspection PhpUnused */
-    public function initializeObject(): void
+    public function initializeObject()
     {
         //Even hidden or deleted FE Users  should be found
         $this->defaultQuerySettings = $this->objectManager->get(Typo3QuerySettings::class);
