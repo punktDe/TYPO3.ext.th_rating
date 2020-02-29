@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 namespace Thucke\ThRating\Domain\Model;
 
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
@@ -61,11 +62,11 @@ class Stepname extends AbstractEntity
     protected $l18nParent;
 
     /**
-     * _languageUid
+     * _languageUid will be mapped to column sys_language_uid
      * @Extbase\Validate("NotEmpty")
      * @var int
      */
-    protected $_languageUid;
+    protected $languageUid;
 
     /**
      * Constructs a new stepconfig object
@@ -86,7 +87,7 @@ class Stepname extends AbstractEntity
     /**
      * Initializes a new stepconf object
      */
-    public function initializeObject()
+    public function initializeObject(): void
     {
         //\TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump($this,get_class($this).' initializeObject');
     }
@@ -96,7 +97,7 @@ class Stepname extends AbstractEntity
      *
      * @param \Thucke\ThRating\Domain\Model\Stepconf $stepconf The Rating
      */
-    public function setStepconf(Stepconf $stepconf)
+    public function setStepconf(Stepconf $stepconf): void
     {
         $this->stepconf = $stepconf;
         $this->setPid($stepconf->getPid());
@@ -117,7 +118,7 @@ class Stepname extends AbstractEntity
      *
      * @param string $stepname
      */
-    public function setStepname($stepname)
+    public function setStepname($stepname): void
     {
         $this->stepname = $stepname;
     }
@@ -129,7 +130,7 @@ class Stepname extends AbstractEntity
      * @return string Stepconfig name
      */
     /** @noinspection PhpUnused */
-    public function getStepname()
+    public function getStepname(): string
     {
         $value = $this->stepname;
         if (stripos($value, 'LLL:') === 0) {
@@ -147,7 +148,7 @@ class Stepname extends AbstractEntity
      * @return int
      */
     /** @noinspection PhpUnused */
-    public function getL18nParent()
+    public function getL18nParent(): int
     {
         return $this->l18nParent;
     }
@@ -155,31 +156,31 @@ class Stepname extends AbstractEntity
     /**
      * @param $l18nParent
      */
-    public function setL18nParent($l18nParent)
+    public function setL18nParent($l18nParent): void
     {
         $this->l18nParent = $l18nParent;
     }
 
     /**
-     * @param int $_languageUid
+     * @param int $languageUid
      */
-    public function set_languageUid($_languageUid)
+    public function setLanguageUid($languageUid): void
     {
-        $this->_languageUid = $_languageUid;
+        $this->languageUid = $languageUid;
     }
 
     /**
      * @return int
      */
-    public function get_languageUid()
+    public function getLanguageUid()
     {
-        return $this->_languageUid;
+        return $this->languageUid;
     }
 
     /**
      * @return bool
      */
-    public function isValid()
+    public function isValid(): bool
     {
         return !empty($this->stepconf);
     }
@@ -189,7 +190,7 @@ class Stepname extends AbstractEntity
      *
      * @return string
      */
-    public function __toString()
+    public function __toString(): string
     {
         return $this->getStepname();
     }

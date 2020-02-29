@@ -11,24 +11,29 @@ use Thucke\ThRating\Domain\Model\Stepname;
 use Thucke\ThRating\Domain\Model\Vote;
 use Thucke\ThRating\Domain\Repository\RatingobjectRepository;
 use Thucke\ThRating\Domain\Repository\RatingRepository;
-use Thucke\ThRating\Domain\Repository\SyslangRepository;
 use Thucke\ThRating\Domain\Repository\VoteRepository;
 use Thucke\ThRating\Domain\Validator\RatingobjectValidator;
 use Thucke\ThRating\Domain\Validator\RatingValidator;
 use Thucke\ThRating\Domain\Validator\StepconfValidator;
 use Thucke\ThRating\Domain\Validator\VoteValidator;
 use Thucke\ThRating\Evaluation\DynamicCssEvaluator;
+use Thucke\ThRating\Exception\Exception;
+use Thucke\ThRating\Exception\LanguageNotFoundException;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Log\Logger;
 use TYPO3\CMS\Core\Log\LogLevel;
+use TYPO3\CMS\Core\Site\Entity\Site;
+use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
-use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
+use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
+
 /***************************************************************
 *  Copyright notice
 *
@@ -279,30 +284,22 @@ class ExtensionHelperService extends AbstractExtensionService
     /**
      * Returns a new or existing ratingobject
      *
-     * @param   array   $stepnameArray
+     * @param array $stepnameArray
      * @return  \Thucke\ThRating\Domain\Model\Stepname
+     * @throws Exception
+     * @throws \TYPO3\CMS\Core\Exception\SiteNotFoundException
      */
     public function createStepname(array $stepnameArray): Stepname
     {
         /** @var \Thucke\ThRating\Domain\Model\Stepname $stepname */
         $stepname = $this->objectManager->get(Stepname::class);
         $stepname->setStepname($stepnameArray['stepname']);
-
-        if (!empty($stepnameArray['languageIso2Code'])) {
-            //check if additional language flag exists in current website
-            /** @var \Thucke\ThRating\Domain\Model\Syslang|QueryResultInterface $languageObject */
-            $languageObject = $this->objectManager->get(SyslangRepository::class)
-                ->findByStaticLangIsocode($stepnameArray['languageIso2Code']);
-            if ($languageObject->count() > 0) {
-                $stepname->set_languageUid($languageObject->getFirst()->getUid());
-            } else {
-                //treat as default language on invalid flag
-                $stepname->set_languageUid(0);
-            }
-        } else {
-            $stepname->set_languageUid(0);
-        }
-
+        $stepname->setPid($stepnameArray['pid']);
+        $stepname->setLanguageUid((int)$this->getStaticLanguageByIsoCode(
+                $stepname->getPid(),
+                $stepnameArray['languageIsoCode']
+            )->getLanguageId()
+        );
         return $stepname;
     }
 
@@ -653,4 +650,54 @@ class ExtensionHelperService extends AbstractExtensionService
 
         return $messageArray;
     }
+
+    /**
+     * Returns the language object
+     * If not ISO code is provided the default language is returned
+     *
+     * @param int|null $pid page id to which is part of the site
+     * @param string $twoLetterIsoCode iso-639-1 string (e.g. en, de, us)
+     * @return \TYPO3\CMS\Core\Site\Entity\SiteLanguage
+     * @throws \TYPO3\CMS\Core\Exception\SiteNotFoundException
+     * @throws LanguageNotFoundException
+     */
+    public function getStaticLanguageByIsoCode(int $pid, string $twoLetterIsoCode = null): SiteLanguage {
+        $staticLanguages=[];
+        /** @var Site $site */
+        $site = GeneralUtility::makeInstance(SiteFinder::class)->getSiteByPageId($pid);
+
+        if ($twoLetterIsoCode) {
+            foreach ($site->getAllLanguages() as $language) {
+                if ($language->getTwoLetterIsoCode() === $twoLetterIsoCode) {
+                    return $language;
+                }
+            }
+            throw new LanguageNotFoundException(LocalizationUtility::translate('flash.general.languageNotFound',
+                'ThRating'), 1582980369);
+        } else {
+            return $site->getDefaultLanguage();
+        }
+    }
+
+    /**
+     * Returns the language object
+     * If not ISO code is provided the default language is returned
+     *
+     * @param int $pid page id to which is part of the site
+     * @param int|null $languageId iso-639-1 string (e.g. en, de, us)
+     * @return \TYPO3\CMS\Core\Site\Entity\SiteLanguage
+     * @throws \TYPO3\CMS\Core\Exception\SiteNotFoundException
+     */
+    public function getStaticLanguageById(int $pid, int $languageId = null): ?SiteLanguage
+    {
+        /** @var Site $site */
+        $site = GeneralUtility::makeInstance(SiteFinder::class)->getSiteByPageId($pid);
+
+        if ($languageId) {
+            return $site->getLanguageById($languageId);
+        } else {
+            return $site->getDefaultLanguage();
+        }
+    }
+
 }

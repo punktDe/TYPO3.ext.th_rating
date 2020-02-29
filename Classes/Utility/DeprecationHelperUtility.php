@@ -26,6 +26,16 @@ class DeprecationHelperUtility
 {
 
     /**
+     *
+     */
+    public static function getAllSiteLanguages(): array
+    {
+        /** @var \TYPO3\CMS\Core\Site\Entity\Site $siteObject */
+        $siteObject = $GLOBALS['TYPO3_REQUEST']->getAttribute('site');
+        return $siteObject->getAllLanguages();
+    }
+
+    /**
      * @param string $testVersion
      * @return bool|int
      */

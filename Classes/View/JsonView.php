@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 namespace Thucke\ThRating\View;
 
 use TYPO3\CMS\Core\Messaging\FlashMessageRendererResolver;
@@ -42,7 +43,7 @@ class JsonView extends \TYPO3\CMS\Extbase\Mvc\View\JsonView
     /**
      * Tag builder instance
      *
-     * @var \TYPO3\CMS\Fluid\Core\ViewHelper\TagBuilder
+     * @var \TYPO3Fluid\Fluid\Core\ViewHelper\TagBuilder
      */
     protected $tag;
 
@@ -89,7 +90,7 @@ class JsonView extends \TYPO3\CMS\Extbase\Mvc\View\JsonView
      */
 
     /** @noinspection PhpMissingParentCallCommonInspection */
-    public function initializeView()
+    public function initializeView(): void
     {
         $configuration = [
             'voter' => [
@@ -116,7 +117,7 @@ class JsonView extends \TYPO3\CMS\Extbase\Mvc\View\JsonView
      *
      * @return string
      */
-    public function getFlashMessages()
+    public function getFlashMessages(): string
     {
         return GeneralUtility::makeInstance(FlashMessageRendererResolver::class)
             ->resolve()

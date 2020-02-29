@@ -11,10 +11,10 @@ defined('TYPO3_MODE') || die('Access denied.');
     'Pi1',        // A unique name of the plugin in UpperCamelCase
     [   // An array holding the controller-action-combinations that are accessible
         // The first controller and its first action will be the default
-        'Vote' => 'ratinglinks,polling,mark,index,show,create,new,singleton',
+        \Thucke\ThRating\Controller\VoteController::class => 'ratinglinks,polling,mark,index,show,create,new,singleton',
     ],
     [   // An array of non-cachable controller-action-combinations (they must already be enabled)
-        'Vote' => 'new,create,ratinglinks,polling,mark',
+        \Thucke\ThRating\Controller\VoteController::class => 'new,create,ratinglinks,polling,mark',
     ]
 
 );

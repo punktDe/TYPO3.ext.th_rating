@@ -2,6 +2,7 @@
 namespace Thucke\ThRating\Domain\Repository;
 
 use Thucke\ThRating\Domain\Model\Stepname;
+use Thucke\ThRating\Service\ExtensionHelperService;
 use TYPO3\CMS\Extbase\Persistence\Exception\InvalidQueryException;
 use TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings;
 use TYPO3\CMS\Extbase\Persistence\QueryInterface;
@@ -36,12 +37,19 @@ use TYPO3\CMS\Extbase\Persistence\Repository;
  */
 class StepnameRepository extends Repository
 {
-    protected const /** @noinspection PhpUnused */
-        TABLE_NAME = 'tx_thrating_domain_model_stepname';
+    protected const TABLE_NAME = 'tx_thrating_domain_model_stepname';
     protected const STEPCONF_NAME = 'stepconf';
-    protected const SYS_LANG_UID_LITERAL = 'sys_language_uid';
-    /** @noinspection PhpUnused */
-    protected $defaultOrderings = [ self::SYS_LANG_UID_LITERAL => QueryInterface::ORDER_ASCENDING];
+
+    /**
+     * @var string $syslangUidLiteral
+     */
+    protected $syslangUidLiteral;
+
+    /**
+     * @var int
+     */
+    protected $defaultOrderings ;
+
 
     /**
      * Initialize this repository
@@ -49,30 +57,32 @@ class StepnameRepository extends Repository
     /** @noinspection PhpUnused */
     public function initializeObject(): void
     {
+        $this->syslangUidLiteral = $GLOBALS['TCA'][self::TABLE_NAME]['ctrl']['languageField'];
+        $this->defaultOrderings = [ $this->syslangUidLiteral => QueryInterface::ORDER_ASCENDING];
     }
 
     /**
      * Checks if stepname got a valid language code
      *
-     * @param    Stepname $stepname The stepname object
+     * @param Stepname $stepname The stepname object
      * @return    bool
+     * @throws \TYPO3\CMS\Core\Exception\SiteNotFoundException
      */
     public function checkStepnameLanguage(Stepname $stepname): bool
     {
-        $stepnameLang = $stepname->get_languageUid();
+        $stepnameLang = $stepname->getLanguageUid();
         if ($stepnameLang > 0) {
             //check if given language exist
 
-            /** @var \Thucke\ThRating\Domain\Model\Syslang|object $queryResult */
-            $queryResult = $this->objectManager->get(SyslangRepository::class)->findByUid($stepnameLang);
-            if (!empty($queryResult)) {
-                //language code found -> OK
-                return true;
+            try {
+                //** @var \Thucke\ThRating\Domain\Model\Syslang|object $queryResult */
+                $queryResult = $this->objectManager->get(ExtensionHelperService::class)->getStaticLanguageById($stepnameLang);
+            } catch (\InvalidArgumentException $exception) {
+                //invalid language code -> NOK
+                return false;
             }
-            //invalid language code -> NOK
-            return false;
         }
-        //default language is always OK
+        //language code found -> OK
         return true;
     }
 
@@ -92,10 +102,36 @@ class StepnameRepository extends Repository
         $query->matching(
             $query->logicalAnd(
                 [$query->equals(self::STEPCONF_NAME, $stepname->getStepconf()->getUid()),
-                        $query->equals(self::SYS_LANG_UID_LITERAL, $stepname->get_languageUid()), ]
+                        $query->equals($this->syslangUidLiteral, $stepname->getLanguageUid()), ]
             )
         )
                 ->setLimit(1);
+        $queryResult = $query->execute();
+        if (count($queryResult) !== 0) {
+            $foundRow = $queryResult->getFirst();
+        }
+
+        return $foundRow;
+    }
+
+    /**
+     * Finds the given stepconf object in the repository
+     *
+     * @param int $uid
+     * @return object The matching object if found, otherwise NULL
+     */
+    public function findStrictByUid($uid)
+    {
+        $foundRow = $this->objectManager->get(Stepname::class);
+
+        $query = $this->createQuery();
+        $query->getQuerySettings()->setRespectSysLanguage(false);
+        $query->getQuerySettings()->setRespectStoragePage(false);
+        $query->matching(
+            $query->logicalAnd(
+                [$query->equals('uid', $uid)]
+            )
+        )->setLimit(1);
         $queryResult = $query->execute();
         if (count($queryResult) !== 0) {
             $foundRow = $queryResult->getFirst();
@@ -129,15 +165,16 @@ class StepnameRepository extends Repository
             /** @var array $websiteLanguagesArray */
             $websiteLanguagesArray = [];
 
-            $allWebsiteLanguages = $this->objectManager->get(SyslangRepository::class)->findAll()->toArray();
+            $allWebsiteLanguages = \Thucke\ThRating\Utility\DeprecationHelperUtility::getAllSiteLanguages();
+            //TODO remove $allWebsiteLanguages = $this->objectManager->get(SyslangRepository::class)->findAll()->toArray();
 
-            /** @var \Thucke\ThRating\Domain\Model\Syslang $language */
+            /** @var \TYPO3\CMS\Core\Site\Entity\SiteLanguage $language */
             foreach (array_values($allWebsiteLanguages) as $language) {
-                $websiteLanguagesArray[] = $language->getUid();
+                $websiteLanguagesArray[] = $language->getLanguageId();
             }
             $languageCounter = [];
             foreach (array_values($queryResult) as $value) {
-                $languageUid = $value[self::SYS_LANG_UID_LITERAL];
+                $languageUid = $value[$this->syslangUidLiteral];
                 $languageCounter[$languageUid]++;
                 if ($languageCounter[$languageUid] > 1) {
                     $checkConsistency['doubleLang'] = true;
@@ -171,7 +208,7 @@ class StepnameRepository extends Repository
             $query->logicalAnd(
                 [
                     $query->equals(self::STEPCONF_NAME, $stepname->getStepconf()->getUid()),
-                    $query->in(self::SYS_LANG_UID_LITERAL, [0, -1])
+                    $query->in($this->syslangUidLiteral, [0, -1])
                 ]
             )
         )->setLimit(1);

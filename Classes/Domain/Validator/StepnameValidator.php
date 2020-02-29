@@ -79,7 +79,7 @@ class StepnameValidator extends AbstractValidator
         }
 
         //now check if entry for default language exists
-        $langUid = $stepname->get_languageUid();
+        $langUid = $stepname->getLanguageUid();
         if (!empty($langUid)) {
             $defaultStepname = $this->stepnameRepository->findDefaultStepname($stepname);
             if (!get_class($defaultStepname) === Stepname::class || $this->validate($defaultStepname)->hasErrors()) {

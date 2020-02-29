@@ -6,8 +6,13 @@ return [
     \Thucke\ThRating\Domain\Model\Voter::class => [
         'tableName' => 'fe_users',
     ],
-    \Thucke\ThRating\Domain\Model\Syslang::class => [
-        'tableName' => 'sys_language',
+    \Thucke\ThRating\Domain\Model\Stepname::class => [
+        'tableName' => 'tx_thrating_domain_model_stepname',
+        'properties' => [
+            'languageUid' => [
+                'fieldName' => 'sys_language_uid'
+            ]
+        ]
     ],
     \TYPO3\CMS\Extbase\Domain\Model\FrontendUser::class => [
         'subclasses' => [
