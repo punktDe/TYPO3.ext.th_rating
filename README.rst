@@ -52,6 +52,7 @@ Important updates
 As of version 1.8.0 the extension uses the SiteLanguage-API for localization.
 Therefore it is required that administrators do configure their site languages via "Site Management" in the backend.
 Because of that the following is not needed anymore:
+
 * old typoscript configuration of language definitions
 * dependency to the extension "static_info_tables"
 * website language system records
