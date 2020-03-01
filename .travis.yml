@@ -8,7 +8,7 @@ env:
   global:
     - typo3DatabaseHost=localhost typo3DatabaseName=typo3 typo3DatabaseUsername=root typo3DatabasePassword=''
   matrix:
-    - TYPO3_VERSION=^10
+#    - TYPO3_VERSION=^10
     - TYPO3_VERSION=^9
 services:
   - mysql
@@ -27,10 +27,10 @@ matrix:
   include:
     - stage: static checks
       name: "PHPLint"
-      php: 7.2
+      php: 7.4
       script: ./Build/Scripts/runTravisTests.sh -s lint
     - name: "SonarQube"
-      php: 7.2
+      php: 7.4
       addons:
         sonarcloud:
           organization: "thucke"
