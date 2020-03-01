@@ -6,6 +6,7 @@ use Thucke\ThRating\Domain\Repository\StepconfRepository;
 use Thucke\ThRating\Service\ExtensionHelperService;
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
+use TYPO3\CMS\Extbase\Annotation as Extbase;
 
 /***************************************************************
 *  Copyright notice
@@ -37,7 +38,6 @@ use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
  * @author  Thomas Hucke <thucke@web.de>
  * @copyright  Copyright belongs to the respective authors
  * @license  http://opensource.org/licenses/gpl-license.php GNU Public License, version 2
- * @scope   beta
  * @entity
  */
 class Ratingobject extends AbstractEntity
@@ -46,9 +46,10 @@ class Ratingobject extends AbstractEntity
      * Table name of the cObj
      * Defaults to Typo3 tablename of pages
      *
+     * @Extbase\Validate("StringLength", options={"minimum": 3})
+     * @Extbase\Validate("StringLength", options={"maximum": 60})
+     * @Extbase\Validate("NotEmpty")
      * @var string
-     * @validate StringLength(minimum = 3, maximum = 60)
-     * @validate NotEmpty
      */
     protected $ratetable;
 
@@ -56,27 +57,28 @@ class Ratingobject extends AbstractEntity
      * Fieldname within the table of the cObj
      * Defaults to the field 'uid'
      *
+     * @Extbase\Validate("StringLength", options={"minimum": 3})
+     * @Extbase\Validate("StringLength", options={"maximum": 60})
+     * @Extbase\Validate("NotEmpty")
      * @var string
-     * @validate StringLength(minimum = 3, maximum = 60)
-     * @validate NotEmpty
      */
     protected $ratefield;
 
     /**
      * The stepconfs of this object
      *
+     * @Extbase\ORM\Lazy
+     * @Extbase\ORM\Cascade("remove")
      * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Thucke\ThRating\Domain\Model\Stepconf>
-     * @lazy
-     * @cascade remove
      */
     protected $stepconfs;
 
     /**
      * The ratings of this object
      *
+     * @Extbase\ORM\Lazy
+     * @Extbase\ORM\Cascade("remove")
      * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Thucke\ThRating\Domain\Model\Rating>
-     * @lazy
-     * @cascade remove
      */
     protected $ratings;
 
@@ -89,7 +91,7 @@ class Ratingobject extends AbstractEntity
      * @param \Thucke\ThRating\Domain\Repository\StepconfRepository $stepconfRepository
      */
     /** @noinspection PhpUnused */
-    public function injectStepconfRepository(StepconfRepository $stepconfRepository): void
+    public function injectStepconfRepository(StepconfRepository $stepconfRepository)
     {
         $this->stepconfRepository = $stepconfRepository;
     }
@@ -103,7 +105,7 @@ class Ratingobject extends AbstractEntity
      * @param \Thucke\ThRating\Service\ExtensionHelperService $extensionHelperService
      */
     /** @noinspection PhpUnused */
-    public function injectExtensionHelperService(ExtensionHelperService $extensionHelperService): void
+    public function injectExtensionHelperService(ExtensionHelperService $extensionHelperService)
     {
         $this->extensionHelperService = $extensionHelperService;
     }
@@ -112,8 +114,10 @@ class Ratingobject extends AbstractEntity
      * Constructs a new rating object
      * @param string $ratetable The rating objects table name
      * @param string $ratefield The rating objects field name
-     * @validate  $ratetable StringLength(minimum = 3, maximum = 60)
-     * @validate $ratefield StringLength(minimum = 3, maximum = 60)
+     * @Extbase\Validate("StringLength", options={"minimum": 3}, param="ratetable")
+     * @Extbase\Validate("StringLength", options={"maximum": 60}, param="ratetable")
+     * @Extbase\Validate("StringLength", options={"minimum": 3}, param="ratefield")
+     * @Extbase\Validate("StringLength", options={"maximum": 60}, param="ratefield")
      */
     public function __construct($ratetable = null, $ratefield = null)
     {
@@ -129,7 +133,7 @@ class Ratingobject extends AbstractEntity
     /**
      * Initializes a new ratingobject
      */
-    public function initializeObject(): void
+    public function initializeObject()
     {
         //Initialize rating storage if ratingobject is new
         if (!is_object($this->ratings)) {
@@ -146,7 +150,7 @@ class Ratingobject extends AbstractEntity
      *
      * @param string $ratetable
      */
-    public function setRatetable($ratetable): void
+    public function setRatetable($ratetable)
     {
         $this->ratetable = $ratetable;
     }
@@ -156,7 +160,7 @@ class Ratingobject extends AbstractEntity
      *
      * @return string Rating object table name
      */
-    public function getRatetable(): string
+    public function getRatetable()
     {
         return $this->ratetable;
     }
@@ -166,7 +170,7 @@ class Ratingobject extends AbstractEntity
      *
      * @param string $ratefield
      */
-    public function setRatefield($ratefield): void
+    public function setRatefield($ratefield)
     {
         $this->ratefield = $ratefield;
     }
@@ -176,7 +180,7 @@ class Ratingobject extends AbstractEntity
      *
      * @return string Rating object field name
      */
-    public function getRatefield(): string
+    public function getRatefield()
     {
         return $this->ratefield;
     }
@@ -187,7 +191,7 @@ class Ratingobject extends AbstractEntity
      * @param \Thucke\ThRating\Domain\Model\Rating $rating
      */
     /** @noinspection PhpUnused */
-    public function addRating(Rating $rating): void
+    public function addRating(Rating $rating)
     {
         $this->ratings->attach($rating);
         $this->extensionHelperService->persistRepository(RatingRepository::class, $rating);
@@ -200,7 +204,7 @@ class Ratingobject extends AbstractEntity
      * @param \Thucke\ThRating\Domain\Model\Rating $rating The rating to be removed
      */
     /** @noinspection PhpUnused */
-    public function removeRating(Rating $rating): void
+    public function removeRating(Rating $rating)
     {
         $this->ratings->detach($rating);
     }
@@ -209,7 +213,7 @@ class Ratingobject extends AbstractEntity
      * Remove all ratings from this object
      */
     /** @noinspection PhpUnused */
-    public function removeAllRatings(): void
+    public function removeAllRatings()
     {
         $this->ratings = new ObjectStorage();
     }
@@ -219,7 +223,7 @@ class Ratingobject extends AbstractEntity
      *
      * @param \Thucke\ThRating\Domain\Model\Stepconf $stepconf
      */
-    public function addStepconf(Stepconf $stepconf): void
+    public function addStepconf(Stepconf $stepconf)
     {
         if (!$this->stepconfRepository->existStepconf($stepconf)) {
             $this->stepconfs->attach($stepconf);
@@ -235,7 +239,7 @@ class Ratingobject extends AbstractEntity
      *        The step configurations for this ratingobject
      */
     /** @noinspection PhpUnused */
-    public function setStepconfs(ObjectStorage $stepconfs): void
+    public function setStepconfs(ObjectStorage $stepconfs)
     {
         $this->stepconfs = $stepconfs;
     }
@@ -257,7 +261,7 @@ class Ratingobject extends AbstractEntity
      *          The ratings of the organization
      */
     /** @noinspection PhpUnused */
-    public function setRatings(ObjectStorage $ratings): void
+    public function setRatings(ObjectStorage $ratings)
     {
         $this->ratings = $ratings;
     }

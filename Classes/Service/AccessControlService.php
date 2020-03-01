@@ -3,7 +3,10 @@
 /** @noinspection PhpFullyQualifiedNameUsageInspection */
 namespace Thucke\ThRating\Service;
 
+use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Domain\Repository\FrontendUserRepository;
+use Thucke\ThRating\Utility\DeprecationHelperUtility;
 
 /***************************************************************
 *  Copyright notice
@@ -89,27 +92,32 @@ class AccessControlService extends AbstractExtensionService
 
     /**
      * @return bool
+     * @throws \TYPO3\CMS\Core\Context\Exception\AspectNotFoundException
+     * @noinspection PhpUnused
      */
-
-    /** @noinspection PhpUnused */
     public function backendAdminIsLoggedIn()
     {
-        return $GLOBALS['TSFE']->beUserLogin === 1;
+        /** @var Context $context */
+        $context = GeneralUtility::makeInstance(Context::class, null);
+        return $context->getPropertyFromAspect('backend.user', 'isLoggedIn');
     }
 
     /**
      * @return bool
+     * @throws \TYPO3\CMS\Core\Context\Exception\AspectNotFoundException
      */
     public function hasLoggedInFrontendUser()
     {
-        return !empty($GLOBALS['TSFE']->loginUser);
+        /** @var Context $context */
+        $context = GeneralUtility::makeInstance(Context::class, array());
+        return $context->getPropertyFromAspect('frontend.user', 'isLoggedIn');
     }
 
     /**
      * @return array
+     * @throws \TYPO3\CMS\Core\Context\Exception\AspectNotFoundException
+     * @noinspection PhpUnused
      */
-
-    /** @noinspection PhpUnused */
     public function getFrontendUserGroups()
     {
         if ($this->hasLoggedInFrontendUser()) {

@@ -9,6 +9,7 @@ use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
+use TYPO3\CMS\Extbase\Annotation as Extbase;
 
 /***************************************************************
 *  Copyright notice
@@ -39,7 +40,6 @@ use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
  * @author  Thomas Hucke <thucke@web.de>
  * @copyright  Copyright belongs to the respective authors
  * @license  http://opensource.org/licenses/gpl-license.php GNU Public License, version 2
- * @scope   beta
  * @entity
  */
 class Rating extends AbstractEntity
@@ -47,27 +47,27 @@ class Rating extends AbstractEntity
     //TODO check deleted referenced records
 
     /**
+     * @Extbase\Validate("\Thucke\ThRating\Domain\Validator\RatingobjectValidator")
+     * @Extbase\Validate("NotEmpty")
      * @var \Thucke\ThRating\Domain\Model\Ratingobject
-     * @validate \Thucke\ThRating\Domain\Validator\RatingobjectValidator
-     * @validate NotEmpty
      */
     protected $ratingobject;
 
     /**
      * The ratings uid of this object
      *
+     * @Extbase\Validate("NumberRange", options={"minimum": 1})
+     * @Extbase\Validate("NotEmpty")
      * @var int
-     * @validate NumberRange(minimum = 1)
-     * @validate NotEmpty
      */
     protected $ratedobjectuid;
 
     /**
      * The ratings of this object
      *
+     * @Extbase\ORM\Lazy
+     * @Extbase\ORM\Cascade("remove")
      * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Thucke\ThRating\Domain\Model\Vote>
-     * @lazy
-     * @cascade remove
      */
     protected $votes;
 
@@ -80,7 +80,7 @@ class Rating extends AbstractEntity
      * @param \TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager
      */
     /** @noinspection PhpUnused */
-    public function injectObjectManager(ObjectManagerInterface $objectManager): void
+    public function injectObjectManager(ObjectManagerInterface $objectManager)
     {
         $this->objectManager = $objectManager;
     }
@@ -93,7 +93,7 @@ class Rating extends AbstractEntity
     /**
      * @param \Thucke\ThRating\Domain\Repository\VoteRepository $voteRepository
      */
-    public function injectVoteRepository(VoteRepository $voteRepository): void
+    public function injectVoteRepository(VoteRepository $voteRepository)
     {
         $this->voteRepository = $voteRepository;
     }
@@ -107,7 +107,7 @@ class Rating extends AbstractEntity
      * @param \Thucke\ThRating\Service\ExtensionHelperService $extensionHelperService
      */
     /** @noinspection PhpUnused */
-    public function injectExtensionHelperService(ExtensionHelperService $extensionHelperService): void
+    public function injectExtensionHelperService(ExtensionHelperService $extensionHelperService)
     {
         $this->extensionHelperService = $extensionHelperService;
     }
@@ -154,7 +154,7 @@ class Rating extends AbstractEntity
      * Initializes a new rating object
      * @throws \TYPO3\CMS\Extbase\Configuration\Exception\InvalidConfigurationTypeException
      */
-    public function initializeObject(): void
+    public function initializeObject()
     {
         if (empty($this->objectManager)) {
             $this->objectManager = GeneralUtility::makeInstance(ObjectManager::class);
@@ -174,7 +174,7 @@ class Rating extends AbstractEntity
      *
      * @param \Thucke\ThRating\Domain\Model\Ratingobject $ratingobject The Rating
      */
-    public function setRatingobject(Ratingobject $ratingobject): void
+    public function setRatingobject(Ratingobject $ratingobject)
     {
         $this->ratingobject = $ratingobject;
         $this->setPid($ratingobject->getPid());
@@ -195,7 +195,7 @@ class Rating extends AbstractEntity
      *
      * @param int $ratedobjectuid
      */
-    public function setRatedobjectuid($ratedobjectuid): void
+    public function setRatedobjectuid($ratedobjectuid)
     {
         $this->ratedobjectuid = $ratedobjectuid;
     }
@@ -215,7 +215,7 @@ class Rating extends AbstractEntity
      *
      * @param \Thucke\ThRating\Domain\Model\Vote $vote
      */
-    public function addVote(Vote $vote): void
+    public function addVote(Vote $vote)
     {
         $this->votes->attach($vote);
         $this->addCurrentrate($vote);
@@ -228,7 +228,7 @@ class Rating extends AbstractEntity
      * @param \Thucke\ThRating\Domain\Model\Vote $existingVote
      * @param \Thucke\ThRating\Domain\Model\Vote $newVote
      */
-    public function updateVote(Vote $existingVote, Vote $newVote): void
+    public function updateVote(Vote $existingVote, Vote $newVote)
     {
         $this->removeCurrentrate($existingVote);
         $existingVote->setVote($newVote->getVote());
@@ -242,7 +242,7 @@ class Rating extends AbstractEntity
      * @param \Thucke\ThRating\Domain\Model\Vote $voteToRemove The vote to be removed
      */
     /** @noinspection PhpUnused */
-    public function removeVote(Vote $voteToRemove): void
+    public function removeVote(Vote $voteToRemove)
     {
         $this->removeCurrentrate($voteToRemove);
         $this->votes->detach($voteToRemove);
@@ -252,7 +252,7 @@ class Rating extends AbstractEntity
      * Remove all votes from this rating
      */
     /** @noinspection PhpUnused */
-    public function removeAllVotes(): void
+    public function removeAllVotes()
     {
         $this->votes = new ObjectStorage();
         unset($this->currentrates);
@@ -273,7 +273,7 @@ class Rating extends AbstractEntity
      *
      * This method is used for maintenance to assure consistency
      */
-    public function checkCurrentrates(): void
+    public function checkCurrentrates()
     {
         $currentratesDecoded['weightedVotes'] = [];
         $currentratesDecoded['sumWeightedVotes'] = [];
@@ -303,7 +303,7 @@ class Rating extends AbstractEntity
      *
      * @param \Thucke\ThRating\Domain\Model\Vote $voting The vote to be added
      */
-    public function addCurrentrate(Vote $voting): void
+    public function addCurrentrate(Vote $voting)
     {
         if (empty($this->currentrates)) {
             $this->checkCurrentrates(); //initialize entry
@@ -328,7 +328,7 @@ class Rating extends AbstractEntity
      *
      * @param \Thucke\ThRating\Domain\Model\Vote $voting The vote to be removed
      */
-    public function removeCurrentrate(Vote $voting): void
+    public function removeCurrentrate(Vote $voting)
     {
         if (empty($this->currentrates)) {
             $this->checkCurrentrates(); //initialize entry

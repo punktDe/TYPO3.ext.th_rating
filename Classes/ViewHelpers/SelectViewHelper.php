@@ -63,7 +63,6 @@ class SelectViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\SelectViewHelpe
         foreach ($this->arguments['additionalOptions'] as $key => $value) {
             $additionalOptions[utf8_encode('{"value":' . $key . '}')] = $value;
         }
-        //TODO delete deprecated $array = GeneralUtility::array_merge($options, $additionalOptions);
         $array = $additionalOptions + $options;
         ksort($array);
 

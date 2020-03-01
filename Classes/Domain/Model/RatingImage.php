@@ -1,6 +1,8 @@
 <?php
 namespace Thucke\ThRating\Domain\Model;
 
+use Thucke\ThRating\Utility\DeprecationHelperUtility;
+use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 use TYPO3\CMS\Frontend\Imaging\GifBuilder;
@@ -34,7 +36,6 @@ use TYPO3\CMS\Frontend\Imaging\GifBuilder;
  * @author  Thomas Hucke <thucke@web.de>
  * @copyright  Copyright belongs to the respective authors
  * @license  http://opensource.org/licenses/gpl-license.php GNU Public License, version 2
- * @scope   beta
  * @entity
  */
 class RatingImage extends AbstractEntity
@@ -64,10 +65,9 @@ class RatingImage extends AbstractEntity
     /**
      * @param GifBuilder $gifBuilder
      */
-    public function injectGifBuilder(GifBuilder $gifBuilder): void
+    public function injectGifBuilder(GifBuilder $gifBuilder)
     {
         $this->gifBuilder = $gifBuilder;
-        $this->gifBuilder->init();
     }
 
     /**
@@ -86,10 +86,9 @@ class RatingImage extends AbstractEntity
     /**
      * Initializes the new vote object
      */
-    public function initializeObject(): void
+    public function initializeObject()
     {
         if (empty($this->gifBuilder)) {
-            /** @noinspection PhpParamsInspection */
             $this->injectGifBuilder(GeneralUtility::makeInstance(GifBuilder::class));
         }
     }
@@ -99,7 +98,7 @@ class RatingImage extends AbstractEntity
      *
      * @param mixed $conf either an array consisting of GIFBUILDER typoscript or a plain string having the filename
      */
-    public function setConf($conf): void
+    public function setConf($conf)
     {
         switch (gettype($conf)) {
             case 'string':
@@ -133,9 +132,10 @@ class RatingImage extends AbstractEntity
      *
      * @param string $imageFile
      */
-    public function setImageFile($imageFile): void
+    public function setImageFile($imageFile)
     {
-        $fullImagePath = PATH_site . $imageFile;
+
+        $fullImagePath = Environment::getPublicPath() .'/' . $imageFile;
         if (file_exists($fullImagePath)) {
             $this->imageFile = $imageFile;
             $this->isBuilderObject = false;
@@ -152,15 +152,14 @@ class RatingImage extends AbstractEntity
      * @param mixed $fullPath
      * @return string
      */
-    public function getImageFile($fullPath = false): string
+    public function getImageFile($fullPath = false)
     {
         $checkedFile = $this->gifBuilder->checkFile($this->imageFile);
         if (empty($checkedFile)) {
             //clear image if file doe not exist
             $this->setImageFile('xxx');
         }
-
-        return $fullPath ? PATH_site . '/' . $this->imageFile : $this->imageFile;
+        return $fullPath ? Environment::getPublicPath() . '/' . $this->imageFile : $this->imageFile;
     }
 
     /**
@@ -168,7 +167,7 @@ class RatingImage extends AbstractEntity
      *
      * @return bool   The result; true if the given the image has been created successfully; otherwise false
      */
-    public function generateImage(): bool
+    public function generateImage()
     {
         if (!empty($this->conf)) {
             $this->gifBuilder->start($this->getConf(), []);
@@ -192,7 +191,7 @@ class RatingImage extends AbstractEntity
      * @var bool switch if absolute path should be returned
      * @return array('width','height')
      */
-    public function getImageDimensions(): array
+    public function getImageDimensions()
     {
         if ($this->isBuilderObject) {
             [$width, $height] = $this->gifBuilder->getImageDimensions($this->imageFile);
@@ -208,7 +207,7 @@ class RatingImage extends AbstractEntity
      *
      * @return string
      */
-    public function __toString(): string
+    public function __toString()
     {
         return $this->imageFile;
     }

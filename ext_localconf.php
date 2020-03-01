@@ -5,16 +5,20 @@ defined('TYPO3_MODE') || die('Access denied.');
  * Configure the Plugin to call the
  * right combination of Controller and Action according to
  * the user input (default settings, FlexForm, URL etc.)
+ * @deprecated old controller registration will be removed in when support for TYPO3 v9 is dropped
  */
+//TODO remove second registration entry when TYPO3v9 compativility is dropped
 \TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
     'Thucke.ThRating',    // The extension name (in UpperCamelCase) or the extension key (in lower_underscore)
     'Pi1',        // A unique name of the plugin in UpperCamelCase
     [   // An array holding the controller-action-combinations that are accessible
         // The first controller and its first action will be the default
         'Vote' => 'ratinglinks,polling,mark,index,show,create,new,singleton',
+        \Thucke\ThRating\Controller\VoteController::class => 'ratinglinks,polling,mark,index,show,create,new,singleton',
     ],
     [   // An array of non-cachable controller-action-combinations (they must already be enabled)
         'Vote' => 'new,create,ratinglinks,polling,mark',
+        \Thucke\ThRating\Controller\VoteController::class => 'new,create,ratinglinks,polling,mark',
     ]
 
 );

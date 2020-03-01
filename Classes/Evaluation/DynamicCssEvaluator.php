@@ -2,6 +2,9 @@
 /** @noinspection PhpUnusedParameterInspection */
 namespace Thucke\ThRating\Evaluation;
 
+use Thucke\ThRating\Utility\DeprecationHelperUtility;
+use TYPO3\CMS\Core\Core\Environment;
+
 /***************************************************************
  *  Copyright notice
  *
@@ -73,11 +76,11 @@ class DynamicCssEvaluator
      */
     public function clearCachePostProc($_funcRef, $params, $pObj = null)
     {
-        if (file_exists(PATH_site . 'typo3temp/thratingDyn.css')) {
-            unlink(PATH_site . 'typo3temp/thratingDyn.css');
+        if (file_exists(Environment::getPublicPath() .'/typo3temp/thratingDyn.css')) {
+            unlink(Environment::getPublicPath() .'/typo3temp/thratingDyn.css');
         }
         //recreate file with zero length - so its still included via TS
-        $fp = fopen(PATH_site . 'typo3temp/thratingDyn.css', 'w');
+        $fp = fopen(Environment::getPublicPath() .'/typo3temp/thratingDyn.css', 'wb');
         fwrite($fp, '');
         fclose($fp);
     }

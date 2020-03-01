@@ -8,6 +8,7 @@ use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
 use TYPO3\CMS\Extbase\Persistence\Generic\LazyLoadingProxy;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
+use TYPO3\CMS\Extbase\Annotation as Extbase;
 
 /***************************************************************
 *  Copyright notice
@@ -38,51 +39,49 @@ use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
  * @author  Thomas Hucke <thucke@web.de>
  * @copyright  Copyright belongs to the respective authors
  * @license  http://opensource.org/licenses/gpl-license.php GNU Public License, version 2
- * @scope   beta
  * @entity
  */
 class Stepconf extends AbstractEntity
 {
     /**
+     * @Extbase\Validate("\Thucke\ThRating\Domain\Validator\RatingobjectValidator")
+     * @Extbase\Validate("NotEmpty")
      * @var \Thucke\ThRating\Domain\Model\Ratingobject
-     * @validate \Thucke\ThRating\Domain\Validator\RatingobjectValidator
-     * @validate NotEmpty
      */
     protected $ratingobject;
 
     /**
      * The order of this config entry
      *
+     * @Extbase\Validate("NumberRange", options={"minimum": 1})
+     * @Extbase\Validate("NotEmpty")
      * @var int discrete order of ratingsteps
-     * @validate NumberRange(minimum = 1)
-     * @validate NotEmpty
      */
     protected $steporder;
 
     /**
      * The weight of this config entry
      *
+     * @Extbase\Validate("NumberRange", options={"minimum": 1})
      * @var float  default is 1 which is equal weight
-     * @validate NumberRange(minimum = 1)
      */
     protected $stepweight;
 
     /**
      * The value of this config entry
      *
+     * @Extbase\ORM\Lazy
+     * @Extbase\ORM\Cascade("remove")
      * @var \Thucke\ThRating\Domain\Model\Stepname
-     * @validate \Thucke\ThRating\Domain\Validator\StepnameValidator
-     * @lazy
-     * @cascade remove
      */
     protected $stepname;
 
     /**
      * The ratings of this object
      *
+     * @Extbase\ORM\Lazy
+     * @Extbase\ORM\Cascade("remove")
      * @var \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Thucke\ThRating\Domain\Model\Vote>
-     * @lazy
-     * @cascade remove
      */
     protected $votes;
 
@@ -95,7 +94,7 @@ class Stepconf extends AbstractEntity
      * @param \TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager
      */
     /** @noinspection PhpUnused */
-    public function injectObjectManager(ObjectManagerInterface $objectManager): void
+    public function injectObjectManager(ObjectManagerInterface $objectManager)
     {
         $this->objectManager = $objectManager;
     }
@@ -109,7 +108,7 @@ class Stepconf extends AbstractEntity
      * @param \Thucke\ThRating\Domain\Repository\StepnameRepository $stepnameRepository
      */
     /** @noinspection PhpUnused */
-    public function injectStepnameRepository(StepnameRepository $stepnameRepository): void
+    public function injectStepnameRepository(StepnameRepository $stepnameRepository)
     {
         $this->stepnameRepository = $stepnameRepository;
     }
@@ -123,7 +122,7 @@ class Stepconf extends AbstractEntity
      * @param \Thucke\ThRating\Service\ExtensionHelperService $extensionHelperService
      */
     /** @noinspection PhpUnused */
-    public function injectExtensionHelperService(ExtensionHelperService $extensionHelperService): void
+    public function injectExtensionHelperService(ExtensionHelperService $extensionHelperService)
     {
         $this->extensionHelperService = $extensionHelperService;
     }
@@ -147,7 +146,7 @@ class Stepconf extends AbstractEntity
     /**
      * Initializes a new stepconf object
      */
-    public function initializeObject(): void
+    public function initializeObject()
     {
         //Initialize vote storage if rating is new
         if (!is_object($this->votes)) {
@@ -160,7 +159,7 @@ class Stepconf extends AbstractEntity
      *
      * @param \Thucke\ThRating\Domain\Model\Ratingobject $ratingobject The Rating
      */
-    public function setRatingobject(Ratingobject $ratingobject): void
+    public function setRatingobject(Ratingobject $ratingobject)
     {
         $this->ratingobject = $ratingobject;
         $this->setPid($ratingobject->getPid());
@@ -181,7 +180,7 @@ class Stepconf extends AbstractEntity
      *
      * @param int $steporder
      */
-    public function setSteporder($steporder): void
+    public function setSteporder($steporder)
     {
         $this->steporder = $steporder;
     }
@@ -201,7 +200,7 @@ class Stepconf extends AbstractEntity
      *
      * @param int $stepweight
      */
-    public function setStepweight($stepweight): void
+    public function setStepweight($stepweight)
     {
         $this->stepweight = $stepweight;
     }
@@ -212,7 +211,7 @@ class Stepconf extends AbstractEntity
      *
      * @return int Stepconfig value
      */
-    public function getStepweight(): int
+    public function getStepweight()
     {
         empty($this->stepweight) && $this->stepweight = $this->steporder;
 
@@ -227,7 +226,7 @@ class Stepconf extends AbstractEntity
      * @throws \TYPO3\CMS\Extbase\Persistence\Exception\InvalidQueryException
      * @return bool
      */
-    public function addStepname(Stepname $stepname): bool
+    public function addStepname(Stepname $stepname)
     {
         $success = true;
         $stepname->setStepconf($this);
@@ -281,7 +280,7 @@ class Stepconf extends AbstractEntity
      *
      * @return string
      */
-    public function __toString(): string
+    public function __toString()
     {
         $stepnameText = $this->getStepname();
         if (!$stepnameText) {

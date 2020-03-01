@@ -1,8 +1,10 @@
 <?php
+declare(strict_types = 1);
 namespace Thucke\ThRating\Domain\Model;
 
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
+use TYPO3\CMS\Extbase\Annotation as Extbase;
 
 /***************************************************************
 *  Copyright notice
@@ -33,15 +35,14 @@ use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
  * @author  Thomas Hucke <thucke@web.de>
  * @copyright  Copyright belongs to the respective authors
  * @license  http://opensource.org/licenses/gpl-license.php GNU Public License, version 2
- * @scope   beta
  * @entity
  */
 class Stepname extends AbstractEntity
 {
     /**
+     * @Extbase\Validate("\Thucke\ThRating\Domain\Validator\StepconfValidator")
+     * @Extbase\Validate("NotEmpty")
      * @var \Thucke\ThRating\Domain\Model\Stepconf
-     * @validate \Thucke\ThRating\Domain\Validator\StepconfValidator
-     * @validate NotEmpty
      */
     protected $stepconf;
 
@@ -61,16 +62,24 @@ class Stepname extends AbstractEntity
     protected $l18nParent;
 
     /**
-     * _languageUid
+     * languageUid will be mapped to column sys_language_uid
+     * @Extbase\Validate("NotEmpty")
      * @var int
-     * @validate NotEmpty
+     */
+    protected $languageUid;
+
+    /**
+     * _languageUid will be mapped to column sys_language_uid
+     * @deprecated will be removed in when support for TYPO3 v9 is dropped
+     * @Extbase\Validate("NotEmpty")
+     * @var int
      */
     protected $_languageUid;
 
     /**
      * Constructs a new stepconfig object
      * @param \Thucke\ThRating\Domain\Model\Stepconf|null $stepconf
-     * @param null $stepname
+     * @param string|null $stepname
      */
     public function __construct(Stepconf $stepconf = null, $stepname = null)
     {
@@ -81,6 +90,7 @@ class Stepname extends AbstractEntity
             $this->setStepname($stepname);
         }
         $this->initializeObject();
+
     }
 
     /**
@@ -161,19 +171,37 @@ class Stepname extends AbstractEntity
     }
 
     /**
-     * @param int $_languageUid
+     * @deprecated will be removed in when support for TYPO3 v9 is dropped
+     * @param int $languageUid
      */
-    public function set_languageUid($_languageUid): void
+    public function set_languageUid($languageUid): void
     {
-        $this->_languageUid = $_languageUid;
+        $this->_languageUid = $languageUid;
+    }
+
+    /**
+     * @deprecated will be removed in when support for TYPO3 v9 is dropped
+     * @return int
+     */
+    public function get_languageUid()
+    {
+        return $this->_languageUid;
+    }
+
+    /**
+     * @param int $languageUid
+     */
+    public function setLanguageUid($languageUid): void
+    {
+        $this->languageUid = $languageUid;
     }
 
     /**
      * @return int
      */
-    public function get_languageUid(): int
+    public function getLanguageUid()
     {
-        return $this->_languageUid;
+        return $this->languageUid ?? $this->_languageUid;
     }
 
     /**
