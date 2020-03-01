@@ -21,12 +21,16 @@ $GLOBALS['TCA']['tx_thrating_domain_model_rating'] = [
         'pid' => [
             'exclude' => 1,
             'config' => [
-                'type' => 'none', ], ],
+                'type' => 'none',
+            ],
+        ],
         'hidden' => [
             'exclude' => 1,
-            'label' => 'LLL:EXT:lang/locallang_general.xlf:LGL.hidden',
+            'label' => 'LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.hidden',
             'config' => [
-                'type' => 'check', ], ],
+                'type' => 'check',
+            ],
+        ],
         'ratingobject' => [
             'exclude' => 1,
             'label' => 'LLL:EXT:th_rating/Resources/Private/Language/locallang.xlf:tca.model.rating.ratingobject',

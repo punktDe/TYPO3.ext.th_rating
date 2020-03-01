@@ -7,6 +7,7 @@ use TYPO3\CMS\Extbase\Configuration\Exception\InvalidConfigurationTypeException;
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
+use TYPO3\CMS\Extbase\Annotation as Extbase;
 
 /***************************************************************
 *  Copyright notice
@@ -37,32 +38,31 @@ use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
  * @author  Thomas Hucke <thucke@web.de>
  * @copyright  Copyright belongs to the respective authors
  * @license  http://opensource.org/licenses/gpl-license.php GNU Public License, version 2
- * @scope   beta
  * @entity
  */
 class Vote extends AbstractEntity
 {
     /**
+     * @Extbase\Validate("\Thucke\ThRating\Domain\Validator\RatingValidator")
+     * @Extbase\Validate("NotEmpty")
      * @var      \Thucke\ThRating\Domain\Model\Rating
-     * @validate \Thucke\ThRating\Domain\Validator\RatingValidator
-     * @validate NotEmpty
      */
     protected $rating;
 
     /**
      * The voter of this object
      *
+     * @Extbase\Validate("NotEmpty")
      * @var    \Thucke\ThRating\Domain\Model\Voter
-     * @validate NotEmpty
      */
     protected $voter;
 
     /**
      * The actual voting of this object
      *
+     * @Extbase\Validate("\Thucke\ThRating\Domain\Validator\StepconfValidator")
+     * @Extbase\Validate("NotEmpty")
      * @var      \Thucke\ThRating\Domain\Model\Stepconf
-     * @validate \Thucke\ThRating\Domain\Validator\StepconfValidator
-     * @validate NotEmpty
      */
     protected $vote;
 
@@ -80,7 +80,7 @@ class Vote extends AbstractEntity
      * @param \TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager
      */
     /** @noinspection PhpUnused */
-    public function injectObjectManager(ObjectManagerInterface $objectManager): void
+    public function injectObjectManager(ObjectManagerInterface $objectManager)
     {
         $this->objectManager = $objectManager;
     }
@@ -92,7 +92,6 @@ class Vote extends AbstractEntity
      * @param \Thucke\ThRating\Domain\Model\Voter|null $voter
      * @param \Thucke\ThRating\Domain\Model\Stepconf|null $vote
      * @throws InvalidConfigurationTypeException
-     * return void
      */
     /** @noinspection PhpUnused */
     public function __construct(
@@ -116,7 +115,7 @@ class Vote extends AbstractEntity
      * Initializes the new vote object
      * @throws \TYPO3\CMS\Extbase\Configuration\Exception\InvalidConfigurationTypeException
      */
-    public function initializeObject(): void
+    public function initializeObject()
     {
         if (empty($this->objectManager)) {
             $this->objectManager = GeneralUtility::makeInstance(ObjectManager::class);
@@ -134,7 +133,7 @@ class Vote extends AbstractEntity
      *
      * @param \Thucke\ThRating\Domain\Model\Rating $rating The Rating
      */
-    public function setRating(Rating $rating): void
+    public function setRating(Rating $rating)
     {
         $this->rating = $rating;
         $this->setPid($rating->getPid());
@@ -155,7 +154,7 @@ class Vote extends AbstractEntity
      *
      * @param \Thucke\ThRating\Domain\Model\Voter $voter The frontenduser
      */
-    public function setVoter(Voter $voter): void
+    public function setVoter(Voter $voter)
     {
         $this->voter = $voter;
     }
@@ -163,7 +162,7 @@ class Vote extends AbstractEntity
     /**
      * Returns the frontenduser of this vote
      *
-     * @return \Thucke\ThRating\Domain\Model\Voter    The frontenduser of this vote
+     * @return \Thucke\ThRating\Domain\Model\Voter
      */
     public function getVoter(): Voter
     {
@@ -175,7 +174,7 @@ class Vote extends AbstractEntity
      *
      * @param \Thucke\ThRating\Domain\Model\Stepconf $vote
      */
-    public function setVote($vote): void
+    public function setVote($vote)
     {
         $this->vote = $vote;
     }
@@ -196,7 +195,7 @@ class Vote extends AbstractEntity
      * @return bool
      */
     /** @noinspection PhpUnused */
-    public function hasRated(): bool
+    public function hasRated()
     {
         return $this->getVote() !== null && ($this->getVote() instanceof Stepconf);
     }
@@ -206,7 +205,7 @@ class Vote extends AbstractEntity
      *
      * @return bool
      */
-    public function isAnonymous(): bool
+    public function isAnonymous()
     {
         if ($this->getVoter() instanceof Voter) {
             $retVal = $this->getVoter()->getUid() === (int)$this->settings['mapAnonymous'] &&
@@ -236,7 +235,7 @@ class Vote extends AbstractEntity
      *
      * @return string
      */
-    public function __toString(): string
+    public function __toString()
     {
         return (string)$this->getVote();
     }

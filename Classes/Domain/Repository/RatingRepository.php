@@ -8,6 +8,7 @@ use Thucke\ThRating\Domain\Validator\RatingValidator;
 use Thucke\ThRating\Service\ExtensionHelperService;
 use TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException;
 use TYPO3\CMS\Extbase\Persistence\Repository;
+use TYPO3\CMS\Extbase\Annotation as Extbase;
 
 /***************************************************************
  *  Copyright notice
@@ -51,7 +52,7 @@ class RatingRepository extends Repository
      * @param     \Thucke\ThRating\Service\ExtensionHelperService $extensionHelperService
      */
     /** @noinspection PhpUnused */
-    public function injectExtensionHelperService(ExtensionHelperService $extensionHelperService): void
+    public function injectExtensionHelperService(ExtensionHelperService $extensionHelperService)
     {
         $this->extensionHelperService = $extensionHelperService;
     }
@@ -59,13 +60,13 @@ class RatingRepository extends Repository
     /**
      * Finds the specific rating by giving the object and row uid
      *
+     * @Extbase\Validate("\Thucke\ThRating\Domain\Validator\RatingobjectValidator", param="ratingobject")
      * @param    \Thucke\ThRating\Domain\Model\Ratingobject $ratingobject The concerned ratingobject
+     * @Extbase\Validate("NumberRange", options={"minimum": 1}, param="ratedobjectuid")
      * @param    int $ratedobjectuid The Uid of the rated row
      * @param    bool $addIfNotFound Set to true if new objects should instantly be added
+     * @return  Rating
      * @throws  IllegalObjectTypeException
-     * @return  Rating        The rating
-     * @validate $ratingobject \Thucke\ThRating\Domain\Validator\RatingobjectValidator
-     * @validate $ratedobjectuid NumberRange(minimum = 1)
      */
     public function findMatchingObjectAndUid(
         Ratingobject $ratingobject,

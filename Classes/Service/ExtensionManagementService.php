@@ -90,15 +90,17 @@ class ExtensionManagementService extends AbstractExtensionService
     /**
      * Prepares an object for ratings
      *
-     * @param   \Thucke\ThRating\Domain\Model\Stepconf $stepconf
-     * @param   string $stepname
-     * @param   int $languageIso2Code
-     * @param   bool $allStepconfs Take stepname for all steps and add steporder number at the end
-     * @throws \TYPO3\CMS\Extbase\Persistence\Exception\InvalidQueryException
-     * @throws \TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException
+     * @param \Thucke\ThRating\Domain\Model\Stepconf $stepconf
+     * @param string $stepname
+     * @param string $twoLetterIsoCode
+     * @param bool $allStepconfs Take stepname for all steps and add steporder number at the end
      * @return  bool
+     * @throws \TYPO3\CMS\Core\Exception\SiteNotFoundException
+     * @throws \TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException
+     * @throws \TYPO3\CMS\Extbase\Persistence\Exception\InvalidQueryException
+     * @throws \Thucke\ThRating\Exception\Exception
      */
-    public function setStepname(Stepconf $stepconf, $stepname, $languageIso2Code = 0, $allStepconfs = false)
+    public function setStepname(Stepconf $stepconf, $stepname, $twoLetterIsoCode = null, $allStepconfs = false)
     {
         $this->logger->log(
             LogLevel::INFO,
@@ -107,7 +109,7 @@ class ExtensionManagementService extends AbstractExtensionService
                 'stepconf' => $stepconf->getUid(),
                 'steporder' => $stepconf->getSteporder(),
                 'stepname' => $stepname,
-                'languageIso2Code' => $languageIso2Code,
+                'twoLetterIsoCode' => $twoLetterIsoCode,
                 'allStepconfs' => $allStepconfs
             ]
         );
@@ -115,7 +117,11 @@ class ExtensionManagementService extends AbstractExtensionService
         if (!$allStepconfs) {
             //only add the one specific stepname
             /** @var array $stepnameArray */
-            $stepnameArray = ['stepname' => $stepname, 'languageIso2Code' => $languageIso2Code];
+            $stepnameArray = [
+                'stepname' => $stepname,
+                'twoLetterIsoCode' => $twoLetterIsoCode,
+                'pid' => $stepconf->getPid()
+            ];
             /** @var \Thucke\ThRating\Domain\Model\Stepname $stepname */
             /** @noinspection CallableParameterUseCaseInTypeContextInspection */
             $stepname = $this->extensionHelperService->createStepname($stepnameArray);
@@ -127,7 +133,7 @@ class ExtensionManagementService extends AbstractExtensionService
                         'stepconf' => $stepconf->getUid(),
                         'steporder' => $stepconf->getSteporder(),
                         'stepname' => $stepname,
-                        'languageIso2Code' => $languageIso2Code,
+                        'twoLetterIsoCode' => $twoLetterIsoCode,
                         'errorCode' => 1398972827
                     ]
                 );
@@ -140,7 +146,8 @@ class ExtensionManagementService extends AbstractExtensionService
             foreach ($ratingobject->getStepconfs() as $i => $loopStepConf) {
                 $stepnameArray = [
                     'stepname' => $stepname . $loopStepConf->getSteporder(),
-                    'languageIso2Code' => $languageIso2Code
+                    'twoLetterIsoCode' => $twoLetterIsoCode,
+                    'pid' => $ratingobject->getPid()
                 ];
                 $stepnameObject = $this->extensionHelperService->createStepname($stepnameArray);
                 if ($success && !$loopStepConf->addStepname($stepnameObject)) {
@@ -151,7 +158,7 @@ class ExtensionManagementService extends AbstractExtensionService
                             'stepconf' => $stepconf->getUid(),
                             'steporder' => $stepconf->getSteporder(),
                             'stepname' => $stepname,
-                            'languageIso2Code' => $languageIso2Code,
+                            'twoLetterIsoCode' => $twoLetterIsoCode,
                             'errorCode' => 1398972331
                         ]
                     );

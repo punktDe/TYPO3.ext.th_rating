@@ -16,6 +16,7 @@
 							<label>LLL:EXT:th_rating/Resources/Private/Language/locallang.xlf:flexform.general_actions</label>
 							<config>
 								<type>select</type>
+								<renderType>selectSingle</renderType>
 								<items>
 									<numIndex index="0">
 										 <numIndex index="0">LLL:EXT:th_rating/Resources/Private/Language/locallang.xlf:flexform.general_actions_1</numIndex>
@@ -32,7 +33,7 @@
 									<numIndex index="3">
 										 <numIndex index="0">LLL:EXT:th_rating/Resources/Private/Language/locallang.xlf:flexform.general_actions_4</numIndex>
 										 <numIndex index="1">Vote->index</numIndex>
-									</numIndex>									
+									</numIndex>
 									<numIndex index="4">
 										<numIndex index="0">LLL:EXT:th_rating/Resources/Private/Language/locallang.xlf:flexform.general_actions_5</numIndex>
 										<numIndex index="1">Vote->polling</numIndex>
@@ -57,8 +58,9 @@
 							<label>LLL:EXT:th_rating/Resources/Private/Language/locallang.xlf:flexform.general_display</label>
 							<config>
 								<type>select</type>
+								<renderType>selectSingle</renderType>
 								<itemsProcFunc>Thucke\ThRating\Userfuncs\Tca->dynFlexRatinglinkConfig</itemsProcFunc>
-							</config>							
+							</config>
 						</TCEforms>
 					</settings.display>
 					<settings.showNotRated>
@@ -66,7 +68,7 @@
 							<label>LLL:EXT:th_rating/Resources/Private/Language/locallang.xlf:flexform.general_showNotRated</label>
 							<config>
 								<type>check</type>
-							</config>							
+							</config>
 						</TCEforms>
 					</settings.showNotRated>
 					<settings.cookieLifetime>
@@ -77,7 +79,7 @@
 								<size>4</size>
 								<max>4</max>
 								<eval>trim,int,num,nospace</eval>
-							</config>							
+							</config>
 						</TCEforms>
 					</settings.cookieLifetime>
 				</el>
@@ -96,7 +98,7 @@
 							<config>
 								<type>check</type>
 								<default>true</default>
-							</config>							
+							</config>
 						</TCEforms>
 					</settings.fluid.layouts.default.showSectionContent>
 					<settings.fluid.layouts.default.showSummary>
@@ -106,7 +108,7 @@
 							<config>
 								<type>check</type>
 								<default>true</default>
-							</config>							
+							</config>
 						</TCEforms>
 					</settings.fluid.layouts.default.showSummary>
 					<settings.fluid.layouts.default.showCurrentRates>
@@ -115,7 +117,7 @@
 							<label>LLL:EXT:th_rating/Resources/Private/Language/locallang.xlf:flexform.fluid.layoutConfig_showCurrentRates</label>
 							<config>
 								<type>check</type>
-							</config>							
+							</config>
 						</TCEforms>
 					</settings.fluid.layouts.default.showCurrentRates>
 					<settings.fluid.partials.infoBlock.showAnonymousVotes>
@@ -125,7 +127,7 @@
 							<config>
 								<type>check</type>
 								<default>true</default>
-							</config>							
+							</config>
 						</TCEforms>
 					</settings.fluid.partials.infoBlock.showAnonymousVotes>
 					<settings.fluid.partials.usersRating.showTextInfo>
@@ -135,7 +137,7 @@
 							<config>
 								<type>check</type>
 								<default>true</default>
-							</config>							
+							</config>
 						</TCEforms>
 					</settings.fluid.partials.usersRating.showTextInfo>
 					<settings.fluid.partials.usersRating.showGraphicInfo>
@@ -144,7 +146,7 @@
 							<label>LLL:EXT:th_rating/Resources/Private/Language/locallang.xlf:flexform.fluid.partialUsersRatingConfig_showGraphicInfo</label>
 							<config>
 								<type>check</type>
-							</config>							
+							</config>
 						</TCEforms>
 					</settings.fluid.partials.usersRating.showGraphicInfo>
 				</el>
@@ -164,7 +166,7 @@
 							<config>
 								<type>check</type>
 								<default>true</default>
-							</config>							
+							</config>
 						</TCEforms>
 					</settings.fluid.templates.ratinglinks.tooltips>
 					<settings.fluid.templates.ratinglinks.likesMode>
@@ -173,7 +175,7 @@
 							<label>LLL:EXT:th_rating/Resources/Private/Language/locallang.xlf:flexform.fluid.ratinglinksConfig_likesMode</label>
 							<config>
 								<type>check</type>
-							</config>							
+							</config>
 						</TCEforms>
 					</settings.fluid.templates.ratinglinks.likesMode>
 					<settings.fluid.partials.usersRating.showTextInfo>
@@ -183,7 +185,7 @@
 							<config>
 								<type>check</type>
 								<default>false</default>
-							</config>							
+							</config>
 						</TCEforms>
 					</settings.fluid.partials.usersRating.showTextInfo>
 					<settings.fluid.partials.usersRating.showGraphicInfo>
@@ -193,7 +195,7 @@
 							<config>
 								<type>check</type>
 								<default>true</default>
-							</config>							
+							</config>
 						</TCEforms>
 					</settings.fluid.partials.usersRating.showGraphicInfo>
 				</el>

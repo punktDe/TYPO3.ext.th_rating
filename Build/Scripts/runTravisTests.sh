@@ -14,7 +14,7 @@ setUpDockerComposeDotEnv() {
 
     #before_script
     phpenv config-rm xdebug.ini || echo "xdebug not available"
-    composer require typo3/minimal=$TYPO3_VERSION
+    composer require typo3/minimal=${TYPO3_VERSION}
     # Restore composer.json
     git checkout composer.json
     export TYPO3_PATH_WEB=$PWD/.Build/Web
@@ -118,7 +118,7 @@ while getopts ":s:e:hv" OPT; do
 done
 
 # Exit on invalid options
-if [ ${#INVALID_OPTIONS[@]} -ne 0 ]; then
+if [[ ${#INVALID_OPTIONS[@]} -ne 0 ]]; then
     echo "Invalid option(s):" >&2
     for I in "${INVALID_OPTIONS[@]}"; do
         echo "-"${I} >&2
@@ -131,7 +131,7 @@ fi
 # Set $1 to first mass argument, this is the optional test file or test directory to execute
 shift $((OPTIND - 1))
 
-if [ ${SCRIPT_VERBOSE} -eq 1 ]; then
+if [[ ${SCRIPT_VERBOSE} -eq 1 ]]; then
     set -x
 fi
 
@@ -181,7 +181,7 @@ case ${TEST_SUITE} in
         exit 1
 esac
 
-exit $SUITE_EXIT_CODE
+exit ${SUITE_EXIT_CODE}
 
 #convertDeprecationsToExceptions="false"
 

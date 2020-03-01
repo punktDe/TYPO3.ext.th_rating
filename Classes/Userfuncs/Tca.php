@@ -1,20 +1,21 @@
-<?php /** @noinspection PhpUnnecessaryFullyQualifiedNameInspection */
-/** @noinspection PhpFullyQualifiedNameUsageInspection */
-
+<?php
 /** @noinspection PhpUnusedParameterInspection */
+/** @noinspection PhpUnused */
+/** @noinspection PhpUnnecessaryFullyQualifiedNameInspection */
+/** @noinspection PhpFullyQualifiedNameUsageInspection */
 namespace Thucke\ThRating\Userfuncs;
 
 use Exception;
+use Thucke\ThRating\Service\ExtensionHelperService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\RootlineUtility;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
 use Thucke\ThRating\Domain\Model\Ratingobject;
-use Thucke\ThRating\Domain\Model\Syslang;
 use Thucke\ThRating\Domain\Model\Stepconf;
 use Thucke\ThRating\Domain\Repository\StepconfRepository;
 use Thucke\ThRating\Domain\Repository\StepnameRepository;
 use TYPO3\CMS\Extbase\Persistence\Generic\LazyLoadingProxy;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
-use TYPO3\CMS\Frontend\Page\PageRepository;
 use TYPO3\CMS\Core\TypoScript\ExtendedTemplateService;
 use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
 
@@ -57,7 +58,7 @@ class Tca
     /**
      * @param \TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager
      */
-    public function injectObjectManager(ObjectManagerInterface $objectManager)
+    public function injectObjectManager(ObjectManagerInterface $objectManager): void
     {
         $this->objectManager = $objectManager;
     }
@@ -79,7 +80,7 @@ class Tca
      * @param $params
      * @param $pObj
      */
-    public function getRatingObjectRecordTitle(&$params, &$pObj)
+    public function getRatingObjectRecordTitle(&$params, &$pObj): void
     {
         $params['title'] =
             '#' . $params['row']['uid'] . ': ' . $params['row']['ratetable'] . ' [' . $params['row']['ratefield'] . ']';
@@ -92,7 +93,7 @@ class Tca
      * @param $params
      * @param $pObj
      */
-    public function getStepconfRecordTitle(&$params, &$pObj)
+    public function getStepconfRecordTitle(&$params, &$pObj): void
     {
         $params['title'] = '#' . $params['row']['uid'] . ': Steporder [' . $params['row']['steporder'] . ']';
     }
@@ -103,33 +104,26 @@ class Tca
      *
      * @param $params
      * @param $pObj
+     * @throws \TYPO3\CMS\Core\Exception\SiteNotFoundException
+     * @throws \Thucke\ThRating\Exception\LanguageNotFoundException
+     * @throws \TYPO3\CMS\Extbase\Object\Exception
      */
-    public function getStepnameRecordTitle(&$params, &$pObj)
+    public function getStepnameRecordTitle(&$params, &$pObj): void
     {
         //look into repository to find clear text object attributes
         $stepnameRepository = $this->objectManager->get(StepnameRepository::class);
         $stepnameRepository->clearQuerySettings(); //disable syslanguage and enableFields
-        $stepnameObject = $stepnameRepository->findByUid((int)($params['row']['uid']));
-        /** @var string $stepnameLang */
+        $stepnameObject = $stepnameRepository->findStrictByUid((int)($params['row']['uid']));
+        /** @var int $stepnameLang */
         /** @var string $sysLang */
         $syslang = '';
         if (is_object($stepnameObject)) {
             /** @var \Thucke\ThRating\Domain\Model\Stepname $stepnameObject */
-            $stepnameLang = $stepnameObject->get_languageUid();
-            if (empty($stepnameLang)) {
-                $syslang = LocalizationUtility::translate('tca.BE.default', 'ThRating');
-            } elseif ($stepnameLang === -1) {
-                $syslang = LocalizationUtility::translate('tca.BE.all', 'ThRating');
-            } else {
-                //look for language name
-                $syslangRepository = $this->objectManager->get(StepnameRepository::class);
-                $syslangObject = $syslangRepository->findByUid($stepnameLang);
-                if ($syslangObject instanceof Syslang) {
-                    $syslang = $syslangObject->getTitle();
-                } else {
-                    $syslang = LocalizationUtility::translate('tca.BE.unknown', 'ThRating');
-                }
-            }
+            $stepnameLang = $stepnameObject->getLanguageUid();
+            $syslang = $this->objectManager
+                ->get(ExtensionHelperService::class)
+                ->getStaticLanguageById($stepnameObject->getPid(), $stepnameLang)
+                ->getTitle();
         }
         $stepconfRepository = $this->objectManager->get(StepconfRepository::class);
         $stepconfObject = $stepconfRepository->findByUid((int)($params['row']['stepconf']));
@@ -147,7 +141,9 @@ class Tca
                 $steporder = $stepconfObject->getSteporder();
             }
         }
-        $params['title'] = $ratetable . '[' . $ratefield . ']/Step ' . $steporder . '/' . $syslang;
+        //$syslang = $params['row']['uid'];
+        $params['title'] = '#' . $params['row']['uid'] . ': '. $ratetable . '[' . $ratefield .
+            ']/Step ' . $steporder . '/' . $syslang;
     }
 
     /**
@@ -157,7 +153,7 @@ class Tca
      * @param $params
      * @param $pObj
      */
-    public function getRatingRecordTitle(&$params, &$pObj)
+    public function getRatingRecordTitle(&$params, &$pObj): void
     {
         $params['title'] = '#' . $params['row']['uid'] . ': RowUid [' . $params['row']['ratedobjectuid'] . ']';
     }
@@ -169,7 +165,7 @@ class Tca
      * @param $params
      * @param $pObj
      */
-    public function getVoteRecordTitle(&$params, &$pObj)
+    public function getVoteRecordTitle(&$params, &$pObj): void
     {
         $params['title'] = 'Voteuser Uid [' . $params['row']['voter'] . ']';
     }
@@ -179,10 +175,9 @@ class Tca
      *
      * @param array $config
      * @return  array ratinglink configurations
-     * @throws Exception
+     * @throws \TYPO3\CMS\Extbase\Object\Exception
      */
-    /** @noinspection PhpUnused */
-    public function dynFlexRatinglinkConfig($config)
+    public function dynFlexRatinglinkConfig($config): array
     {
         //\TYPO3\CMS\Core\Utility\DebugUtility::debug($config,'config');
         $flexFormPid = $config['flexParentDatabaseRow']['pid'];
@@ -213,15 +208,13 @@ class Tca
      * @param string $extKey Extension key to look for config
      * @param int $pid pageUid
      * @return  array
-     * @throws Exception
+     * @throws \TYPO3\CMS\Extbase\Object\Exception
      */
-    public function loadTypoScriptForBEModule($extKey, $pid)
+    public function loadTypoScriptForBEModule($extKey, $pid): array
     {
-        $sysPageObj = $this->objectManager->get(PageRepository::class);
-        $rootLine = $sysPageObj->getRootLine($pid);
+        /** @var array $rootLine */
+        $rootLine = $this->objectManager->get(RootlineUtility::class, $pid)->get();
         $TSObj = $this->objectManager->get(ExtendedTemplateService::class);
-        $TSObj->tt_track = 0;
-        $TSObj->init();
         $TSObj->runThroughTemplates($rootLine);
         $TSObj->generateConfig();
 
