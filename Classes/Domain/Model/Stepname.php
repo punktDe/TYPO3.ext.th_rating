@@ -62,11 +62,19 @@ class Stepname extends AbstractEntity
     protected $l18nParent;
 
     /**
-     * _languageUid will be mapped to column sys_language_uid
+     * languageUid will be mapped to column sys_language_uid
      * @Extbase\Validate("NotEmpty")
      * @var int
      */
     protected $languageUid;
+
+    /**
+     * _languageUid will be mapped to column sys_language_uid
+     * @deprecated will be removed in when support for TYPO3 v9 is dropped
+     * @Extbase\Validate("NotEmpty")
+     * @var int
+     */
+    protected $_languageUid;
 
     /**
      * Constructs a new stepconfig object
@@ -82,6 +90,7 @@ class Stepname extends AbstractEntity
             $this->setStepname($stepname);
         }
         $this->initializeObject();
+
     }
 
     /**
@@ -162,6 +171,24 @@ class Stepname extends AbstractEntity
     }
 
     /**
+     * @deprecated will be removed in when support for TYPO3 v9 is dropped
+     * @param int $languageUid
+     */
+    public function set_languageUid($languageUid): void
+    {
+        $this->_languageUid = $languageUid;
+    }
+
+    /**
+     * @deprecated will be removed in when support for TYPO3 v9 is dropped
+     * @return int
+     */
+    public function get_languageUid()
+    {
+        return $this->_languageUid;
+    }
+
+    /**
      * @param int $languageUid
      */
     public function setLanguageUid($languageUid): void
@@ -174,7 +201,7 @@ class Stepname extends AbstractEntity
      */
     public function getLanguageUid()
     {
-        return $this->languageUid;
+        return $this->languageUid ?? $this->_languageUid;
     }
 
     /**
