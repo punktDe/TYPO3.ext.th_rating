@@ -165,8 +165,7 @@ class StepnameRepository extends Repository
             /** @var array $websiteLanguagesArray */
             $websiteLanguagesArray = [];
 
-            $allWebsiteLanguages = \Thucke\ThRating\Utility\DeprecationHelperUtility::getAllSiteLanguages();
-            //TODO remove $allWebsiteLanguages = $this->objectManager->get(SyslangRepository::class)->findAll()->toArray();
+            $allWebsiteLanguages = $GLOBALS['TYPO3_REQUEST']->getAttribute('site')->getAllLanguages();
 
             /** @var \TYPO3\CMS\Core\Site\Entity\SiteLanguage $language */
             foreach (array_values($allWebsiteLanguages) as $language) {

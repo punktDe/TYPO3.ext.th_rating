@@ -2,7 +2,7 @@
 /** @noinspection PhpFullyQualifiedNameUsageInspection */
 
 /** @noinspection PhpUnnecessaryFullyQualifiedNameInspection */
-namespace Thucke\ThRating\Tests\Unit;
+namespace Thucke\ThRating\Tests\Unit\Utility;
 
 /*
  * This file is part of the TYPO3 extension Rating AX <EXT:th_rating>.
