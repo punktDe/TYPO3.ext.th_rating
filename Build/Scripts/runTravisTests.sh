@@ -131,7 +131,7 @@ fi
 # Set $1 to first mass argument, this is the optional test file or test directory to execute
 shift $((OPTIND - 1))
 
-if [ ${SCRIPT_VERBOSE} -eq 1 ]; then
+if [ "${SCRIPT_VERBOSE}" -eq "1" ]; then
     set -x
 fi
 
