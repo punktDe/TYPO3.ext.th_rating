@@ -196,7 +196,6 @@ class ExtensionHelperService extends AbstractExtensionService
      */
     protected function getTypoScriptFrontendController(): TypoScriptFrontendController
     {
-        /** @var \TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController $TSFE */
         global $TSFE;
 
         return $TSFE;
@@ -257,7 +256,8 @@ class ExtensionHelperService extends AbstractExtensionService
             $ratingobject = $this->ratingobjectRepository->findMatchingTableAndField(
                 $settings['ratetable'],
                 $settings['ratefield'],
-                RatingobjectRepository::ADD_IF_NOT_FOUND
+                RatingobjectRepository::ADD_IF_NOT_FOUND,
+                $settings['storagePid']
             );
         }
 
@@ -295,7 +295,7 @@ class ExtensionHelperService extends AbstractExtensionService
         $stepname = $this->objectManager->get(Stepname::class);
         $stepname->setStepname($stepnameArray['stepname']);
         $stepname->setPid($stepnameArray['pid']);
-        $stepname->setLanguageUid((int)$this->getStaticLanguageByIsoCode(
+        $stepname->setLanguageUid($this->getStaticLanguageByIsoCode(
                 $stepname->getPid(),
                 $stepnameArray['languageIsoCode']
             )->getLanguageId()
@@ -407,7 +407,7 @@ class ExtensionHelperService extends AbstractExtensionService
     public function persistRepository($repository, AbstractEntity $objectToPersist): void
     {
         $objectUid = $objectToPersist->getUid();
-        if (empty($objectUid)) {
+        if ($objectUid === null) {
             $this->objectManager->get($repository)->add($objectToPersist);
         } else {
             $this->objectManager->get($repository)->update($objectToPersist);
@@ -662,7 +662,6 @@ class ExtensionHelperService extends AbstractExtensionService
      * @throws LanguageNotFoundException
      */
     public function getStaticLanguageByIsoCode(int $pid, string $twoLetterIsoCode = null): SiteLanguage {
-        $staticLanguages=[];
         /** @var Site $site */
         $site = GeneralUtility::makeInstance(SiteFinder::class)->getSiteByPageId($pid);
 
@@ -674,9 +673,8 @@ class ExtensionHelperService extends AbstractExtensionService
             }
             throw new LanguageNotFoundException(LocalizationUtility::translate('flash.general.languageNotFound',
                 'ThRating'), 1582980369);
-        } else {
-            return $site->getDefaultLanguage();
         }
+        return $site->getDefaultLanguage();
     }
 
     /**
@@ -687,6 +685,7 @@ class ExtensionHelperService extends AbstractExtensionService
      * @param int|null $languageId iso-639-1 string (e.g. en, de, us)
      * @return \TYPO3\CMS\Core\Site\Entity\SiteLanguage
      * @throws \TYPO3\CMS\Core\Exception\SiteNotFoundException
+     * @noinspection PhpUnused
      */
     public function getStaticLanguageById(int $pid, int $languageId = null): ?SiteLanguage
     {
@@ -695,9 +694,8 @@ class ExtensionHelperService extends AbstractExtensionService
 
         if ($languageId) {
             return $site->getLanguageById($languageId);
-        } else {
-            return $site->getDefaultLanguage();
         }
+        return $site->getDefaultLanguage();
     }
 
 }

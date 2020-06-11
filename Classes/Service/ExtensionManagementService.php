@@ -1,4 +1,5 @@
-<?php /** @noinspection PhpUnnecessaryFullyQualifiedNameInspection */
+<?php
+declare(strict_types=1);
 
 /** @noinspection PhpFullyQualifiedNameUsageInspection */
 
@@ -6,6 +7,8 @@ namespace Thucke\ThRating\Service;
 
 use TYPO3\CMS\Core\Log\LogLevel;
 use Thucke\ThRating\Domain\Model\Stepconf;
+use Thucke\ThRating\Domain\Model\Stepname;
+use Thucke\ThRating\Domain\Model\Ratingobject;
 
 /***************************************************************
  *  Copyright notice
@@ -47,7 +50,7 @@ class ExtensionManagementService extends AbstractExtensionService
      * @param \Thucke\ThRating\Service\ExtensionHelperService $extensionHelperService
      * @noinspection PhpUnused
      */
-    public function injectExtensionHelperService(ExtensionHelperService $extensionHelperService)
+    public function injectExtensionHelperService(ExtensionHelperService $extensionHelperService): void
     {
         $this->extensionHelperService = $extensionHelperService;
     }
@@ -55,14 +58,16 @@ class ExtensionManagementService extends AbstractExtensionService
     /**
      * Prepares an object for ratings
      *
+     * @api
      * @param string $tablename
      * @param string $fieldname
      * @param int $stepcount
-     * @throws \Thucke\ThRating\Exception\RecordNotFoundException
-     * @throws \TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException
      * @return \Thucke\ThRating\Domain\Model\Ratingobject
+     * @throws \TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException
+     * @throws \Thucke\ThRating\Exception\RecordNotFoundException
      */
-    public function makeRatable($tablename, $fieldname, $stepcount)
+     /* @noinspection PhpUnused */
+    public function makeRatable($tablename, $fieldname, $stepcount): Ratingobject
     {
         $this->logger->log(
             LogLevel::INFO,
@@ -90,6 +95,7 @@ class ExtensionManagementService extends AbstractExtensionService
     /**
      * Prepares an object for ratings
      *
+     * @api
      * @param \Thucke\ThRating\Domain\Model\Stepconf $stepconf
      * @param string $stepname
      * @param string $twoLetterIsoCode
@@ -100,7 +106,8 @@ class ExtensionManagementService extends AbstractExtensionService
      * @throws \TYPO3\CMS\Extbase\Persistence\Exception\InvalidQueryException
      * @throws \Thucke\ThRating\Exception\Exception
      */
-    public function setStepname(Stepconf $stepconf, $stepname, $twoLetterIsoCode = null, $allStepconfs = false)
+    /* @noinspection PhpUnused */
+    public function setStepname(Stepconf $stepconf, $stepname, $twoLetterIsoCode = null, $allStepconfs = false): bool
     {
         $this->logger->log(
             LogLevel::INFO,
@@ -116,15 +123,14 @@ class ExtensionManagementService extends AbstractExtensionService
         $success = true;
         if (!$allStepconfs) {
             //only add the one specific stepname
-            /** @var array $stepnameArray */
             $stepnameArray = [
                 'stepname' => $stepname,
                 'twoLetterIsoCode' => $twoLetterIsoCode,
                 'pid' => $stepconf->getPid()
             ];
             /** @var \Thucke\ThRating\Domain\Model\Stepname $stepname */
-            /** @noinspection CallableParameterUseCaseInTypeContextInspection */
             $stepname = $this->extensionHelperService->createStepname($stepnameArray);
+
             if (!$stepconf->addStepname($stepname)) {
                 $this->logger->log(
                     LogLevel::WARNING,
@@ -166,7 +172,6 @@ class ExtensionManagementService extends AbstractExtensionService
                 }
             }
         }
-
         return $success;
     }
 }

@@ -64,11 +64,12 @@ class RatingobjectRepository extends Repository
      * @param string $ratetable The tablename of the ratingobject
      * @param string $ratefield The fieldname of the ratingobject
      * @param bool $addIfNotFound Set to true if new objects should instantly be added
-     * @throws \Thucke\ThRating\Exception\RecordNotFoundException
-     * @throws \TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException
+     * @param int $storagePid
      * @return \Thucke\ThRating\Domain\Model\Ratingobject The ratingobject
+     * @throws RecordNotFoundException
+     * @throws \TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException
      */
-    public function findMatchingTableAndField($ratetable, $ratefield, $addIfNotFound = false): Ratingobject
+    public function findMatchingTableAndField($ratetable, $ratefield, $addIfNotFound = false, $storagePid = 0): Ratingobject
     {
         /** @var \Thucke\ThRating\Domain\Model\Ratingobject $foundRow */
         $foundRow = $this->objectManager->get(Ratingobject::class);
@@ -87,6 +88,8 @@ class RatingobjectRepository extends Repository
         } elseif ($addIfNotFound) {
             $foundRow->setRatetable($ratetable);
             $foundRow->setRatefield($ratefield);
+            $foundRow->setPid($storagePid);
+
             if (!$this->objectManager->get(RatingobjectValidator::class)->validate($foundRow)->hasErrors()) {
                 $this->add($foundRow);
             }
