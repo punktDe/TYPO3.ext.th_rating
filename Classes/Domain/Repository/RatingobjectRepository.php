@@ -1,12 +1,13 @@
 <?php
 /** @noinspection PhpUnnecessaryFullyQualifiedNameInspection */
-/** @noinspection PhpFullyQualifiedNameUsageInspection */
 namespace Thucke\ThRating\Domain\Repository;
 
 use Thucke\ThRating\Domain\Model\Ratingobject;
 use Thucke\ThRating\Domain\Validator\RatingobjectValidator;
 use Thucke\ThRating\Exception\RecordNotFoundException;
 use Thucke\ThRating\Service\ExtensionHelperService;
+use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
+use TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface;
 use TYPO3\CMS\Extbase\Persistence\Repository;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 
@@ -41,8 +42,7 @@ class RatingobjectRepository extends Repository
     /**
      * Defines name for function parameter
      */
-    public const     /** @noinspection PhpUnused */
-        ADD_IF_NOT_FOUND = true;
+    public const ADD_IF_NOT_FOUND = true;
 
     /**
      * @var \Thucke\ThRating\Service\ExtensionHelperService
@@ -50,12 +50,23 @@ class RatingobjectRepository extends Repository
     protected $extensionHelperService;
 
     /**
-     * @param   \Thucke\ThRating\Service\ExtensionHelperService $extensionHelperService
+     * @param \Thucke\ThRating\Service\ExtensionHelperService $extensionHelperService
      */
-    /** @noinspection PhpUnused */
     public function injectExtensionHelperService(ExtensionHelperService $extensionHelperService): void
     {
         $this->extensionHelperService = $extensionHelperService;
+    }
+
+    /**
+     * @var \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface
+     */
+    protected $configurationManager;
+    /**
+     * @param \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager
+     */
+    public function injectConfigurationManager(ConfigurationManagerInterface $configurationManager): void
+    {
+        $this->configurationManager = $configurationManager;
     }
 
     /**
@@ -64,31 +75,35 @@ class RatingobjectRepository extends Repository
      * @param string $ratetable The tablename of the ratingobject
      * @param string $ratefield The fieldname of the ratingobject
      * @param bool $addIfNotFound Set to true if new objects should instantly be added
-     * @param int $storagePid
      * @return \Thucke\ThRating\Domain\Model\Ratingobject The ratingobject
      * @throws RecordNotFoundException
      * @throws \TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException
      */
-    public function findMatchingTableAndField($ratetable, $ratefield, $addIfNotFound = false, $storagePid = 0): Ratingobject
+    public function findMatchingTableAndField(string $ratetable, string $ratefield, bool $addIfNotFound = false): Ratingobject
     {
         /** @var \Thucke\ThRating\Domain\Model\Ratingobject $foundRow */
         $foundRow = $this->objectManager->get(Ratingobject::class);
 
         $query = $this->createQuery();
+
         $query->matching($query->logicalAnd([
             $query->equals('ratetable', $ratetable),
             $query->equals('ratefield', $ratefield),
         ]))->setLimit(1);
 
+        /*$queryParser = $this->objectManager->get(\TYPO3\CMS\Extbase\Persistence\Generic\Storage\Typo3DbQueryParser::class);
+        \TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump($queryParser->convertQueryToDoctrineQueryBuilder($query)->getSQL(), get_class($this).' SQL');
+        \TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump($queryParser->convertQueryToDoctrineQueryBuilder($query)->getParameters(), get_class($this).' SQL Parameter');*/
+
         /** @var \TYPO3\CMS\Extbase\Persistence\QueryResultInterface $queryResult */
         $queryResult = $query->execute();
 
-        if (count($queryResult) !== 0) {
+        if ($queryResult->count() > 0) {
             $foundRow = $queryResult->getFirst();
         } elseif ($addIfNotFound) {
             $foundRow->setRatetable($ratetable);
             $foundRow->setRatefield($ratefield);
-            $foundRow->setPid($storagePid);
+            \TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump($this->objectManager->get(QuerySettingsInterface::class), get_class($this).' QuerySettings');
 
             if (!$this->objectManager->get(RatingobjectValidator::class)->validate($foundRow)->hasErrors()) {
                 $this->add($foundRow);
@@ -106,7 +121,6 @@ class RatingobjectRepository extends Repository
      * Finds the specific ratingobject by giving table and fieldname
      *
      * @param bool   Switch to fetch ALL entries regardless of their pid
-     * @param mixed $ignoreStoragePage
      * @return \TYPO3\CMS\Extbase\Persistence\QueryResultInterface|array All ratingobjects of the site
      */
     /** @noinspection PhpMissingParentCallCommonInspection */
@@ -114,6 +128,10 @@ class RatingobjectRepository extends Repository
     {
         $query = $this->createQuery();
         $query->getQuerySettings()->setRespectStoragePage(!$ignoreStoragePage);
+
+        /*$queryParser = $this->objectManager->get(\TYPO3\CMS\Extbase\Persistence\Generic\Storage\Typo3DbQueryParser::class);
+        \TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump($queryParser->convertQueryToDoctrineQueryBuilder($query)->getSQL(), get_class($this).' SQL');
+        \TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump($queryParser->convertQueryToDoctrineQueryBuilder($query)->getParameters(), get_class($this).' SQL Parameter');*/
 
         return $query->execute();
     }

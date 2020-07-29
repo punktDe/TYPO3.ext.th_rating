@@ -66,21 +66,24 @@ class ExtensionManagementServiceTest extends FunctionalTestCase
     protected function setUp(): void
     {
         parent::setUp();
+        $extAbsPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('th_rating');
+
+        $this->importDataSet($extAbsPath.'/Tests/Functional/Fixtures/Database/pages.xml');
+
+        $this->setUpFrontendRootPage(
+            1,
+            [
+                'EXT:fluid_styled_content/Configuration/TypoScript/setup.txt',
+                $extAbsPath.'/Configuration/TypoScript/setup.typoscript',
+                $extAbsPath.'/Tests/Functional/Fixtures/Frontend/Basic.typoscript',
+            ]
+        );
+
         $this->prepareLoggingServiceMock();
         $this->prepareExtensionHelperServiceMock();
 
         $this->subject = new ExtensionManagementService($this->loggingServiceMock);
         $this->subject->injectExtensionHelperService($this->extensionHelperServiceMock);
-
-        $this->importDataSet(__DIR__ . '/Fixtures/Database/pages.xml');
-        $this->setUpFrontendRootPage(
-            1,
-            [
-                'EXT:fluid_styled_content/Configuration/TypoScript/setup.txt',
-                'EXT:th_rating/Configuration/TypoScript/setup.typoscript',
-                'EXT:th_rating/Tests/Functional/Service/Fixtures/Frontend/Basic.typoscript',
-            ]
-        );
     }
 
     /**
@@ -137,15 +140,14 @@ class ExtensionManagementServiceTest extends FunctionalTestCase
      * @test
      * @throws \Exception
      */
-    public function createdRatingabjectHasPid10(): void
+    public function createdRatingobjectHasPid10(): void
     {
-        /*
-        $createdRatingobject = $this->subject->makeRatable(
+        /* $createdRatingobject = $this->subject->makeRatable(
             $this->testRatingObject['ratetable'],
             $this->testRatingObject['ratefield'],
             3
-        ); */
-        //$this->assertObjectHasAttribute( 'sdfsdfg', $createdRatingobject);
+        );
+        $this->assertObjectHasAttribute( 'sdfsdfg', $createdRatingobject); */
         $this->assertTrue(true);
     }
 

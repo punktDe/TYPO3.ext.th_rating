@@ -35,6 +35,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException;
 use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
+use TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface;
 use TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings;
 
 /**
@@ -79,8 +80,9 @@ class StepconfRepositoryTest extends FunctionalTestCase
     protected function setUp(): void
     {
         parent::setUp();
+        $extAbsPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('th_rating');
 
-        $this->importDataSet(__DIR__ . '/Fixtures/Stepconf.xml');
+        $this->importDataSet($extAbsPath.'/Tests/Functional/Fixtures/Database/Stepconf.xml');
 
         $this->persistenceManager = GeneralUtility::makeInstance(PersistenceManager::class);
         $this->objectManager = GeneralUtility::makeInstance(ObjectManager::class);
@@ -91,26 +93,12 @@ class StepconfRepositoryTest extends FunctionalTestCase
     }
 
     /**
-     * @return Typo3QuerySettings
-     */
-    protected function getDefaultQuerySettings(): Typo3QuerySettings
-    {
-        /** @var \TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings $defaultQuerySettings */
-        $defaultQuerySettings = $this->objectManager->get(Typo3QuerySettings::class);
-        //$defaultQuerySettings->setRespectStoragePage(false);
-        $defaultQuerySettings->setStoragePageIds([1]);
-
-        return $defaultQuerySettings;
-    }
-
-    /**
      * @return RatingobjectRepository
      */
     protected function createRatingobjectRepository(): RatingobjectRepository
     {
         $ratingobjectRepository = $this->objectManager->get(RatingobjectRepository::class);
         $ratingobjectRepository->injectPersistenceManager($this->persistenceManager);
-        $ratingobjectRepository->setDefaultQuerySettings($this->getDefaultQuerySettings());
 
         return $ratingobjectRepository;
     }

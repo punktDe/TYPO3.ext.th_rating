@@ -49,7 +49,8 @@ page = PAGE
 page {
   10 = FLUIDTEMPLATE
   10 {
-    file = EXT:timezones/Tests/Functional/Controller/Fixtures/Frontend/Template.html
+    file = EXT:th_rating/Tests/Functional/Fixtures/Frontend/Template.html
   }
 }
 plugin.tx_thrating.settings.storagePid = 10
+plugin.tx_felogin_pi1.storagePid = 10

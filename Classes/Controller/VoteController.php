@@ -4,9 +4,7 @@
 /** @noinspection PhpFullyQualifiedNameUsageInspection */
 namespace Thucke\ThRating\Controller;
 
-use mysql_xdevapi\Exception;
 use Thucke\ThRating\Domain\Model\Rating;
-use Thucke\ThRating\Domain\Model\Stepconf;
 use Thucke\ThRating\Domain\Model\Vote;
 use Thucke\ThRating\Domain\Model\Voter;
 use Thucke\ThRating\Domain\Repository\RatingobjectRepository;
@@ -19,6 +17,7 @@ use Thucke\ThRating\Exception\FeUserStoragePageException;
 use Thucke\ThRating\Exception\InvalidStoragePageException;
 use Thucke\ThRating\Service\AccessControlService;
 use Thucke\ThRating\Service\CookieService;
+use Thucke\ThRating\Service\ExtensionConfigurationService;
 use Thucke\ThRating\Service\ExtensionHelperService;
 use Thucke\ThRating\Service\ExtensionManagementService;
 use Thucke\ThRating\Service\RichSnippetService;
@@ -233,7 +232,6 @@ class VoteController extends ActionController
      * @var \Thucke\ThRating\Service\ExtensionHelperService
      */
     protected $extensionHelperService;
-
     /**
      * @param \Thucke\ThRating\Service\ExtensionHelperService $extensionHelperService
      */
@@ -241,6 +239,20 @@ class VoteController extends ActionController
     public function injectExtensionHelperService(ExtensionHelperService $extensionHelperService): void
     {
         $this->extensionHelperService = $extensionHelperService;
+    }
+
+    /**
+     * @var \Thucke\ThRating\Service\ExtensionConfigurationService
+     */
+    protected $extensionConfigurationService;
+
+    /**
+     * @param \Thucke\ThRating\Service\ExtensionConfigurationService $extensionConfigurationService
+     * @noinspection PhpUnused
+     */
+    public function injectExtensionConfigurationService(ExtensionConfigurationService $extensionConfigurationService): void
+    {
+        $this->extensionConfigurationService = $extensionConfigurationService;
     }
 
     /**
@@ -256,7 +268,7 @@ class VoteController extends ActionController
      *
      * @return void
      * @throws FeUserStoragePageException
-     * @throws InvalidStoragePageException*
+     * @throws InvalidStoragePageException
      * @throws \Exception
      * @throws \TYPO3\CMS\Extbase\Mvc\Exception\NoSuchArgumentException
      */
@@ -272,10 +284,9 @@ class VoteController extends ActionController
         $this->prefixId =
             strtolower("tx_{$this->request->getControllerExtensionName()}_{$this->request->getPluginName()}");
 
-        //Set default storage pids to SITEROOT
-        $this->setStoragePids();
+        //Set default storage pids
+        $this->extensionConfigurationService->setExtDefaultQuerySettings();
 
-        /** @var array $frameworkConfiguration */
         $frameworkConfiguration = $this->configurationManager->getConfiguration(
             ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK
         );
@@ -286,6 +297,7 @@ class VoteController extends ActionController
             $this->defaultViewObjectName = JsonView::class;
             //read unique AJAX identification on AJAX request
             $this->ajaxSelections['ajaxRef'] = $this->request->getArgument(self::AJAX_REFERENCE_ID);
+            /** @noinspection PhpElementIsNotAvailableInCurrentPhpVersionInspection */
             $this->settings = json_decode($this->request->getArgument('settings'), true, 512, PHP_MINOR_VERSION>=3 ? JSON_THROW_ON_ERROR : null);
             $frameworkConfiguration['settings'] = $this->settings;
             $this->initSettings();
@@ -309,18 +321,13 @@ class VoteController extends ActionController
             $frameworkConfiguration['ratings']
         )
         ;
-        $this->setFrameworkConfiguration($frameworkConfiguration);
+        $this->setCookieProtection($frameworkConfiguration);
     }
 
     /**
      * Index action for this controller.
      *
      * @return void
-     * @throws \TYPO3\CMS\Core\Exception\SiteNotFoundException
-     * @throws \TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException
-     * @throws \TYPO3\CMS\Extbase\Persistence\Exception\InvalidQueryException
-     * @throws \Thucke\ThRating\Exception\Exception
-     * @throws \Thucke\ThRating\Exception\RecordNotFoundException
      */
     public function indexAction(): void
     {
@@ -381,13 +388,14 @@ class VoteController extends ActionController
      * Displays the vote of the current user
      *
      * @param \Thucke\ThRating\Domain\Model\Vote $vote
+     * @Extbase\IgnoreValidation("vote")
      * @return void
      * @throws \TYPO3\CMS\Core\Exception
      * @throws \Thucke\ThRating\Exception\InvalidAggregateRatingSchemaTypeException
      * @throws \Thucke\ThRating\Exception\RecordNotFoundException
      * @noinspection PhpUnused
      */
-    public function showAction(\Thucke\ThRating\Domain\Model\Vote $vote = null): void
+    public function showAction(Vote $vote = null): void
     {
         $this->logger->log(LogLevel::DEBUG, 'Entry showAction');
         //is_object($vote) && \TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump($vote->getUid(),'showAction');
@@ -857,7 +865,6 @@ class VoteController extends ActionController
     {
         $this->logger->log(LogLevel::DEBUG, 'Entry initVoting');
 
-        /** @var int $logVoterUid */
         $logVoterUid = 0;
 
         if ($this->voteValidator->isObjSet($vote) && !$this->voteValidator->validate($vote)->hasErrors()) {
@@ -992,7 +999,8 @@ class VoteController extends ActionController
             $this->configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
         $frameworkConfiguration['settings'] = $this->settings;
 
-        $this->setFrameworkConfiguration($frameworkConfiguration);
+        $this->configurationManager->setConfiguration($frameworkConfiguration);
+        $this->setCookieProtection($frameworkConfiguration);
 
         $this->logger->log(LogLevel::DEBUG, 'Exit initSettings');
     }
@@ -1012,7 +1020,9 @@ class VoteController extends ActionController
             $this->settings['ratingConfigurations'][$this->settings['display']] = $tmpDisplayConfig;
             //TODO: ?? $currentRates = $vote->getRating()->getCurrentrates();
 
+            /** @var \Thucke\ThRating\Domain\Model\Stepconf $stepConf */
             foreach ($vote->getRating()->getRatingobject()->getStepconfs() as $i => $stepConf) {
+                /** @noinspection PhpElementIsNotAvailableInCurrentPhpVersionInspection */
                 $key = utf8_encode(json_encode([
                         'value' => $stepConf->getUid(),
                         'voter' => $vote->getVoter()->getUid(),
@@ -1112,46 +1122,6 @@ class VoteController extends ActionController
     }
 
     /**
-     * Checks all storagePid settings and
-     * sets them to SITEROOT if zero or empty
-     *
-     * @return void
-     * @throws InvalidStoragePageException if plugin.tx_thrating.storagePid has not been set
-     * @throws FeUserStoragePageException if plugin.tx_felogin_pi1.storagePid has not been set
-     */
-    protected function setStoragePids()
-    {
-        /** @var array $frameworkConfiguration */
-        $frameworkConfiguration = $this->configurationManager->getConfiguration(
-            ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT
-        );
-        $feUserStoragePid = GeneralUtility::intExplode(
-            ',',
-            $frameworkConfiguration['plugin.']['tx_felogin_pi1.']['storagePid'],
-            true
-        );
-        $frameworkConfiguration = $frameworkConfiguration['plugin.']['tx_thrating.'];
-
-        $storagePids = GeneralUtility::intExplode(',', $frameworkConfiguration['storagePid'], true);
-        if (empty($storagePids[0])) {
-            throw new InvalidStoragePageException(
-                LocalizationUtility::translate('flash.vote.general.invalidStoragePid', 'ThRating'),
-                1403203519
-            );
-        }
-
-        if (empty($feUserStoragePid[0])) {
-            throw new FeUserStoragePageException(
-                LocalizationUtility::translate('flash.pluginConfiguration.missing.feUserStoragePid', 'ThRating'),
-                1403190539
-            );
-        }
-        $storagePids[] = $feUserStoragePid[0];
-        $frameworkConfiguration['persistence.']['storagePid'] = implode(',', $storagePids);
-        $this->setFrameworkConfiguration($frameworkConfiguration);
-    }
-
-    /**
      * Generates a random number
      * used as the unique iddentifier for AJAX objects
      *
@@ -1165,12 +1135,10 @@ class VoteController extends ActionController
     }
 
     /**
-     * @param array $frameworkConfiguration
      * @return void
      */
-    protected function setFrameworkConfiguration(array $frameworkConfiguration)
+    protected function setCookieProtection(): void
     {
-        $this->configurationManager->setConfiguration($frameworkConfiguration);
         $this->cookieLifetime = abs((int)$this->settings['cookieLifetime']);
         $this->logger->log(
             LogLevel::DEBUG,

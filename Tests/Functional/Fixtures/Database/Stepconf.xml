@@ -30,7 +30,7 @@
 		<ratingobject>2</ratingobject>
 		<steporder>1</steporder>
 		<stepweight>1</stepweight>
-		<stepname>1</stepname>
+		<stepname>10</stepname>
 		<votes>0</votes>
     </tx_thrating_domain_model_stepconf>
     <tx_thrating_domain_model_stepconf>
@@ -39,7 +39,7 @@
 		<ratingobject>2</ratingobject>
 		<steporder>2</steporder>
 		<stepweight>1</stepweight>
-		<stepname>1</stepname>
+		<stepname>11</stepname>
 		<votes>0</votes>
     </tx_thrating_domain_model_stepconf>
 </dataset>

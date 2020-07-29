@@ -76,27 +76,24 @@ class RatingobjectRepositoryTest extends FunctionalTestCase
     {
         parent::setUp();
 
+        $extAbsPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('th_rating');
+        $this->importDataSet($extAbsPath.'/Tests/Functional/Fixtures/Database/Ratingobject.xml');
+        $this->importDataSet($extAbsPath.'/Tests/Functional/Fixtures/Database/pages.xml');
+        $this->setUpFrontendRootPage(
+            1,
+            [
+                $extAbsPath.'/Tests/Functional/Fixtures/Frontend/Basic.typoscript',
+                'EXT:fluid_styled_content/Configuration/TypoScript/setup.txt',
+                $extAbsPath.'/Configuration/TypoScript/setup.typoscript'
+            ]
+        );
+
         $this->persistenceManager = GeneralUtility::makeInstance(PersistenceManager::class);
-
-        /** @var ObjectManager $objectManager */
         $this->objectManager = GeneralUtility::makeInstance(ObjectManager::class);
+
         $this->subject = $this->objectManager->get(RatingobjectRepository::class);
+        //$this->subject->setDefaultQuerySettings($this->getDefaultQuerySettings());
         $this->subject->injectPersistenceManager($this->persistenceManager);
-        $this->subject->setDefaultQuerySettings($this->getDefaultQuerySettings());
-        $this->importDataSet(__DIR__ . '/Fixtures/Ratingobject.xml');
-    }
-
-    /**
-     * @return Typo3QuerySettings
-     */
-    protected function getDefaultQuerySettings(): Typo3QuerySettings
-    {
-        /** @var \TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings $defaultQuerySettings */
-        $defaultQuerySettings = $this->objectManager->get(Typo3QuerySettings::class);
-        //$defaultQuerySettings->setRespectStoragePage(false);
-        $defaultQuerySettings->setStoragePageIds([1]);
-
-        return $defaultQuerySettings;
     }
 
     /**
@@ -150,6 +147,7 @@ class RatingobjectRepositoryTest extends FunctionalTestCase
         $this->assertEquals(1, $foundRow->getUid());
 
         /* TODO this test fails only outside the context of TYPO3
+        /*
         $foundRow = $this->subject->findMatchingTableAndField('testTable', 'testFieldNewAdded', true);
         $this->assertEquals(5, $foundRow->getUid());
         */
