@@ -11,6 +11,7 @@ use Thucke\ThRating\Domain\Model\Stepname;
 use Thucke\ThRating\Domain\Model\Vote;
 use Thucke\ThRating\Domain\Repository\RatingobjectRepository;
 use Thucke\ThRating\Domain\Repository\RatingRepository;
+use Thucke\ThRating\Domain\Repository\StepnameRepository;
 use Thucke\ThRating\Domain\Repository\VoteRepository;
 use Thucke\ThRating\Domain\Validator\RatingobjectValidator;
 use Thucke\ThRating\Domain\Validator\RatingValidator;
@@ -74,9 +75,8 @@ class ExtensionHelperService extends AbstractExtensionService
 
     /**
      * @param \Thucke\ThRating\Domain\Repository\RatingobjectRepository $ratingobjectRepository
+     * @noinspection PhpUnused
      */
-
-    /** @noinspection PhpUnused */
     public function injectRatingobjectRepository(RatingobjectRepository $ratingobjectRepository): void
     {
         $this->ratingobjectRepository = $ratingobjectRepository;
@@ -86,27 +86,36 @@ class ExtensionHelperService extends AbstractExtensionService
      * @var \Thucke\ThRating\Domain\Repository\RatingRepository
      */
     protected $ratingRepository;
-
     /**
      * @param \Thucke\ThRating\Domain\Repository\RatingRepository $ratingRepository
+     * @noinspection PhpUnused
      */
-
-    /** @noinspection PhpUnused */
     public function injectRatingRepository(RatingRepository $ratingRepository): void
     {
         $this->ratingRepository = $ratingRepository;
     }
 
     /**
+     * @var \Thucke\ThRating\Domain\Repository\StepnameRepository
+     */
+    protected $stepnameRepository;
+    /**
+     * @param \Thucke\ThRating\Domain\Repository\StepnameRepository $stepnameRepository
+     * @noinspection PhpUnused
+     */
+    public function injectStepnameRepository(StepnameRepository $stepnameRepository): void
+    {
+        $this->stepnameRepository = $stepnameRepository;
+    }
+
+    /**
      * @var \Thucke\ThRating\Domain\Repository\VoteRepository
      */
     protected $voteRepository;
-
     /**
      * @param \Thucke\ThRating\Domain\Repository\VoteRepository $voteRepository
+     * @noinspection PhpUnused
      */
-
-    /** @noinspection PhpUnused */
     public function injectVoteRepository(VoteRepository $voteRepository): void
     {
         $this->voteRepository = $voteRepository;
@@ -116,12 +125,10 @@ class ExtensionHelperService extends AbstractExtensionService
      * @var \Thucke\ThRating\Service\AccessControlService
      */
     protected $accessControllService;
-
     /**
      * @param AccessControlService $accessControllService
+     * @noinspection PhpUnused
      */
-
-    /** @noinspection PhpUnused */
     public function injectAccessControlService(AccessControlService $accessControllService): void
     {
         $this->accessControllService = $accessControllService;
@@ -131,12 +138,10 @@ class ExtensionHelperService extends AbstractExtensionService
      * @var \Thucke\ThRating\Domain\Validator\StepconfValidator
      */
     protected $stepconfValidator;
-
     /**
      * @param \Thucke\ThRating\Domain\Validator\StepconfValidator $stepconfValidator
+     * @noinspection PhpUnused
      */
-
-    /** @noinspection PhpUnused */
     public function injectStepconfValidator(StepconfValidator $stepconfValidator): void
     {
         $this->stepconfValidator = $stepconfValidator;
@@ -146,7 +151,6 @@ class ExtensionHelperService extends AbstractExtensionService
      * @var \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface
      */
     protected $configurationManager;
-
     /**
      * @param \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager
      */
@@ -167,6 +171,11 @@ class ExtensionHelperService extends AbstractExtensionService
     protected $ratingImage;
 
     /**
+     * @var \TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface
+     */
+    protected $extDefaultQuerySettings;
+
+    /**
      * Constructor
      */
     public function initializeObject(): void
@@ -176,12 +185,12 @@ class ExtensionHelperService extends AbstractExtensionService
             'thrating',
             'pi1'
         );
+
         $frameworkConfiguration = $this->configurationManager->getConfiguration(
             ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK,
             'thrating',
             'pi1'
         );
-
         if (!empty($frameworkConfiguration['ratings'])) {
             //Merge extension ratingConfigurations with customer added ones
             ArrayUtility::mergeRecursiveWithOverrule(
@@ -230,7 +239,6 @@ class ExtensionHelperService extends AbstractExtensionService
         if (empty($settings['ratedobjectuid'])) {
             $settings['ratedobjectuid'] = $currentRecord[1];
         }
-
         return $settings;
     }
 
@@ -256,11 +264,9 @@ class ExtensionHelperService extends AbstractExtensionService
             $ratingobject = $this->ratingobjectRepository->findMatchingTableAndField(
                 $settings['ratetable'],
                 $settings['ratefield'],
-                RatingobjectRepository::ADD_IF_NOT_FOUND,
-                $settings['storagePid']
+                RatingobjectRepository::ADD_IF_NOT_FOUND
             );
         }
-
         return $ratingobject;
     }
 
@@ -284,22 +290,29 @@ class ExtensionHelperService extends AbstractExtensionService
     /**
      * Returns a new or existing ratingobject
      *
+     * @param Stepconf $stepconf
      * @param array $stepnameArray
      * @return  \Thucke\ThRating\Domain\Model\Stepname
-     * @throws Exception
+     * @throws LanguageNotFoundException
      * @throws \TYPO3\CMS\Core\Exception\SiteNotFoundException
+     * @throws \TYPO3\CMS\Extbase\Persistence\Exception\InvalidQueryException
      */
-    public function createStepname(array $stepnameArray): Stepname
+    public function createStepname(Stepconf $stepconf, array $stepnameArray): Stepname
     {
+        \TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump($stepnameArray,get_class($this).' $stepnameArray');
         /** @var \Thucke\ThRating\Domain\Model\Stepname $stepname */
         $stepname = $this->objectManager->get(Stepname::class);
+        $stepname->setStepconf($stepconf);
         $stepname->setStepname($stepnameArray['stepname']);
         $stepname->setPid($stepnameArray['pid']);
         $stepname->setLanguageUid($this->getStaticLanguageByIsoCode(
-                $stepname->getPid(),
-                $stepnameArray['languageIsoCode']
+            $stepname->getPid(),
+            $stepnameArray['twoLetterIsoCode'] ?: null
             )->getLanguageId()
         );
+
+        //set parent language record
+        $stepname->setL18nParent($this->stepnameRepository->findDefaultStepname($stepname)->getUid());
         return $stepname;
     }
 
@@ -498,9 +511,7 @@ class ExtensionHelperService extends AbstractExtensionService
                 }
             }
 
-            /** @var array $stepWeights */
             $stepWeights = [];
-            /** @var int $sumStepWeights */
             $sumStepWeights = 0;
 
             $stepconfs = $stepconfObjects->toArray();
@@ -665,7 +676,7 @@ class ExtensionHelperService extends AbstractExtensionService
         /** @var Site $site */
         $site = GeneralUtility::makeInstance(SiteFinder::class)->getSiteByPageId($pid);
 
-        if ($twoLetterIsoCode) {
+        if (!is_null($twoLetterIsoCode)) {
             foreach ($site->getAllLanguages() as $language) {
                 if ($language->getTwoLetterIsoCode() === $twoLetterIsoCode) {
                     return $language;
@@ -697,5 +708,4 @@ class ExtensionHelperService extends AbstractExtensionService
         }
         return $site->getDefaultLanguage();
     }
-
 }

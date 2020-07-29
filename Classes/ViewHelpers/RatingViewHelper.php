@@ -135,8 +135,8 @@ class RatingViewHelper extends AbstractViewHelper
                     'ratefield' => $ratefield,
                     'ratedobjectuid' => $ratedobjectuid,
                     'display' => $display, ],
-                'typoscript' => static::getConfigurationManager()
-                    ->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT),
+                    'typoscript' => static::getConfigurationManager()
+                        ->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT),
             ]
         );
 

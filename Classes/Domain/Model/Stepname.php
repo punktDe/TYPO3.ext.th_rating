@@ -2,6 +2,7 @@
 declare(strict_types = 1);
 namespace Thucke\ThRating\Domain\Model;
 
+use phpDocumentor\Reflection\Types\Integer;
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use TYPO3\CMS\Extbase\Annotation as Extbase;
@@ -75,31 +76,6 @@ class Stepname extends AbstractEntity
      * @var int
      */
     protected $_languageUid;
-
-    /**
-     * Constructs a new stepconfig object
-     * @param \Thucke\ThRating\Domain\Model\Stepconf|null $stepconf
-     * @param string|null $stepname
-     */
-    public function __construct(Stepconf $stepconf = null, $stepname = null)
-    {
-        if ($stepconf) {
-            $this->setStepconf($stepconf);
-        }
-        if ($stepname) {
-            $this->setStepname($stepname);
-        }
-        $this->initializeObject();
-
-    }
-
-    /**
-     * Initializes a new stepconf object
-     */
-    public function initializeObject(): void
-    {
-        //\TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump($this,get_class($this).' initializeObject');
-    }
 
     /**
      * Sets the stepconf this rating is part of
@@ -194,6 +170,7 @@ class Stepname extends AbstractEntity
     public function setLanguageUid($languageUid): void
     {
         $this->languageUid = $languageUid;
+        $this->set_languageUid($languageUid);
     }
 
     /**

@@ -1,6 +1,7 @@
 <?php
 namespace Thucke\ThRating\Domain\Repository;
 
+use InvalidArgumentException;
 use Thucke\ThRating\Domain\Model\Stepname;
 use Thucke\ThRating\Service\ExtensionHelperService;
 use TYPO3\CMS\Extbase\Persistence\Exception\InvalidQueryException;
@@ -66,7 +67,6 @@ class StepnameRepository extends Repository
      *
      * @param Stepname $stepname The stepname object
      * @return    bool
-     * @throws \TYPO3\CMS\Core\Exception\SiteNotFoundException
      */
     public function checkStepnameLanguage(Stepname $stepname): bool
     {
@@ -75,9 +75,9 @@ class StepnameRepository extends Repository
             //check if given language exist
 
             try {
-                //** @var \Thucke\ThRating\Domain\Model\Syslang|object $queryResult */
-                $queryResult = $this->objectManager->get(ExtensionHelperService::class)->getStaticLanguageById($stepnameLang);
-            } catch (\InvalidArgumentException $exception) {
+                # only get language and do not assign the result to check if it exists
+                $this->objectManager->get(ExtensionHelperService::class)->getStaticLanguageById($stepnameLang);
+            } catch (InvalidArgumentException $exception) {
                 //invalid language code -> NOK
                 return false;
             }
@@ -90,27 +90,29 @@ class StepnameRepository extends Repository
      * Finds the given stepconf object in the repository
      *
      * @param    Stepname $stepname The ratingname to look for
-     * @return    Stepname|object
-     * @var Stepname $foundRow
+     * @return    Stepname
      */
-    public function findStepnameObject(Stepname $stepname)
+    public function findStepnameObject(Stepname $stepname): Stepname
     {
-        $foundRow = $this->objectManager->get(Stepname::class);
-
         $query = $this->createQuery();
         $query->getQuerySettings()->setRespectSysLanguage(false);
         $query->matching(
             $query->logicalAnd(
-                [$query->equals(self::STEPCONF_NAME, $stepname->getStepconf()->getUid()),
-                        $query->equals($this->syslangUidLiteral, $stepname->getLanguageUid()), ]
+                [
+                    $query->equals(self::STEPCONF_NAME, $stepname->getStepconf()),
+                    $query->equals($this->syslangUidLiteral, $stepname->getLanguageUid()),
+                ]
             )
-        )
-                ->setLimit(1);
+        )->setLimit(1);
+        //$queryResult = $queryParser->convertQueryToDoctrineQueryBuilder($query)->execute()->fetchAll();
         $queryResult = $query->execute();
+
+        /** @var \Thucke\ThRating\Domain\Model\Stepname $foundRow */
+        $foundRow = $this->objectManager->get(Stepname::class);
+
         if (count($queryResult) !== 0) {
             $foundRow = $queryResult->getFirst();
         }
-
         return $foundRow;
     }
 
@@ -119,6 +121,7 @@ class StepnameRepository extends Repository
      *
      * @param int $uid
      * @return object The matching object if found, otherwise NULL
+     * @noinspection PhpUnused
      */
     public function findStrictByUid($uid)
     {
@@ -148,7 +151,6 @@ class StepnameRepository extends Repository
      */
     public function checkConsistency(Stepname $stepname): array
     {
-        /** @var \TYPO3\CMS\Extbase\Persistence\QueryInterface $query */
         $query = $this->createQuery();
         $query ->getQuerySettings()->setRespectSysLanguage(false);
         $query ->matching(
@@ -158,11 +160,8 @@ class StepnameRepository extends Repository
             ->execute(true)
             ->toArray();  /** instead of setReturnRawQueryResult(true); */
 
-        /** @var array $checkConsistency */
         $checkConsistency = [];
-
         if (count($queryResult) > 1) {
-            /** @var array $websiteLanguagesArray */
             $websiteLanguagesArray = [];
 
             $allWebsiteLanguages = $GLOBALS['TYPO3_REQUEST']->getAttribute('site')->getAllLanguages();
@@ -201,12 +200,14 @@ class StepnameRepository extends Repository
     {
         $foundRow = $this->objectManager->get(Stepname::class);
 
+        \TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump($stepname,get_class($this).' $stepname begin');
+
         $query = $this->createQuery();
         $query->getQuerySettings()->setRespectSysLanguage(false);
         $query->matching(
             $query->logicalAnd(
                 [
-                    $query->equals(self::STEPCONF_NAME, $stepname->getStepconf()->getUid()),
+                    $query->equals(self::STEPCONF_NAME, $stepname->getStepconf()),
                     $query->in($this->syslangUidLiteral, [0, -1])
                 ]
             )
@@ -214,10 +215,15 @@ class StepnameRepository extends Repository
 
         /** @var QueryResultInterface $queryResult */
         $queryResult = $query->execute();
+        $queryParser = $this->objectManager->get(\TYPO3\CMS\Extbase\Persistence\Generic\Storage\Typo3DbQueryParser::class);
+        \TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump($queryParser->convertQueryToDoctrineQueryBuilder($query)->getSQL(), get_class($this).' SQL');
+        \TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump($queryParser->convertQueryToDoctrineQueryBuilder($query)->getParameters(), get_class($this).' SQL Parameter');
 
-        if (count($queryResult) !== 0) {
+        \TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump($queryResult,get_class($this).' $queryResult');
+        if ($queryResult->count() !== 0) {
             $foundRow = $queryResult->getFirst();
         }
+        \TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump($foundRow,get_class($this).' $queryResult');
 
         return $foundRow;
     }
@@ -231,12 +237,12 @@ class StepnameRepository extends Repository
     public function existStepname(Stepname $stepname): bool
     {
         $lookForStepname = $this->findStepnameObject($stepname);
-
-        return $lookForStepname instanceof Stepname;
+        return !empty($lookForStepname);
     }
 
     /**
      * Set default query settings to find ALL records
+     * @noinspection PhpUnused
      */
     public function clearQuerySettings(): void
     {

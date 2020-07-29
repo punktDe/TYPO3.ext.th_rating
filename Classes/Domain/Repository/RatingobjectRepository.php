@@ -6,7 +6,9 @@ namespace Thucke\ThRating\Domain\Repository;
 use Thucke\ThRating\Domain\Model\Ratingobject;
 use Thucke\ThRating\Domain\Validator\RatingobjectValidator;
 use Thucke\ThRating\Exception\RecordNotFoundException;
+use Thucke\ThRating\Service\ExtensionConfigurationService;
 use Thucke\ThRating\Service\ExtensionHelperService;
+use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Persistence\Repository;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 
@@ -59,22 +61,50 @@ class RatingobjectRepository extends Repository
     }
 
     /**
+     * @var \Thucke\ThRating\Service\ExtensionConfigurationService
+     */
+    protected $extensionConfigurationService;
+
+    /**
+     * @param \Thucke\ThRating\Service\ExtensionConfigurationService $extensionConfigurationService
+     * @noinspection PhpUnused
+     */
+    public function injectExtensionConfigurationService(ExtensionConfigurationService $extensionConfigurationService): void
+    {
+        $this->extensionConfigurationService = $extensionConfigurationService;
+    }
+
+    /**
+     * @var \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface
+     */
+    protected $configurationManager;
+
+    /**
+     * @param \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager
+     */
+    public function injectConfigurationManager(ConfigurationManagerInterface $configurationManager): void
+    {
+        $this->configurationManager = $configurationManager;
+    }
+
+    /**
      * Finds the specific ratingobject by giving table and fieldname
      *
      * @param string $ratetable The tablename of the ratingobject
      * @param string $ratefield The fieldname of the ratingobject
      * @param bool $addIfNotFound Set to true if new objects should instantly be added
-     * @param int $storagePid
      * @return \Thucke\ThRating\Domain\Model\Ratingobject The ratingobject
      * @throws RecordNotFoundException
      * @throws \TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException
      */
-    public function findMatchingTableAndField($ratetable, $ratefield, $addIfNotFound = false, $storagePid = 0): Ratingobject
+    public function findMatchingTableAndField($ratetable, $ratefield, $addIfNotFound = false): Ratingobject
     {
         /** @var \Thucke\ThRating\Domain\Model\Ratingobject $foundRow */
         $foundRow = $this->objectManager->get(Ratingobject::class);
 
         $query = $this->createQuery();
+        //$query->setQuerySettings($this->extensionConfigurationService->getExtDefaultQuerySettings());
+
         $query->matching($query->logicalAnd([
             $query->equals('ratetable', $ratetable),
             $query->equals('ratefield', $ratefield),
@@ -88,7 +118,6 @@ class RatingobjectRepository extends Repository
         } elseif ($addIfNotFound) {
             $foundRow->setRatetable($ratetable);
             $foundRow->setRatefield($ratefield);
-            $foundRow->setPid($storagePid);
 
             if (!$this->objectManager->get(RatingobjectValidator::class)->validate($foundRow)->hasErrors()) {
                 $this->add($foundRow);
@@ -106,7 +135,6 @@ class RatingobjectRepository extends Repository
      * Finds the specific ratingobject by giving table and fieldname
      *
      * @param bool   Switch to fetch ALL entries regardless of their pid
-     * @param mixed $ignoreStoragePage
      * @return \TYPO3\CMS\Extbase\Persistence\QueryResultInterface|array All ratingobjects of the site
      */
     /** @noinspection PhpMissingParentCallCommonInspection */

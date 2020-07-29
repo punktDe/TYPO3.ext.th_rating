@@ -27,18 +27,17 @@ namespace Thucke\ThRating\Tests\Functional\Domain\Repository;
 
 use Nimut\TestingFramework\Exception\Exception;
 use Nimut\TestingFramework\TestCase\FunctionalTestCase;
-use Thucke\ThRating\Domain\Model\Ratingobject;
-use Thucke\ThRating\Domain\Repository\RatingobjectRepository;
-use Thucke\ThRating\Domain\Validator\RatingobjectValidator;
-use Thucke\ThRating\Exception\RecordNotFoundException;
+use Thucke\ThRating\Domain\Model\Stepconf;
+use Thucke\ThRating\Domain\Model\Stepname;
+use Thucke\ThRating\Domain\Repository\StepnameRepository;
+use Thucke\ThRating\Domain\Repository\StepconfRepository;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
-use TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException;
 use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
 use TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings;
 
 /**
- * Testcases for RatingobjectRepository
+ * Testcases for RatingRepository
  *
  * @version 	$Id:$
  * @author		Thomas Hucke <thucke@web.de>
@@ -47,7 +46,7 @@ use TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings;
  * @scope 		alpha
  * @entity
  */
-class RatingobjectRepositoryTest extends FunctionalTestCase
+class StepnameRepositoryTest extends FunctionalTestCase
 {
     /**
      * @var string[]
@@ -55,7 +54,7 @@ class RatingobjectRepositoryTest extends FunctionalTestCase
     protected $testExtensionsToLoad = ['typo3conf/ext/th_rating'];
 
     /**
-     * @var RatingobjectRepository
+     * @var StepnameRepository
      */
     private $subject;
 
@@ -70,21 +69,27 @@ class RatingobjectRepositoryTest extends FunctionalTestCase
     private $objectManager;
 
     /**
+     * @var Stepconf
+     */
+    private $stepconf;
+
+    /**
      * @throws Exception
      */
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->persistenceManager = GeneralUtility::makeInstance(PersistenceManager::class);
+        $this->importDataSet(__DIR__ . '/Fixtures/Stepconf.xml');
+        $this->importDataSet(__DIR__ . '/Fixtures/Database/pages.xml');
 
-        /** @var ObjectManager $objectManager */
+        $this->persistenceManager = GeneralUtility::makeInstance(PersistenceManager::class);
         $this->objectManager = GeneralUtility::makeInstance(ObjectManager::class);
-        $this->subject = $this->objectManager->get(RatingobjectRepository::class);
+
+        $this->subject = $this->objectManager->get(StepnameRepository::class);
         $this->subject->injectPersistenceManager($this->persistenceManager);
         $this->subject->setDefaultQuerySettings($this->getDefaultQuerySettings());
-        $this->importDataSet(__DIR__ . '/Fixtures/Ratingobject.xml');
-        $this->importDataSet(__DIR__ . '/Fixtures/Database/pages.xml');
+        $this->stepconf = $this->createStepconfRepository()->findByUid(1);
         $this->setUpFrontendRootPage(
             1,
             [
@@ -93,7 +98,6 @@ class RatingobjectRepositoryTest extends FunctionalTestCase
                 'EXT:th_rating/Tests/Functional/Domain/Repository/Fixtures/Frontend/Basic.typoscript',
             ]
         );
-
     }
 
     /**
@@ -103,76 +107,91 @@ class RatingobjectRepositoryTest extends FunctionalTestCase
     {
         /** @var \TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings $defaultQuerySettings */
         $defaultQuerySettings = $this->objectManager->get(Typo3QuerySettings::class);
-        //$defaultQuerySettings->setRespectStoragePage(false);
+        $defaultQuerySettings->setRespectStoragePage(false);
+        $defaultQuerySettings->setRespectSysLanguage(false);
         $defaultQuerySettings->setStoragePageIds([1]);
 
         return $defaultQuerySettings;
     }
 
     /**
+     * @return StepconfRepository
+     */
+    protected function createStepconfRepository(): StepconfRepository
+    {
+        /** @var StepconfRepository $stepconfRepository */
+        $stepconfRepository = $this->objectManager->get(StepconfRepository::class);
+        $stepconfRepository->injectPersistenceManager($this->persistenceManager);
+        $stepconfRepository->setDefaultQuerySettings($this->getDefaultQuerySettings());
+
+        return $stepconfRepository;
+    }
+
+    /**
      * @test
-     * @throws IllegalObjectTypeException
+     * @throws \TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException
      */
     public function addAndPersistAllCreatesNewRecord(): void
     {
-        $ratetable = 'newTable';
-        $ratefield = 'newField';
-        $model = new Ratingobject($ratetable, $ratefield);
+        $model = new Stepname();
+        $model->setStepconf($this->stepconf);
+        $model->setLanguageUid(1);
+        $model->setStepname('stepname eins');
 
         $this->subject->add($model);
         $this->persistenceManager->persistAll();
 
         $databaseRow = $this->getDatabaseConnection()->selectSingleRow(
             '*',
-            'tx_thrating_domain_model_ratingobject',
+            'tx_thrating_domain_model_stepname',
             'uid = ' . $model->getUid()
         );
-        $this->assertSame($ratetable, $databaseRow['ratetable']);
+        $this->assertSame($model->getLanguageUid(), $databaseRow['sys_language_uid']);
     }
 
     /**
      * @test
      */
-    public function findAllAndStoragePageCombination(): void
+    public function findAll(): void
     {
-        $this->assertEquals(4, $this->subject->findAll(true)->count());
-        $this->assertEquals(3, $this->subject->findAll(false)->count());
+        $this->assertEquals(2, $this->subject->countAll());
     }
 
     /**
      * @test
-     * @throws IllegalObjectTypeException
-     * @throws RecordNotFoundException
      */
-    public function findMatchingTableAndField(): void
+    public function findStepnameObject(): void
     {
-        $foundRow = $this->subject->findByUid(1);
-        $this->assertEquals(1, $foundRow->getUid());
-        $this->assertEquals('testTable', $foundRow->getRatetable());
-        $this->assertEquals('testField', $foundRow->getRatefield());
+        $model = new Stepname();
+        $model->setStepconf($this->stepconf);
+        $model->setLanguageUid(0);
 
-        $foundRow = $this->subject->findMatchingTableAndField('testTable', 'testField');
+        $foundRow = $this->subject->findStepnameObject($model);
+
         //check for right object type
-        $this->assertInstanceOf(Ratingobject::class, $foundRow);
-        //validate found object
-        $this->assertFalse($this->objectManager->get(RatingobjectValidator::class)->validate($foundRow)->hasErrors());
-        //check if it matches fixture
+        $this->assertInstanceOf(Stepname::class, $foundRow);
+
+        //compare with fixure uid
         $this->assertEquals(1, $foundRow->getUid());
 
-        /* TODO this test fails only outside the context of TYPO3
-        $foundRow = $this->subject->findMatchingTableAndField('testTable', 'testFieldNewAdded', true);
-        $this->assertEquals(5, $foundRow->getUid());
-        */
+        //compare with fixure ratingobject
+        $this->assertEquals(1, $foundRow->getStepconf()->getUid());
+
+        //validate found object
+        //$this->assertFalse($this->objectManager->get(RatingValidator::class)->validate($foundRow)->hasErrors());
     }
 
-    /**
-     * @test
-     * @throws IllegalObjectTypeException
-     * @throws RecordNotFoundException
-     */
-    public function exceptionOnMissingEntry(): void
+    public function testExistStepname(): void
     {
-        $this->expectException(RecordNotFoundException::class);
-        $this->subject->findMatchingTableAndField('testTable', 'testFieldNewAdded');
+        $existingModelEntry = new Stepname();
+        $existingModelEntry->setStepconf($this->stepconf);
+        $existingModelEntry->setLanguageUid(0);
+
+        $this->assertTrue($this->subject->existStepname($existingModelEntry));
+
+        $notExistingModelEntry = new Stepname();
+        $notExistingModelEntry->setStepconf($this->stepconf);
+        $notExistingModelEntry->setLanguageUid(2);
+        $this->assertFalse($this->subject->existStepname($notExistingModelEntry));
     }
 }
