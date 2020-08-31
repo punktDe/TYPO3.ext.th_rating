@@ -18,7 +18,6 @@ use Thucke\ThRating\Domain\Validator\RatingValidator;
 use Thucke\ThRating\Domain\Validator\StepconfValidator;
 use Thucke\ThRating\Domain\Validator\VoteValidator;
 use Thucke\ThRating\Evaluation\DynamicCssEvaluator;
-use Thucke\ThRating\Exception\Exception;
 use Thucke\ThRating\Exception\LanguageNotFoundException;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Log\Logger;
@@ -246,6 +245,8 @@ class ExtensionHelperService extends AbstractExtensionService
      */
     public function getRatingobject(array $settings): Ratingobject
     {
+        $ratingobject = null;
+
         //check whether a dedicated ratingobject is configured
         if (!empty($settings['ratingobject'])) {
             $ratingobject = $this->ratingobjectRepository->findByUid($settings['ratingobject']);

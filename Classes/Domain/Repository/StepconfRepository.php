@@ -38,13 +38,11 @@ use TYPO3\CMS\Extbase\Persistence\Repository;
  */
 class StepconfRepository extends Repository
 {
-    /** @noinspection PhpUnused */
     protected $defaultOrderings = ['steporder' => QueryInterface::ORDER_ASCENDING];
 
     /**
      * Initialize this repository
      */
-    /** @noinspection PhpUnused */
     public function initializeObject(): void
     {
         //disable RespectStoragePage as pid is always bound to parent objects pid

@@ -82,6 +82,7 @@ class StepconfRepositoryTest extends FunctionalTestCase
         parent::setUp();
         $extAbsPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('th_rating');
 
+        $this->importDataSet($extAbsPath.'/Tests/Functional/Fixtures/Database/Ratingobject.xml');
         $this->importDataSet($extAbsPath.'/Tests/Functional/Fixtures/Database/Stepconf.xml');
 
         $this->persistenceManager = GeneralUtility::makeInstance(PersistenceManager::class);

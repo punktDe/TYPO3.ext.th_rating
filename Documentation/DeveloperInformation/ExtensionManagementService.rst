@@ -204,19 +204,22 @@ We store the reference on the generated new ratingobject in a variable.
 
 Next the rating stepnames could be added according to our extension needs.
 In this example we assume any default language and an additional
-website language ``German`` (``UID 43`` in the table ``static_languages``):
+website language ``German`` (iso-639-1 ``de``):
 
 .. code:: php
+
+    //after calling makeRatable store a newly generated stepconf in a separate variable
+    $stepconf = $ratingobject->getStepconfs()->current();
 
     //add descriptions in default language to each stepconf
     $this->objectManager
       ->get(Thucke\ThRating\Service\ExtensionManagementService::class)
-      ->setStepname($ratingobject->getStepconfs()->current(), 'Automatic generated entry ', null, TRUE);
+      ->setStepname($stepconf, 'Automatic generated entry ', null, TRUE);
 
     //add descriptions in german language to each stepconf
     $this->objectManager
       ->get(Thucke\ThRating\Service\ExtensionManagementService::class)
-      ->setStepname($ratingobject->getStepconfs()->current(), 'Automatischer Eintrag ', 'de'', TRUE);
+      ->setStepname($stepconf, 'Automatischer Eintrag ', 'de'', TRUE);
 
 
 Among others the table ``static_languages`` will be installed by the extension `static_info_tables`_

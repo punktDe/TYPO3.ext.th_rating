@@ -7,7 +7,6 @@ use Thucke\ThRating\Domain\Validator\RatingobjectValidator;
 use Thucke\ThRating\Exception\RecordNotFoundException;
 use Thucke\ThRating\Service\ExtensionHelperService;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
-use TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface;
 use TYPO3\CMS\Extbase\Persistence\Repository;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 
@@ -103,7 +102,6 @@ class RatingobjectRepository extends Repository
         } elseif ($addIfNotFound) {
             $foundRow->setRatetable($ratetable);
             $foundRow->setRatefield($ratefield);
-            \TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump($this->objectManager->get(QuerySettingsInterface::class), get_class($this).' QuerySettings');
 
             if (!$this->objectManager->get(RatingobjectValidator::class)->validate($foundRow)->hasErrors()) {
                 $this->add($foundRow);
@@ -113,7 +111,6 @@ class RatingobjectRepository extends Repository
         } else {
             throw new RecordNotFoundException(LocalizationUtility::translate('recordNotFound', 'ThRating'), 1567962473);
         }
-
         return $foundRow;
     }
 
@@ -128,11 +125,6 @@ class RatingobjectRepository extends Repository
     {
         $query = $this->createQuery();
         $query->getQuerySettings()->setRespectStoragePage(!$ignoreStoragePage);
-
-        /*$queryParser = $this->objectManager->get(\TYPO3\CMS\Extbase\Persistence\Generic\Storage\Typo3DbQueryParser::class);
-        \TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump($queryParser->convertQueryToDoctrineQueryBuilder($query)->getSQL(), get_class($this).' SQL');
-        \TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump($queryParser->convertQueryToDoctrineQueryBuilder($query)->getParameters(), get_class($this).' SQL Parameter');*/
-
         return $query->execute();
     }
 }

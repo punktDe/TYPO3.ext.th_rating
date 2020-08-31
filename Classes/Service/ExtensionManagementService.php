@@ -96,6 +96,11 @@ class ExtensionManagementService extends AbstractExtensionService
             $ratingobject->addStepconf($stepconf);
         }
 
+        //Full reload of newly created object
+        $ratingobject = $this->extensionHelperService->getRatingobject(
+            ['ratetable' => $tablename, 'ratefield' => $fieldname]
+        );
+
         // CREATE NEW DYNCSS FILE
         $this->extensionHelperService->clearDynamicCssFile();
         $this->extensionHelperService->renderDynCSS();
@@ -109,7 +114,7 @@ class ExtensionManagementService extends AbstractExtensionService
      * @api
      * @param \Thucke\ThRating\Domain\Model\Stepconf $stepconf
      * @param string $stepname
-     * @param string $twoLetterIsoCode
+     * @param string|null $twoLetterIsoCode
      * @param bool $allStepconfs Take stepname for all steps and add steporder number at the end
      * @return  bool
      * @throws \TYPO3\CMS\Core\Exception\SiteNotFoundException
@@ -117,7 +122,12 @@ class ExtensionManagementService extends AbstractExtensionService
      * @throws \TYPO3\CMS\Extbase\Persistence\Exception\InvalidQueryException
      * @throws \Thucke\ThRating\Exception\Exception
      */
-    public function setStepname(Stepconf $stepconf, string $stepname, string $twoLetterIsoCode=null, bool $allStepconfs = false): bool
+    public function setStepname(
+        Stepconf $stepconf,
+        string $stepname,
+        string $twoLetterIsoCode=null,
+        bool $allStepconfs = false
+    ): bool
     {
         $this->logger->log(
             LogLevel::INFO,
@@ -132,6 +142,10 @@ class ExtensionManagementService extends AbstractExtensionService
         );
 
         $this->extensionConfigurationService->prepareExtensionConfiguration();
+
+        /** @var \Thucke\ThRating\Domain\Model\Ratingobject $ratingobject */
+        $ratingobject = $stepconf->getRatingobject();
+
         $success = true;
         if (!$allStepconfs) {
             //only add the one specific stepname
@@ -158,11 +172,9 @@ class ExtensionManagementService extends AbstractExtensionService
                 $success = false;
             }
         } else {
-            /** @var \Thucke\ThRating\Domain\Model\Ratingobject $ratingobject */
-            $ratingobject = $stepconf->getRatingobject();
 
             //add stepnames to every stepconf
-            foreach ($ratingobject->getStepconfs() as $i => $loopStepConf) {
+            foreach ($ratingobject->getStepconfs() as $loopStepConf) {
                 $stepnameArray = [
                     'stepname' => $stepname . $loopStepConf->getSteporder(),
                     'twoLetterIsoCode' => $twoLetterIsoCode,
@@ -186,6 +198,7 @@ class ExtensionManagementService extends AbstractExtensionService
                 }
             }
         }
+
         $this->extensionConfigurationService->restoreCallingExtensionConfiguration();
         return $success;
     }

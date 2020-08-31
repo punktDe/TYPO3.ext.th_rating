@@ -1,11 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <dataset>
-	<tx_thrating_domain_model_ratingobject>
-		<uid>1</uid>
-		<pid>1</pid>
-		<ratetable>testTable</ratetable>
-		<ratefield>testField</ratefield>
-	</tx_thrating_domain_model_ratingobject>
     <tx_thrating_domain_model_stepconf>
         <uid>1</uid>
         <pid>1</pid>
@@ -42,49 +36,4 @@
 		<stepname>11</stepname>
 		<votes>0</votes>
     </tx_thrating_domain_model_stepconf>
-	<tx_thrating_domain_model_stepname>
-		<uid>1</uid>
-		<pid>1</pid>
-		<stepconf>1</stepconf>
-		<stepname>stepname one</stepname>
-		<sys_language_uid>0</sys_language_uid>
-		<l18n_parent>0</l18n_parent>
-		<l18n_diffsource>0</l18n_diffsource>
-	</tx_thrating_domain_model_stepname>
-	<tx_thrating_domain_model_stepname>
-		<uid>2</uid>
-		<pid>1</pid>
-		<stepconf>2</stepconf>
-		<stepname>stepname two</stepname>
-		<sys_language_uid>0</sys_language_uid>
-		<l18n_parent>0</l18n_parent>
-		<l18n_diffsource>0</l18n_diffsource>
-	</tx_thrating_domain_model_stepname>
-	<tx_thrating_domain_model_stepname>
-		<uid>3</uid>
-		<pid>1</pid>
-		<stepconf>1</stepconf>
-		<stepname>stepname eins</stepname>
-		<sys_language_uid>1</sys_language_uid>
-		<l18n_parent>1</l18n_parent>
-		<l18n_diffsource>0</l18n_diffsource>
-	</tx_thrating_domain_model_stepname>
-	<tx_thrating_domain_model_stepname>
-		<uid>4</uid>
-		<pid>1</pid>
-		<stepconf>2</stepconf>
-		<stepname>stepname zwei</stepname>
-		<sys_language_uid>1</sys_language_uid>
-		<l18n_parent>2</l18n_parent>
-		<l18n_diffsource>0</l18n_diffsource>
-	</tx_thrating_domain_model_stepname>
-	<sys_language>
-		<uid>1</uid>
-		<pid>0</pid>
-		<title>Deutsch</title>
-		<flag>de</flag>
-		<static_lang_isocode>43</static_lang_isocode>
-		<language_isocode>de</language_isocode>
-		<sorting>256</sorting>
-	</sys_language>
 </dataset>

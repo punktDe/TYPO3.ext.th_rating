@@ -355,7 +355,7 @@ class VoteController extends ActionController
         $this->objectManager->get(ExtensionManagementService::class)->setStepname(
             $ratingobject->getStepconfs()->current(),
             'Automatischer Eintrag ',
-            43,
+            'de',
             true
         );
     }

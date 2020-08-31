@@ -90,7 +90,6 @@ class Ratingobject extends AbstractEntity
     /**
      * @param \Thucke\ThRating\Domain\Repository\StepconfRepository $stepconfRepository
      */
-    /** @noinspection PhpUnused */
     public function injectStepconfRepository(StepconfRepository $stepconfRepository)
     {
         $this->stepconfRepository = $stepconfRepository;
@@ -258,7 +257,6 @@ class Ratingobject extends AbstractEntity
      * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Thucke\ThRating\Domain\Model\Rating> $ratings
      *          The ratings of the organization
      */
-    /** @noinspection PhpUnused */
     public function setRatings(ObjectStorage $ratings)
     {
         $this->ratings = $ratings;
@@ -269,7 +267,6 @@ class Ratingobject extends AbstractEntity
      *
      * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Thucke\ThRating\Domain\Model\Rating>
      */
-    /** @noinspection PhpUnused */
     public function getRatings()
     {
         return clone $this->ratings;
