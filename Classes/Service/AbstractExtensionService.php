@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 namespace Thucke\ThRating\Service;
 
 use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
@@ -40,6 +41,13 @@ class AbstractExtensionService implements SingletonInterface
      */
     protected $objectManager;
     /**
+     * @param \TYPO3\CMS\Extbase\Object\ObjectManagerInterface
+     */
+    public function injectObjectManager(ObjectManagerInterface $objectManager) {
+        $this->objectManager = $objectManager;
+    }
+
+    /**
      * @var \Thucke\ThRating\Service\LoggingService
      */
     protected $loggingService;
@@ -50,12 +58,10 @@ class AbstractExtensionService implements SingletonInterface
 
     /**
      * Constructor
-     * @param \TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager
      * @param \Thucke\ThRating\Service\LoggingService $loggingService
      */
-    public function __construct(ObjectManagerInterface $objectManager, LoggingService $loggingService)
+    public function __construct(LoggingService $loggingService)
     {
-        $this->objectManager = $objectManager;
         $this->loggingService = $loggingService;
         $this->logger = $loggingService->getLogger(get_class($this));
     }

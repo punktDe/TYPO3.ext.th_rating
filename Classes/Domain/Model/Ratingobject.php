@@ -90,7 +90,6 @@ class Ratingobject extends AbstractEntity
     /**
      * @param \Thucke\ThRating\Domain\Repository\StepconfRepository $stepconfRepository
      */
-    /** @noinspection PhpUnused */
     public function injectStepconfRepository(StepconfRepository $stepconfRepository)
     {
         $this->stepconfRepository = $stepconfRepository;
@@ -203,8 +202,7 @@ class Ratingobject extends AbstractEntity
      *
      * @param \Thucke\ThRating\Domain\Model\Rating $rating The rating to be removed
      */
-    /** @noinspection PhpUnused */
-    public function removeRating(Rating $rating)
+    public function removeRating(Rating $rating): void
     {
         $this->ratings->detach($rating);
     }
@@ -212,8 +210,7 @@ class Ratingobject extends AbstractEntity
     /**
      * Remove all ratings from this object
      */
-    /** @noinspection PhpUnused */
-    public function removeAllRatings()
+    public function removeAllRatings(): void
     {
         $this->ratings = new ObjectStorage();
     }
@@ -223,7 +220,7 @@ class Ratingobject extends AbstractEntity
      *
      * @param \Thucke\ThRating\Domain\Model\Stepconf $stepconf
      */
-    public function addStepconf(Stepconf $stepconf)
+    public function addStepconf(Stepconf $stepconf): void
     {
         if (!$this->stepconfRepository->existStepconf($stepconf)) {
             $this->stepconfs->attach($stepconf);
@@ -260,7 +257,6 @@ class Ratingobject extends AbstractEntity
      * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Thucke\ThRating\Domain\Model\Rating> $ratings
      *          The ratings of the organization
      */
-    /** @noinspection PhpUnused */
     public function setRatings(ObjectStorage $ratings)
     {
         $this->ratings = $ratings;
@@ -271,7 +267,6 @@ class Ratingobject extends AbstractEntity
      *
      * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Thucke\ThRating\Domain\Model\Rating>
      */
-    /** @noinspection PhpUnused */
     public function getRatings()
     {
         return clone $this->ratings;

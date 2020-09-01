@@ -2,7 +2,7 @@
 namespace Thucke\ThRating\Domain\Repository;
 
 use TYPO3\CMS\Extbase\Domain\Repository\FrontendUserRepository;
-use TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings;
+use TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface;
 
 /***************************************************************
 *  Copyright notice
@@ -39,7 +39,7 @@ class VoterRepository extends FrontendUserRepository
     public function initializeObject()
     {
         //Even hidden or deleted FE Users  should be found
-        $this->defaultQuerySettings = $this->objectManager->get(Typo3QuerySettings::class);
+        $this->defaultQuerySettings = $this->objectManager->get(QuerySettingsInterface::class);
         $this->defaultQuerySettings->setIgnoreEnableFields(true);
     }
 }

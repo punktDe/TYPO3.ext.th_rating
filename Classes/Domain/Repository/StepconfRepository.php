@@ -5,7 +5,7 @@ namespace Thucke\ThRating\Domain\Repository;
 use Thucke\ThRating\Domain\Model\Ratingobject;
 use Thucke\ThRating\Domain\Model\Stepconf;
 use Thucke\ThRating\Domain\Validator\StepconfValidator;
-use TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings;
+use TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface;
 use TYPO3\CMS\Extbase\Persistence\QueryInterface;
 use TYPO3\CMS\Extbase\Persistence\Repository;
 
@@ -38,19 +38,17 @@ use TYPO3\CMS\Extbase\Persistence\Repository;
  */
 class StepconfRepository extends Repository
 {
-    /** @noinspection PhpUnused */
     protected $defaultOrderings = ['steporder' => QueryInterface::ORDER_ASCENDING];
 
     /**
      * Initialize this repository
      */
-    /** @noinspection PhpUnused */
     public function initializeObject(): void
     {
         //disable RespectStoragePage as pid is always bound to parent objects pid
 
-        /** @var Typo3QuerySettings $defaultQuerySettings */
-        $defaultQuerySettings = $this->objectManager->get(Typo3QuerySettings::class);
+        /** @var \TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface $defaultQuerySettings */
+        $defaultQuerySettings = $this->objectManager->get(QuerySettingsInterface::class);
         $defaultQuerySettings->setRespectStoragePage(false);
         $this->setDefaultQuerySettings($defaultQuerySettings);
     }

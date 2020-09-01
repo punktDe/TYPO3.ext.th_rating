@@ -226,7 +226,7 @@ class Stepconf extends AbstractEntity
      * @throws \TYPO3\CMS\Extbase\Persistence\Exception\InvalidQueryException
      * @return bool
      */
-    public function addStepname(Stepname $stepname)
+    public function addStepname(Stepname $stepname): bool
     {
         $success = true;
         $stepname->setStepconf($this);
@@ -241,6 +241,7 @@ class Stepconf extends AbstractEntity
             }
             $this->stepnameRepository->add($stepname);
             $this->extensionHelperService->persistRepository(StepnameRepository::class, $stepname);
+            $stepname->getStepconf()->getStepname();
             $this->extensionHelperService->persistRepository(StepconfRepository::class, $this);
             $this->extensionHelperService->clearDynamicCssFile();
         } else {
@@ -269,7 +270,6 @@ class Stepconf extends AbstractEntity
      *
      * @return \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Thucke\ThRating\Domain\Model\Vote>
      */
-    /** @noinspection PhpUnused */
     public function getVotes()
     {
         return clone $this->votes;

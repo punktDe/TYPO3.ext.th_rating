@@ -1,10 +1,10 @@
 <?php
 namespace Thucke\ThRating\Domain\Repository;
 
+use InvalidArgumentException;
 use Thucke\ThRating\Domain\Model\Stepname;
 use Thucke\ThRating\Service\ExtensionHelperService;
 use TYPO3\CMS\Extbase\Persistence\Exception\InvalidQueryException;
-use TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings;
 use TYPO3\CMS\Extbase\Persistence\QueryInterface;
 use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
 use TYPO3\CMS\Extbase\Persistence\Repository;
@@ -54,7 +54,6 @@ class StepnameRepository extends Repository
     /**
      * Initialize this repository
      */
-    /** @noinspection PhpUnused */
     public function initializeObject(): void
     {
         $this->syslangUidLiteral = $GLOBALS['TCA'][self::TABLE_NAME]['ctrl']['languageField'];
@@ -66,7 +65,6 @@ class StepnameRepository extends Repository
      *
      * @param Stepname $stepname The stepname object
      * @return    bool
-     * @throws \TYPO3\CMS\Core\Exception\SiteNotFoundException
      */
     public function checkStepnameLanguage(Stepname $stepname): bool
     {
@@ -75,9 +73,9 @@ class StepnameRepository extends Repository
             //check if given language exist
 
             try {
-                //** @var \Thucke\ThRating\Domain\Model\Syslang|object $queryResult */
-                $queryResult = $this->objectManager->get(ExtensionHelperService::class)->getStaticLanguageById($stepnameLang);
-            } catch (\InvalidArgumentException $exception) {
+                # only get language and do not assign the result to check if it exists
+                $this->objectManager->get(ExtensionHelperService::class)->getStaticLanguageById($stepnameLang);
+            } catch (InvalidArgumentException $exception) {
                 //invalid language code -> NOK
                 return false;
             }
@@ -90,50 +88,61 @@ class StepnameRepository extends Repository
      * Finds the given stepconf object in the repository
      *
      * @param    Stepname $stepname The ratingname to look for
-     * @return    Stepname|object
-     * @var Stepname $foundRow
+     * @return    Stepname|null
      */
-    public function findStepnameObject(Stepname $stepname)
+    public function findStepnameObject(Stepname $stepname): ?Stepname
     {
-        $foundRow = $this->objectManager->get(Stepname::class);
-
         $query = $this->createQuery();
         $query->getQuerySettings()->setRespectSysLanguage(false);
+        $query->getQuerySettings()->setLanguageOverlayMode(false);
         $query->matching(
             $query->logicalAnd(
-                [$query->equals(self::STEPCONF_NAME, $stepname->getStepconf()->getUid()),
-                        $query->equals($this->syslangUidLiteral, $stepname->getLanguageUid()), ]
+                [
+                    $query->equals(self::STEPCONF_NAME, $stepname->getStepconf()),
+                    $query->equals($this->syslangUidLiteral, $stepname->getLanguageUid()),
+                ]
             )
-        )
-                ->setLimit(1);
+        )->setLimit(1);
+
+        /** @var \TYPO3\CMS\Extbase\Persistence\QueryResultInterface $queryResult */
         $queryResult = $query->execute();
-        if (count($queryResult) !== 0) {
+
+        /*
+        $queryParser = $this->objectManager->get(\TYPO3\CMS\Extbase\Persistence\Generic\Storage\Typo3DbQueryParser::class);
+        \TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump($queryParser->convertQueryToDoctrineQueryBuilder($query)->getSQL(), get_class($this).' SQL');
+        \TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump($queryParser->convertQueryToDoctrineQueryBuilder($query)->getParameters(), get_class($this).' SQL Parameter');
+        */
+
+        /** @var \Thucke\ThRating\Domain\Model\Stepname $foundRow */
+        $foundRow = null;
+
+        if ($queryResult->count() > 0) {
             $foundRow = $queryResult->getFirst();
         }
-
         return $foundRow;
     }
 
     /**
-     * Finds the given stepconf object in the repository
+     * Finds the given stepname object in the repository
      *
      * @param int $uid
-     * @return object The matching object if found, otherwise NULL
+     * @return \Thucke\ThRating\Domain\Model\Stepname|null The matching object if found, otherwise NULL
      */
-    public function findStrictByUid($uid)
+    public function findStrictByUid(int $uid): ?Stepname
     {
-        $foundRow = $this->objectManager->get(Stepname::class);
-
         $query = $this->createQuery();
         $query->getQuerySettings()->setRespectSysLanguage(false);
         $query->getQuerySettings()->setRespectStoragePage(false);
+        $query->getQuerySettings()->setLanguageOverlayMode(false);
         $query->matching(
             $query->logicalAnd(
                 [$query->equals('uid', $uid)]
             )
         )->setLimit(1);
         $queryResult = $query->execute();
-        if (count($queryResult) !== 0) {
+
+        $foundRow = null;
+        if ($queryResult->count() > 0) {
             $foundRow = $queryResult->getFirst();
         }
 
@@ -148,7 +157,6 @@ class StepnameRepository extends Repository
      */
     public function checkConsistency(Stepname $stepname): array
     {
-        /** @var \TYPO3\CMS\Extbase\Persistence\QueryInterface $query */
         $query = $this->createQuery();
         $query ->getQuerySettings()->setRespectSysLanguage(false);
         $query ->matching(
@@ -158,11 +166,8 @@ class StepnameRepository extends Repository
             ->execute(true)
             ->toArray();  /** instead of setReturnRawQueryResult(true); */
 
-        /** @var array $checkConsistency */
         $checkConsistency = [];
-
         if (count($queryResult) > 1) {
-            /** @var array $websiteLanguagesArray */
             $websiteLanguagesArray = [];
 
             $allWebsiteLanguages = $GLOBALS['TYPO3_REQUEST']->getAttribute('site')->getAllLanguages();
@@ -192,21 +197,22 @@ class StepnameRepository extends Repository
     /**
      * Finds the default language stepconf by giving ratingobject and steporder
      *
-     * @param   Stepname $stepname The ratingname to look for
+     * @param   \Thucke\ThRating\Domain\Model\Stepname $stepname The ratingname to look for
      * @throws  InvalidQueryException
-     * @return  Stepname|object       The stepname in default language
+     * @return  Stepname|null      The stepname in default language
      * @var Stepname $foundRow
      */
-    public function findDefaultStepname($stepname)
+    public function findDefaultStepname(Stepname $stepname)
     {
         $foundRow = $this->objectManager->get(Stepname::class);
 
         $query = $this->createQuery();
         $query->getQuerySettings()->setRespectSysLanguage(false);
+        $query->getQuerySettings()->setLanguageOverlayMode(false);
         $query->matching(
             $query->logicalAnd(
                 [
-                    $query->equals(self::STEPCONF_NAME, $stepname->getStepconf()->getUid()),
+                    $query->equals(self::STEPCONF_NAME, $stepname->getStepconf()),
                     $query->in($this->syslangUidLiteral, [0, -1])
                 ]
             )
@@ -215,8 +221,16 @@ class StepnameRepository extends Repository
         /** @var QueryResultInterface $queryResult */
         $queryResult = $query->execute();
 
-        if (count($queryResult) !== 0) {
+        /*
+        $queryParser = $this->objectManager->get(\TYPO3\CMS\Extbase\Persistence\Generic\Storage\Typo3DbQueryParser::class);
+        \TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump($queryParser->convertQueryToDoctrineQueryBuilder($query)->getSQL(), get_class($this).' SQL');
+        \TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump($queryParser->convertQueryToDoctrineQueryBuilder($query)->getParameters(), get_class($this).' SQL Parameter');
+        */
+
+        if ($queryResult->count() > 0) {
             $foundRow = $queryResult->getFirst();
+        } else {
+            unset($foundRow);
         }
 
         return $foundRow;
@@ -231,8 +245,7 @@ class StepnameRepository extends Repository
     public function existStepname(Stepname $stepname): bool
     {
         $lookForStepname = $this->findStepnameObject($stepname);
-
-        return $lookForStepname instanceof Stepname;
+        return !is_null($lookForStepname);
     }
 
     /**
@@ -240,10 +253,10 @@ class StepnameRepository extends Repository
      */
     public function clearQuerySettings(): void
     {
-        /** @var Typo3QuerySettings $querySettings */
-        $querySettings = $this->objectManager->get(Typo3QuerySettings::class);
-        $querySettings->setRespectSysLanguage(false);
+        $querySettings = $this->createQuery()->getQuerySettings();
+        $querySettings->setRespectSysLanguage(true);
         $querySettings->setIgnoreEnableFields(true);
+        $querySettings->setLanguageOverlayMode(false);
         $this->setDefaultQuerySettings($querySettings);
     }
 }

@@ -35,6 +35,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException;
 use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
+use TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface;
 use TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings;
 
 /**
@@ -80,7 +81,17 @@ class RatingRepositoryTest extends FunctionalTestCase
     {
         parent::setUp();
 
-        $this->importDataSet(__DIR__ . '/Fixtures/Rating.xml');
+        $extAbsPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('th_rating');
+        $this->importDataSet($extAbsPath.'/Tests/Functional/Fixtures/Database/Rating.xml');
+        $this->importDataSet($extAbsPath.'/Tests/Functional/Fixtures/Database/pages.xml');
+        $this->setUpFrontendRootPage(
+            1,
+            [
+                'EXT:fluid_styled_content/Configuration/TypoScript/setup.txt',
+                $extAbsPath.'/Configuration/TypoScript/setup.typoscript',
+                $extAbsPath.'/Tests/Functional/Fixtures/Frontend/Basic.typoscript',
+            ]
+        );
 
         $this->persistenceManager = GeneralUtility::makeInstance(PersistenceManager::class);
         $this->objectManager = GeneralUtility::makeInstance(ObjectManager::class);
@@ -97,9 +108,9 @@ class RatingRepositoryTest extends FunctionalTestCase
     protected function getDefaultQuerySettings(): Typo3QuerySettings
     {
         /** @var \TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings $defaultQuerySettings */
-        $defaultQuerySettings = $this->objectManager->get(Typo3QuerySettings::class);
+        $defaultQuerySettings = $this->objectManager->get(QuerySettingsInterface::class);
         //$defaultQuerySettings->setRespectStoragePage(false);
-        $defaultQuerySettings->setStoragePageIds([1]);
+        $defaultQuerySettings->setStoragePageIds([1, 10]);
 
         return $defaultQuerySettings;
     }

@@ -44,15 +44,14 @@ class RatingRepository extends Repository
     public const ADD_IF_NOT_FOUND = true;
 
     /**
-     * @var  \Thucke\ThRating\Service\ExtensionHelperService
+     * @var \Thucke\ThRating\Service\ExtensionHelperService
      */
     protected $extensionHelperService;
 
     /**
-     * @param     \Thucke\ThRating\Service\ExtensionHelperService $extensionHelperService
+     * @param \Thucke\ThRating\Service\ExtensionHelperService $extensionHelperService
      */
-    /** @noinspection PhpUnused */
-    public function injectExtensionHelperService(ExtensionHelperService $extensionHelperService)
+    public function injectExtensionHelperService(ExtensionHelperService $extensionHelperService): void
     {
         $this->extensionHelperService = $extensionHelperService;
     }
@@ -70,7 +69,7 @@ class RatingRepository extends Repository
      */
     public function findMatchingObjectAndUid(
         Ratingobject $ratingobject,
-        $ratedobjectuid,
+        int $ratedobjectuid,
         $addIfNotFound = false
     ): Rating
     {
@@ -84,8 +83,12 @@ class RatingRepository extends Repository
                 $query->equals('ratedobjectuid', $ratedobjectuid)
             ]
         ))->setLimit(1);
+        /*$queryParser = $this->objectManager->get(\TYPO3\CMS\Extbase\Persistence\Generic\Storage\Typo3DbQueryParser::class);
+        \TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump($queryParser->convertQueryToDoctrineQueryBuilder($query)->getSQL(), get_class($this).' SQL');
+        \TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump($queryParser->convertQueryToDoctrineQueryBuilder($query)->getParameters(), get_class($this).' SQL Parameter');*/
+
         $queryResult = $query->execute();
-        if ($queryResult->count() !== 0) {
+        if ($queryResult->count() > 0) {
             $foundRow = $queryResult->getFirst();
         } elseif ($addIfNotFound) {
             $foundRow->setRatingobject($ratingobject);

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<dataset>
+	<tx_thrating_domain_model_stepname>
+		<uid>1</uid>
+		<pid>1</pid>
+		<stepconf>1</stepconf>
+		<stepname>stepname one</stepname>
+		<sys_language_uid>0</sys_language_uid>
+		<l18n_parent>0</l18n_parent>
+		<l18n_diffsource>0</l18n_diffsource>
+	</tx_thrating_domain_model_stepname>
+	<tx_thrating_domain_model_stepname>
+		<uid>2</uid>
+		<pid>1</pid>
+		<stepconf>2</stepconf>
+		<stepname>stepname two</stepname>
+		<sys_language_uid>0</sys_language_uid>
+		<l18n_parent>0</l18n_parent>
+		<l18n_diffsource>0</l18n_diffsource>
+	</tx_thrating_domain_model_stepname>
+	<tx_thrating_domain_model_stepname>
+		<uid>3</uid>
+		<pid>1</pid>
+		<stepconf>1</stepconf>
+		<stepname>stepname eins</stepname>
+		<sys_language_uid>1</sys_language_uid>
+		<l18n_parent>1</l18n_parent>
+		<l18n_diffsource>0</l18n_diffsource>
+	</tx_thrating_domain_model_stepname>
+	<tx_thrating_domain_model_stepname>
+		<uid>4</uid>
+		<pid>1</pid>
+		<stepconf>2</stepconf>
+		<stepname>stepname zwei</stepname>
+		<sys_language_uid>1</sys_language_uid>
+		<l18n_parent>2</l18n_parent>
+		<l18n_diffsource>0</l18n_diffsource>
+	</tx_thrating_domain_model_stepname>
+</dataset>
