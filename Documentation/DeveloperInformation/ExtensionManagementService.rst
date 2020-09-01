@@ -209,7 +209,7 @@ website language ``German`` (iso-639-1 ``de``):
 .. code:: php
 
     //after calling makeRatable store a newly generated stepconf in a separate variable
-    $stepconf = $ratingobject->getStepconfs()->current();
+    $stepconf = $ratingobject->getStepconfs()->offsetGet(0);
 
     //add descriptions in default language to each stepconf
     $this->objectManager
@@ -246,7 +246,7 @@ stores its text in ``rating.<ratingfield>.stepconf.step<steporder>.<ISO2Code>``:
    $this->objectManager
       ->get(Thucke\ThRating\Service\ExtensionManagementService::class)
       ->setStepname(
-         $ratingobject->getStepconfs()->current(),
+         $ratingobject->getStepconfs()->offsetGet(0),
          \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('rating.testfield.stepconf.step1.30', 'MyExtension'),
          null,
          TRUE
@@ -255,7 +255,7 @@ stores its text in ``rating.<ratingfield>.stepconf.step<steporder>.<ISO2Code>``:
    $this->objectManager
       ->get(Thucke\ThRating\Service\ExtensionManagementService::class)
       ->setStepname(
-         $ratingobject->getStepconfs()->current(),
+         $ratingobject->getStepconfs()->offsetGet(0),
          \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('rating.testfield.stepconf.step1.43', 'MyExtension'),
          'de',
          TRUE
