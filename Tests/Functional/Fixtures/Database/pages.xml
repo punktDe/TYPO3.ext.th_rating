@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<dataset>
+	<pages>
+		<uid>1</uid>
+		<pid>0</pid>
+		<title>Rating AX</title>
+		<doktype>1</doktype>
+		<perms_everybody>15</perms_everybody>
+	</pages>
+	<pages>
+		<uid>10</uid>
+		<pid>9</pid>
+		<title>RatingAX Storage page</title>
+		<doktype>254</doktype>
+		<perms_everybody>15</perms_everybody>
+	</pages>
+</dataset>

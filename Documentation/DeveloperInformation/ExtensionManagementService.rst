@@ -71,25 +71,25 @@ parameters:
 .. code:: php
 
     $this->objectManager
-      ->get('Thucke\\ThRating\\Service\\ExtensionManagementService')
-      ->setStepname( \Thucke\ThRating\Domain\Model\Stepconf $stepconf, $stepname, $languageIso2Code=0, $allStepconfs=FALSE )
+      ->get(Thucke\ThRating\Service\ExtensionManagementService::class)
+      ->setStepname( \Thucke\ThRating\Domain\Model\Stepconf $stepconf, $stepname, $twoLetterIsoCode, $allStepconfs=FALSE )
 
 
 The parameters specifies the new ratingstep description text:
 
 .. container::
 
-   +---------------------------------------------+--------------------------------------------------------+----------------------------------------+
-   | Parameter                                   | Description                                            | Type                                   |
-   +=============================================+========================================================+========================================+
-   | :ref:`$stepconf <$stepconf>`                | The stepconf object which has to be described          | \Thucke\ThRating\Domain\Model\Stepconf |
-   +---------------------------------------------+--------------------------------------------------------+----------------------------------------+
-   | :ref:`$stepname <$stepname>`                | The localized description text                         | String                                 |
-   +---------------------------------------------+--------------------------------------------------------+----------------------------------------+
-   | :ref:`$languageIso2Code <$languageIso2Code>`| The ISO2 language code (e.g. ``43`` = German)          | Integer                                |
-   +---------------------------------------------+--------------------------------------------------------+----------------------------------------+
-   | :ref:`$allStepconfs <$allStepconfs>`        | Switch to initialize all stepnames with the same value | Integer                                |
-   +---------------------------------------------+--------------------------------------------------------+----------------------------------------+
+   +---------------------------------------------+--------------------------------------------------------+---------------------------------------------+
+   | Parameter                                   | Description                                            | Type                                        |
+   +=============================================+========================================================+=============================================+
+   | :ref:`$stepconf <$stepconf>`                | The stepconf object which has to be described          | \\Thucke\\ThRating\\Domain\\Model\\Stepconf |
+   +---------------------------------------------+--------------------------------------------------------+---------------------------------------------+
+   | :ref:`$stepname <$stepname>`                | The localized description text                         | String                                      |
+   +---------------------------------------------+--------------------------------------------------------+---------------------------------------------+
+   | :ref:`$twoLetterIsoCode <$twoLetterIsoCode>`| The ISO2 language code (e.g. ``de`` = German)          | Integer                                     |
+   +---------------------------------------------+--------------------------------------------------------+---------------------------------------------+
+   | :ref:`$allStepconfs <$allStepconfs>`        | Switch to initialize all stepnames with the same value | Integer                                     |
+   +---------------------------------------------+--------------------------------------------------------+---------------------------------------------+
 
    ``[setStepname]``
 
@@ -134,21 +134,22 @@ Parameter $stepname
 
 .. _$languageIso2Code:
 
-Parameter $languageIso2Code
+Parameter $twoLetterIsoCode
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
 .. container:: table-row
 
    Property
-      $languageIso2Code
+      $twoLetterIsoCode
 
    Data type
-      ``Integer``
+      ``string``
 
    Description
-      The ISO2 language code (e.g. ``43`` = German)
+      The ISO2 language code (e.g. ``de`` = German).
+      If ``null`` is given, the site default language is being used.
 
    Default
-      ``0``
+      \
 
 
 .. _$allStepconfs:
@@ -192,7 +193,7 @@ Basically it could be also a guide for "old" pi_based extensions.
 
     //initialize ratingobject and autocreate four ratingsteps
     $ratingobject = $this->objectManager
-                     ->get('Thucke\\ThRating\\Service\\ExtensionManagementService')
+                     ->get(Thucke\ThRating\Service\ExtensionManagementService::class)
                      ->makeRatable('TestTabelle', 'TestField', 4);
 
 We store the reference on the generated new ratingobject in a variable.
@@ -203,19 +204,22 @@ We store the reference on the generated new ratingobject in a variable.
 
 Next the rating stepnames could be added according to our extension needs.
 In this example we assume any default language and an additional
-website language ``German`` (``UID 43`` in the table ``static_languages``):
+website language ``German`` (iso-639-1 ``de``):
 
 .. code:: php
 
+    //after calling makeRatable store a newly generated stepconf in a separate variable
+    $stepconf = $ratingobject->getStepconfs()->offsetGet(0);
+
     //add descriptions in default language to each stepconf
     $this->objectManager
-      ->get('Thucke\\ThRating\\Service\\ExtensionManagementService')
-      ->setStepname($ratingobject->getStepconfs()->current(), 'Automatic generated entry ', 0, TRUE);
+      ->get(Thucke\ThRating\Service\ExtensionManagementService::class)
+      ->setStepname($stepconf, 'Automatic generated entry ', null, TRUE);
 
     //add descriptions in german language to each stepconf
     $this->objectManager
-      ->get('Thucke\\ThRating\\Service\\ExtensionManagementService')
-      ->setStepname($ratingobject->getStepconfs()->current(), 'Automatischer Eintrag ', 43, TRUE);
+      ->get(Thucke\ThRating\Service\ExtensionManagementService::class)
+      ->setStepname($stepconf, 'Automatischer Eintrag ', 'de'', TRUE);
 
 
 Among others the table ``static_languages`` will be installed by the extension `static_info_tables`_
@@ -238,12 +242,24 @@ stores its text in ``rating.<ratingfield>.stepconf.step<steporder>.<ISO2Code>``:
 
 .. code:: php
 
-    //add descriptions in default language to each stepconf
-    $this->objectManager->get('Thucke\\ThRating\\Service\\ExtensionManagementService')->setStepname($ratingobject->getStepconfs()->current(),
-       \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('rating.testfield.stepconf.step1.30', 'MyExtension'), 0, TRUE);
-    //add descriptions in german language to each stepconf
-    $this->objectManager->get('Thucke\\ThRating\\Service\\ExtensionManagementService')->setStepname($ratingobject->getStepconfs()->current(),
-       \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('rating.testfield.stepconf.step1.43', 'MyExtension'), 43, TRUE);
+   //add descriptions in default language to each stepconf
+   $this->objectManager
+      ->get(Thucke\ThRating\Service\ExtensionManagementService::class)
+      ->setStepname(
+         $ratingobject->getStepconfs()->offsetGet(0),
+         \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('rating.testfield.stepconf.step1.30', 'MyExtension'),
+         null,
+         TRUE
+      );
+   //add descriptions in german language to each stepconf
+   $this->objectManager
+      ->get(Thucke\ThRating\Service\ExtensionManagementService::class)
+      ->setStepname(
+         $ratingobject->getStepconfs()->offsetGet(0),
+         \TYPO3\CMS\Extbase\Utility\LocalizationUtility::translate('rating.testfield.stepconf.step1.43', 'MyExtension'),
+         'de',
+         TRUE
+      );
 
 
 
