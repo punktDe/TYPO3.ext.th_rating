@@ -2,8 +2,8 @@
 /** @noinspection PhpUnusedParameterInspection */
 namespace Thucke\ThRating\Evaluation;
 
-use Thucke\ThRating\Utility\DeprecationHelperUtility;
 use TYPO3\CMS\Core\Core\Environment;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /***************************************************************
  *  Copyright notice
@@ -54,34 +54,42 @@ class DynamicCssEvaluator
      * This is the server side (i.e. PHP) side of the field evaluation.
      * We only remove the dynamic CSS file to re-create it the next request
      *
-     * @param    mixed $value : The value that has to be checked
-     * @param    string $is_in : Is-In String
-     * @param    int $set : Determines if the field can be set (value correct) or not (PASSED BY REFERENCE!)
-     * @return    string      The new value of the field
+     * @param string $value : The value that has to be checked
+     * @param string $is_in The "is_in" value of the field configuration from TCA
+     * @param bool $set Boolean defining if the value is written to the database or not.
+     * @return string      The new value of the field
      */
-    public function evaluateFieldValue($value, $is_in, &$set)
+    public function evaluateFieldValue(string $value, string $is_in, bool &$set): string
     {
-        $this->clearCachePostProc(null, null, null);
+        $this->clearCachePostProc(array());
 
+        //additionally clear eventually cached content
+        $dataHandler = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\DataHandling\DataHandler::class);
+        $dataHandler->start([], []);
+        $dataHandler->clear_cacheCmd('all');
         return $value;
+    }
+
+    /**
+     * Server-side validation/evaluation on opening the record
+     *
+     * @param array $parameters Array with key 'value' containing the field value from the database
+     * @return string Evaluated field value
+     */
+    public function deevaluateFieldValue(array $parameters)
+    {
+        return $parameters['value'];
     }
 
     /**
      * Processings when cache is cleared
      * 1. Delete the file 'typo3temp/thratingDyn.css'
      *
-     * @param $_funcRef
-     * @param $params
-     * @param null $pObj
+     * @param array $params
      */
-    public function clearCachePostProc($_funcRef, $params, $pObj = null)
+    public function clearCachePostProc(array $params)
     {
-        if (file_exists(Environment::getPublicPath() .'/typo3temp/thratingDyn.css')) {
-            unlink(Environment::getPublicPath() .'/typo3temp/thratingDyn.css');
-        }
-        //recreate file with zero length - so its still included via TS
-        $fp = fopen(Environment::getPublicPath() .'/typo3temp/thratingDyn.css', 'wb');
-        fwrite($fp, '');
-        fclose($fp);
+        $cssFileName = Environment::getPublicPath() . '/typo3temp/thratingDyn.css';
+        GeneralUtility::unlink_tempfile($cssFileName);
     }
 }

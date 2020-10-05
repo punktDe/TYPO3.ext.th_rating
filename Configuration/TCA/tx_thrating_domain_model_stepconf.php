@@ -42,7 +42,7 @@ $GLOBALS['TCA']['tx_thrating_domain_model_stepconf'] = [
                 'type' => 'input',
                 'size' => '8',
                 'max' => '12',
-                'eval' => '\Thucke\ThRating\Evaluation\DynamicCssEvaluator::class,int,required',
+                'eval' => 'Thucke\\ThRating\\Evaluation\\DynamicCssEvaluator,int,required',
                 'default' => '1',
                 'range' => ['lower' => 1], ], ],
         'stepweight' => [
@@ -53,7 +53,7 @@ $GLOBALS['TCA']['tx_thrating_domain_model_stepconf'] = [
                 'type' => 'input',
                 'size' => '8',
                 'max' => '12',
-                'eval' => '\Thucke\ThRating\Evaluation\DynamicCssEvaluator::class,int',
+                'eval' => 'Thucke\\ThRating\\Evaluation\\DynamicCssEvaluator,int',
                 'default' => '1', ], ],
         'stepname' => [
             'exclude' => 1,

@@ -138,7 +138,7 @@ class CookieService extends AbstractExtensionService
                 );
             } else {
                 throw new Exception(
-                    'Cookie was not set since HTTPS was forced in $TYPO3_CONF_VARS[SYS][cookieSecure].',
+                    "Cookie was not set since HTTPS was forced in \$GLOBALS['TYPO3_CONF_VARS'][SYS][cookieSecure].",
                     1254325546
                 );
             }
