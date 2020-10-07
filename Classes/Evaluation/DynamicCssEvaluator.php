@@ -66,7 +66,7 @@ class DynamicCssEvaluator
         //additionally clear eventually cached content
         $dataHandler = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\DataHandling\DataHandler::class);
         $dataHandler->start([], []);
-        $dataHandler->clear_cacheCmd('all');
+        $dataHandler->clear_cacheCmd('pages');
         return $value;
     }
 
