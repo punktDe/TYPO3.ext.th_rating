@@ -9,6 +9,7 @@ defined('TYPO3_MODE') || die('Access denied.');
  */
 //TODO remove second registration entry when TYPO3v9 compativility is dropped
 \TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
+
     'Thucke.ThRating',    // The extension name (in UpperCamelCase) or the extension key (in lower_underscore)
     'Pi1',        // A unique name of the plugin in UpperCamelCase
     [   // An array holding the controller-action-combinations that are accessible
@@ -24,9 +25,11 @@ defined('TYPO3_MODE') || die('Access denied.');
 );
 
 // here we register "DynamicCssEvaluator" to remove the dynamic CSS file when values are modified in the BE
-$TYPO3_CONF_VARS['SC_OPTIONS']['tce']['formevals'][Thucke\ThRating\Evaluation\DynamicCssEvaluator::class] = '';
+$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tce']['formevals']['Thucke\ThRating\Evaluation\DynamicCssEvaluator'] = '';
+
 //add hook to remove the dynamic CSS file when cache is cleared
-$TYPO3_CONF_VARS['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['clearCachePostProc'][] = 'Thucke\ThRating\Evaluation\DynamicCssEvaluator->clearCachePostProc';
+$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['clearCachePostProc'][] =
+    \Thucke\ThRating\Evaluation\DynamicCssEvaluator::class . '->clearCachePostProc';
 
 /**
  * Base configuration of logging events.
