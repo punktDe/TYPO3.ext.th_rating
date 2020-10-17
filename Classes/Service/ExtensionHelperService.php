@@ -320,7 +320,7 @@ class ExtensionHelperService extends AbstractExtensionService
      * @throws \TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException
      * @throws \Thucke\ThRating\Service\Exception
      */
-    public function getRating(array $settings, Ratingobject $ratingobject = null): Rating
+    public function getRating(array $settings, ?Ratingobject $ratingobject): Rating
     {
         $settings = $this->completeConfigurationSettings($settings);
         if (!empty($settings['rating'])) {
@@ -348,9 +348,10 @@ class ExtensionHelperService extends AbstractExtensionService
      * Returns a new or existing vote
      *
      * @param         $prefixId
-     * @param array       $settings
+     * @param array $settings
      * @param \Thucke\ThRating\Domain\Model\Rating $rating
      * @return \Thucke\ThRating\Domain\Model\Vote
+     * @throws \Thucke\ThRating\Exception\FeUserNotFoundException
      */
     public function getVote($prefixId, array $settings, Rating $rating): Vote
     {
@@ -397,7 +398,7 @@ class ExtensionHelperService extends AbstractExtensionService
      * @param string|null $name the class name which this logger is for
      * @return  \TYPO3\CMS\Core\Log\Logger
      */
-    public function getLogger(string $name = null): Logger
+    public function getLogger(?string $name): Logger
     {
         if (empty($name)) {
             return $this->loggingService->getLogger(__CLASS__);
@@ -428,7 +429,7 @@ class ExtensionHelperService extends AbstractExtensionService
      */
     public function clearDynamicCssFile(): void
     {
-        $this->objectManager->get(DynamicCssEvaluator::class)->clearCachePostProc(array());
+        $this->objectManager->get(DynamicCssEvaluator::class)->clearCachePostProc(null, null, null);
     }
 
     /**
@@ -440,15 +441,18 @@ class ExtensionHelperService extends AbstractExtensionService
      */
     public function renderDynCSS(): array
     {
-        /** @var string $cssFileContent */
+        /** @var string $cssFile */
         $messageArray = [];
 
-        $cssFileName = Environment::getPublicPath() . '/typo3temp/thratingDyn.css';
-
-        //only create file if it does not exist or having zero length
-        if (@file_exists($cssFileName) && @filesize($cssFileName) != 0) {
+        //create file if it does not exist
+        if (file_exists(Environment::getPublicPath() .'/' . self::DYN_CSS_FILENAME)) {
+            $fstat = stat(Environment::getPublicPath() .'/' . self::DYN_CSS_FILENAME);
+            //do not recreate file if it has greater than zero length
+            if ($fstat[7] !== 0) {
                 $this->logger->log(LogLevel::DEBUG, 'Dynamic CSS file exists - exiting');
+
                 return $messageArray;
+            }
         }
 
         //now walk through all ratingobjects to calculate stepwidths
@@ -591,26 +595,26 @@ class ExtensionHelperService extends AbstractExtensionService
                     if (!$ratingConfig['barimage']) {
                         $height *= $sumStepWeights;
                     }
-                    $cssFileContent .= $mainId . ' { width:' . $width . 'px; height:' . $height . 'px; }' . chr(10);
-                    $cssFileContent .= $mainId . ', ' . $mainId . ' span:hover, ' . $mainId . ' span:active, ' . $mainId .
+                    $cssFile .= $mainId . ' { width:' . $width . 'px; height:' . $height . 'px; }' . chr(10);
+                    $cssFile .= $mainId . ', ' . $mainId . ' span:hover, ' . $mainId . ' span:active, ' . $mainId .
                         ' span:focus, ' . $mainId . ' .current-rating { background:url(' . $filenameUri .
                         ') right bottom repeat-y; }' . chr(10);
-                    $cssFileContent .= $mainId . ' span, ' . $mainId . ' .current-rating { width:' . $width . 'px; }' .
+                    $cssFile .= $mainId . ' span, ' . $mainId . ' .current-rating { width:' . $width . 'px; }' .
                         chr(10);
                 } else {
                     $height = round($height / 3, 1);
                     if (!$ratingConfig['barimage']) {
                         $width *= $sumStepWeights;
                     }
-                    $cssFileContent .= $mainId . ' { width:' . $width . 'px; height:' . $height . 'px; }' . chr(10);
-                    $cssFileContent .= $mainId . ', ' . $mainId . ' span:hover, ' . $mainId . ' span:active, ' . $mainId .
+                    $cssFile .= $mainId . ' { width:' . $width . 'px; height:' . $height . 'px; }' . chr(10);
+                    $cssFile .= $mainId . ', ' . $mainId . ' span:hover, ' . $mainId . ' span:active, ' . $mainId .
                         ' span:focus, ' . $mainId . ' .current-rating { background:url(' . $filenameUri .
                         ') 0 0 repeat-x; }' . chr(10);
-                    $cssFileContent .= $mainId . ' span, ' . $mainId . ' .current-rating { height:' . $height .
+                    $cssFile .= $mainId . ' span, ' . $mainId . ' .current-rating { height:' . $height .
                         'px; line-height:' . $height . 'px; }' . chr(10);
                     //calculate widths/heights related to stepweights
                 }
-                $cssFileContent .= $mainId . ' .current-poll { background:url(' . $filenameUri . '); }' . chr(10);
+                $cssFile .= $mainId . ' .current-poll { background:url(' . $filenameUri . '); }' . chr(10);
             }
 
             //calculate widths/heights related to stepweights
@@ -622,22 +626,22 @@ class ExtensionHelperService extends AbstractExtensionService
                 $zIndex = $stepcount - $i + 2;  //add 2 to override .current-poll and .currentPollText
                 //configure rating and polling styles for steps
                 $oneStepPart = round($stepWeight * 100 / $sumStepWeights, 1); //calculate single width of ratingstep
-                $cssFileContent .= 'span.RObj' . $ratingobjectUid . '-StpOdr' . $i . '-ratingpoll-normal { width:' .
+                $cssFile .= 'span.RObj' . $ratingobjectUid . '-StpOdr' . $i . '-ratingpoll-normal { width:' .
                     $oneStepPart . '%; z-index:' . $zIndex . '; margin-left:' . $stepPart . '%;}' . chr(10);
-                $cssFileContent .= 'span.RObj' . $ratingobjectUid . '-StpOdr' . $i . '-ratingpoll-tilt { height:' .
+                $cssFile .= 'span.RObj' . $ratingobjectUid . '-StpOdr' . $i . '-ratingpoll-tilt { height:' .
                     $oneStepPart . '%; z-index:' . $zIndex . '; margin-bottom:' . $stepPart . '%; }' . chr(10);
-                $cssFileContent .= 'li.RObj' . $ratingobjectUid . '-StpOdr' . $i . '-currentpoll-normal { width:' .
+                $cssFile .= 'li.RObj' . $ratingobjectUid . '-StpOdr' . $i . '-currentpoll-normal { width:' .
                     $oneStepPart . '%; margin-left:' . $stepPart . '%; }' . chr(10);
-                $cssFileContent .= 'li.RObj' . $ratingobjectUid . '-StpOdr' . $i . '-currentpoll-normal span { width:100%; }' .
+                $cssFile .= 'li.RObj' . $ratingobjectUid . '-StpOdr' . $i . '-currentpoll-normal span { width:100%; }' .
                     chr(10);
-                $cssFileContent .= 'li.RObj' . $ratingobjectUid . '-StpOdr' . $i . '-currentpoll-tilt { height:' .
+                $cssFile .= 'li.RObj' . $ratingobjectUid . '-StpOdr' . $i . '-currentpoll-tilt { height:' .
                     $oneStepPart . '%; margin-bottom:' . $stepPart . '%; }' . chr(10);
-                $cssFileContent .= 'li.RObj' . $ratingobjectUid . '-StpOdr' . $i . '-currentpoll-tilt span { height:100%; }' .
+                $cssFile .= 'li.RObj' . $ratingobjectUid . '-StpOdr' . $i . '-currentpoll-tilt span { height:100%; }' .
                     chr(10);
                 $stepPart = round($sumWeights * 100 / $sumStepWeights, 1); //calculate sum of widths to this ratingstep
-                $cssFileContent .= 'span.RObj' . $ratingobjectUid . '-StpOdr' . $i . '-ratingstep-normal { width:' .
+                $cssFile .= 'span.RObj' . $ratingobjectUid . '-StpOdr' . $i . '-ratingstep-normal { width:' .
                     $stepPart . '%; z-index:' . $zIndex . '; }' . chr(10);
-                $cssFileContent .= 'span.RObj' . $ratingobjectUid . '-StpOdr' . $i . '-ratingstep-tilt { height:' .
+                $cssFile .= 'span.RObj' . $ratingobjectUid . '-StpOdr' . $i . '-ratingstep-tilt { height:' .
                     $stepPart . '%; z-index:' . $zIndex . '; }' . chr(10);
                 $i++;
             }
@@ -646,9 +650,10 @@ class ExtensionHelperService extends AbstractExtensionService
             $this->logger->log(LogLevel::DEBUG, 'CSS finished for ratingobject');
         }
 
-        $this->logger->log(LogLevel::DEBUG, 'Saving CSS file', ['cssFile' => $cssFileContent]);
-
-        GeneralUtility::writeFileToTypo3tempDir($cssFileName, $cssFileContent);
+        $this->logger->log(LogLevel::DEBUG, 'Saving CSS file', ['cssFile' => $cssFile]);
+        $fp = fopen(Environment::getPublicPath() .'/' . self::DYN_CSS_FILENAME, 'wb');
+        fwrite($fp, $cssFile);
+        fclose($fp);
 
         return $messageArray;
     }
@@ -658,11 +663,12 @@ class ExtensionHelperService extends AbstractExtensionService
      * If not ISO code is provided the default language is returned
      *
      * @param int|null $pid page id to which is part of the site
-     * @param string|null $twoLetterIsoCode iso-639-1 string (e.g. en, de, us)
+     * @param string $twoLetterIsoCode iso-639-1 string (e.g. en, de, us)
      * @return \TYPO3\CMS\Core\Site\Entity\SiteLanguage
+     * @throws \TYPO3\CMS\Core\Exception\SiteNotFoundException
      * @throws LanguageNotFoundException
      */
-    public function getStaticLanguageByIsoCode(int $pid=null, string $twoLetterIsoCode = null): SiteLanguage {
+    public function getStaticLanguageByIsoCode(int $pid, string $twoLetterIsoCode = null): SiteLanguage {
         /** @var Site $site */
         $site = GeneralUtility::makeInstance(SiteFinder::class)->getSiteByPageId($pid);
 
@@ -685,6 +691,7 @@ class ExtensionHelperService extends AbstractExtensionService
      * @param int $pid page id to which is part of the site
      * @param int|null $languageId iso-639-1 string (e.g. en, de, us)
      * @return \TYPO3\CMS\Core\Site\Entity\SiteLanguage
+     * @throws \TYPO3\CMS\Core\Exception\SiteNotFoundException
      */
     public function getStaticLanguageById(int $pid, int $languageId = null): ?SiteLanguage
     {

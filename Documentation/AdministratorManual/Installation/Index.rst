@@ -30,11 +30,11 @@ Installation
 #. Reference to the container for Website users
 
    Create another folder designated as a container for Website Users and again write down the PID.
-   Now open your website template and add the following configuration setup:
-   :ts:`plugin.tx_felogin_pi1.storagePid = <PID of the website users container>`
-   
-   
-   
+   Now open your website template and add the following *constant* or use constant editor of ``FRONTEND LOGIN``:
+   :ts:`styles.content.loginform.pid = <PID of the website users container>`
+
+
+
 .. ==================================================
 .. Image definitions
 .. --------------------------------------------------

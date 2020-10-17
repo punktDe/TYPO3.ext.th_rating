@@ -44,6 +44,7 @@ Reference
    Property                             Title                                  Type
    ==================================== ====================================== ===============
    action_                              MVC-action to use                      string
+   storagePid_                          General storage page                     int
    ==================================== ====================================== ===============
 
 
@@ -94,6 +95,44 @@ action
    Default
       :ts:`ratinglinks`
 
+.. _tsStoragePid:
+
+storagePid
+^^^^^^^^^^
+
+.. container:: table-row
+
+   Property
+      storagePid
+
+   Data type
+      :ref:`t3tsref:data-type-integer`
+
+   Description
+      General storage page where all records are stored.
+
+   Default
+      value of constant :ref:`constPluginStoragePid`
+
+.. _tsFeUsersStoragePid:
+
+feUsersStoragePid
+^^^^^^^^^^^^^^^^^
+
+.. container:: table-row
+
+   Property
+      feUsersStoragePid
+
+   Data type
+      :ref:`t3tsref:data-type-integer`
+
+   Description
+      Storage page where frontend user records are stored (normally set in context of
+`Frontend Login configuration<https://docs.typo3.org/c/typo3/cms-felogin/master/en-us/Configuration/Index.html>`_).
+
+   Default
+      value of constant :typoscript:`styles.content.loginform.pid`
 
 
 Example

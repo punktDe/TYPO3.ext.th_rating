@@ -3,10 +3,11 @@
 /** @noinspection PhpFullyQualifiedNameUsageInspection */
 namespace Thucke\ThRating\Service;
 
+use Thucke\ThRating\Exception\FeUserNotFoundException;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Domain\Repository\FrontendUserRepository;
-use Thucke\ThRating\Utility\DeprecationHelperUtility;
+use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 
 /***************************************************************
 *  Copyright notice
@@ -166,22 +167,36 @@ class AccessControlService extends AbstractExtensionService
     /**
      * Loads objects from repositories
      *
-     * @param mixed $voter
+     * @param int $voter
      * @return \Thucke\ThRating\Domain\Model\Voter
+     * @throws FeUserNotFoundException
      */
-    public function getFrontendVoter($voter = null)
+    public function getFrontendVoter(?int $voter = 0)
     {
-        //set userobject
-        if (!$voter instanceof \Thucke\ThRating\Domain\Model\Voter) {
-            //TODO Errorhandling if no user is logged in
-            if ((int)$voter === 0) {
-                //get logged in fe-user
-                $voter = $this->voterRepository->findByUid($this->getFrontendUserUid());
-            } else {
-                $voter = $this->voterRepository->findByUid((int)$voter);
-            }
+        $exceptionMessageArray = [];
+        //TODO Errorhandling if no user is logged in
+        if ((int)$voter === 0) {
+            //get logged in fe-user
+            $voterObject = $this->voterRepository->findByUid($this->getFrontendUserUid());
+            $exceptionMessageArray = [$this->getFrontendUserUid()];
+            $exceptionMessageType = 'feUser';
+        } else {
+            $voterObject = $this->voterRepository->findByUid((int)$voter);
+            $exceptionMessageArray = [(int)$voter];
+            $exceptionMessageType = 'anonymousUser';
         }
 
-        return $voter;
+        if (empty($voterObject)) {
+            throw new FeUserNotFoundException(
+                LocalizationUtility::translate(
+                    'flash.pluginConfiguration.missing.' . $exceptionMessageType,
+                    'ThRating',
+                    $exceptionMessageArray
+                ),
+                1602095329
+            );
+        }
+
+        return $voterObject;
     }
 }

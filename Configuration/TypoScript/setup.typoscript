@@ -9,6 +9,7 @@ plugin.tx_thrating {
   vendorName = Thucke
   controller = Vote
   mvc.callDefaultActionIfActionCantBeResolved = 1
+  feUsersStoragePid = {$styles.content.loginform.pid}
   storagePid = {$plugin.tx_thrating.settings.pluginStoragePid}
   switchableControllerActions {
     Vote {
