@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+set -x
+echo "Aktuelles Verzeichnis: $PWD"
+
 #
 # TYPO3 core test runner based on docker and docker-compose.
 #
@@ -17,7 +20,7 @@ setUpDockerComposeDotEnv() {
     composer require typo3/minimal=${TYPO3_VERSION}
     # Restore composer.json
     git checkout composer.json
-    export TYPO3_PATH_WEB=$PWD/.Build/Web
+    export TYPO3_PATH_WEB=.Build/Web
 }
 
 # Load help text into $HELP
@@ -85,7 +88,7 @@ EOF
 
 # Go to the directory this script is located, so everything else is relative
 # to this dir, no matter from where this script is called.
-THIS_SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
+#THIS_SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
 
 # Option parsing
 # Reset in case getopts has been used previously in the shell
