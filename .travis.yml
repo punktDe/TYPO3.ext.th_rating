@@ -47,7 +47,7 @@ jobs:
         provider: pages
         cleanup: false
         strategy: git
-        github-token: $GITHUB_TOKEN  # Set in the settings page of your repository, as a secure variable
+        token: $GITHUB_TOKEN  # Set in the settings page of your repository, as a secure variable
         keep_history: true
         verbose: true
         local_dir: $HOME/thucke/TYPO3.ext.th_rating/Build/doxygen/html
