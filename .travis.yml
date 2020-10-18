@@ -8,6 +8,7 @@ php:
 env:
   global:
     - typo3DatabaseHost=localhost typo3DatabaseName=typo3 typo3DatabaseUsername=root typo3DatabasePassword=''
+    - COMPOSER_MEMORY_LIMIT=3G
   jobs:
     - TYPO3_VERSION=^10
     - TYPO3_VERSION=^9
