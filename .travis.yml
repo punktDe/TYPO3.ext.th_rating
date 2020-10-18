@@ -19,8 +19,10 @@ stages:
   - name: static checks
   - name: test
     if: branch IN (master, develop) OR branch =~ ^release.*$ OR commit_message =~ force_tests
+  - name: doxygen
+    if: branch = master
 
-matrix:
+jobs:
   fast_finish: true
   include:
     - stage: static checks
@@ -33,6 +35,25 @@ matrix:
         sonarcloud:
           organization: "thucke"
       script: sonar-scanner -Dproject.settings=Build/.sonar_project.properties -Dsonar.verbose=true
+    - stage: doxygen
+      name: "Doxygen documentation"
+      php: 7.4
+      script: echo "Deploying Doxygen documentation to GitHub pages ..."
+      before_deploy:
+        - bash -c "echo $PWD"
+        - bash -c "find . -type f"
+        - ./Build/Scripts/runTravisDoxygen.sh
+      deploy:
+        provider: pages
+        cleanup: false
+        strategy: git
+        github_token: $GITHUB_TOKEN  # Set in the settings page of your repository, as a secure variable
+        keep_history: true
+        verbose: true
+        local_dir: $HOME/thucke/TYPO3.ext.th_rating/Build/doxygen/html
+        on:
+          branch: master
+
 
 # specification of build environment
 dist: bionic
@@ -53,21 +74,6 @@ notifications:
       - github@thucke.de
     on_success: change
     on_failure: change
-
-before_deploy:
-  - bash -c "echo $PWD"
-  - bash -c "find . -type f"
-  - ./Build/Scripts/runTravisDoxygen.sh
-deploy:
-  provider: pages
-  cleanup: false
-  strategy: git
-  github_token: $GITHUB_TOKEN  # Set in the settings page of your repository, as a secure variable
-  keep_history: true
-  verbose: true
-  local_dir: $HOME/thucke/TYPO3.ext.th_rating/Build/doxygen/html
-  on:
-    branch: master
 
 # Git disable shallow clones
 git:
