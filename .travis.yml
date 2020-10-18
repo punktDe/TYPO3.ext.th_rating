@@ -55,10 +55,13 @@ notifications:
     on_failure: change
 
 before_deploy:
+  - echo $PWD
+  - find $HOME/thucke -type f
   - bash $HOME/thucke/TYPO3.ext.th_rating/Build/Scripts/runTravisDoxygen.sh
 deploy:
   provider: pages
-  skip_cleanup: true
+  cleanup: false
+  strategy: git
   github_token: $GITHUB_TOKEN  # Set in the settings page of your repository, as a secure variable
   keep_history: true
   verbose: true
