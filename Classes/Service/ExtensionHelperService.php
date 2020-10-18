@@ -68,6 +68,13 @@ class ExtensionHelperService extends AbstractExtensionService
     protected const DYN_CSS_FILENAME = 'typo3temp/thratingDyn.css';
 
     /**
+     * The current request.
+     *
+     * @var \TYPO3\CMS\Extbase\Mvc\Request
+     */
+    protected $request;
+
+    /**
      * @var \Thucke\ThRating\Domain\Repository\RatingobjectRepository
      */
     protected $ratingobjectRepository;
@@ -429,7 +436,7 @@ class ExtensionHelperService extends AbstractExtensionService
      */
     public function clearDynamicCssFile(): void
     {
-        $this->objectManager->get(DynamicCssEvaluator::class)->clearCachePostProc(null, null, null);
+        $this->objectManager->get(DynamicCssEvaluator::class)->clearCachePostProc(array());
     }
 
     /**
@@ -663,12 +670,13 @@ class ExtensionHelperService extends AbstractExtensionService
      * If not ISO code is provided the default language is returned
      *
      * @param int|null $pid page id to which is part of the site
-     * @param string $twoLetterIsoCode iso-639-1 string (e.g. en, de, us)
+     * @param string|null $twoLetterIsoCode iso-639-1 string (e.g. en, de, us)
      * @return \TYPO3\CMS\Core\Site\Entity\SiteLanguage
-     * @throws \TYPO3\CMS\Core\Exception\SiteNotFoundException
      * @throws LanguageNotFoundException
+     * @throws \TYPO3\CMS\Core\Exception\SiteNotFoundException
      */
-    public function getStaticLanguageByIsoCode(int $pid, string $twoLetterIsoCode = null): SiteLanguage {
+    public function getStaticLanguageByIsoCode(int $pid, string $twoLetterIsoCode = null): SiteLanguage
+    {
         /** @var Site $site */
         $site = GeneralUtility::makeInstance(SiteFinder::class)->getSiteByPageId($pid);
 
@@ -702,5 +710,25 @@ class ExtensionHelperService extends AbstractExtensionService
             return $site->getLanguageById($languageId);
         }
         return $site->getDefaultLanguage();
+    }
+
+    /**
+     * Returns the current request object
+     *
+     * @return \TYPO3\CMS\Extbase\Mvc\Request
+     */
+    public function getRequest(): \TYPO3\CMS\Extbase\Mvc\Request
+    {
+        return $this->request;
+    }
+
+    /**
+     * Sets the current request object
+     *
+     * @param \TYPO3\CMS\Extbase\Mvc\Request $request
+     */
+    public function setRequest(\TYPO3\CMS\Extbase\Mvc\Request $request): void
+    {
+        $this->request = $request;
     }
 }
