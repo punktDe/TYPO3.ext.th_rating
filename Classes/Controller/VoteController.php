@@ -287,6 +287,9 @@ class VoteController extends ActionController
         //Set default storage pids
         $this->extensionConfigurationService->setExtDefaultQuerySettings();
 
+        //make current request object avaiable to other classes
+        $this->extensionHelperService->setRequest($this->request);
+
         $frameworkConfiguration = $this->configurationManager->getConfiguration(
             ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK
         );

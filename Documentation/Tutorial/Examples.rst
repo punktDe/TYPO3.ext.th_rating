@@ -160,6 +160,8 @@ Page definition
 Rating extension
 ^^^^^^^^^^^^^^^^
 
+Please set ``mapAnonymous`` to a valid frontend user id.
+
 .. code-block:: typoscript
    :linenos:
 
@@ -242,6 +244,9 @@ Rating extension
 
 Example content objects
 ^^^^^^^^^^^^^^^^^^^^^^^
+
+Please set ``mapAnonymous`` to a valid frontend user id.
+
 
 .. container::
 

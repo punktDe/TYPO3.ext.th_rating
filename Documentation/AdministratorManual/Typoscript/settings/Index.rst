@@ -52,7 +52,6 @@ Reference
    displayOnly_                         Switch to deactivate ratings             boolean
    enableReVote_                        Switch to enable re-votings              boolean
    foreignFieldArrayUpdate_             Switch to enable foreign updates         boolean
-   storagePid_                          General storage page                     int
    ==================================== ======================================== ===============
 
    :ts:`[tsref:plugin.tx_thrating.settings]`
@@ -313,26 +312,6 @@ foreignFieldArrayUpdate
 
    Default
       :ts:`0`
-
-
-.. _tsStoragePid:
-
-storagePid
-^^^^^^^^^^
-
-.. container:: table-row
-
-   Property
-      storagePid
-
-   Data type
-      :ref:`t3tsref:data-type-integer`
-
-   Description
-      General storage page where all records are stored.
-
-   Default
-      value of constant :ref:`constPluginStoragePid`
 
 
 **Example**

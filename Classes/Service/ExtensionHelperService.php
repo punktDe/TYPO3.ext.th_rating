@@ -68,6 +68,13 @@ class ExtensionHelperService extends AbstractExtensionService
     protected const DYN_CSS_FILENAME = 'typo3temp/thratingDyn.css';
 
     /**
+     * The current request.
+     *
+     * @var \TYPO3\CMS\Extbase\Mvc\Request
+     */
+    protected $request;
+
+    /**
      * @var \Thucke\ThRating\Domain\Repository\RatingobjectRepository
      */
     protected $ratingobjectRepository;
@@ -315,12 +322,12 @@ class ExtensionHelperService extends AbstractExtensionService
      * Returns a new or existing rating
      *
      * @param array $settings
-     * @param \Thucke\ThRating\Domain\Model\Ratingobject $ratingobject
+     * @param \Thucke\ThRating\Domain\Model\Ratingobject|null $ratingobject
      * @return \Thucke\ThRating\Domain\Model\Rating
      * @throws \TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException
      * @throws \Thucke\ThRating\Service\Exception
      */
-    public function getRating(array $settings, Ratingobject $ratingobject = null): Rating
+    public function getRating(array $settings, ?Ratingobject $ratingobject): Rating
     {
         $settings = $this->completeConfigurationSettings($settings);
         if (!empty($settings['rating'])) {
@@ -348,9 +355,10 @@ class ExtensionHelperService extends AbstractExtensionService
      * Returns a new or existing vote
      *
      * @param         $prefixId
-     * @param array       $settings
+     * @param array $settings
      * @param \Thucke\ThRating\Domain\Model\Rating $rating
      * @return \Thucke\ThRating\Domain\Model\Vote
+     * @throws \Thucke\ThRating\Exception\FeUserNotFoundException
      */
     public function getVote($prefixId, array $settings, Rating $rating): Vote
     {
@@ -394,10 +402,10 @@ class ExtensionHelperService extends AbstractExtensionService
      * Get a logger instance
      * The configuration of the logger is modified by extension typoscript config
      *
-     * @param string $name the class name which this logger is for
+     * @param string|null $name the class name which this logger is for
      * @return  \TYPO3\CMS\Core\Log\Logger
      */
-    public function getLogger($name = null): Logger
+    public function getLogger(?string $name): Logger
     {
         if (empty($name)) {
             return $this->loggingService->getLogger(__CLASS__);
@@ -412,7 +420,7 @@ class ExtensionHelperService extends AbstractExtensionService
      * @param string $repository
      * @param \TYPO3\CMS\Extbase\DomainObject\AbstractEntity $objectToPersist
      */
-    public function persistRepository($repository, AbstractEntity $objectToPersist): void
+    public function persistRepository(string $repository, AbstractEntity $objectToPersist): void
     {
         $objectUid = $objectToPersist->getUid();
         if ($objectUid === null) {
@@ -428,7 +436,7 @@ class ExtensionHelperService extends AbstractExtensionService
      */
     public function clearDynamicCssFile(): void
     {
-        $this->objectManager->get(DynamicCssEvaluator::class)->clearCachePostProc(null, null, null);
+        $this->objectManager->get(DynamicCssEvaluator::class)->clearCachePostProc(array());
     }
 
     /**
@@ -662,12 +670,13 @@ class ExtensionHelperService extends AbstractExtensionService
      * If not ISO code is provided the default language is returned
      *
      * @param int|null $pid page id to which is part of the site
-     * @param string $twoLetterIsoCode iso-639-1 string (e.g. en, de, us)
+     * @param string|null $twoLetterIsoCode iso-639-1 string (e.g. en, de, us)
      * @return \TYPO3\CMS\Core\Site\Entity\SiteLanguage
-     * @throws \TYPO3\CMS\Core\Exception\SiteNotFoundException
      * @throws LanguageNotFoundException
+     * @throws \TYPO3\CMS\Core\Exception\SiteNotFoundException
      */
-    public function getStaticLanguageByIsoCode(int $pid, string $twoLetterIsoCode = null): SiteLanguage {
+    public function getStaticLanguageByIsoCode(int $pid, string $twoLetterIsoCode = null): SiteLanguage
+    {
         /** @var Site $site */
         $site = GeneralUtility::makeInstance(SiteFinder::class)->getSiteByPageId($pid);
 
@@ -701,5 +710,25 @@ class ExtensionHelperService extends AbstractExtensionService
             return $site->getLanguageById($languageId);
         }
         return $site->getDefaultLanguage();
+    }
+
+    /**
+     * Returns the current request object
+     *
+     * @return \TYPO3\CMS\Extbase\Mvc\Request
+     */
+    public function getRequest(): \TYPO3\CMS\Extbase\Mvc\Request
+    {
+        return $this->request;
+    }
+
+    /**
+     * Sets the current request object
+     *
+     * @param \TYPO3\CMS\Extbase\Mvc\Request $request
+     */
+    public function setRequest(\TYPO3\CMS\Extbase\Mvc\Request $request): void
+    {
+        $this->request = $request;
     }
 }
