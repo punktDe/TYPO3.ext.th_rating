@@ -37,34 +37,17 @@ if [ "$TRAVIS_REPO_SLUG" == "thucke/TYPO3.ext.th_rating" ] && [ "$TRAVIS_PULL_RE
     echo -e "Starting Doxygen html generation.\n"
     mkdir -p $HOME/build/doxygen
     #copy current doxygen configuration to statix place
-    cp ../.doxygen $HOME/build/doxygen
+    cp ${HOME}/thucke/TYPO3.ext.th_rating/Build/.doxygen $HOME/build/doxygen
 
     # Get to the Travis build directory, configure git and clone the repo
     pushd $HOME/build
-    #git config --global user.email "travis@travis-ci.org"
-    #git config --global user.name "travis-ci"
-    git clone --branch=gh-pages https://${GITHUB_TOKEN}@github.com/thucke/TYPO3.ext.th_rating.git gh-pages
-
-    # cleanup documentation
-    pushd gh-pages
-    git rm -rf * >/dev/null
-    popd
 
     # generate new documentation
     cd doxygen
     echo -e "Starting Doxygen html generation.\n"
-    doxygen .doxygen >/dev/null
-    echo -e "Moving Doxygen html to gh-pages branch.\n"
-    mv -f html/* $HOME/build/gh-pages >/dev/null
+    #doxygen .doxygen 2>&1 >/dev/null
+    doxygen .doxygen 2>&1 >/dev/null
 
-    # Commit and Push the Changes
-    cd $HOME/build/gh-pages
-    echo -e "Publishing gh-pages branch.\n"
-    git add -f .
-    git commit -m "Latest doxygen generated doc on successful travis build $TRAVIS_BUILD_NUMBER auto-pushed to gh-pages"
-    git push -fq origin gh-pages
-
-    echo -e "Published Doxygen html to gh-pages.\n"
-
+    echo -e "Generated Doxygen html in ${HOME}/build/doxygen.\n"
     popd
 fi
