@@ -195,6 +195,15 @@
 			<trans-unit id="flash.pluginConfiguration.missing.feUserStoragePid" xml:space="preserve">
 				<source>"plugin.tx_felogin_pi1.storagePid" not set.</source>
 			</trans-unit>
+			<trans-unit id="flash.pluginConfiguration.missing.feUser" xml:space="preserve">
+				<source>Configured frontend user (uid: %s) could not be determinded.
+				Please check 'plugin.tx_thrating.feUsersStoragePid' and uid.</source>
+			</trans-unit>
+			<trans-unit id="flash.pluginConfiguration.missing.anonymousUser" xml:space="preserve">
+				<source>Configured anonymous user (uid: %s) could not be determined. Please check
+				'plugin.tx_thrating.feUsersStoragePid' and/or constant setting 'plugin.tx_thrating.config.mapAnonymous'.
+				</source>
+			</trans-unit>
 			<trans-unit id="error.validator.ratingobject_table_extbase" xml:space="preserve">
 				<source>Missing table name in ratingobject.</source>
 			</trans-unit>

@@ -35,11 +35,12 @@ class VoterRepository extends FrontendUserRepository
     /**
      * Initialze this repository
      */
-    /** @noinspection PhpUnused */
     public function initializeObject()
     {
         //Even hidden or deleted FE Users  should be found
-        $this->defaultQuerySettings = $this->objectManager->get(QuerySettingsInterface::class);
-        $this->defaultQuerySettings->setIgnoreEnableFields(true);
+        /** @var \TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface $querySettings */
+        $querySettings = $this->objectManager->get(QuerySettingsInterface::class);
+        $querySettings->setIgnoreEnableFields(true);
+        $this->setDefaultQuerySettings($querySettings);
     }
 }

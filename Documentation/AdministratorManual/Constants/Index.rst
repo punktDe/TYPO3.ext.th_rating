@@ -167,76 +167,33 @@ mapAnonymous
 
 
 
-plugin.tx_thrating.view
------------------------
+FRONTEND LOGIN
+--------------
 
 .. container:: ts-properties
 
    ==================================== ====================================== ===============
    Property                             Title                                  Type
    ==================================== ====================================== ===============
-   templateRootPath_                    path directive                         string
-   partialRootPath_                     path directive                         string
-   layoutRootPath_                      path directive                         string
+   styles.content.loginform.pid_        path directive                         int
    ==================================== ====================================== ===============
 
 
-.. _constTemplateRootPath:
+.. _constFeLoginformPid:
 
-templateRootPath
-""""""""""""""""
-
-.. container:: table-row
-
-   Property
-      templateRootPath
-
-   Data type
-      :ref:`t3tsref:data-type-string`
-
-   Description
-      Path where the FLUID templates are stored
-
-   Default
-      :ts:`EXT:th_rating/Resources/Private/Templates/`
-
-
-
-.. _constPartialRootPath:
-
-partialRootPath
-"""""""""""""""
+styles.content.loginform.pid
+""""""""""""""""""""""""""""
 
 .. container:: table-row
 
    Property
-      partialRootPath
+      styles.content.loginform.pid
 
    Data type
-      :ref:`t3tsref:data-type-string`
+      :ref:`t3tsref:data-type-integer`
 
    Description
-      Path where the FLUID partials are stored
+      UID of the storage page that holds all website users including the anonymous voter
 
    Default
-      :ts:`EXT:th_rating/Resources/Private/Partials/`
-
-
-.. _constLayoutRootPath:
-
-layoutRootPath
-""""""""""""""
-
-.. container:: table-row
-
-   Property
-      layoutRootPath
-
-   Data type
-      :ref:`t3tsref:data-type-string`
-
-   Description
-      Path where the FLUID layouts are stored
-
-   Default
-      :ts:`EXT:th_rating/Resources/Private/Layouts/`
+      :ts:`0`

@@ -3,10 +3,12 @@
 /** @noinspection PhpFullyQualifiedNameUsageInspection */
 namespace Thucke\ThRating\Service;
 
+use Thucke\ThRating\Exception\FeUserNotFoundException;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Domain\Repository\FrontendUserRepository;
-use Thucke\ThRating\Utility\DeprecationHelperUtility;
+use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
+use \Thucke\ThRating\Domain\Model\Voter;
 
 /***************************************************************
 *  Copyright notice
@@ -46,10 +48,9 @@ class AccessControlService extends AbstractExtensionService
 
     /**
      * @param \TYPO3\CMS\Extbase\Domain\Repository\FrontendUserRepository $frontendUserRepository
+     * @noinspection PhpUnused
      */
-
-    /** @noinspection PhpUnused */
-    public function injectFrontendUserRepository(FrontendUserRepository $frontendUserRepository)
+    public function injectFrontendUserRepository(FrontendUserRepository $frontendUserRepository): void
     {
         $this->frontendUserRepository = $frontendUserRepository;
     }
@@ -62,9 +63,7 @@ class AccessControlService extends AbstractExtensionService
     /**
      * @param \Thucke\ThRating\Domain\Repository\VoterRepository $voterRepository
      */
-
-    /** @noinspection PhpUnused */
-    public function injectVoterRepository(\Thucke\ThRating\Domain\Repository\VoterRepository $voterRepository)
+    public function injectVoterRepository(\Thucke\ThRating\Domain\Repository\VoterRepository $voterRepository): void
     {
         $this->voterRepository = $voterRepository;
     }
@@ -72,10 +71,11 @@ class AccessControlService extends AbstractExtensionService
     /**
      * Tests, if the given person is logged into the frontend
      *
-     * @param \TYPO3\CMS\Extbase\Domain\Model\FrontendUser $person The person
+     * @param \TYPO3\CMS\Extbase\Domain\Model\FrontendUser|null $person The person
      * @return bool    The result; true if the given person is logged in; otherwise false
+     * @throws \TYPO3\CMS\Core\Context\Exception\AspectNotFoundException
      */
-    public function isLoggedIn(\TYPO3\CMS\Extbase\Domain\Model\FrontendUser $person = null)
+    public function isLoggedIn(\TYPO3\CMS\Extbase\Domain\Model\FrontendUser $person = null): bool
     {
         if ($person instanceof \TYPO3\CMS\Extbase\Persistence\Generic\LazyObjectStorage) {
             $person->current();
@@ -93,9 +93,8 @@ class AccessControlService extends AbstractExtensionService
     /**
      * @return bool
      * @throws \TYPO3\CMS\Core\Context\Exception\AspectNotFoundException
-     * @noinspection PhpUnused
      */
-    public function backendAdminIsLoggedIn()
+    public function backendAdminIsLoggedIn(): bool
     {
         /** @var Context $context */
         $context = GeneralUtility::makeInstance(Context::class, null);
@@ -106,7 +105,7 @@ class AccessControlService extends AbstractExtensionService
      * @return bool
      * @throws \TYPO3\CMS\Core\Context\Exception\AspectNotFoundException
      */
-    public function hasLoggedInFrontendUser()
+    public function hasLoggedInFrontendUser(): bool
     {
         /** @var Context $context */
         $context = GeneralUtility::makeInstance(Context::class, array());
@@ -116,9 +115,8 @@ class AccessControlService extends AbstractExtensionService
     /**
      * @return array
      * @throws \TYPO3\CMS\Core\Context\Exception\AspectNotFoundException
-     * @noinspection PhpUnused
      */
-    public function getFrontendUserGroups()
+    public function getFrontendUserGroups(): array
     {
         if ($this->hasLoggedInFrontendUser()) {
             return $GLOBALS['TSFE']->fe_user->groupData['uid'];
@@ -129,14 +127,14 @@ class AccessControlService extends AbstractExtensionService
 
     /**
      * @return int|null
+     * @throws \TYPO3\CMS\Core\Context\Exception\AspectNotFoundException
      */
-
-    /** @noinspection PhpUnused */
-    public function getFrontendUserUid()
+    public function getFrontendUserUid(): ?int
     {
         if ($this->hasLoggedInFrontendUser() && !empty($GLOBALS['TSFE']->fe_user->user['uid'])) {
             return (int)$GLOBALS['TSFE']->fe_user->user['uid'];
         }
+        return null;
     }
 
     /**
@@ -144,10 +142,9 @@ class AccessControlService extends AbstractExtensionService
      *
      * @param mixed $voter
      * @return \TYPO3\CMS\Extbase\Domain\Model\FrontendUser
+     * @throws \TYPO3\CMS\Core\Context\Exception\AspectNotFoundException
      */
-
-    /** @noinspection PhpUnused */
-    public function getFrontendUser($voter = null)
+    public function getFrontendUser($voter = null): ?\TYPO3\CMS\Extbase\Domain\Model\FrontendUser
     {
         //set userobject
         if (!$voter instanceof \TYPO3\CMS\Extbase\Domain\Model\FrontendUser) {
@@ -159,29 +156,47 @@ class AccessControlService extends AbstractExtensionService
                 $voter = $this->frontendUserRepository->findByUid((int)$voter);
             }
         }
-
         return $voter;
     }
 
     /**
      * Loads objects from repositories
      *
-     * @param mixed $voter
+     * @param int|null $voter
      * @return \Thucke\ThRating\Domain\Model\Voter
+     * @throws FeUserNotFoundException
+     * @throws \TYPO3\CMS\Core\Context\Exception\AspectNotFoundException
      */
-    public function getFrontendVoter($voter = null)
+    public function getFrontendVoter(?int $voter = 0): Voter
     {
-        //set userobject
-        if (!$voter instanceof \Thucke\ThRating\Domain\Model\Voter) {
-            //TODO Errorhandling if no user is logged in
-            if ((int)$voter === 0) {
-                //get logged in fe-user
-                $voter = $this->voterRepository->findByUid($this->getFrontendUserUid());
-            } else {
-                $voter = $this->voterRepository->findByUid((int)$voter);
-            }
+        $exceptionMessageArray = [];
+
+        /** @var Voter $voterObject */
+        $voterObject = null;
+
+        //TODO Errorhandling if no user is logged in
+        if ((int)$voter === 0) {
+            //get logged in fe-user
+            $voterObject = $this->voterRepository->findByUid($this->getFrontendUserUid());
+            $exceptionMessageArray = [$this->getFrontendUserUid()];
+            $exceptionMessageType = 'feUser';
+        } else {
+            $voterObject = $this->voterRepository->findByUid((int)$voter);
+            $exceptionMessageArray = [(int)$voter];
+            $exceptionMessageType = 'anonymousUser';
         }
 
-        return $voter;
+        if (empty($voterObject)) {
+            throw new FeUserNotFoundException(
+                LocalizationUtility::translate(
+                    'flash.pluginConfiguration.missing.' . $exceptionMessageType,
+                    'ThRating',
+                    $exceptionMessageArray
+                ),
+                1602095329
+            );
+        }
+
+        return $voterObject;
     }
 }

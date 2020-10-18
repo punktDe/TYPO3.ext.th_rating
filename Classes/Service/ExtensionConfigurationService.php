@@ -133,10 +133,10 @@ class ExtensionConfigurationService extends AbstractExtensionService
      * Get a logger instance
      * The configuration of the logger is modified by extension typoscript config
      *
-     * @param string $name the class name which this logger is for
+     * @param string|null $name the class name which this logger is for
      * @return  \TYPO3\CMS\Core\Log\Logger
      */
-    public function getLogger($name = null): Logger
+    public function getLogger(string $name = null): Logger
     {
         if (empty($name)) {
             return $this->loggingService->getLogger(__CLASS__);
@@ -204,10 +204,13 @@ class ExtensionConfigurationService extends AbstractExtensionService
      */
     private function getFeUserStoragePage():int
     {
-        $feUserStoragePid = GeneralUtility::intExplode(
-            ',',
-            $this->frameworkConfiguration['plugin.']['tx_felogin_pi1.']['storagePid'],
-            true
+        $feUserStoragePid = array_merge(
+            GeneralUtility::intExplode(
+                ',',
+                $this->frameworkConfiguration['plugin.']['tx_felogin_pi1.']['storagePid'],
+                true
+            ),
+            GeneralUtility::intExplode(',', $this->thRatingConfiguration['feUsersStoragePid'], true)
         );
         if (empty($feUserStoragePid[0])) {
             throw new FeUserStoragePageException(

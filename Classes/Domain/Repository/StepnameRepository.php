@@ -74,7 +74,9 @@ class StepnameRepository extends Repository
 
             try {
                 # only get language and do not assign the result to check if it exists
-                $this->objectManager->get(ExtensionHelperService::class)->getStaticLanguageById($stepnameLang);
+                $this->objectManager
+                    ->get(ExtensionHelperService::class)
+                    ->getStaticLanguageById($stepnameLang);
             } catch (InvalidArgumentException $exception) {
                 //invalid language code -> NOK
                 return false;
@@ -170,7 +172,11 @@ class StepnameRepository extends Repository
         if (count($queryResult) > 1) {
             $websiteLanguagesArray = [];
 
-            $allWebsiteLanguages = $GLOBALS['TYPO3_REQUEST']->getAttribute('site')->getAllLanguages();
+            $allWebsiteLanguages = $this->objectManager
+                ->get(ExtensionHelperService::class)
+                ->getRequest()
+                ->getAttribute('site')
+                ->getAllLanguages();
 
             /** @var \TYPO3\CMS\Core\Site\Entity\SiteLanguage $language */
             foreach (array_values($allWebsiteLanguages) as $language) {
