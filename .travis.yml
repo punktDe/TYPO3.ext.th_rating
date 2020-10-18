@@ -55,9 +55,8 @@ notifications:
     on_failure: change
 
 before_deploy:
-  - echo $PWD
-  - find $HOME/thucke -type f
-  - bash $HOME/thucke/TYPO3.ext.th_rating/Build/Scripts/runTravisDoxygen.sh
+  - bash -c "find . -type f"
+  - ./Build/Scripts/runTravisDoxygen.sh
 deploy:
   provider: pages
   cleanup: false
