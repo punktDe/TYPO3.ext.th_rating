@@ -24,10 +24,10 @@
 		"php" : ">=7.2 <7.5",
 		"typo3/cms-core" : ">=9.5 <11",
 		"typo3/cms-extbase" : ">=9.5 <11",
-		"typo3fluid/fluid": "^2.6.8",
-		"typo3/cms-fluid" : ">=9.5 <11",
-		"typo3/cms-felogin": ">=9.5 <11",
-		"ext-json": "*"
+		"typo3fluid/fluid": "",
+		"typo3/cms-fluid" : "",
+		"typo3/cms-felogin": "",
+		"ext-json": ""
 	},
 	"require-dev": {
 		"typo3/cms-about" : ">=9.5 <11",
