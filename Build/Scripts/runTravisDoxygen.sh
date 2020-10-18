@@ -35,18 +35,17 @@ cd "$THIS_SCRIPT_DIR"
 
 if [ "$TRAVIS_REPO_SLUG" == "thucke/TYPO3.ext.th_rating" ] && [ "$TRAVIS_PULL_REQUEST" == "false" ] && [ "$TRAVIS_BRANCH" == "master" ]; then
     echo -e "Starting Doxygen html generation.\n"
-    mkdir -p $HOME/build/doxygen
+    mkdir -p $HOME/deploy/doxygen
     #copy current doxygen configuration to statix place
-    cp ${HOME}/thucke/TYPO3.ext.th_rating/Build/.doxygen $HOME/build/doxygen
+    cp Build/.doxygen $HOME/deploy/doxygen
 
     # Get to the Travis build directory, configure git and clone the repo
-    pushd $HOME/build
+    pushd $HOME/deploy/doxygen
 
     # generate new documentation
-    cd doxygen
     echo -e "Starting Doxygen html generation.\n"
     #doxygen .doxygen 2>&1 >/dev/null
-    doxygen .doxygen 2>&1 >/dev/null
+    doxygen .doxygen
 
     echo -e "Generated Doxygen html in ${HOME}/build/doxygen.\n"
     popd
