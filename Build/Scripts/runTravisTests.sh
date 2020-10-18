@@ -1,8 +1,5 @@
 #!/usr/bin/env bash
 
-set -x
-echo "Aktuelles Verzeichnis: $PWD"
-
 #
 # TYPO3 core test runner based on docker and docker-compose.
 #

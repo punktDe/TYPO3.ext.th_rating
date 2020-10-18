@@ -42,14 +42,12 @@ jobs:
       php: 7.4
       script: echo "Deploying Doxygen documentation to GitHub pages ..."
       before_deploy:
-        - bash -c "echo $PWD"
-        - bash -c "find . -type f"
         - ./Build/Scripts/runTravisDoxygen.sh
       deploy:
         provider: pages
         cleanup: false
         strategy: git
-        token: $GITHUB_TOKEN  # Set in the settings page of your repository, as a secure variable
+        github-token: $GITHUB_TOKEN  # Set in the settings page of your repository, as a secure variable
         keep_history: true
         verbose: true
         local_dir: $HOME/thucke/TYPO3.ext.th_rating/Build/doxygen/html
