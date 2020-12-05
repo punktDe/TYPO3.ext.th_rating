@@ -50,7 +50,7 @@ jobs:
         gitthub-token: $GITHUB_TOKEN  # Set in the settings page of your repository, as a secure variable
         keep_history: true
         verbose: true
-        local_dir: $HOME/deploy/doxygen/html
+        local_dir: $HOME/deploy/doxygen
         on:
           branch: master
 
