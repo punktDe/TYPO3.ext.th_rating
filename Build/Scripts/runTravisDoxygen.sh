@@ -32,22 +32,23 @@
 # to this dir, no matter from where this script is called.
 THIS_SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
 #cd "$THIS_SCRIPT_DIR"
+TARGET_DIR="${HOME}/build/thucke"
 
 if [ "$TRAVIS_REPO_SLUG" == "thucke/TYPO3.ext.th_rating" ] && [ "$TRAVIS_PULL_REQUEST" == "false" ] && [ "$TRAVIS_BRANCH" == "master" ]; then
     echo -e "Starting Doxygen html generation.\n"
     set -x
-    mkdir -p ${HOME}/deploy/doxygen
+    mkdir -p ${TARGET_DIR}/deploy/doxygen
     #copy current doxygen configuration to statix place
-    cp ${HOME}/build/thucke/TYPO3.ext.th_rating/Build/.doxygen ${HOME}/deploy/doxygen
+    cp ${TARGET_DIR}/TYPO3.ext.th_rating/Build/.doxygen ${TARGET_DIR}/deploy/doxygen
 
     # Get to the Travis build directory, configure git and clone the repo
-    pushd ${HOME}/deploy/doxygen
+    pushd ${TARGET_DIR}/deploy/doxygen
 
     # generate new documentation
     echo -e "Starting Doxygen html generation.\n"
     #doxygen .doxygen 2>&1 >/dev/null
     doxygen .doxygen
 
-    echo -e "Generated Doxygen html in ${HOME}/deploy/doxygen.\n"
+    echo -e "Generated Doxygen html in ${TARGET_DIR}.\n"
     popd
 fi
