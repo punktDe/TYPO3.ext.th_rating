@@ -32,7 +32,7 @@
 # to this dir, no matter from where this script is called.
 THIS_SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
 #cd "$THIS_SCRIPT_DIR"
-TARGET_DIR="${HOME}/build/thucke"
+TARGET_DIR="${TRAVIS_BUILD_DIR}"
 
 if [ "$TRAVIS_REPO_SLUG" == "thucke/TYPO3.ext.th_rating" ] && [ "$TRAVIS_PULL_REQUEST" == "false" ] && [ "$TRAVIS_BRANCH" == "master" ]; then
     echo -e "Starting Doxygen html generation.\n"
