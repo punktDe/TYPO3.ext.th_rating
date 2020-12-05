@@ -47,6 +47,6 @@ if [ "$TRAVIS_REPO_SLUG" == "thucke/TYPO3.ext.th_rating" ] && [ "$TRAVIS_PULL_RE
     #doxygen .doxygen 2>&1 >/dev/null
     doxygen .doxygen
 
-    echo -e "Generated Doxygen html in ${HOME}/build/doxygen.\n"
+    echo -e "Generated Doxygen html in ${HOME}/deploy/doxygen.\n"
     popd
 fi
