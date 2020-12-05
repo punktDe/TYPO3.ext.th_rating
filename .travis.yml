@@ -45,12 +45,12 @@ jobs:
         - ./Build/Scripts/runTravisDoxygen.sh
       deploy:
         provider: pages
-        cleanup: false
+        skip_cleanup: true
         strategy: git
-        token: $GITHUB_TOKEN  # Set in the settings page of your repository, as a secure variable
+        gitthub-token: $GITHUB_TOKEN  # Set in the settings page of your repository, as a secure variable
         keep_history: true
         verbose: true
-        local_dir: $HOME/thucke/TYPO3.ext.th_rating/Build/doxygen/html
+        local_dir: $HOME/deploy/doxygen/html
         on:
           branch: master
 
