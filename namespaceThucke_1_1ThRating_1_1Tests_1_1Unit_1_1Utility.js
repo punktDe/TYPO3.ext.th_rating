@@ -1,0 +1,4 @@
+var namespaceThucke_1_1ThRating_1_1Tests_1_1Unit_1_1Utility =
+[
+    [ "DeprecationHelperUtilityTest", "classThucke_1_1ThRating_1_1Tests_1_1Unit_1_1Utility_1_1DeprecationHelperUtilityTest.html", "classThucke_1_1ThRating_1_1Tests_1_1Unit_1_1Utility_1_1DeprecationHelperUtilityTest" ]
+];
