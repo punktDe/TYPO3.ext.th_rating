@@ -39,7 +39,7 @@ if [ "$TRAVIS_REPO_SLUG" == "thucke/TYPO3.ext.th_rating" ] && [ "$TRAVIS_PULL_RE
     set -x
     mkdir -p ${TARGET_DIR}/deploy/doxygen
     #copy current doxygen configuration to statix place
-    cp ${TARGET_DIR}/TYPO3.ext.th_rating/Build/.doxygen ${TARGET_DIR}/deploy/doxygen
+    cp ${THIS_SCRIPT_DIR}/../.doxygen ${TARGET_DIR}/deploy/doxygen
 
     # Get to the Travis build directory, configure git and clone the repo
     pushd ${TARGET_DIR}/deploy/doxygen
