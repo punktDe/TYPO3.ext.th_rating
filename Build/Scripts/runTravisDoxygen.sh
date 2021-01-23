@@ -31,40 +31,24 @@
 # Go to the directory this script is located, so everything else is relative
 # to this dir, no matter from where this script is called.
 THIS_SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
-cd "$THIS_SCRIPT_DIR"
+#cd "$THIS_SCRIPT_DIR"
+TARGET_DIR="${TRAVIS_BUILD_DIR}"
 
 if [ "$TRAVIS_REPO_SLUG" == "thucke/TYPO3.ext.th_rating" ] && [ "$TRAVIS_PULL_REQUEST" == "false" ] && [ "$TRAVIS_BRANCH" == "master" ]; then
     echo -e "Starting Doxygen html generation.\n"
-    mkdir -p $HOME/build/doxygen
+    set -x
+    mkdir -p ${TARGET_DIR}/deploy/doxygen
     #copy current doxygen configuration to statix place
-    cp ../.doxygen $HOME/build/doxygen
+    cp ${THIS_SCRIPT_DIR}/../.doxygen ${TARGET_DIR}/deploy/doxygen
 
     # Get to the Travis build directory, configure git and clone the repo
-    pushd $HOME/build
-    #git config --global user.email "travis@travis-ci.org"
-    #git config --global user.name "travis-ci"
-    git clone --branch=gh-pages https://${GITHUB_TOKEN}@github.com/thucke/TYPO3.ext.th_rating.git gh-pages
-
-    # cleanup documentation
-    pushd gh-pages
-    git rm -rf * >/dev/null
-    popd
+    pushd ${TARGET_DIR}/deploy/doxygen
 
     # generate new documentation
-    cd doxygen
     echo -e "Starting Doxygen html generation.\n"
-    doxygen .doxygen >/dev/null
-    echo -e "Moving Doxygen html to gh-pages branch.\n"
-    mv -f html/* $HOME/build/gh-pages >/dev/null
+    #doxygen .doxygen 2>&1 >/dev/null
+    doxygen .doxygen
 
-    # Commit and Push the Changes
-    cd $HOME/build/gh-pages
-    echo -e "Publishing gh-pages branch.\n"
-    git add -f .
-    git commit -m "Latest doxygen generated doc on successful travis build $TRAVIS_BUILD_NUMBER auto-pushed to gh-pages"
-    git push -fq origin gh-pages
-
-    echo -e "Published Doxygen html to gh-pages.\n"
-
+    echo -e "Generated Doxygen html in ${TARGET_DIR}.\n"
     popd
 fi

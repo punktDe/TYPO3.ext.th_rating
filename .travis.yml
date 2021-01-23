@@ -1,3 +1,4 @@
+os: linux
 language: php
 
 php:
@@ -7,8 +8,9 @@ php:
 env:
   global:
     - typo3DatabaseHost=localhost typo3DatabaseName=typo3 typo3DatabaseUsername=root typo3DatabasePassword=''
-  matrix:
-#    - TYPO3_VERSION=^10
+    - COMPOSER_MEMORY_LIMIT=3G
+  jobs:
+    #- TYPO3_VERSION=^10
     - TYPO3_VERSION=^9
 services:
   - mysql
@@ -20,9 +22,9 @@ stages:
   - name: test
     if: branch IN (master, develop) OR branch =~ ^release.*$ OR commit_message =~ force_tests
   - name: doxygen
-    if: branch IN (master)
+    if: branch = master
 
-matrix:
+jobs:
   fast_finish: true
   include:
     - stage: static checks
@@ -36,9 +38,22 @@ matrix:
           organization: "thucke"
       script: sonar-scanner -Dproject.settings=Build/.sonar_project.properties -Dsonar.verbose=true
     - stage: doxygen
-      name: "Doxygen generation"
-      php: 7.2
-      script: ./Build/Scripts/runTravisDoxygen.sh
+      name: "Doxygen documentation"
+      php: 7.4
+      script: echo "Deploying Doxygen documentation to GitHub pages ..."
+      before_deploy:
+        - ./Build/Scripts/runTravisDoxygen.sh
+      deploy:
+        provider: pages
+        skip_cleanup: true
+        strategy: git
+        gitthub-token: $GITHUB_TOKEN  # Set in the settings page of your repository, as a secure variable
+        keep_history: true
+        verbose: true
+        local_dir: ${TRAVIS_BUILD_DIR}/deploy/doxygen/html
+        on:
+          branch: master
+
 
 # specification of build environment
 dist: bionic
