@@ -5,7 +5,6 @@ namespace Thucke\ThRating\Service;
 
 use Thucke\ThRating\Exception\FeUserNotFoundException;
 use TYPO3\CMS\Core\Context\Context;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Domain\Repository\FrontendUserRepository;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use \Thucke\ThRating\Domain\Model\Voter;
@@ -69,6 +68,18 @@ class AccessControlService extends AbstractExtensionService
     }
 
     /**
+     * @var \TYPO3\CMS\Core\Context\Context $context
+     */
+    protected $context;
+    /**
+     * @param \TYPO3\CMS\Core\Context\Context $context
+     */
+    public function injectContext(\TYPO3\CMS\Core\Context\Context $context): void
+    {
+        $this->context = $context;
+    }
+
+    /**
      * Tests, if the given person is logged into the frontend
      *
      * @param \TYPO3\CMS\Extbase\Domain\Model\FrontendUser|null $person The person
@@ -86,7 +97,6 @@ class AccessControlService extends AbstractExtensionService
                 return true; //treat anonymous user also as logged in
             }
         }
-
         return false;
     }
 
@@ -96,9 +106,7 @@ class AccessControlService extends AbstractExtensionService
      */
     public function backendAdminIsLoggedIn(): bool
     {
-        /** @var Context $context */
-        $context = GeneralUtility::makeInstance(Context::class, null);
-        return $context->getPropertyFromAspect('backend.user', 'isLoggedIn');
+        return $this->context->getPropertyFromAspect('backend.user', 'isLoggedIn');
     }
 
     /**
@@ -108,8 +116,7 @@ class AccessControlService extends AbstractExtensionService
     public function hasLoggedInFrontendUser(): bool
     {
         /** @var Context $context */
-        $context = GeneralUtility::makeInstance(Context::class, array());
-        return $context->getPropertyFromAspect('frontend.user', 'isLoggedIn');
+        return $this->context->getPropertyFromAspect('frontend.user', 'isLoggedIn');
     }
 
     /**
@@ -119,9 +126,8 @@ class AccessControlService extends AbstractExtensionService
     public function getFrontendUserGroups(): array
     {
         if ($this->hasLoggedInFrontendUser()) {
-            return $GLOBALS['TSFE']->fe_user->groupData['uid'];
+            return $this->context->getPropertyFromAspect('frontend.user', 'groupIds');
         }
-
         return [];
     }
 
@@ -131,8 +137,8 @@ class AccessControlService extends AbstractExtensionService
      */
     public function getFrontendUserUid(): ?int
     {
-        if ($this->hasLoggedInFrontendUser() && !empty($GLOBALS['TSFE']->fe_user->user['uid'])) {
-            return (int)$GLOBALS['TSFE']->fe_user->user['uid'];
+        if ($this->hasLoggedInFrontendUser()) {
+            return $this->context->getPropertyFromAspect('frontend.user', 'id');
         }
         return null;
     }
