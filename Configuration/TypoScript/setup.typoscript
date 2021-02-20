@@ -67,14 +67,6 @@ plugin.tx_thrating {
       }
     }
   }
-  persistence {
-    storagePid = {$plugin.tx_thrating.settings.pluginStoragePid}
-    classes {
-      Thucke\ThRating\Domain\Model\Ratingobject {
-        newRecordStoragePid < plugin.tx_thrating.storagePid
-      }
-    }
-  }
   view {
     templateRootPath >
     templateRootPaths {

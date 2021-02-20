@@ -1,5 +1,20 @@
 <?php
-defined('TYPO3_MODE') || die('Access denied.');
+/*
+ * This file is part of the package thucke/th-rating.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE file that was distributed with this source code.
+ */
+
+if (!defined('TYPO3_MODE')) {
+    die('Access denied.');
+}
+
+/***************
+ * Register "thr" as global fluid namespace
+ */
+$GLOBALS['TYPO3_CONF_VARS']['SYS']['fluid']['namespaces']['thr'][] = 'Thucke\\ThRating\\ViewHelpers';
+
 
 /**
  * Configure the Plugin to call the
