@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='utf-8'?>
 <xliff version="1.0">
-	<file source-language="en" datatype="plaintext" original="EXT:th_ratig/Resources/Private/Language/locallang.xlf" product-name="th_rating">
+	<file source-language="en" datatype="plaintext" original="EXT:th_rating/Resources/Private/Language/locallang.xlf" product-name="th_rating">
 		<header/>
 		<body>
 			<trans-unit id="stepnames.bad" xml:space="preserve">
