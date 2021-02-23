@@ -1,5 +1,11 @@
 <?php
-/** @noinspection PhpFullyQualifiedNameUsageInspection */
+
+/*
+ * This file is part of the package thucke/th-rating.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE file that was distributed with this source code.
+ */
 
 /** @noinspection PhpUnnecessaryFullyQualifiedNameInspection */
 namespace Thucke\ThRating\Tests\Unit;
@@ -14,14 +20,14 @@ namespace Thucke\ThRating\Tests\Unit;
  * For the full copyright and license information, please read
  * LICENSE file that was distributed with this source code.
  */
-use Nimut\TestingFramework\MockObject\AccessibleMockObjectInterface;
-use Nimut\TestingFramework\TestCase\ViewHelperBaseTestcase;
+use TYPO3\TestingFramework\Core\AccessibleObjectInterface;
+use TYPO3\TestingFramework\Fluid\Unit\ViewHelpers\ViewHelperBaseTestcase;
 use Thucke\ThRating\ViewHelpers\Typo3VersionViewHelper;
 use TYPO3\CMS\Core\Utility\VersionNumberUtility;
 
 class Typo3VersionViewHelperTest extends ViewHelperBaseTestcase
 {
-    /** @var \PHPUnit_Framework_MockObject_MockObject|AccessibleMockObjectInterface|\Thucke\ThRating\ViewHelpers\Typo3VersionViewHelper */
+    /** @var \PHPUnit_Framework_MockObject_MockObject|AccessibleObjectInterface|\Thucke\ThRating\ViewHelpers\Typo3VersionViewHelper */
     protected $mockedViewHelper;
 
     /** @var string */

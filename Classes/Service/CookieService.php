@@ -1,5 +1,12 @@
 <?php
-/** @noinspection PhpTraditionalSyntaxArrayLiteralInspection */
+
+/*
+ * This file is part of the package thucke/th-rating.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE file that was distributed with this source code.
+ */
+
 namespace Thucke\ThRating\Service;
 
 use TYPO3\CMS\Core\Log\LogLevel;
@@ -70,9 +77,9 @@ class CookieService extends AbstractExtensionService
                 if ($matchCnt === false) {
                     $this->logger->log(
                         LogLevel::ERROR,
-                        'getCookieDomain: The regular expression for the cookie domain contains errors.'.
+                        'getCookieDomain: The regular expression for the cookie domain contains errors.' .
                         'The session is not shared across sub-domains.',
-                        ['cookieDomain' => $cookieDomain, 'errorCode' => 1399137882,]
+                        ['cookieDomain' => $cookieDomain, 'errorCode' => 1399137882]
                     );
                 } elseif ($matchCnt) {
                     $result = $match[0];

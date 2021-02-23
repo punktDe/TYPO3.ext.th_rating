@@ -1,5 +1,12 @@
 <?php
-/** @noinspection PhpUnnecessaryFullyQualifiedNameInspection */
+
+/*
+ * This file is part of the package thucke/th-rating.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE file that was distributed with this source code.
+ */
+
 /** @noinspection PhpFullyQualifiedNameUsageInspection */
 namespace Thucke\ThRating\Service;
 
@@ -23,6 +30,7 @@ use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Log\Logger;
 use TYPO3\CMS\Core\Log\LogLevel;
 use TYPO3\CMS\Core\Site\Entity\Site;
+use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -32,7 +40,6 @@ use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
-use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 
 /***************************************************************
 *  Copyright notice
@@ -306,9 +313,10 @@ class ExtensionHelperService extends AbstractExtensionService
         $stepname->setStepconf($stepconf);
         $stepname->setStepname($stepnameArray['stepname']);
         $stepname->setPid($stepnameArray['pid']);
-        $stepname->setLanguageUid($this->getStaticLanguageByIsoCode(
-            $stepname->getPid(),
-            $stepnameArray['twoLetterIsoCode'] ?: null
+        $stepname->setLanguageUid(
+            $this->getStaticLanguageByIsoCode(
+                $stepname->getPid(),
+                $stepnameArray['twoLetterIsoCode'] ?: null
             )->getLanguageId()
         );
 
@@ -436,7 +444,7 @@ class ExtensionHelperService extends AbstractExtensionService
      */
     public function clearDynamicCssFile(): void
     {
-        $this->objectManager->get(DynamicCssEvaluator::class)->clearCachePostProc(array());
+        $this->objectManager->get(DynamicCssEvaluator::class)->clearCachePostProc([]);
     }
 
     /**
@@ -452,8 +460,8 @@ class ExtensionHelperService extends AbstractExtensionService
         $messageArray = [];
 
         //create file if it does not exist
-        if (file_exists(Environment::getPublicPath() .'/' . self::DYN_CSS_FILENAME)) {
-            $fstat = stat(Environment::getPublicPath() .'/' . self::DYN_CSS_FILENAME);
+        if (file_exists(Environment::getPublicPath() . '/' . self::DYN_CSS_FILENAME)) {
+            $fstat = stat(Environment::getPublicPath() . '/' . self::DYN_CSS_FILENAME);
             //do not recreate file if it has greater than zero length
             if ($fstat[7] !== 0) {
                 $this->logger->log(LogLevel::DEBUG, 'Dynamic CSS file exists - exiting');
@@ -554,7 +562,7 @@ class ExtensionHelperService extends AbstractExtensionService
                 if ($ratingName === 'default') {
                     continue;
                 }
-                $subURI = substr(Environment::getPublicPath() .'/', strlen($_SERVER['DOCUMENT_ROOT']) + 1);
+                $subURI = substr(Environment::getPublicPath() . '/', strlen($_SERVER['DOCUMENT_ROOT']) + 1);
                 $basePath = $this->getTypoScriptFrontendController()->baseUrl ?: '//' .
                     $_SERVER['HTTP_HOST'] . '/' . $subURI;
 
@@ -658,7 +666,7 @@ class ExtensionHelperService extends AbstractExtensionService
         }
 
         $this->logger->log(LogLevel::DEBUG, 'Saving CSS file', ['cssFile' => $cssFile]);
-        $fp = fopen(Environment::getPublicPath() .'/' . self::DYN_CSS_FILENAME, 'wb');
+        $fp = fopen(Environment::getPublicPath() . '/' . self::DYN_CSS_FILENAME, 'wb');
         fwrite($fp, $cssFile);
         fclose($fp);
 
@@ -686,8 +694,10 @@ class ExtensionHelperService extends AbstractExtensionService
                     return $language;
                 }
             }
-            throw new LanguageNotFoundException(LocalizationUtility::translate('flash.general.languageNotFound',
-                'ThRating'), 1582980369);
+            throw new LanguageNotFoundException(LocalizationUtility::translate(
+                'flash.general.languageNotFound',
+                'ThRating'
+            ), 1582980369);
         }
         return $site->getDefaultLanguage();
     }

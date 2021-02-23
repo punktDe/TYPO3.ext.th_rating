@@ -1,5 +1,12 @@
 <?php
-/** @noinspection PhpUnusedParameterInspection */
+
+/*
+ * This file is part of the package thucke/th-rating.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE file that was distributed with this source code.
+ */
+
 namespace Thucke\ThRating\Evaluation;
 
 use TYPO3\CMS\Core\Core\Environment;
@@ -61,7 +68,7 @@ class DynamicCssEvaluator
      */
     public function evaluateFieldValue(string $value, string $is_in, bool &$set): string
     {
-        $this->clearCachePostProc(array());
+        $this->clearCachePostProc([]);
 
         //additionally clear eventually cached content
         $dataHandler = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\DataHandling\DataHandler::class);

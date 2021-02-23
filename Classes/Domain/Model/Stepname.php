@@ -1,11 +1,18 @@
 <?php
 declare(strict_types = 1);
+
+/*
+ * This file is part of the package thucke/th-rating.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE file that was distributed with this source code.
+ */
+
 namespace Thucke\ThRating\Domain\Model;
 
-use phpDocumentor\Reflection\Types\Integer;
+use TYPO3\CMS\Extbase\Annotation as Extbase;
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
-use TYPO3\CMS\Extbase\Annotation as Extbase;
 
 /***************************************************************
 *  Copyright notice
@@ -33,7 +40,6 @@ use TYPO3\CMS\Extbase\Annotation as Extbase;
 /**
  * Model for ratingstep configuration names
  *
- * @author  Thomas Hucke <thucke@web.de>
  * @copyright  Copyright belongs to the respective authors
  * @license  http://opensource.org/licenses/gpl-license.php GNU Public License, version 2
  * @entity

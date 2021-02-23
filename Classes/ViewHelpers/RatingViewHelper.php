@@ -1,4 +1,12 @@
 <?php
+
+/*
+ * This file is part of the package thucke/th-rating.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE file that was distributed with this source code.
+ */
+
 namespace Thucke\ThRating\ViewHelpers;
 
 use Thucke\ThRating\Service\ExtensionHelperService;
@@ -110,8 +118,7 @@ class RatingViewHelper extends AbstractViewHelper
         array $arguments,
         \Closure $renderChildrenClosure,
         RenderingContextInterface $renderingContext
-    )
-    {
+    ) {
         $typoscriptObjectPath = 'plugin.tx_thrating';
         $ratedobjectuid = $arguments['ratedobjectuid'];
         $action = $arguments['action'];

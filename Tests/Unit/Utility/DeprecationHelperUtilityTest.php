@@ -1,5 +1,11 @@
 <?php
-/** @noinspection PhpFullyQualifiedNameUsageInspection */
+
+/*
+ * This file is part of the package thucke/th-rating.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE file that was distributed with this source code.
+ */
 
 /** @noinspection PhpUnnecessaryFullyQualifiedNameInspection */
 namespace Thucke\ThRating\Tests\Unit\Utility;
@@ -14,7 +20,7 @@ namespace Thucke\ThRating\Tests\Unit\Utility;
  * For the full copyright and license information, please read
  * LICENSE file that was distributed with this source code.
  */
-use Nimut\TestingFramework\TestCase\UnitTestCase;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 use Thucke\ThRating\Utility\DeprecationHelperUtility;
 
 class DeprecationHelperUtilityTest extends UnitTestCase
@@ -22,12 +28,10 @@ class DeprecationHelperUtilityTest extends UnitTestCase
     protected $testExtensionsToLoad = ['typo3conf/ext/th_rating'];
     protected $coreExtensionsToLoad = ['extbase', 'fluid'];
 
-    protected function setUp(): void
-    {
-        parent::setUp();
-    }
-
-    public function tearDown()
+    /**
+     *
+     */
+    public function tearDown():void
     {
         parent::tearDown();
     }
@@ -47,5 +51,4 @@ class DeprecationHelperUtilityTest extends UnitTestCase
     {
         $this->assertTrue(DeprecationHelperUtility::isTypo3VersionLowerThan('11'));
     }
-
 }

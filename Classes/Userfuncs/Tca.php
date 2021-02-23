@@ -1,23 +1,29 @@
 <?php
-/** @noinspection PhpUnusedParameterInspection */
+
+/*
+ * This file is part of the package thucke/th-rating.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE file that was distributed with this source code.
+ */
+
 /** @noinspection PhpUnused */
 /** @noinspection PhpUnnecessaryFullyQualifiedNameInspection */
 /** @noinspection PhpFullyQualifiedNameUsageInspection */
 namespace Thucke\ThRating\Userfuncs;
 
-use Exception;
-use Thucke\ThRating\Service\ExtensionHelperService;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\RootlineUtility;
-use TYPO3\CMS\Extbase\Object\ObjectManager;
 use Thucke\ThRating\Domain\Model\Ratingobject;
 use Thucke\ThRating\Domain\Model\Stepconf;
 use Thucke\ThRating\Domain\Repository\StepconfRepository;
 use Thucke\ThRating\Domain\Repository\StepnameRepository;
+use Thucke\ThRating\Service\ExtensionHelperService;
+use TYPO3\CMS\Core\TypoScript\ExtendedTemplateService;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\RootlineUtility;
+use TYPO3\CMS\Extbase\Object\ObjectManager;
+use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
 use TYPO3\CMS\Extbase\Persistence\Generic\LazyLoadingProxy;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
-use TYPO3\CMS\Core\TypoScript\ExtendedTemplateService;
-use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
 
 /***************************************************************
 *  Copyright notice
@@ -142,7 +148,7 @@ class Tca
             }
         }
         //$syslang = $params['row']['uid'];
-        $params['title'] = '#' . $params['row']['uid'] . ': '. $ratetable . '[' . $ratefield .
+        $params['title'] = '#' . $params['row']['uid'] . ': ' . $ratetable . '[' . $ratefield .
             ']/Step ' . $steporder . '/' . $syslang;
     }
 

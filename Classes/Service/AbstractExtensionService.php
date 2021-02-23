@@ -1,9 +1,17 @@
 <?php
-declare(strict_types=1);
+declare(strict_types = 1);
+
+/*
+ * This file is part of the package thucke/th-rating.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE file that was distributed with this source code.
+ */
+
 namespace Thucke\ThRating\Service;
 
-use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
 use TYPO3\CMS\Core\SingletonInterface;
+use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
 
 /***************************************************************
 *  Copyright notice
@@ -43,7 +51,8 @@ class AbstractExtensionService implements SingletonInterface
     /**
      * @param \TYPO3\CMS\Extbase\Object\ObjectManagerInterface
      */
-    public function injectObjectManager(ObjectManagerInterface $objectManager) {
+    public function injectObjectManager(ObjectManagerInterface $objectManager)
+    {
         $this->objectManager = $objectManager;
     }
 

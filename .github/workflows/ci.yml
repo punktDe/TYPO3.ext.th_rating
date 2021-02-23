@@ -53,21 +53,24 @@ jobs:
         run: composer info
 
       - name: CGL
-        run: php-cs-fixer fix --dry-run --verbose
+        run: composer thucke:cgl
+
+      - name: PHPStan Classes
+        run: composer thucke:phpstan:classes
 
       - name: Lint PHP
-        run: composer t3g:test:php:lint
+        run: composer thucke:test:php:lint
 
       - name: Unit Tests without coverage
         if: matrix.typo3 != '^10.4'
-        run: composer t3g:test:php:unit
+        run: composer thucke:test:php:unit
 
       - name: Unit Tests with coverage
         if: matrix.typo3 == '^10.4'
-        run: composer t3g:test:php:unit:cover
+        run: composer thucke:test:php:unit:cover
 
       - name: Functional Tests without coverage
-        run: composer t3g:test:php:functional
+        run: composer thucke:test:php:functional
         if: matrix.typo3 != '^10.4'
         env:
           typo3DatabaseHost: 127.0.0.1
@@ -76,7 +79,7 @@ jobs:
           typo3DatabaseUsername: root
 
       - name: Functional Tests with coverage
-        run: composer t3g:test:php:functional:cover
+        run: composer thucke:test:php:functional:cover
         if: matrix.typo3 == '^10.4'
         env:
           typo3DatabaseHost: 127.0.0.1

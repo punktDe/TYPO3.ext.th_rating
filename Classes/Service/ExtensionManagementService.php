@@ -1,14 +1,18 @@
 <?php
-declare(strict_types=1);
+declare(strict_types = 1);
 
-/** @noinspection PhpFullyQualifiedNameUsageInspection */
+/*
+ * This file is part of the package thucke/th-rating.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE file that was distributed with this source code.
+ */
 
 namespace Thucke\ThRating\Service;
 
-use TYPO3\CMS\Core\Log\LogLevel;
-use Thucke\ThRating\Domain\Model\Stepconf;
 use Thucke\ThRating\Domain\Model\Ratingobject;
-use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
+use Thucke\ThRating\Domain\Model\Stepconf;
+use TYPO3\CMS\Core\Log\LogLevel;
 
 /***************************************************************
  *  Copyright notice
@@ -127,8 +131,7 @@ class ExtensionManagementService extends AbstractExtensionService
         string $stepname,
         string $twoLetterIsoCode=null,
         bool $allStepconfs = false
-    ): bool
-    {
+    ): bool {
         $this->logger->log(
             LogLevel::INFO,
             'setStepname called',

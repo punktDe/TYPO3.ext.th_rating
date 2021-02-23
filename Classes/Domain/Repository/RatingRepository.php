@@ -1,14 +1,21 @@
 <?php
-/** @noinspection PhpUnnecessaryFullyQualifiedNameInspection */
+
+/*
+ * This file is part of the package thucke/th-rating.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE file that was distributed with this source code.
+ */
+
 namespace Thucke\ThRating\Domain\Repository;
 
 use Thucke\ThRating\Domain\Model\Rating;
 use Thucke\ThRating\Domain\Model\Ratingobject;
 use Thucke\ThRating\Domain\Validator\RatingValidator;
 use Thucke\ThRating\Service\ExtensionHelperService;
+use TYPO3\CMS\Extbase\Annotation as Extbase;
 use TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException;
 use TYPO3\CMS\Extbase\Persistence\Repository;
-use TYPO3\CMS\Extbase\Annotation as Extbase;
 
 /***************************************************************
  *  Copyright notice
@@ -71,8 +78,7 @@ class RatingRepository extends Repository
         Ratingobject $ratingobject,
         int $ratedobjectuid,
         $addIfNotFound = false
-    ): Rating
-    {
+    ): Rating {
         /** @var \Thucke\ThRating\Domain\Model\Rating $foundRow */
         $foundRow = $this->objectManager->get(Rating::class);
 

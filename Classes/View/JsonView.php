@@ -1,5 +1,13 @@
 <?php
 declare(strict_types = 1);
+
+/*
+ * This file is part of the package thucke/th-rating.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE file that was distributed with this source code.
+ */
+
 namespace Thucke\ThRating\View;
 
 use TYPO3\CMS\Core\Messaging\FlashMessageRendererResolver;
@@ -51,7 +59,7 @@ class JsonView extends \TYPO3\CMS\Extbase\Mvc\View\JsonView
      * @param TagBuilder $tag
      * @noinspection PhpUnused
      */
-    public function injectTag(TagBuilder $tag):void
+    public function injectTag(TagBuilder $tag): void
     {
         $this->tag = $tag;
     }

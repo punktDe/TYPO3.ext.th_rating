@@ -1,5 +1,12 @@
 <?php
 
+/*
+ * This file is part of the package thucke/th-rating.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE file that was distributed with this source code.
+ */
+
 TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerPlugin(
     // The extension name (in UpperCamelCase) or the extension key (in lower_underscore)
     'Thucke.ThRating',

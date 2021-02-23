@@ -1,4 +1,12 @@
 <?php
+
+/*
+ * This file is part of the package thucke/th-rating.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE file that was distributed with this source code.
+ */
+
 namespace Thucke\ThRating\Service;
 
 use phpDocumentor\Reflection\Types\Boolean;
@@ -100,7 +108,7 @@ class ExtensionConfigurationService extends AbstractExtensionService
      */
     public function initializeObject(): void
     {
-        # store calling extension configuration
+        // store calling extension configuration
         $this->originalConfiguration = $this->configurationManager->getConfiguration(
             ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK
         );
@@ -148,7 +156,6 @@ class ExtensionConfigurationService extends AbstractExtensionService
     /**
      * Set default query settings to those of th_rating
      * (could be different if services are called from other extensions
-     * @return void
      * @throws FeUserStoragePageException
      * @throws InvalidStoragePageException
      */
@@ -179,7 +186,6 @@ class ExtensionConfigurationService extends AbstractExtensionService
      * Checks storagePid settings of th_rating and tx_felogin_pi1 and
      * concatenates them to the new storagePid setting
      *
-     * @return void
      * @throws InvalidStoragePageException if plugin.tx_thrating.storagePid has not been set
      * @throws FeUserStoragePageException if plugin.tx_felogin_pi1.storagePid has not been set
      */
@@ -202,7 +208,7 @@ class ExtensionConfigurationService extends AbstractExtensionService
      * @return int
      * @throws FeUserStoragePageException
      */
-    private function getFeUserStoragePage():int
+    private function getFeUserStoragePage(): int
     {
         $feUserStoragePid = array_merge(
             GeneralUtility::intExplode(

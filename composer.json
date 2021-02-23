@@ -55,29 +55,35 @@
         }
     },
     "scripts": {
-        "t3g:test:php:lint": [
+        "thucke:test:php:lint": [
             "phplint"
         ],
-        "t3g:test:php:unit": [
+        "thucke:test:php:unit": [
             "phpunit -c Build/UnitTests.xml"
         ],
-        "t3g:test:php:functional": [
+        "thucke:test:php:functional": [
             "phpunit -c Build/FunctionalTests.xml"
         ],
-        "t3g:test:php:unit:cover": [
+        "thucke:test:php:unit:cover": [
             "Composer\\Config::disableProcessTimeout",
             "mkdir -p var/log/junit/ && phpunit -c Build/UnitTests.xml --log-junit var/log/junit/phpunit.xml --coverage-clover var/log/junit/coverage-unit.xml"
         ],
-        "t3g:test:php:functional:cover": [
+        "thucke:test:php:functional:cover": [
             "Composer\\Config::disableProcessTimeout",
             "mkdir -p var/log/junit/ && .build/bin/phpunit -c Build/FunctionalTests.xml --log-junit var/log/junit/phpunit.xml --coverage-clover var/log/junit/coverage-functional.xml"
         ],
-        "t3g:test": [
-            "@t3g:test:php:lint",
-            "@t3g:test:php:unit"
+        "thucke:test": [
+            "@thucke:test:php:lint",
+            "@thucke:test:php:unit"
         ],
-        "t3g:cgl": [
-            "php-cs-fixer --diff -v fix"
+        "thucke:cgl": [
+            "php-cs-fixer --using-cache=yes --diff -v fix"
+        ],
+        "thucke:phpstan:classes": [
+            "phpstan analyze Classes"
+        ],
+        "thucke:phpstan:tests": [
+            "phpstan analyze Tests"
         ],
         "post-autoload-dump": [
             "mkdir -p .build/web/typo3conf/ext/",
@@ -92,37 +98,35 @@
         "ext-json": "*",
         "ext-pdo": "*",
         "psr/http-message": "^1.0",
-        "psr/http-client": "^1.0",
-        "psr/http-factory": "^1.0",
         "typo3/cms-backend": "^9.5 || ^10.4",
         "typo3/cms-core" : ">=9.5 <11",
         "typo3/cms-extbase": ">=9.5 <11",
         "typo3/cms-extensionmanager": "^9.5 || ^10.4",
         "typo3/cms-fluid" : ">=9.5 <11",
-        "typo3/cms-frontend" : ">=9.5 <11",
         "typo3/cms-felogin": ">=9.5 <11",
+        "typo3/cms-frontend" : ">=9.5 <11",
         "typo3/cms-install": "^9.5 || ^10.4",
-        "typo3fluid/fluid": "^2.6"
+        "typo3fluid/fluid": "^2.6",
+        "psr/http-client": "^1.0",
+        "psr/http-factory": "^1.0"
     },
 	"require-dev": {
-		"typo3/cms-about" : ">=9.5 <11",
-		"typo3/cms-fluid-styled-content" : ">=9.5 <11",
-		"helmich/typo3-typoscript-lint": "^1.3",
-		"jangregor/phpstan-prophecy": "^0.8.0",
-        "typo3/testing-framework": "^4.15 || ^5.0 || ^6.4",
-		"friendsofphp/php-cs-fixer": "^2.18",
-        "codeception/codeception": "^2.4",
         "typo3/cms-belog": "^9.5 || ^10.4",
         "typo3/cms-beuser": "^9.5 || ^10.4",
         "typo3/cms-seo": "^9.5 || ^10.4",
         "typo3/cms-filelist": "^9.5 || ^10.4",
+		"typo3/cms-fluid-styled-content" : ">=9.5 <11",
         "typo3/cms-lowlevel": "^9.5 || ^10.4",
         "typo3/cms-setup": "^9.5 || ^10.4",
         "typo3/cms-tstemplate": "^9.5 || ^10.4",
         "typo3/cms-rte-ckeditor": "^9.5 || ^10.4",
+        "friendsofphp/php-cs-fixer": "^2.18",
+        "typo3/testing-framework": "^4.15 || ^5.0 || ^6.4",
         "overtrue/phplint": "^2.3",
+		"jangregor/phpstan-prophecy": "^0.8.0",
         "roave/security-advisories": "dev-master",
-        "nimut/testing-framework": "*"
+        "codeception/codeception": "^4.1",
+		"phpstan/phpstan": "^0.12.78"
     },
 	"replace" : {
 		"thucke/th-rating" : "self.version"

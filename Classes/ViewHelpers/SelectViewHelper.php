@@ -1,4 +1,12 @@
 <?php
+
+/*
+ * This file is part of the package thucke/th-rating.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE file that was distributed with this source code.
+ */
+
 namespace Thucke\ThRating\ViewHelpers;
 
 /***************************************************************
@@ -29,7 +37,6 @@ namespace Thucke\ThRating\ViewHelpers;
  *
  * @version $Id:$
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License, version 2
- * @author Thomas Hucke <thucke@web.de>
  */
 class SelectViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\SelectViewHelper
 {
@@ -43,7 +50,7 @@ class SelectViewHelper extends \TYPO3\CMS\Fluid\ViewHelpers\Form\SelectViewHelpe
         $this->registerArgument(
             'options',
             'array',
-            'Associative array with internal IDs as key, and the values are displayed in the select box.'.
+            'Associative array with internal IDs as key, and the values are displayed in the select box.' .
                 'Can be combined with or replaced by child f:form.select.* nodes.'
         );
         $this->registerTagAttribute('name', 'string', 'HTML name of this element');

@@ -1,13 +1,20 @@
 <?php
-/** @noinspection PhpUnnecessaryFullyQualifiedNameInspection */
+
+/*
+ * This file is part of the package thucke/th-rating.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE file that was distributed with this source code.
+ */
+
 /** @noinspection PhpFullyQualifiedNameUsageInspection */
 namespace Thucke\ThRating\Service;
 
+use Thucke\ThRating\Domain\Model\Voter;
 use Thucke\ThRating\Exception\FeUserNotFoundException;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Extbase\Domain\Repository\FrontendUserRepository;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
-use \Thucke\ThRating\Domain\Model\Voter;
 
 /***************************************************************
 *  Copyright notice

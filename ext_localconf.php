@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This file is part of the package thucke/th-rating.
  *
@@ -15,16 +16,14 @@ if (!defined('TYPO3_MODE')) {
  */
 $GLOBALS['TYPO3_CONF_VARS']['SYS']['fluid']['namespaces']['thr'][] = 'Thucke\\ThRating\\ViewHelpers';
 
-
 /**
  * Configure the Plugin to call the
  * right combination of Controller and Action according to
  * the user input (default settings, FlexForm, URL etc.)
  * @deprecated old controller registration will be removed in when support for TYPO3 v9 is dropped
  */
-//TODO remove second registration entry when TYPO3v9 compativility is dropped
+//TODO remove second registration entry when TYPO3v9 compatibility is dropped
 \TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
-
     'Thucke.ThRating',    // The extension name (in UpperCamelCase) or the extension key (in lower_underscore)
     'Pi1',        // A unique name of the plugin in UpperCamelCase
     [   // An array holding the controller-action-combinations that are accessible
@@ -36,7 +35,6 @@ $GLOBALS['TYPO3_CONF_VARS']['SYS']['fluid']['namespaces']['thr'][] = 'Thucke\\Th
         'Vote' => 'new,create,ratinglinks,polling,mark',
         \Thucke\ThRating\Controller\VoteController::class => 'new,create,ratinglinks,polling,mark',
     ]
-
 );
 
 // here we register "DynamicCssEvaluator" to remove the dynamic CSS file when values are modified in the BE

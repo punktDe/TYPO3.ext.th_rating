@@ -1,5 +1,12 @@
 <?php
-/** @noinspection PhpUnnecessaryFullyQualifiedNameInspection */
+
+/*
+ * This file is part of the package thucke/th-rating.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE file that was distributed with this source code.
+ */
+
 /** @noinspection PhpFullyQualifiedNameUsageInspection */
 namespace Thucke\ThRating\Domain\Validator;
 
@@ -37,7 +44,6 @@ use TYPO3\CMS\Extbase\Validation\Validator\AbstractValidator;
 /**
  * A validator for Ratings
  *
- * @author  Thomas Hucke <thucke@web.de>
  * @copyright Copyright belongs to the respective authors
  * @scope singleton
  */

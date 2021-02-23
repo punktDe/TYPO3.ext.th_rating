@@ -1,4 +1,12 @@
 <?php
+
+/*
+ * This file is part of the package thucke/th-rating.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE file that was distributed with this source code.
+ */
+
 namespace Thucke\ThRating\Domain\Repository;
 
 use InvalidArgumentException;
@@ -48,8 +56,7 @@ class StepnameRepository extends Repository
     /**
      * @var int
      */
-    protected $defaultOrderings ;
-
+    protected $defaultOrderings;
 
     /**
      * Initialize this repository
@@ -73,7 +80,7 @@ class StepnameRepository extends Repository
             //check if given language exist
 
             try {
-                # only get language and do not assign the result to check if it exists
+                // only get language and do not assign the result to check if it exists
                 $this->objectManager
                     ->get(ExtensionHelperService::class)
                     ->getStaticLanguageById($stepnameLang);
@@ -167,7 +174,6 @@ class StepnameRepository extends Repository
         $queryResult = $query
             ->execute(true)
             ->toArray();  /** instead of setReturnRawQueryResult(true); */
-
         $checkConsistency = [];
         if (count($queryResult) > 1) {
             $websiteLanguagesArray = [];

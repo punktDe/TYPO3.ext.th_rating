@@ -1,32 +1,17 @@
 <?php
 declare(strict_types = 1);
+
+/*
+ * This file is part of the package thucke/th-rating.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE file that was distributed with this source code.
+ */
+
 namespace Thucke\ThRating\Tests\Functional\Domain\Repository;
 
-/***************************************************************
- *  Copyright notice
- *
- *  (c) 2010 Thomas Hucke <thucke@web.de>
- *  All rights reserved
- *
- *  This script is part of the TYPO3 project. The TYPO3 project is
- *  free software; you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation; either version 2 of the License, or
- *  (at your option) any later version.
- *
- *  The GNU General Public License can be found at
- *  http://www.gnu.org/copyleft/gpl.html.
- *
- *  This script is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *  This copyright notice MUST APPEAR in all copies of the script!
- ***************************************************************/
-
-use Nimut\TestingFramework\Exception\Exception;
-use Nimut\TestingFramework\TestCase\FunctionalTestCase;
+use TYPO3\TestingFramework\Core\Exception;
+use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 use Thucke\ThRating\Domain\Model\Rating;
 use Thucke\ThRating\Domain\Model\Ratingobject;
 use Thucke\ThRating\Domain\Repository\RatingobjectRepository;
@@ -42,7 +27,6 @@ use TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings;
  * Testcases for RatingRepository
  *
  * @version 	$Id:$
- * @author		Thomas Hucke <thucke@web.de>
  * @copyright 	Copyright belongs to the respective authors
  * @license 	http://opensource.org/licenses/gpl-license.php GNU Public License, version 2
  * @scope 		alpha
@@ -76,20 +60,21 @@ class RatingRepositoryTest extends FunctionalTestCase
 
     /**
      * @throws Exception
+     * @throws \Doctrine\DBAL\DBALException
      */
     protected function setUp(): void
     {
         parent::setUp();
 
         $extAbsPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('th_rating');
-        $this->importDataSet($extAbsPath.'/Tests/Functional/Fixtures/Database/Rating.xml');
-        $this->importDataSet($extAbsPath.'/Tests/Functional/Fixtures/Database/pages.xml');
+        $this->importDataSet($extAbsPath . '/Tests/Functional/Fixtures/Database/Rating.xml');
+        $this->importDataSet($extAbsPath . '/Tests/Functional/Fixtures/Database/pages.xml');
         $this->setUpFrontendRootPage(
             1,
             [
                 'EXT:fluid_styled_content/Configuration/TypoScript/setup.txt',
-                $extAbsPath.'/Configuration/TypoScript/setup.typoscript',
-                $extAbsPath.'/Tests/Functional/Fixtures/Frontend/Basic.typoscript',
+                $extAbsPath . '/Configuration/TypoScript/setup.typoscript',
+                $extAbsPath . '/Tests/Functional/Fixtures/Frontend/Basic.typoscript',
             ]
         );
 

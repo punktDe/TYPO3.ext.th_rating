@@ -1,7 +1,14 @@
 <?php
+
+/*
+ * This file is part of the package thucke/th-rating.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE file that was distributed with this source code.
+ */
+
 namespace Thucke\ThRating\Domain\Model;
 
-use Thucke\ThRating\Utility\DeprecationHelperUtility;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
@@ -33,7 +40,6 @@ use TYPO3\CMS\Frontend\Imaging\GifBuilder;
 /**
  * Model for rating votes
  *
- * @author  Thomas Hucke <thucke@web.de>
  * @copyright  Copyright belongs to the respective authors
  * @license  http://opensource.org/licenses/gpl-license.php GNU Public License, version 2
  * @entity
@@ -134,8 +140,7 @@ class RatingImage extends AbstractEntity
      */
     public function setImageFile($imageFile)
     {
-
-        $fullImagePath = Environment::getPublicPath() .'/' . $imageFile;
+        $fullImagePath = Environment::getPublicPath() . '/' . $imageFile;
         if (file_exists($fullImagePath)) {
             $this->imageFile = $imageFile;
             $this->isBuilderObject = false;
