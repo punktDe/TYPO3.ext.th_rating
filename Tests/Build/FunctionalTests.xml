@@ -13,4 +13,5 @@
 	stopOnSkipped="false"
 	verbose="false"
 	convertDeprecationsToExceptions="false"
+	cacheResultFile="../.phpunit.result.cache"
 />

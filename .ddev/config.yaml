@@ -18,7 +18,8 @@ hooks:
   post-start:
   - exec: echo '*/1 * * * * root TYPO3_CONTEXT=Development /usr/bin/php /var/www/html/public/typo3/sysext/core/bin/typo3scheduler:run' | sudo tee -a /etc/cron.d/typo3
   - exec: sudo chmod 0600 /etc/cron.d/typo3 && sudo service cron start
-  - exec: sudo service ssh start
+  - exec: sudo cp ~/.ssh/sshd_config /etc/ssh && sudo service ssh start
+  #- exec: sudo service ssh start
 webimage_extra_packages: [cron, ssh]
 timezone: Europe/Berlin
 

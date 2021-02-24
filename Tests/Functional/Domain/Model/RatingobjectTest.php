@@ -9,8 +9,8 @@
 
 namespace Thucke\ThRating\Tests\Functional\Domain\Model;
 
-use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 use Thucke\ThRating\Domain\Model\Ratingobject;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 /**
  * Testcases for Ratingobject
@@ -28,13 +28,13 @@ class RatingobjectTest extends UnitTestCase
      */
     protected $fixture;
 
-    public function setUp():void
+    public function setUp(): void
     {
         parent::setUp();
         $this->fixture = new Ratingobject('tt_news', 'uid');
     }
 
-    public function tearDown():void
+    public function tearDown(): void
     {
         unset($this->fixture);
         parent::tearDown();

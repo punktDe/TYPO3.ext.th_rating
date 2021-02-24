@@ -20,18 +20,15 @@ namespace Thucke\ThRating\Tests\Unit\Utility;
  * For the full copyright and license information, please read
  * LICENSE file that was distributed with this source code.
  */
-use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 use Thucke\ThRating\Utility\DeprecationHelperUtility;
+use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class DeprecationHelperUtilityTest extends UnitTestCase
 {
     protected $testExtensionsToLoad = ['typo3conf/ext/th_rating'];
     protected $coreExtensionsToLoad = ['extbase', 'fluid'];
 
-    /**
-     *
-     */
-    public function tearDown():void
+    public function tearDown(): void
     {
         parent::tearDown();
     }
