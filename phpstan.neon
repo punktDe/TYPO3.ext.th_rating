@@ -3,4 +3,6 @@ parameters:
     paths:
         - Classes
         - Tests
+    bootstrapFiles:
+        - .build/vendor/typo3/testing-framework/Resources/Core/Build/UnitTestsBootstrap.php
     ignoreErrors:

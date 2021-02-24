@@ -52,6 +52,11 @@
             "extension-key": "th_rating",
             "web-dir": ".build/web",
             "app-dir": ".build"
+        },
+        "phpstan": {
+            "includes": [
+                "extension.neon"
+            ]
         }
     },
     "scripts": {
@@ -126,8 +131,9 @@
 		"jangregor/phpstan-prophecy": "^0.8.0",
         "roave/security-advisories": "dev-master",
         "codeception/codeception": "^4.1",
-		"phpstan/phpstan": "^0.12.78",
-		"phpspec/prophecy-phpunit": "*"
+		"phpspec/prophecy-phpunit": "*",
+		"saschaegerer/phpstan-typo3": "^0.13.1",
+		"phpstan/extension-installer": "^1.1"
     },
 	"replace" : {
 		"thucke/th-rating" : "self.version"
