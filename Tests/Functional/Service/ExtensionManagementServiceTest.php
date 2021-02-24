@@ -10,11 +10,11 @@ declare(strict_types = 1);
 
 namespace Thucke\ThRating\Tests\Functional\Service;
 
-use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 use Thucke\ThRating\Domain\Model\Ratingobject;
 use Thucke\ThRating\Service\ExtensionManagementService;
 use Thucke\ThRating\Service\LoggingService;
 use TYPO3\CMS\Core\Log\Logger;
+use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 /**
  * Test case.

@@ -10,16 +10,17 @@ declare(strict_types = 1);
 
 namespace Thucke\ThRating\Tests\Functional\Domain\Repository;
 
-use TYPO3\TestingFramework\Core\Exception;
-use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 use Thucke\ThRating\Domain\Model\Ratingobject;
 use Thucke\ThRating\Domain\Model\Stepconf;
 use Thucke\ThRating\Domain\Repository\RatingobjectRepository;
 use Thucke\ThRating\Domain\Repository\StepconfRepository;
+use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException;
 use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
+use TYPO3\TestingFramework\Core\Exception;
+use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 /**
  * Testcases for RatingRepository
@@ -62,6 +63,7 @@ class StepconfRepositoryTest extends FunctionalTestCase
     protected function setUp(): void
     {
         parent::setUp();
+        Bootstrap::initializeLanguageObject();
         $extAbsPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('th_rating');
 
         $this->importDataSet($extAbsPath . '/Tests/Functional/Fixtures/Database/Ratingobject.xml');
@@ -98,11 +100,12 @@ class StepconfRepositoryTest extends FunctionalTestCase
         $this->subject->add($model);
         $this->persistenceManager->persistAll();
 
-        $databaseRow = $this->getDatabaseConnection()->selectSingleRow(
-            '*',
+        $connection = $this->getConnectionPool()->getConnectionForTable('tx_thrating_domain_model_stepconf');
+        $databaseRow = $connection->select(
+            ['steporder'],
             'tx_thrating_domain_model_stepconf',
-            'uid = ' . $model->getUid()
-        );
+            ['uid' => $model->getUid()]
+        )->fetch();
         $this->assertSame($steporder, $databaseRow['steporder']);
     }
 

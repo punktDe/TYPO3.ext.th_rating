@@ -10,18 +10,19 @@ declare(strict_types = 1);
 
 namespace Thucke\ThRating\Tests\Functional\Domain\Repository;
 
-use TYPO3\TestingFramework\Core\Exception;
-use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 use Thucke\ThRating\Domain\Model\Rating;
 use Thucke\ThRating\Domain\Model\Ratingobject;
 use Thucke\ThRating\Domain\Repository\RatingobjectRepository;
 use Thucke\ThRating\Domain\Repository\RatingRepository;
+use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException;
 use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
 use TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface;
 use TYPO3\CMS\Extbase\Persistence\Generic\Typo3QuerySettings;
+use TYPO3\TestingFramework\Core\Exception;
+use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 /**
  * Testcases for RatingRepository
@@ -66,6 +67,7 @@ class RatingRepositoryTest extends FunctionalTestCase
     {
         parent::setUp();
 
+        Bootstrap::initializeLanguageObject();
         $extAbsPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('th_rating');
         $this->importDataSet($extAbsPath . '/Tests/Functional/Fixtures/Database/Rating.xml');
         $this->importDataSet($extAbsPath . '/Tests/Functional/Fixtures/Database/pages.xml');
@@ -125,11 +127,12 @@ class RatingRepositoryTest extends FunctionalTestCase
         $this->subject->add($model);
         $this->persistenceManager->persistAll();
 
-        $databaseRow = $this->getDatabaseConnection()->selectSingleRow(
-            '*',
+        $connection = $this->getConnectionPool()->getConnectionForTable('tx_thrating_domain_model_rating');
+        $databaseRow = $connection->select(
+            ['ratingobject'],
             'tx_thrating_domain_model_rating',
-            'uid = ' . $model->getUid()
-        );
+            ['uid' => $model->getUid()]
+        )->fetch();
         $this->assertSame(1, $databaseRow['ratingobject']);
     }
 

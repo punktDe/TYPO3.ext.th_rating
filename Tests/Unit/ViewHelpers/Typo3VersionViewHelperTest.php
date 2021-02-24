@@ -10,20 +10,10 @@
 /** @noinspection PhpUnnecessaryFullyQualifiedNameInspection */
 namespace Thucke\ThRating\Tests\Unit;
 
-/*
- * This file is part of the TYPO3 extension Rating AX <EXT:th_rating>.
- *
- * It is free software; you can redistribute it and/or modify it under
- * the terms of the GNU General Public License, either version 2
- * of the License, or any later version.
- *
- * For the full copyright and license information, please read
- * LICENSE file that was distributed with this source code.
- */
-use TYPO3\TestingFramework\Core\AccessibleObjectInterface;
-use TYPO3\TestingFramework\Fluid\Unit\ViewHelpers\ViewHelperBaseTestcase;
 use Thucke\ThRating\ViewHelpers\Typo3VersionViewHelper;
 use TYPO3\CMS\Core\Utility\VersionNumberUtility;
+use TYPO3\TestingFramework\Core\AccessibleObjectInterface;
+use TYPO3\TestingFramework\Fluid\Unit\ViewHelpers\ViewHelperBaseTestcase;
 
 class Typo3VersionViewHelperTest extends ViewHelperBaseTestcase
 {

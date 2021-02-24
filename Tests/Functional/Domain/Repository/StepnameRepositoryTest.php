@@ -10,15 +10,16 @@ declare(strict_types = 1);
 
 namespace Thucke\ThRating\Tests\Functional\Domain\Repository;
 
-use TYPO3\TestingFramework\Core\Exception;
-use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 use Thucke\ThRating\Domain\Model\Stepconf;
 use Thucke\ThRating\Domain\Model\Stepname;
 use Thucke\ThRating\Domain\Repository\StepconfRepository;
 use Thucke\ThRating\Domain\Repository\StepnameRepository;
+use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
+use TYPO3\TestingFramework\Core\Exception;
+use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 /**
  * Testcases for RatingRepository
@@ -63,10 +64,10 @@ class StepnameRepositoryTest extends FunctionalTestCase
     {
         parent::setUp();
 
+        Bootstrap::initializeLanguageObject();
         $extAbsPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('th_rating');
         $this->importDataSet($extAbsPath . '/Tests/Functional/Fixtures/Database/Stepconf.xml');
         $this->importDataSet($extAbsPath . '/Tests/Functional/Fixtures/Database/Stepname.xml');
-        $this->importDataSet($extAbsPath . '/Tests/Functional/Fixtures/Database/sys_language.xml');
         $this->importDataSet($extAbsPath . '/Tests/Functional/Fixtures/Database/pages.xml');
 
         $this->setUpFrontendRootPage(
@@ -111,11 +112,12 @@ class StepnameRepositoryTest extends FunctionalTestCase
         $this->subject->add($model);
         $this->persistenceManager->persistAll();
 
-        $databaseRow = $this->getDatabaseConnection()->selectSingleRow(
-            '*',
+        $connection = $this->getConnectionPool()->getConnectionForTable('tx_thrating_domain_model_stepname');
+        $databaseRow = $connection->select(
+            ['sys_language_uid'],
             'tx_thrating_domain_model_stepname',
-            'uid = ' . $model->getUid()
-        );
+            ['uid' => $model->getUid()]
+        )->fetch();
         $this->assertSame($model->getLanguageUid(), $databaseRow['sys_language_uid']);
     }
 

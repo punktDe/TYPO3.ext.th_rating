@@ -10,8 +10,6 @@ declare(strict_types = 1);
 
 namespace Thucke\ThRating\Tests\Functional\Domain\Repository;
 
-use TYPO3\TestingFramework\Core\Exception;
-use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 use Thucke\ThRating\Domain\Model\Ratingobject;
 use Thucke\ThRating\Domain\Repository\RatingobjectRepository;
 use Thucke\ThRating\Domain\Validator\RatingobjectValidator;
@@ -20,6 +18,9 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException;
 use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
+use TYPO3\TestingFramework\Core\Exception;
+use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
+use TYPO3\CMS\Core\Core\Bootstrap;
 
 /**
  * Testcases for RatingobjectRepository
@@ -59,6 +60,7 @@ class RatingobjectRepositoryTest extends FunctionalTestCase
     {
         parent::setUp();
 
+        Bootstrap::initializeLanguageObject();
         $extAbsPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('th_rating');
         $this->importDataSet($extAbsPath . '/Tests/Functional/Fixtures/Database/Ratingobject.xml');
         $this->importDataSet($extAbsPath . '/Tests/Functional/Fixtures/Database/pages.xml');
@@ -92,11 +94,12 @@ class RatingobjectRepositoryTest extends FunctionalTestCase
         $this->subject->add($model);
         $this->persistenceManager->persistAll();
 
-        $databaseRow = $this->getDatabaseConnection()->selectSingleRow(
-            '*',
+        $connection = $this->getConnectionPool()->getConnectionForTable('tx_thrating_domain_model_ratingobject');
+        $databaseRow = $connection->select(
+            ['ratetable'],
             'tx_thrating_domain_model_ratingobject',
-            'uid = ' . $model->getUid()
-        );
+            ['uid' => $model->getUid()]
+        )->fetch();
         $this->assertSame($ratetable, $databaseRow['ratetable']);
     }
 
