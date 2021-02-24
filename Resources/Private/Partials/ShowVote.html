@@ -1,4 +1,10 @@
-	<div class="tx-thrating-showVote">
+<?xml version="1.0" encoding="UTF-8" ?>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en"
+	xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+	xmlns:thr="Thucke\ThRating\ViewHelpers"
+	data-namespace-typo3-fluid="true">
+
+<div class="tx-thrating-showVote">
 		<span data-role="onVotingActive" style="{f:if(condition: voting, then: '', else: 'display:none;')}">
 			<p style="white-space:nowrap;"><span class="tx_thrating_ajax-voterUsername">{voter.username}</span> has voted '<span class="tx_thrating_ajax-votingStepname">{voting}</span>' on <span class="tx_thrating_ajax-ratingRatingobjectRatetable">{ratingobject.ratetable}</span>:<span class="tx_thrating_ajax-ratingRatingobjectRatefield">{ratingobject.ratefield}</span>:<span class="tx_thrating_ajax-ratingRatedobjectuid">{rating.ratedobjectuid}</span></p>
 		</span>
