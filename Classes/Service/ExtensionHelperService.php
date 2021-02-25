@@ -411,7 +411,7 @@ class ExtensionHelperService extends AbstractExtensionService
     public function persistRepository(string $repository, AbstractEntity $objectToPersist): void
     {
         $objectUid = $objectToPersist->getUid();
-        if ($objectUid === null) {
+        if (is_int($objectUid)) {
             $this->objectManager->get($repository)->add($objectToPersist);
         } else {
             $this->objectManager->get($repository)->update($objectToPersist);
