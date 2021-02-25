@@ -10,6 +10,7 @@
 /** @noinspection PhpFullyQualifiedNameUsageInspection */
 namespace Thucke\ThRating\Service;
 
+use Psr\Http\Message\ServerRequestInterface;
 use Thucke\ThRating\Domain\Model\Rating;
 use Thucke\ThRating\Domain\Model\RatingImage;
 use Thucke\ThRating\Domain\Model\Ratingobject;
@@ -204,7 +205,6 @@ class ExtensionHelperService extends AbstractExtensionService
     {
         $cObj = $this->configurationManager->getContentObject();
 
-        /** @var array $currentRecord */
         if (!empty($cObj->currentRecord)) {
             /* build array [0=>cObj tablename, 1=> cObj uid] - initialize with content information
              (usage as normal content) */
@@ -290,7 +290,7 @@ class ExtensionHelperService extends AbstractExtensionService
         $stepname->setStepconf($stepconf);
         $stepname->setStepname($stepnameArray['stepname']);
         $stepname->setPid($stepnameArray['pid']);
-        $stepname->setLanguageUid(
+        $stepname->setSysLanguageUid(
             $this->getStaticLanguageByIsoCode(
                 $stepname->getPid(),
                 $stepnameArray['twoLetterIsoCode'] ?: null
@@ -339,16 +339,19 @@ class ExtensionHelperService extends AbstractExtensionService
     /**
      * Returns a new or existing vote
      *
-     * @param         $prefixId
+     * @param string $prefixId
      * @param array $settings
      * @param \Thucke\ThRating\Domain\Model\Rating $rating
      * @return \Thucke\ThRating\Domain\Model\Vote
      * @throws \Thucke\ThRating\Exception\FeUserNotFoundException
      */
-    public function getVote($prefixId, array $settings, Rating $rating): Vote
+    public function getVote(string $prefixId, array $settings, Rating $rating): Vote
     {
+        // initialize variables
         /** @var \Thucke\ThRating\Domain\Model\Vote $vote */
+        $vote = null;
         /** @var \Thucke\ThRating\Domain\Model\Voter $voter */
+        $voter = null;
 
         //first fetch real voter or anonymous
         /** @var int $frontendUserUid */
@@ -433,8 +436,8 @@ class ExtensionHelperService extends AbstractExtensionService
      */
     public function renderDynCSS(): array
     {
-        /** @var string $cssFile */
         $messageArray = [];
+        $cssFile = '';
 
         //create file if it does not exist
         if (file_exists(Environment::getPublicPath() . '/' . self::DYN_CSS_FILENAME)) {
@@ -442,7 +445,6 @@ class ExtensionHelperService extends AbstractExtensionService
             //do not recreate file if it has greater than zero length
             if ($fstat[7] !== 0) {
                 $this->logger->log(LogLevel::DEBUG, 'Dynamic CSS file exists - exiting');
-
                 return $messageArray;
             }
         }
@@ -510,8 +512,7 @@ class ExtensionHelperService extends AbstractExtensionService
                     $stepWeights[] = $stepconf->getStepweight();
                     $sumStepWeights += $stepconf->getStepweight();
                 } else {
-                    /** @var \TYPO3\CMS\Extbase\Error\Error $errorMessage */
-                    foreach ($this->stepconfValidator->validate($stepconf) as $errorMessage) {
+                    foreach ($this->stepconfValidator->validate($stepconf)->getErrors() as $errorMessage) {
                         $messageArray[] = [
                             'messageText' => $errorMessage->getMessage(),
                             'messageTitle' => LocalizationUtility::translate('flash.configuration.error', 'ThRating'),
@@ -654,11 +655,10 @@ class ExtensionHelperService extends AbstractExtensionService
      * Returns the language object
      * If not ISO code is provided the default language is returned
      *
-     * @param int|null $pid page id to which is part of the site
+     * @param int $pid page id to which is part of the site
      * @param string|null $twoLetterIsoCode iso-639-1 string (e.g. en, de, us)
      * @return \TYPO3\CMS\Core\Site\Entity\SiteLanguage
      * @throws LanguageNotFoundException
-     * @throws \TYPO3\CMS\Core\Exception\SiteNotFoundException
      */
     public function getStaticLanguageByIsoCode(int $pid, string $twoLetterIsoCode = null): SiteLanguage
     {
@@ -700,13 +700,11 @@ class ExtensionHelperService extends AbstractExtensionService
     }
 
     /**
-     * Returns the current request object
-     *
-     * @return \TYPO3\CMS\Extbase\Mvc\Request
+     * @return ServerRequestInterface
      */
-    public function getRequest(): \TYPO3\CMS\Extbase\Mvc\Request
+    public function getRequest(): ServerRequestInterface
     {
-        return $this->request;
+        return $GLOBALS['TYPO3_REQUEST'];
     }
 
     /**

@@ -41,7 +41,7 @@ class StepconfRepository extends Repository
      * Finds the given stepconf object in the repository
      *
      * @param    \Thucke\ThRating\Domain\Model\Stepconf $stepconf The ratingobject to look for
-     * @return    \Thucke\ThRating\Domain\Model\Stepconf|object
+     * @return    \Thucke\ThRating\Domain\Model\Stepconf
      */
     public function findStepconfObject(Stepconf $stepconf): Stepconf
     {
@@ -59,7 +59,6 @@ class StepconfRepository extends Repository
         if (count($queryResult) !== 0) {
             $foundRow = $queryResult->getFirst();
         }
-
         return $foundRow;
     }
 

@@ -149,6 +149,7 @@ class Rating extends AbstractEntity
 
         //Initialize vote storage if rating is new
         if (!is_object($this->votes)) {
+            /* @phpstan-ignore-next-line */
             $this->votes = new ObjectStorage();
         }
     }
@@ -238,6 +239,7 @@ class Rating extends AbstractEntity
     /** @noinspection PhpUnused */
     public function removeAllVotes()
     {
+        /* @phpstan-ignore-next-line */
         $this->votes = new ObjectStorage();
         unset($this->currentrates);
     }
@@ -384,10 +386,9 @@ class Rating extends AbstractEntity
     /**
      * Returns the calculated rating in percent
      *
-     * @return string
+     * @return int
      */
-    /** @noinspection PhpUnused */
-    public function getCalculatedRate(): string
+    public function getCalculatedRate(): int
     {
         $currentrate = $this->getCurrentrates();
         if (!empty($currentrate['weightedVotes'])) {
@@ -395,7 +396,6 @@ class Rating extends AbstractEntity
         } else {
             $calculatedRate = 0;
         }
-
         return $calculatedRate;
     }
 }

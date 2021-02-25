@@ -106,7 +106,7 @@ class StepnameRepositoryTest extends FunctionalTestCase
     {
         $model = new Stepname();
         $model->setStepconf($this->stepconf);
-        $model->setLanguageUid(1);
+        $model->setSysLanguageUid(1);
         $model->setStepname('stepname eins');
 
         $this->subject->add($model);
@@ -118,7 +118,7 @@ class StepnameRepositoryTest extends FunctionalTestCase
             'tx_thrating_domain_model_stepname',
             ['uid' => $model->getUid()]
         )->fetch();
-        $this->assertSame($model->getLanguageUid(), $databaseRow['sys_language_uid']);
+        $this->assertSame($model->getSysLanguageUid(), $databaseRow['sys_language_uid']);
     }
 
     /**
@@ -136,7 +136,7 @@ class StepnameRepositoryTest extends FunctionalTestCase
     {
         $model = new Stepname();
         $model->setStepconf($this->stepconf);
-        $model->setLanguageUid(0);
+        $model->setSysLanguageUid(0);
 
         $foundRow = $this->subject->findStepnameObject($model);
         //check for right object type
@@ -168,7 +168,7 @@ class StepnameRepositoryTest extends FunctionalTestCase
     {
         $model = new Stepname();
         $model->setStepconf($this->stepconf);
-        $model->setLanguageUid(2);
+        $model->setSysLanguageUid(2);
 
         $foundRow = $this->subject->findStepnameObject($model);
         //check for right object type
@@ -179,10 +179,10 @@ class StepnameRepositoryTest extends FunctionalTestCase
     {
         $existingModelEntry = new Stepname();
         $existingModelEntry->setStepconf($this->stepconf);
-        $existingModelEntry->setLanguageUid(0);
+        $existingModelEntry->setSysLanguageUid(0);
         $this->assertTrue($this->subject->existStepname($existingModelEntry));
 
-        $existingModelEntry->setLanguageUid(2);
+        $existingModelEntry->setSysLanguageUid(2);
         $this->assertFalse($this->subject->existStepname($existingModelEntry));
     }
 
@@ -190,7 +190,7 @@ class StepnameRepositoryTest extends FunctionalTestCase
     {
         $notExistingModelEntry = new Stepname();
         $notExistingModelEntry->setStepconf($this->stepconf);
-        $notExistingModelEntry->setLanguageUid(2);
+        $notExistingModelEntry->setSysLanguageUid(2);
         $this->assertFalse($this->subject->existStepname($notExistingModelEntry));
     }
 }

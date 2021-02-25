@@ -85,9 +85,8 @@ class RichSnippetService extends AbstractExtensionService
     }
 
     /**
-     * @return string
+     * @return string|false
      */
-    /** @noinspection PhpUnused */
     public function getRichSnippetConfig()
     {
         return json_encode($this->richSnippetConfig);
@@ -96,7 +95,6 @@ class RichSnippetService extends AbstractExtensionService
     /**
      * @return string
      */
-    /** @noinspection PhpUnused */
     public function getSchema()
     {
         return $this->schema;
@@ -126,8 +124,7 @@ class RichSnippetService extends AbstractExtensionService
     /**
      * @return string
      */
-    /** @noinspection PhpUnused */
-    public function getAnchor()
+    public function getAnchor(): string
     {
         return $this->anchor;
     }
@@ -135,7 +132,7 @@ class RichSnippetService extends AbstractExtensionService
     /**
      * @param string $anchor
      */
-    public function setAnchor($anchor)
+    public function setAnchor($anchor): void
     {
         $this->anchor = $anchor;
     }
@@ -143,7 +140,7 @@ class RichSnippetService extends AbstractExtensionService
     /**
      * @param mixed $name
      */
-    public function setName($name)
+    public function setName($name): void
     {
         $this->name = $name;
     }
@@ -151,7 +148,7 @@ class RichSnippetService extends AbstractExtensionService
     /**
      * @return string
      */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }
@@ -159,7 +156,7 @@ class RichSnippetService extends AbstractExtensionService
     /**
      * @return string
      */
-    public function getDescription()
+    public function getDescription(): string
     {
         return $this->description;
     }
@@ -167,7 +164,7 @@ class RichSnippetService extends AbstractExtensionService
     /**
      * @param string $description
      */
-    public function setDescription($description)
+    public function setDescription($description): void
     {
         $this->description = $description;
     }
@@ -175,9 +172,9 @@ class RichSnippetService extends AbstractExtensionService
     /**
      * @param int $uid
      * @throws \Thucke\ThRating\Exception\InvalidAggregateRatingSchemaTypeException
-     * @return string
+     * @return RichSnippetService
      */
-    public function getRichSnippetObject($uid)
+    public function getRichSnippetObject($uid): self
     {
         $this->logger->log(LogLevel::DEBUG, 'getRichSnippetObject Entry point');
         $this->setSchema($this->richSnippetConfig['richSnippetFields']['aggregateRatingSchemaType']);

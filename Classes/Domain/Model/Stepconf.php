@@ -46,8 +46,9 @@ class Stepconf extends AbstractEntity
     /**
      * The weight of this config entry
      *
+     * @Extbase\Validate("Integer")
      * @Extbase\Validate("NumberRange", options={"minimum": 1})
-     * @var float  default is 1 which is equal weight
+     * @var int default is 1 which is equal weight
      */
     protected $stepweight;
 
@@ -77,7 +78,6 @@ class Stepconf extends AbstractEntity
     /**
      * @param \TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager
      */
-    /** @noinspection PhpUnused */
     public function injectObjectManager(ObjectManagerInterface $objectManager)
     {
         $this->objectManager = $objectManager;
@@ -91,7 +91,6 @@ class Stepconf extends AbstractEntity
     /**
      * @param \Thucke\ThRating\Domain\Repository\StepnameRepository $stepnameRepository
      */
-    /** @noinspection PhpUnused */
     public function injectStepnameRepository(StepnameRepository $stepnameRepository)
     {
         $this->stepnameRepository = $stepnameRepository;
@@ -105,7 +104,6 @@ class Stepconf extends AbstractEntity
     /**
      * @param \Thucke\ThRating\Service\ExtensionHelperService $extensionHelperService
      */
-    /** @noinspection PhpUnused */
     public function injectExtensionHelperService(ExtensionHelperService $extensionHelperService)
     {
         $this->extensionHelperService = $extensionHelperService;
@@ -114,7 +112,7 @@ class Stepconf extends AbstractEntity
     /**
      * Constructs a new stepconfig object
      * @param \Thucke\ThRating\Domain\Model\Ratingobject|null $ratingobject
-     * @param null $steporder
+     * @param int|null $steporder
      */
     public function __construct(Ratingobject $ratingobject = null, $steporder = null)
     {
@@ -134,6 +132,7 @@ class Stepconf extends AbstractEntity
     {
         //Initialize vote storage if rating is new
         if (!is_object($this->votes)) {
+            /* @phpstan-ignore-next-line */
             $this->votes = new ObjectStorage();
         }
     }
@@ -198,7 +197,6 @@ class Stepconf extends AbstractEntity
     public function getStepweight()
     {
         empty($this->stepweight) && $this->stepweight = $this->steporder;
-
         return $this->stepweight;
     }
 
@@ -241,8 +239,9 @@ class Stepconf extends AbstractEntity
      *
      * @return \Thucke\ThRating\Domain\Model\Stepname|null
      */
-    public function getStepname()
+    public function getStepname(): ?Stepname
     {
+        /* @phpstan-ignore-next-line */
         if ($this->stepname instanceof LazyLoadingProxy) {
             $this->stepname = $this->stepname->_loadRealInstance();
         }

@@ -22,7 +22,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\RootlineUtility;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
-use TYPO3\CMS\Extbase\Persistence\Generic\LazyLoadingProxy;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 
 /**
@@ -60,64 +59,59 @@ class Tca
      * Returns the record title for the rating object in BE
      * Note that values of $params are modified by reference
      *
-     * @param $params
-     * @param $pObj
+     * @param array $parameters
+     * @param object $parentObject
      */
-    public function getRatingObjectRecordTitle(&$params, &$pObj): void
+    public function getRatingObjectRecordTitle(&$parameters, &$parentObject): void
     {
-        $params['title'] =
-            '#' . $params['row']['uid'] . ': ' . $params['row']['ratetable'] . ' [' . $params['row']['ratefield'] . ']';
+        $parameters['title'] =
+            '#' . $parameters['row']['uid'] . ': ' . $parameters['row']['ratetable'] . ' [' . $parameters['row']['ratefield'] . ']';
     }
 
     /**
      * Returns the record title for the step configuration in BE
      * Note that values of $params are modified by reference
      *
-     * @param $params
-     * @param $pObj
+     * @param array $parameters
+     * @param object $parentObject
      */
-    public function getStepconfRecordTitle(&$params, &$pObj): void
+    public function getStepconfRecordTitle(&$parameters, &$parentObject): void
     {
-        $params['title'] = '#' . $params['row']['uid'] . ': Steporder [' . $params['row']['steporder'] . ']';
+        $parameters['title'] = '#' . $parameters['row']['uid'] . ': Steporder [' . $parameters['row']['steporder'] . ']';
     }
 
     /**
      * Returns the record title for the step configuration name in BE
      * Note that values of $params are modified by reference
      *
-     * @param $params
-     * @param $pObj
+     * @param array $parameters
+     * @param object $parentObject
      * @throws \TYPO3\CMS\Core\Exception\SiteNotFoundException
      * @throws \Thucke\ThRating\Exception\LanguageNotFoundException
      * @throws \TYPO3\CMS\Extbase\Object\Exception
      */
-    public function getStepnameRecordTitle(&$params, &$pObj): void
+    public function getStepnameRecordTitle(&$parameters, &$parentObject): void
     {
         //look into repository to find clear text object attributes
         $stepnameRepository = $this->objectManager->get(StepnameRepository::class);
         $stepnameRepository->clearQuerySettings(); //disable syslanguage and enableFields
-        $stepnameObject = $stepnameRepository->findStrictByUid((int)($params['row']['uid']));
-        /** @var int $stepnameLang */
-        /** @var string $sysLang */
+        $stepnameObject = $stepnameRepository->findStrictByUid((int)($parameters['row']['uid']));
         $syslang = '';
         if (is_object($stepnameObject)) {
             /** @var \Thucke\ThRating\Domain\Model\Stepname $stepnameObject */
-            $stepnameLang = $stepnameObject->getLanguageUid();
+            $stepnameLang = $stepnameObject->getSysLanguageUid();
             $syslang = $this->objectManager
                 ->get(ExtensionHelperService::class)
                 ->getStaticLanguageById($stepnameObject->getPid(), $stepnameLang)
                 ->getTitle();
         }
         $stepconfRepository = $this->objectManager->get(StepconfRepository::class);
-        $stepconfObject = $stepconfRepository->findByUid((int)($params['row']['stepconf']));
+        $stepconfObject = $stepconfRepository->findByUid((int)($parameters['row']['stepconf']));
         $ratetable = LocalizationUtility::translate('tca.BE.new', 'ThRating');
         $ratefield = LocalizationUtility::translate('tca.BE.new', 'ThRating');
         $steporder = LocalizationUtility::translate('tca.BE.new', 'ThRating');
         if ($stepconfObject instanceof Stepconf) {
             $ratingObject = $stepconfObject->getRatingobject();
-            if ($ratingObject instanceof LazyLoadingProxy) {
-                $ratingObject = $ratingObject->_loadRealInstance();
-            }
             if ($ratingObject instanceof Ratingobject) {
                 $ratetable = $ratingObject->getRatetable();
                 $ratefield = $ratingObject->getRatefield();
@@ -125,7 +119,7 @@ class Tca
             }
         }
         //$syslang = $params['row']['uid'];
-        $params['title'] = '#' . $params['row']['uid'] . ': ' . $ratetable . '[' . $ratefield .
+        $parameters['title'] = '#' . $parameters['row']['uid'] . ': ' . $ratetable . '[' . $ratefield .
             ']/Step ' . $steporder . '/' . $syslang;
     }
 
@@ -133,24 +127,24 @@ class Tca
      * Returns the record title for the rating in BE
      * Note that values of $params are modified by reference
      *
-     * @param $params
-     * @param $pObj
+     * @param array $parameters
+     * @param object $parentObject
      */
-    public function getRatingRecordTitle(&$params, &$pObj): void
+    public function getRatingRecordTitle(&$parameters, &$parentObject): void
     {
-        $params['title'] = '#' . $params['row']['uid'] . ': RowUid [' . $params['row']['ratedobjectuid'] . ']';
+        $parameters['title'] = '#' . $parameters['row']['uid'] . ': RowUid [' . $parameters['row']['ratedobjectuid'] . ']';
     }
 
     /**
      * Returns the record title for the rating in BE
      * Note that values of $params are modified by reference
      *
-     * @param $params
-     * @param $pObj
+     * @param array $parameters
+     * @param object $parentObject
      */
-    public function getVoteRecordTitle(&$params, &$pObj): void
+    public function getVoteRecordTitle(&$parameters, &$parentObject): void
     {
-        $params['title'] = 'Voteuser Uid [' . $params['row']['voter'] . ']';
+        $parameters['title'] = 'Voteuser Uid [' . $parameters['row']['voter'] . ']';
     }
 
     /**

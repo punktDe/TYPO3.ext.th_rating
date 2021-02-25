@@ -9,7 +9,6 @@
 
 namespace Thucke\ThRating\Service;
 
-use phpDocumentor\Reflection\Types\Boolean;
 use Thucke\ThRating\Exception\FeUserStoragePageException;
 use Thucke\ThRating\Exception\InvalidStoragePageException;
 use TYPO3\CMS\Core\Log\Logger;
@@ -38,7 +37,7 @@ class ExtensionConfigurationService extends AbstractExtensionService
     /**
      * Calling extension query settings
      *
-     * @var QuerySettingsInterface
+     * @var \TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface
      */
     protected $originalTypo3QuerySettings;
 
@@ -51,6 +50,12 @@ class ExtensionConfigurationService extends AbstractExtensionService
      * @var \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface
      */
     protected $configurationManager;
+
+    /**
+     * @var QuerySettingsInterface
+     */
+    private $extDefaultQuerySettings;
+
     /**
      * @param \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager
      */
@@ -148,7 +153,7 @@ class ExtensionConfigurationService extends AbstractExtensionService
     /**
      * @return bool
      */
-    protected function getCookieProtection(): Boolean
+    protected function getCookieProtection(): bool
     {
         $this->cookieLifetime = abs((int)$this->thRatingConfiguration['settings']['cookieLifetime']);
         $this->logger->log(

@@ -120,10 +120,12 @@ class Ratingobject extends AbstractEntity
     {
         //Initialize rating storage if ratingobject is new
         if (!is_object($this->ratings)) {
+            /* @phpstan-ignore-next-line */
             $this->ratings = new ObjectStorage();
         }
         //Initialize stepconf storage if ratingobject is new
         if (!is_object($this->stepconfs)) {
+            /* @phpstan-ignore-next-line */
             $this->stepconfs = new ObjectStorage();
         }
     }
@@ -196,6 +198,7 @@ class Ratingobject extends AbstractEntity
      */
     public function removeAllRatings(): void
     {
+        /* @phpstan-ignore-next-line */
         $this->ratings = new ObjectStorage();
     }
 
@@ -219,7 +222,6 @@ class Ratingobject extends AbstractEntity
      * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Thucke\ThRating\Domain\Model\Stepconf> $stepconfs
      *        The step configurations for this ratingobject
      */
-    /** @noinspection PhpUnused */
     public function setStepconfs(ObjectStorage $stepconfs)
     {
         $this->stepconfs = $stepconfs;

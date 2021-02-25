@@ -296,7 +296,7 @@ class VoteController extends ActionController
             $frameworkConfiguration['ratings']
         )
         ;
-        $this->setCookieProtection($frameworkConfiguration);
+        $this->setCookieProtection();
     }
 
     /**
@@ -406,6 +406,10 @@ class VoteController extends ActionController
         $this->logger->log(LogLevel::DEBUG, 'Entry createAction', ['errorCode' => 1404934047]);
         if ($this->accessControlService->isLoggedIn($vote->getVoter()) || $vote->isAnonymous()) {
             $this->logger->log(LogLevel::DEBUG, 'Start processing', ['errorCode' => 1404934054]);
+
+            /** @var \Thucke\ThRating\Domain\Model\Vote $matchVote */
+            $matchVote = null;
+
             //if not anonymous check if vote is already done
             if (!$vote->isAnonymous()) {
                 $this->logger->log(
@@ -413,7 +417,6 @@ class VoteController extends ActionController
                     'FE user is logged in - looking for existing vote',
                     ['errorCode' => 1404933999]
                 );
-                /** @var \Thucke\ThRating\Domain\Model\Vote $matchVote */
                 $matchVote = $this->voteRepository->findMatchingRatingAndVoter($vote->getRating(), $vote->getVoter());
             }
             //add new or anonymous vote
@@ -542,9 +545,9 @@ class VoteController extends ActionController
         $newArguments = ['signalSlotHandlerContent' => $this->signalSlotHandlerContent] + $newArguments;
 
         $this->logger->log(LogLevel::DEBUG, 'Exit createAction - forwarding request', [
-                'action' => $referrer['@action'],
-                'controller' => $referrer['@controller'],
-                'extension' => $referrer['@extension'],
+                'action' => $referrer['@action'], /** @phpstan-ignore-line */
+                'controller' => $referrer['@controller'], /** @phpstan-ignore-line */
+                'extension' => $referrer['@extension'], /** @phpstan-ignore-line */
                 'arguments' => $newArguments
             ]);
         $this->controllerContext->getFlashMessageQueue()->clear();
@@ -577,8 +580,9 @@ class VoteController extends ActionController
             $this->logger->log(LogLevel::INFO, 'New rating is not possible; forwarding to showAction');
         }
         $this->fillSummaryView();
-        ($this->request->getFormat() === 'json') &&
-        $this->view->assign('flashMessages', $this->view->getFlashMessages());
+        if ($this->view instanceof JsonView) {
+            $this->view->assign('flashMessages', $this->view->getFlashMessages());
+        }
         $this->logger->log(LogLevel::DEBUG, 'Exit newAction');
     }
 
@@ -732,10 +736,12 @@ class VoteController extends ActionController
             );
         }
         $this->fillSummaryView();
-        ($this->request->getFormat() === 'json') && $this->view->assign(
-            'flashMessages',
-            $this->view->getFlashMessages()
-        );
+        if ($this->view instanceof JsonView) {
+            $this->view->assign(
+                'flashMessages',
+                $this->view->getFlashMessages()
+            );
+        }
         $this->logger->log(LogLevel::DEBUG, 'Exit graphicActionHelper');
     }
 
@@ -938,13 +944,11 @@ class VoteController extends ActionController
         }
         $this->logger->log(LogLevel::INFO, 'Final extension configuration', ['settings' => $this->settings]);
 
-        if ($this->view) {
-            //distinguish between bar and no-bar rating
-            $this->view->assign('barimage', 'noratingbar');
-            if ($ratingConfiguration['barimage']) {
-                $this->view->assign('barimage', 'ratingbar');
-                $this->logger->log(LogLevel::DEBUG, 'Set ratingbar config');
-            }
+        //distinguish between bar and no-bar rating
+        $this->view->assign('barimage', 'noratingbar');
+        if ($ratingConfiguration['barimage']) {
+            $this->view->assign('barimage', 'ratingbar');
+            $this->logger->log(LogLevel::DEBUG, 'Set ratingbar config');
         }
 
         //set tilt or normal rating direction
@@ -959,7 +963,7 @@ class VoteController extends ActionController
         $frameworkConfiguration['settings'] = $this->settings;
 
         $this->configurationManager->setConfiguration($frameworkConfiguration);
-        $this->setCookieProtection($frameworkConfiguration);
+        $this->setCookieProtection();
 
         $this->logger->log(LogLevel::DEBUG, 'Exit initSettings');
     }
@@ -1214,30 +1218,35 @@ class VoteController extends ActionController
     protected function getLockedfieldnames($table)
     {
         $TCA = &$GLOBALS['TCA'][$table]['ctrl']; // Set private TCA var
+
+        /** @var array $lockedFields */
         $lockedFields = GeneralUtility::intExplode(',', $TCA['label_alt'], true);
-        $lockedFields[] .= 'pid';
-        $lockedFields[] .= 'uid';
-        $lockedFields[] .= 'pages';
-        $lockedFields[] .= 'pages_language_overlay';
-        $lockedFields[] .= $TCA['label'];
-        $lockedFields[] .= $TCA['tstamp'];
-        $lockedFields[] .= $TCA['crdate'];
-        $lockedFields[] .= $TCA['cruser_id'];
-        $lockedFields[] .= $TCA['delete'];
-        $lockedFields[] .= $TCA['enablecolumns']['disabled'];
-        $lockedFields[] .= $TCA['enablecolumns']['starttime'];
-        $lockedFields[] .= $TCA['enablecolumns']['endtime'];
-        $lockedFields[] .= $TCA['enablecolumns']['fe_group'];
-        $lockedFields[] .= $TCA['selicon_field'];
-        $lockedFields[] .= $TCA['sortby'];
-        $lockedFields[] .= $TCA['editlock'];
-        $lockedFields[] .= $TCA['origUid'];
-        $lockedFields[] .= $TCA['fe_cruser_id'];
-        $lockedFields[] .= $TCA['fe_crgroup_id'];
-        $lockedFields[] .= $TCA['fe_admin_lock'];
-        $lockedFields[] .= $TCA['languageField'];
-        $lockedFields[] .= $TCA['transOrigPointerField'];
-        $lockedFields[] .= $TCA['transOrigDiffSourceField'];
+        array_push(
+            $lockedFields,
+            'pid',
+            'uid',
+            'pages',
+            'pages_language_overlay',
+            $TCA['label'],
+            $TCA['tstamp'],
+            $TCA['crdate'],
+            $TCA['cruser_id'],
+            $TCA['delete'],
+            $TCA['enablecolumns']['disabled'],
+            $TCA['enablecolumns']['starttime'],
+            $TCA['enablecolumns']['endtime'],
+            $TCA['enablecolumns']['fe_group'],
+            $TCA['selicon_field'],
+            $TCA['sortby'],
+            $TCA['editlock'],
+            $TCA['origUid'],
+            $TCA['fe_cruser_id'],
+            $TCA['fe_crgroup_id'],
+            $TCA['fe_admin_lock'],
+            $TCA['languageField'],
+            $TCA['transOrigPointerField'],
+            $TCA['transOrigDiffSourceField']
+        );
 
         return $lockedFields;
     }

@@ -53,14 +53,6 @@ class Stepname extends AbstractEntity
     protected $languageUid;
 
     /**
-     * _languageUid will be mapped to column sys_language_uid
-     * @deprecated will be removed in when support for TYPO3 v9 is dropped
-     * @Extbase\Validate("NotEmpty")
-     * @var int
-     */
-    protected $_languageUid;
-
-    /**
      * Sets the stepconf this rating is part of
      *
      * @param \Thucke\ThRating\Domain\Model\Stepconf $stepconf The Rating
@@ -97,7 +89,6 @@ class Stepname extends AbstractEntity
      *
      * @return string Stepconfig name
      */
-    /** @noinspection PhpUnused */
     public function getStepname(): string
     {
         $value = $this->stepname;
@@ -122,7 +113,7 @@ class Stepname extends AbstractEntity
     }
 
     /**
-     * @param $l18nParent
+     * @param int $l18nParent
      */
     public function setL18nParent($l18nParent): void
     {
@@ -130,38 +121,23 @@ class Stepname extends AbstractEntity
     }
 
     /**
-     * @deprecated will be removed in when support for TYPO3 v9 is dropped
-     * @param int $languageUid
-     */
-    public function set_languageUid($languageUid): void
-    {
-        $this->_languageUid = $languageUid;
-    }
-
-    /**
-     * @deprecated will be removed in when support for TYPO3 v9 is dropped
+     * Get sys language
+     *
      * @return int
      */
-    public function get_languageUid()
+    public function getSysLanguageUid(): int
     {
         return $this->_languageUid;
     }
 
     /**
-     * @param int $languageUid
+     * Set sys language
+     *
+     * @param int $sysLanguageUid language uid
      */
-    public function setLanguageUid($languageUid): void
+    public function setSysLanguageUid($sysLanguageUid): void
     {
-        $this->languageUid = $languageUid;
-        $this->set_languageUid($languageUid);
-    }
-
-    /**
-     * @return int
-     */
-    public function getLanguageUid()
-    {
-        return $this->languageUid ?? $this->_languageUid;
+        $this->_languageUid = $sysLanguageUid;
     }
 
     /**

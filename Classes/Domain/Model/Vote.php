@@ -189,16 +189,10 @@ class Vote extends AbstractEntity
      *
      * @return bool
      */
-    public function isAnonymous()
+    public function isAnonymous(): bool
     {
-        if ($this->getVoter() instanceof Voter) {
-            $retVal = $this->getVoter()->getUid() === (int)$this->settings['mapAnonymous'] &&
-                !empty($this->settings['mapAnonymous']);
-        } else {
-            $retVal = false;
-        }
-
-        return $retVal;
+        return $this->getVoter()->getUid() === (int)$this->settings['mapAnonymous'] &&
+            !empty($this->settings['mapAnonymous']);
     }
 
     /**
@@ -219,7 +213,7 @@ class Vote extends AbstractEntity
      *
      * @return string
      */
-    public function __toString()
+    public function __toString(): string
     {
         return (string)$this->getVote();
     }

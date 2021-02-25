@@ -12,7 +12,6 @@ namespace Thucke\ThRating\Service;
 
 use Thucke\ThRating\Domain\Model\Voter;
 use Thucke\ThRating\Exception\FeUserNotFoundException;
-use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Extbase\Domain\Repository\FrontendUserRepository;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 
@@ -72,9 +71,6 @@ class AccessControlService extends AbstractExtensionService
      */
     public function isLoggedIn(\TYPO3\CMS\Extbase\Domain\Model\FrontendUser $person = null): bool
     {
-        if ($person instanceof \TYPO3\CMS\Extbase\Persistence\Generic\LazyObjectStorage) {
-            $person->current();
-        }
         if (is_object($person)) {
             if ($person->getUid() &&
                     ($person->getUid() === $this->getFrontendUserUid())) {
@@ -99,7 +95,6 @@ class AccessControlService extends AbstractExtensionService
      */
     public function hasLoggedInFrontendUser(): bool
     {
-        /** @var Context $context */
         return $this->context->getPropertyFromAspect('frontend.user', 'isLoggedIn');
     }
 

@@ -11,7 +11,6 @@ declare(strict_types = 1);
 namespace Thucke\ThRating\Service;
 
 use TYPO3\CMS\Core\SingletonInterface;
-use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
 
 /**
  * An access control service
@@ -26,9 +25,9 @@ class AbstractExtensionService implements SingletonInterface
      */
     protected $objectManager;
     /**
-     * @param \TYPO3\CMS\Extbase\Object\ObjectManagerInterface
+     * @param \TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager
      */
-    public function injectObjectManager(ObjectManagerInterface $objectManager)
+    public function injectObjectManager(\TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager)
     {
         $this->objectManager = $objectManager;
     }

@@ -10,8 +10,10 @@
 namespace Thucke\ThRating\Domain\Repository;
 
 use InvalidArgumentException;
+use Psr\Http\Message\ServerRequestInterface;
 use Thucke\ThRating\Domain\Model\Stepname;
 use Thucke\ThRating\Service\ExtensionHelperService;
+use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Extbase\Persistence\Exception\InvalidQueryException;
 use TYPO3\CMS\Extbase\Persistence\QueryInterface;
 use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
@@ -31,7 +33,7 @@ class StepnameRepository extends Repository
     protected $syslangUidLiteral;
 
     /**
-     * @var int
+     * @var array
      */
     protected $defaultOrderings;
 
@@ -52,7 +54,7 @@ class StepnameRepository extends Repository
      */
     public function checkStepnameLanguage(Stepname $stepname): bool
     {
-        $stepnameLang = $stepname->getLanguageUid();
+        $stepnameLang = $stepname->getSysLanguageUid();
         if ($stepnameLang > 0) {
             //check if given language exist
 
@@ -85,7 +87,7 @@ class StepnameRepository extends Repository
             $query->logicalAnd(
                 [
                     $query->equals(self::STEPCONF_NAME, $stepname->getStepconf()),
-                    $query->equals($this->syslangUidLiteral, $stepname->getLanguageUid()),
+                    $query->equals($this->syslangUidLiteral, $stepname->getSysLanguageUid()),
                 ]
             )
         )->setLimit(1);
@@ -112,7 +114,7 @@ class StepnameRepository extends Repository
      * Finds the given stepname object in the repository
      *
      * @param int $uid
-     * @return \Thucke\ThRating\Domain\Model\Stepname|null The matching object if found, otherwise NULL
+     * @return Stepname|null
      */
     public function findStrictByUid(int $uid): ?Stepname
     {
@@ -127,11 +129,11 @@ class StepnameRepository extends Repository
         )->setLimit(1);
         $queryResult = $query->execute();
 
+        /** @var Stepname $foundRow */
         $foundRow = null;
         if ($queryResult->count() > 0) {
             $foundRow = $queryResult->getFirst();
         }
-
         return $foundRow;
     }
 
@@ -149,17 +151,11 @@ class StepnameRepository extends Repository
             $query->equals(self::STEPCONF_NAME, $stepname->getStepconf()->getUid())
         );
         $queryResult = $query
-            ->execute(true)
-            ->toArray();  /** instead of setReturnRawQueryResult(true); */
+            ->execute(true);
         $checkConsistency = [];
         if (count($queryResult) > 1) {
             $websiteLanguagesArray = [];
-
-            $allWebsiteLanguages = $this->objectManager
-                ->get(ExtensionHelperService::class)
-                ->getRequest()
-                ->getAttribute('site')
-                ->getAllLanguages();
+            $allWebsiteLanguages = $this->getCurrentSite()->getAllLanguages();
 
             /** @var \TYPO3\CMS\Core\Site\Entity\SiteLanguage $language */
             foreach (array_values($allWebsiteLanguages) as $language) {
@@ -191,7 +187,7 @@ class StepnameRepository extends Repository
      * @return  Stepname|null      The stepname in default language
      * @var Stepname $foundRow
      */
-    public function findDefaultStepname(Stepname $stepname)
+    public function findDefaultStepname(Stepname $stepname): ?Stepname
     {
         $foundRow = $this->objectManager->get(Stepname::class);
 
@@ -216,12 +212,11 @@ class StepnameRepository extends Repository
         \TYPO3\CMS\Extbase\Utility\DebuggerUtility::var_dump($queryParser->convertQueryToDoctrineQueryBuilder($query)->getParameters(), get_class($this).' SQL Parameter');
         */
 
+        /** @var Stepname $foundRow */
+        $foundRow = null;
         if ($queryResult->count() > 0) {
             $foundRow = $queryResult->getFirst();
-        } else {
-            unset($foundRow);
         }
-
         return $foundRow;
     }
 
@@ -247,5 +242,14 @@ class StepnameRepository extends Repository
         $querySettings->setIgnoreEnableFields(true);
         $querySettings->setLanguageOverlayMode(false);
         $this->setDefaultQuerySettings($querySettings);
+    }
+
+    protected function getCurrentSite(): ?Site
+    {
+        if ($GLOBALS['TYPO3_REQUEST'] instanceof ServerRequestInterface
+            && $GLOBALS['TYPO3_REQUEST']->getAttribute('site') instanceof Site) {
+            return $GLOBALS['TYPO3_REQUEST']->getAttribute('site');
+        }
+        return null;
     }
 }
