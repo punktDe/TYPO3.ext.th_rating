@@ -994,6 +994,7 @@ class VoteController extends ActionController
                         'settings' => json_encode($this->settings, PHP_MINOR_VERSION>=3 ? JSON_THROW_ON_ERROR : null, 512),
                         'actionName' => strtolower($this->request->getControllerActionName()),
                         self::AJAX_REFERENCE_ID => $this->ajaxSelections['ajaxRef'],
+                        /** @phpstan-ignore-next-line */
                     ], PHP_MINOR_VERSION>=3 ? JSON_THROW_ON_ERROR : null, 512)
                 );
                 $this->ajaxSelections['json'][$key] = (string)$stepConf;
