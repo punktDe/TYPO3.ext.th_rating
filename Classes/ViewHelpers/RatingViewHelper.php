@@ -127,7 +127,7 @@ class RatingViewHelper extends AbstractViewHelper
         if (TYPO3_MODE === 'BE') {
             static::simulateFrontendEnvironment();
         }
-        $contentObjectRenderer->start(null);
+        $contentObjectRenderer->start(array());
 
         $pathSegments = GeneralUtility::trimExplode('.', $typoscriptObjectPath);
         $lastSegment = array_pop($pathSegments);

@@ -24,7 +24,7 @@ class LocalizationUtility extends \TYPO3\CMS\Extbase\Utility\LocalizationUtility
      * @api
      * @todo : If vsprintf gets a malformed string, it returns false! Should we throw an exception there?
      */
-    /** @noinspection PhpUnused */
+    /** This class is not being used at the moment
     public static function getLangArray($extensionName)
     {
         self::initializeLocalization($extensionName);
@@ -48,4 +48,5 @@ class LocalizationUtility extends \TYPO3\CMS\Extbase\Utility\LocalizationUtility
 
         return self::$LOCAL_LANG[$extensionName];
     }
+     */
 }
