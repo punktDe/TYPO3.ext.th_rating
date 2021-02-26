@@ -55,8 +55,12 @@ jobs:
       - name: CGL
         run: composer thucke:cgl
 
-      - name: PHPStan Classes
+      - name: PHPStan Classes with PHP 7.2
         if: matrix.php == '7.2'
+        run: composer thucke:phpstan:72:classes
+
+      - name: PHPStan Classes
+        if: matrix.php > '7.2'
         run: composer thucke:phpstan:classes
 
       - name: Lint PHP

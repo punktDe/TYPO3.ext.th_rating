@@ -87,6 +87,9 @@
         "thucke:phpstan:classes": [
             "phpstan analyze Classes"
         ],
+        "thucke:phpstan:72:classes": [
+            "phpstan analyse --configuration phpstan.72.neon Classes"
+        ],
         "thucke:phpstan:tests": [
             "phpstan analyze Tests"
         ],

@@ -9,7 +9,3 @@ parameters:
         - 'Classes/Utility/LocalizationUtility.php'
         - 'Classes/Domain/Validator/StepconfValidator.php'
     ignoreErrors:
-    -
-        message: "#^Constant JSON_THROW_ON_ERROR not found\\.$#"
-        count: 3
-        path: Classes/Controller/VoteController.php
