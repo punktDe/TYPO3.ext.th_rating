@@ -36,8 +36,8 @@ class VoteRepository extends Repository
     /**
      * Finds the voting by giving the rating and voter objects
      *
-     * @param    Rating $rating   The concerned ratingobject
-     * @param    Voter $voter     The Uid of the rated row
+     * @param    Rating|null $rating   The concerned ratingobject
+     * @param    Voter|null $voter     The Uid of the rated row
      * @return   Vote|object     The voting
      */
     public function findMatchingRatingAndVoter($rating = null, $voter = null)

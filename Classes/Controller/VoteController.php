@@ -317,16 +317,20 @@ class VoteController extends ActionController
         $ratingobject = $this->objectManager
             ->get(ExtensionManagementService::class)
             ->makeRatable('TestTable', 'TestField', 4);
+
+        /** @var \Thucke\ThRating\Domain\Model\Stepconf $stepconf */
+        $stepconf = $ratingobject->getStepconfs()->current();
+
         //add descriptions in default language to each stepconf
         $this->objectManager->get(ExtensionManagementService::class)->setStepname(
-            $ratingobject->getStepconfs()->current(),
+            $stepconf,
             'Automatic generated entry ',
-            0,
+            null,
             true
         );
         //add descriptions in german language to each stepconf
         $this->objectManager->get(ExtensionManagementService::class)->setStepname(
-            $ratingobject->getStepconfs()->current(),
+            $stepconf,
             'Automatischer Eintrag ',
             'de',
             true
@@ -432,14 +436,16 @@ class VoteController extends ActionController
                     );
                     $anonymousRating['ratingtime'] = time();
                     $anonymousRating['voteUid'] = $vote->getUid();
-                    $lifeTime = (new \DateTime('NOW'))
-                        ->add(\DateInterval::createFromDateString($this->cookieLifetime . ' days'));
-                    //set cookie to prevent multiple anonymous ratings
-                    $this->cookieService->setVoteCookie(
-                        $this->prefixId . '_AnonymousRating_' . $vote->getRating()->getUid(),
-                        json_encode($anonymousRating),
-                        $lifeTime
-                    );
+                    //TODO: switch to session store according to https://t3terminal.com/blog/de/typo3-cookie/
+                    if (!empty($this->cookieLifetime)) {
+                        $expireTime = (new \DateTime('NOW'))->add(\DateInterval::createFromDateString($this->cookieLifetime . ' days'))->getTimestamp();
+                        //set cookie to prevent multiple anonymous ratings
+                        $this->cookieService->setVoteCookie(
+                            $this->prefixId . '_AnonymousRating_' . $vote->getRating()->getUid(),
+                            json_encode($anonymousRating),
+                            $expireTime
+                        );
+                    }
                 }
                 $setResult = $this->setForeignRatingValues($vote->getRating());
                 if (!$setResult) {
@@ -1094,7 +1100,7 @@ class VoteController extends ActionController
      */
     protected function getRandomId()
     {
-        mt_srand((float)microtime() * 1000000);
+        mt_srand((int)microtime() * 1000000);
         return random_int(1000000, 9999999);
     }
 

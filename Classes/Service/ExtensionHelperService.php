@@ -367,7 +367,7 @@ class ExtensionHelperService extends AbstractExtensionService
             //set FEUser if one is logged on
             $voter = $this->accessControllService->getFrontendVoter($frontendUserUid);
             if ($voter instanceof \Thucke\ThRating\Domain\Model\Voter) {
-                $vote = $this->voteRepository->findMatchingRatingAndVoter($rating->getUid(), $voter->getUid());
+                $vote = $this->voteRepository->findMatchingRatingAndVoter($rating, $voter);
             }
         }
         //voting not found in database or anonymous vote? - create new one

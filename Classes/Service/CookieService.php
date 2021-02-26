@@ -75,11 +75,11 @@ class CookieService extends AbstractExtensionService
      *
      * @param    string $cookieName identifier for the cookie
      * @param    string $cookieValue cookie value
-     * @param    int $cookieExpire expire time for the cookie
+     * @param    int $cookieExpire expire time for the cookie (UNIX timestamp)
      *
      * @throws Exception
      */
-    public function setVoteCookie($cookieName, $cookieValue, $cookieExpire = 0)
+    public function setVoteCookie($cookieName, $cookieValue, $cookieExpire = 0): void
     {
         // do not set session cookies
         if (!empty($cookieExpire)) {
@@ -88,8 +88,6 @@ class CookieService extends AbstractExtensionService
             $cookieDomain = $this->getCookieDomain();
             // If no cookie domain is set, use the base path:
             $cookiePath = ($cookieDomain ? '/' : GeneralUtility::getIndpEnv('TYPO3_SITE_PATH'));
-            // If the cookie lifetime is set, use it:
-            $cookieExpire = (int)$GLOBALS['EXEC_TIME'] + $cookieExpire;
             // Use the secure option when the current request is served by a secure connection:
             $cookieSecure = (bool)$settings['cookieSecure'] && GeneralUtility::getIndpEnv('TYPO3_SSL');
             // Deliver cookies only via HTTP and prevent possible XSS by JavaScript:

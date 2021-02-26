@@ -217,15 +217,13 @@ class Stepconf extends AbstractEntity
             if (is_object($defaultLanguageObject)) {
                 //handle localization if an entry for the default language exists
                 $stepname->setL18nParent($defaultLanguageObject->getUid());
-            } else {
-                $stepname->setL18nParent(null);
-                $this->stepname = $stepname;
             }
             $this->stepnameRepository->add($stepname);
             $this->extensionHelperService->persistRepository(StepnameRepository::class, $stepname);
             $stepname->getStepconf()->getStepname();
             $this->extensionHelperService->persistRepository(StepconfRepository::class, $this);
             $this->extensionHelperService->clearDynamicCssFile();
+            $this->stepname = $stepname;
         } else {
             //warning - existing stepname entry for a language will not be overwritten
             $success = false;
