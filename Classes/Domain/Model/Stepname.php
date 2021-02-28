@@ -46,11 +46,9 @@ class Stepname extends AbstractEntity
     protected $l18nParent;
 
     /**
-     * languageUid will be mapped to column sys_language_uid
-     * @Extbase\Validate("NotEmpty")
      * @var int
      */
-    protected $languageUid;
+    protected $sysLanguageUid;
 
     /**
      * Sets the stepconf this rating is part of

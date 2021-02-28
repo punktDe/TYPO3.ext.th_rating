@@ -139,7 +139,7 @@
 				<source>Ratings</source>
 			</trans-unit>
 			<trans-unit id="tca.model.ratingobject.stepconfs" xml:space="preserve">
-				<source>Retingstep configuration</source>
+				<source>Ratingstep configuration</source>
 			</trans-unit>
 			<trans-unit id="tca.model.stepconf.ratingobject" xml:space="preserve">
 				<source>Rating Object</source>

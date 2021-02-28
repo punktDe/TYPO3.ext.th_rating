@@ -21,6 +21,8 @@ class DeprecationHelperUtility
 {
 
     /**
+     * Checks if current TYPO3 version is lower than the given one
+     *
      * @param string $testVersion
      * @return bool|int
      */

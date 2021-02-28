@@ -54,7 +54,7 @@ class LoggingService
      * @param string $name the class name which this logger is for
      * @return  \TYPO3\CMS\Core\Log\Logger
      */
-    public function getLogger($name): Logger
+    public function getLogger(string $name): Logger
     {
         /** @var array $writerConfiguration */
         $writerConfiguration = $GLOBALS['TYPO3_CONF_VARS']['LOG']['Thucke']['ThRating']['writerConfiguration'];
@@ -63,20 +63,15 @@ class LoggingService
             'thRating',
             'pi1'
         );
-        foreach ($settings['logging'] as $logLevel => $logConfig) {
-
-            /** @var string $levelUppercase */
-            $levelUppercase = strtoupper($logLevel);
-
-            if (!empty($logConfig['file'])) {
-                $writerConfiguration[
-                    constant('\TYPO3\CMS\Core\Log\LogLevel::' . $levelUppercase)
-                ][FileWriter::class] = ['logFile' => $logConfig['file']];
-            }
-            if (!empty($logConfig['database'])) {
-                $writerConfiguration[
-                    constant('\TYPO3\CMS\Core\Log\LogLevel::' . $levelUppercase)
-                ][DatabaseWriter::class] =['table' => $logConfig['table']];
+        if (is_array($settings['logging'])) {
+            foreach ($settings['logging'] as $logLevel => $logConfig) {
+                $levelUppercase = strtoupper($logLevel);
+                if (!empty($logConfig['file'])) {
+                    $writerConfiguration[constant('\TYPO3\CMS\Core\Log\LogLevel::' . $levelUppercase)][FileWriter::class] = ['logFile' => $logConfig['file']];
+                }
+                if (!empty($logConfig['database'])) {
+                    $writerConfiguration[constant('\TYPO3\CMS\Core\Log\LogLevel::' . $levelUppercase)][DatabaseWriter::class] = ['table' => $logConfig['table']];
+                }
             }
         }
         if (!empty($writerConfiguration)) {

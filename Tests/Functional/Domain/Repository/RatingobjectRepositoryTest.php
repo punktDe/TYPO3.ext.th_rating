@@ -55,6 +55,8 @@ class RatingobjectRepositoryTest extends FunctionalTestCase
 
     /**
      * @throws Exception
+     * @throws \TYPO3\CMS\Extbase\Object\Exception
+     * @throws \Doctrine\DBAL\DBALException
      */
     protected function setUp(): void
     {

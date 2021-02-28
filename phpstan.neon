@@ -8,4 +8,3 @@ parameters:
     excludes_analyse:
         - 'Classes/Utility/LocalizationUtility.php'
         - 'Classes/Domain/Validator/StepconfValidator.php'
-    ignoreErrors:

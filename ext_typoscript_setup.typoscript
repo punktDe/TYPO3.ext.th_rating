@@ -8,15 +8,6 @@
 # Removed as of TYPO3 10.1
 # Replaced by \Thucke\ThRating\Configuration\Extbase\Persistence\Classes.php
 #########################################################################
-persistence {
-  storagePid = {$plugin.tx_thrating.settings.pluginStoragePid}
-  classes {
-    Thucke\ThRating\Domain\Model\Ratingobject {
-      newRecordStoragePid < plugin.tx_thrating.storagePid
-    }
-  }
-}
-
 config.tx_extbase.legacy.enableLegacyFlashMessageHandling = 0
 config.tx_extbase.persistence.classes {
 	TYPO3\CMS\Extbase\Domain\Model\FrontendUser {

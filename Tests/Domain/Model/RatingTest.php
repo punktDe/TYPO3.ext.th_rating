@@ -43,7 +43,7 @@ use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 ***************************************************************/
 
 /**
- * Testcases for Ratingobject
+ * Testcases for Rating
  *
  * @version 	$Id:$
  * @copyright 	Copyright belongs to the respective authors
