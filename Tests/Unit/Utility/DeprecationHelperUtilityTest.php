@@ -10,28 +10,12 @@
 /** @noinspection PhpUnnecessaryFullyQualifiedNameInspection */
 namespace Thucke\ThRating\Tests\Unit\Utility;
 
-/*
- * This file is part of the TYPO3 extension Rating AX <EXT:th_rating>.
- *
- * It is free software; you can redistribute it and/or modify it under
- * the terms of the GNU General Public License, either version 2
- * of the License, or any later version.
- *
- * For the full copyright and license information, please read
- * LICENSE file that was distributed with this source code.
- */
 use Thucke\ThRating\Utility\DeprecationHelperUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class DeprecationHelperUtilityTest extends UnitTestCase
 {
     protected $testExtensionsToLoad = ['typo3conf/ext/th_rating'];
-    protected $coreExtensionsToLoad = ['extbase', 'fluid'];
-
-    public function tearDown(): void
-    {
-        parent::tearDown();
-    }
 
     /**
      * @test

@@ -85,7 +85,7 @@
             "php-cs-fixer --using-cache=yes --diff -v fix"
         ],
         "thucke:phpstan:classes": [
-            "phpstan analyze Classes"
+            "phpstan analyse Classes"
         ],
         "thucke:phpstan:72:classes": [
             "phpstan analyse --configuration phpstan.72.neon Classes"

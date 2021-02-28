@@ -275,7 +275,6 @@ class VoteController extends ActionController
             /** @noinspection PhpElementIsNotAvailableInCurrentPhpVersionInspection */
             $this->settings = json_decode($this->request->getArgument('settings'), true, 512, PHP_MINOR_VERSION>=3 ? JSON_THROW_ON_ERROR : null);
             $frameworkConfiguration['settings'] = $this->settings;
-            $this->initSettings();
             $this->logger->log(
                 LogLevel::INFO,
                 'AJAX request detected - set new frameworkConfiguration',

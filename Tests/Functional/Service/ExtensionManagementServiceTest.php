@@ -15,12 +15,14 @@ use Thucke\ThRating\Service\ExtensionManagementService;
 use Thucke\ThRating\Service\LoggingService;
 use TYPO3\CMS\Core\Log\Logger;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
+use Prophecy\PhpUnit\ProphecyTrait;
 
 /**
  * Test case.
  */
 class ExtensionManagementServiceTest extends FunctionalTestCase
 {
+
     /**
      * @var string[]
      */
@@ -35,12 +37,12 @@ class ExtensionManagementServiceTest extends FunctionalTestCase
     protected $coreExtensionsToLoad = ['extbase', 'fluid'];
 
     /**
-     * @var \Thucke\ThRating\Service\ExtensionHelperService|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface
+     * @var \Thucke\ThRating\Service\ExtensionHelperService
      */
     protected $extensionHelperServiceMock;
 
     /**
-     * @var \Thucke\ThRating\Service\LoggingService|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface
+     * @var \Thucke\ThRating\Service\LoggingService
      */
     protected $loggingServiceMock;
 
@@ -85,12 +87,12 @@ class ExtensionManagementServiceTest extends FunctionalTestCase
     {
         $loggerMock = $this->getMockBuilder(Logger::class)
             ->setConstructorArgs(['MockLogger'])
-            ->setMethods(['log'])
+            ->onlyMethods(['log'])
             ->getMock();
 
         $this->loggingServiceMock = $this->getMockBuilder(LoggingService::class)
             ->disableOriginalConstructor()
-            ->setMethods(['getLogger'])
+            ->onlyMethods(['getLogger'])
             ->getMock();
         $this->loggingServiceMock
             ->method('getLogger')

@@ -17,7 +17,7 @@ return [
     \Thucke\ThRating\Domain\Model\Stepname::class => [
         'tableName' => 'tx_thrating_domain_model_stepname',
         'properties' => [
-            'languageUid' => [
+            'sysLanguageUid' => [
                 'fieldName' => 'sys_language_uid'
             ]
         ]
