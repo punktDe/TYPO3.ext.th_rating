@@ -137,7 +137,7 @@
 		"phpspec/prophecy-phpunit": "*",
 		"saschaegerer/phpstan-typo3": "^0.13.1",
 		"phpstan/extension-installer": "^1.1",
-        "phpunit/phpunit": "^7 ^9"
+        "phpunit/phpunit": "^7 || ^9"
     },
 	"replace" : {
 		"thucke/th-rating" : "self.version"
