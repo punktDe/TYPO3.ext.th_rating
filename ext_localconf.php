@@ -16,6 +16,12 @@ if (!defined('TYPO3_MODE')) {
  */
 $GLOBALS['TYPO3_CONF_VARS']['SYS']['fluid']['namespaces']['thr'][] = 'Thucke\\ThRating\\ViewHelpers';
 
+/***************
+ * Register "thr" as global fluid namespace
+ */
+$GLOBALS['TYPO3_CONF_VARS']['SYS']['fluid']['namespaces']['thr'][] = 'Thucke\\ThRating\\ViewHelpers';
+
+
 /**
  * Configure the Plugin to call the
  * right combination of Controller and Action according to

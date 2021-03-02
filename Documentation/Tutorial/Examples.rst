@@ -26,7 +26,12 @@ HTML-Template (fileadmin/templates/fullSize.html)
 .. code-block:: html
    :linenos:
 
-   {namespace thr=Thucke\ThRating\ViewHelpers}
+   <?xml version="1.0" encoding="UTF-8" ?>
+   <html xmlns="http://www.w3.org/1999/xhtml" lang="en"
+      xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+      xmlns:thr="Thucke\ThRating\ViewHelpers"
+      data-namespace-typo3-fluid="true">
+
    <div class="exampleBlock">
       <div class="example">
          <h2><f:cObject typoscriptObjectPath="example.7.headerText" /></h2>

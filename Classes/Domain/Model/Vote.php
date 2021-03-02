@@ -146,9 +146,9 @@ class Vote extends AbstractEntity
     /**
      * Returns the frontenduser of this vote
      *
-     * @return \Thucke\ThRating\Domain\Model\Voter
+     * @return \Thucke\ThRating\Domain\Model\Voter|null
      */
-    public function getVoter(): Voter
+    public function getVoter(): ?Voter
     {
         return $this->voter;
     }
