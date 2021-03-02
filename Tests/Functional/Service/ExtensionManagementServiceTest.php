@@ -87,12 +87,12 @@ class ExtensionManagementServiceTest extends FunctionalTestCase
     {
         $loggerMock = $this->getMockBuilder(Logger::class)
             ->setConstructorArgs(['MockLogger'])
-            ->onlyMethods(['log'])
+            ->setMethods(['log'])
             ->getMock();
 
         $this->loggingServiceMock = $this->getMockBuilder(LoggingService::class)
             ->disableOriginalConstructor()
-            ->onlyMethods(['getLogger'])
+            ->setMethods(['getLogger'])
             ->getMock();
         $this->loggingServiceMock
             ->method('getLogger')
