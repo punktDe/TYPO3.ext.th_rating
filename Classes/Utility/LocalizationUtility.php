@@ -1,18 +1,13 @@
 <?php
-namespace Thucke\ThRating\Utility;
 
 /*
- * This file is part of the TYPO3 CMS project.
- *
- * It is free software; you can redistribute it and/or modify it under
- * the terms of the GNU General Public License, either version 2
- * of the License, or any later version.
+ * This file is part of the package thucke/th-rating.
  *
  * For the full copyright and license information, please read the
- * LICENSE.txt file that was distributed with this source code.
- *
- * The TYPO3 project - inspiring people to share!
+ * LICENSE file that was distributed with this source code.
  */
+
+namespace Thucke\ThRating\Utility;
 
 /**
  * Localization helper which should be used to fetch localized labels.
@@ -24,15 +19,12 @@ class LocalizationUtility extends \TYPO3\CMS\Extbase\Utility\LocalizationUtility
     /**
      * Returns the localized label of the LOCAL_LANG key, $key.
      *
-     * @deprecated  is this method really useful?
      * @param string $extensionName The name of the extension
      * @return string|null the value from LOCAL_LANG or NULL if no translation was found
      * @api
      * @todo : If vsprintf gets a malformed string, it returns false! Should we throw an exception there?
      */
-    /** @noinspection PhpUnused
-     * @noinspection MissingIssetImplementationInspection
-     */
+    /** This class is not being used at the moment
     public static function getLangArray($extensionName)
     {
         self::initializeLocalization($extensionName);
@@ -56,4 +48,5 @@ class LocalizationUtility extends \TYPO3\CMS\Extbase\Utility\LocalizationUtility
 
         return self::$LOCAL_LANG[$extensionName];
     }
+     */
 }

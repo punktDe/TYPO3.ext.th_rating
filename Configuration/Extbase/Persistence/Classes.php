@@ -1,5 +1,13 @@
 <?php
 declare(strict_types = 1);
+
+/*
+ * This file is part of the package thucke/th-rating.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE file that was distributed with this source code.
+ */
+
 namespace Thucke\ThRating\Configuration\Extbase\Persistence;
 
 return [
@@ -9,7 +17,7 @@ return [
     \Thucke\ThRating\Domain\Model\Stepname::class => [
         'tableName' => 'tx_thrating_domain_model_stepname',
         'properties' => [
-            'languageUid' => [
+            'sysLanguageUid' => [
                 'fieldName' => 'sys_language_uid'
             ]
         ]

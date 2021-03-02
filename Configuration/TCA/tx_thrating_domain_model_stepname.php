@@ -1,4 +1,12 @@
 <?php
+
+/*
+ * This file is part of the package thucke/th-rating.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE file that was distributed with this source code.
+ */
+
 $GLOBALS['TCA']['tx_thrating_domain_model_stepname'] = [
     'ctrl' => [
         'title' => 'LLL:EXT:th_rating/Resources/Private/Language/locallang.xlf:tca.model.stepname.title',

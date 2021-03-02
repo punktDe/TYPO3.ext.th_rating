@@ -1,45 +1,30 @@
 <?php
 declare(strict_types = 1);
+
+/*
+ * This file is part of the package thucke/th-rating.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE file that was distributed with this source code.
+ */
+
 namespace Thucke\ThRating\Tests\Functional\Domain\Repository;
 
-/***************************************************************
- *  Copyright notice
- *
- *  (c) 2010 Thomas Hucke <thucke@web.de>
- *  All rights reserved
- *
- *  This script is part of the TYPO3 project. The TYPO3 project is
- *  free software; you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation; either version 2 of the License, or
- *  (at your option) any later version.
- *
- *  The GNU General Public License can be found at
- *  http://www.gnu.org/copyleft/gpl.html.
- *
- *  This script is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *  This copyright notice MUST APPEAR in all copies of the script!
- ***************************************************************/
-
-use Nimut\TestingFramework\Exception\Exception;
-use Nimut\TestingFramework\TestCase\FunctionalTestCase;
 use Thucke\ThRating\Domain\Model\Stepconf;
 use Thucke\ThRating\Domain\Model\Stepname;
-use Thucke\ThRating\Domain\Repository\StepnameRepository;
 use Thucke\ThRating\Domain\Repository\StepconfRepository;
+use Thucke\ThRating\Domain\Repository\StepnameRepository;
+use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
+use TYPO3\TestingFramework\Core\Exception;
+use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 /**
  * Testcases for RatingRepository
  *
  * @version 	$Id:$
- * @author		Thomas Hucke <thucke@web.de>
  * @copyright 	Copyright belongs to the respective authors
  * @license 	http://opensource.org/licenses/gpl-license.php GNU Public License, version 2
  * @scope 		alpha
@@ -79,18 +64,18 @@ class StepnameRepositoryTest extends FunctionalTestCase
     {
         parent::setUp();
 
+        Bootstrap::initializeLanguageObject();
         $extAbsPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('th_rating');
-        $this->importDataSet($extAbsPath.'/Tests/Functional/Fixtures/Database/Stepconf.xml');
-        $this->importDataSet($extAbsPath.'/Tests/Functional/Fixtures/Database/Stepname.xml');
-        $this->importDataSet($extAbsPath.'/Tests/Functional/Fixtures/Database/sys_language.xml');
-        $this->importDataSet($extAbsPath.'/Tests/Functional/Fixtures/Database/pages.xml');
+        $this->importDataSet($extAbsPath . '/Tests/Functional/Fixtures/Database/Stepconf.xml');
+        $this->importDataSet($extAbsPath . '/Tests/Functional/Fixtures/Database/Stepname.xml');
+        $this->importDataSet($extAbsPath . '/Tests/Functional/Fixtures/Database/pages.xml');
 
         $this->setUpFrontendRootPage(
             1,
             [
                 'EXT:fluid_styled_content/Configuration/TypoScript/setup.txt',
-                $extAbsPath.'/Configuration/TypoScript/setup.typoscript',
-                $extAbsPath.'/Tests/Functional/Fixtures/Frontend/Basic.typoscript'
+                $extAbsPath . '/Configuration/TypoScript/setup.typoscript',
+                $extAbsPath . '/Tests/Functional/Fixtures/Frontend/Basic.typoscript'
             ]
         );
 
@@ -121,18 +106,19 @@ class StepnameRepositoryTest extends FunctionalTestCase
     {
         $model = new Stepname();
         $model->setStepconf($this->stepconf);
-        $model->setLanguageUid(1);
+        $model->setSysLanguageUid(1);
         $model->setStepname('stepname eins');
 
         $this->subject->add($model);
         $this->persistenceManager->persistAll();
 
-        $databaseRow = $this->getDatabaseConnection()->selectSingleRow(
-            '*',
+        $connection = $this->getConnectionPool()->getConnectionForTable('tx_thrating_domain_model_stepname');
+        $databaseRow = $connection->select(
+            ['sys_language_uid'],
             'tx_thrating_domain_model_stepname',
-            'uid = ' . $model->getUid()
-        );
-        $this->assertSame($model->getLanguageUid(), $databaseRow['sys_language_uid']);
+            ['uid' => $model->getUid()]
+        )->fetch();
+        $this->assertSame($model->getSysLanguageUid(), $databaseRow['sys_language_uid']);
     }
 
     /**
@@ -150,7 +136,7 @@ class StepnameRepositoryTest extends FunctionalTestCase
     {
         $model = new Stepname();
         $model->setStepconf($this->stepconf);
-        $model->setLanguageUid(0);
+        $model->setSysLanguageUid(0);
 
         $foundRow = $this->subject->findStepnameObject($model);
         //check for right object type
@@ -182,7 +168,7 @@ class StepnameRepositoryTest extends FunctionalTestCase
     {
         $model = new Stepname();
         $model->setStepconf($this->stepconf);
-        $model->setLanguageUid(2);
+        $model->setSysLanguageUid(2);
 
         $foundRow = $this->subject->findStepnameObject($model);
         //check for right object type
@@ -193,19 +179,18 @@ class StepnameRepositoryTest extends FunctionalTestCase
     {
         $existingModelEntry = new Stepname();
         $existingModelEntry->setStepconf($this->stepconf);
-        $existingModelEntry->setLanguageUid(0);
+        $existingModelEntry->setSysLanguageUid(0);
         $this->assertTrue($this->subject->existStepname($existingModelEntry));
 
-        $existingModelEntry->setLanguageUid(2);
+        $existingModelEntry->setSysLanguageUid(2);
         $this->assertFalse($this->subject->existStepname($existingModelEntry));
-
     }
 
     public function testMissingStepname(): void
     {
         $notExistingModelEntry = new Stepname();
         $notExistingModelEntry->setStepconf($this->stepconf);
-        $notExistingModelEntry->setLanguageUid(2);
+        $notExistingModelEntry->setSysLanguageUid(2);
         $this->assertFalse($this->subject->existStepname($notExistingModelEntry));
     }
 }

@@ -1,41 +1,25 @@
 <?php
+
+/*
+ * This file is part of the package thucke/th-rating.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE file that was distributed with this source code.
+ */
+
 namespace Thucke\ThRating\Domain\Model;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Annotation as Extbase;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManager;
 use TYPO3\CMS\Extbase\Configuration\Exception\InvalidConfigurationTypeException;
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
-use TYPO3\CMS\Extbase\Annotation as Extbase;
-
-/***************************************************************
-*  Copyright notice
-*
-*  (c) 2010 Thomas Hucke <thucke@web.de>
-*  All rights reserved
-*
-*  This script is part of the TYPO3 project. The TYPO3 project is
-*  free software; you can redistribute it and/or modify
-*  it under the terms of the GNU General Public License as published by
-*  the Free Software Foundation; either version 2 of the License, or
-*  (at your option) any later version.
-*
-*  The GNU General Public License can be found at
-*  http://www.gnu.org/copyleft/gpl.html.
-*
-*  This script is distributed in the hope that it will be useful,
-*  but WITHOUT ANY WARRANTY; without even the implied warranty of
-*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-*  GNU General Public License for more details.
-*
-*  This copyright notice MUST APPEAR in all copies of the script!
-***************************************************************/
 
 /**
  * Model for rating votes
  *
- * @author  Thomas Hucke <thucke@web.de>
  * @copyright  Copyright belongs to the respective authors
  * @license  http://opensource.org/licenses/gpl-license.php GNU Public License, version 2
  * @entity
@@ -205,16 +189,10 @@ class Vote extends AbstractEntity
      *
      * @return bool
      */
-    public function isAnonymous()
+    public function isAnonymous(): bool
     {
-        if ($this->getVoter() instanceof Voter) {
-            $retVal = $this->getVoter()->getUid() === (int)$this->settings['mapAnonymous'] &&
-                !empty($this->settings['mapAnonymous']);
-        } else {
-            $retVal = false;
-        }
-
-        return $retVal;
+        return $this->getVoter()->getUid() === (int)$this->settings['mapAnonymous'] &&
+            !empty($this->settings['mapAnonymous']);
     }
 
     /**
@@ -235,7 +213,7 @@ class Vote extends AbstractEntity
      *
      * @return string
      */
-    public function __toString()
+    public function __toString(): string
     {
         return (string)$this->getVote();
     }

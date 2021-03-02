@@ -1,60 +1,62 @@
-<?php /** @noinspection ALL */
+<?php
 
-namespace Thucke\ThRating\Tests\Unit\Domain\Model;
+/*
+ * This file is part of the package thucke/th-rating.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE file that was distributed with this source code.
+ */
 
-use Nimut\TestingFramework\TestCase\UnitTestCase;
+namespace Thucke\ThRating\Tests\Functional\Domain\Model;
+
+use Thucke\ThRating\Domain\Model\Rating;
 use Thucke\ThRating\Domain\Model\Ratingobject;
-
-/***************************************************************
-*  Copyright notice
-*
-*  (c) 2010 Thomas Hucke <thucke@web.de>
-*  All rights reserved
-*
-*  This script is part of the TYPO3 project. The TYPO3 project is
-*  free software; you can redistribute it and/or modify
-*  it under the terms of the GNU General Public License as published by
-*  the Free Software Foundation; either version 2 of the License, or
-*  (at your option) any later version.
-*
-*  The GNU General Public License can be found at
-*  http://www.gnu.org/copyleft/gpl.html.
-*
-*  This script is distributed in the hope that it will be useful,
-*  but WITHOUT ANY WARRANTY; without even the implied warranty of
-*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-*  GNU General Public License for more details.
-*
-*  This copyright notice MUST APPEAR in all copies of the script!
-***************************************************************/
+use TYPO3\CMS\Core\Core\Bootstrap;
+use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 /**
  * Testcases for Ratingobject
  *
  * @version 	$Id:$
- * @author		Thomas Hucke <thucke@web.de>
  * @copyright 	Copyright belongs to the respective authors
  * @license 	http://opensource.org/licenses/gpl-license.php GNU Public License, version 2
  * @scope 		alpha
  * @entity
  */
-class RatingobjectTest extends UnitTestCase
+class RatingobjectTest extends FunctionalTestCase
 {
+    protected $testExtensionsToLoad = ['typo3conf/ext/th_rating'];
+    protected $coreExtensionsToLoad = ['extbase', 'fluid'];
+
     /**
      * @var Ratingobject
      */
-    protected $fixture;
+    protected $ratingobjectDomainModelInstance;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
-        $this->fixture = new Ratingobject('tt_news', 'uid');
+
+        $this->ratingobjectDomainModelInstance = new Ratingobject('tt_news', 'uid');
+
+        Bootstrap::initializeLanguageObject();
+        $extAbsPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('th_rating');
+        $this->importDataSet($extAbsPath . '/Tests/Functional/Fixtures/Database/Ratingobject.xml');
+        $this->importDataSet($extAbsPath . '/Tests/Functional/Fixtures/Database/pages.xml');
+        $this->setUpFrontendRootPage(
+            1,
+            [
+                $extAbsPath . '/Tests/Functional/Fixtures/Frontend/Basic.typoscript',
+                'EXT:fluid_styled_content/Configuration/TypoScript/setup.txt',
+                $extAbsPath . '/Configuration/TypoScript/setup.typoscript'
+            ]
+        );
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
-        unset($this->fixture);
-        parent::tearDown();
+        //unset($this->ratingobjectDomainModelInstance);
+        //parent::tearDown();
     }
 
     /**
@@ -62,7 +64,35 @@ class RatingobjectTest extends UnitTestCase
      */
     public function testConstructor(): void
     {
-        static::assertEquals('tt_news', $this->fixture->getRatetable());
-        static::assertEquals('uid', $this->fixture->getRatefield());
+        static::assertEquals('tt_news', $this->ratingobjectDomainModelInstance->getRatetable());
+        static::assertEquals('uid', $this->ratingobjectDomainModelInstance->getRatefield());
+    }
+
+    /**
+     * @test
+     * @depends testConstructor
+     */
+    public function pidCanBeSet(): void
+    {
+        $this->ratingobjectDomainModelInstance->setPid(1);
+        static::assertEquals('1', $this->ratingobjectDomainModelInstance->getPid());
+    }
+
+    /**
+     * est
+     * @throws \TYPO3\CMS\Extbase\Configuration\Exception\InvalidConfigurationTypeException
+     */
+    public function ratingCanBeAdded(): void
+    {
+        $ratingobject = new Ratingobject('tt_news', 'uid');
+        $ratingobject->setPid(2);
+        $rating = new Rating($ratingobject, 1);
+
+        $ratingobject->addRating($rating);
+        $this->assertEquals($ratingobject->getRatings()->current(), $rating);
+
+        $rating2 = new Rating($ratingobject, 2);
+        $ratingobject->addRating($rating2);
+        $this->assertEquals($ratingobject->getRatings()->current(), $rating2);
     }
 }

@@ -1,7 +1,14 @@
 <?php
+
+/*
+ * This file is part of the package thucke/th-rating.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE file that was distributed with this source code.
+ */
+
 namespace Thucke\ThRating\Service;
 
-use phpDocumentor\Reflection\Types\Boolean;
 use Thucke\ThRating\Exception\FeUserStoragePageException;
 use Thucke\ThRating\Exception\InvalidStoragePageException;
 use TYPO3\CMS\Core\Log\Logger;
@@ -11,29 +18,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
-
-/***************************************************************
-*  Copyright notice
-*
-*  (c) 2013 Thomas Hucke <thucke@web.de>
-*  All rights reserved
-*
-*  This script is part of the TYPO3 project. The TYPO3 project is
-*  free software; you can redistribute it and/or modify
-*  it under the terms of the GNU General protected License as published by
-*  the Free Software Foundation; either version 2 of the License, or
-*  (at your option) any later version.
-*
-*  The GNU General protected License can be found at
-*  http://www.gnu.org/copyleft/gpl.html.
-*
-*  This script is distributed in the hope that it will be useful,
-*  but WITHOUT ANY WARRANTY; without even the implied warranty of
-*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-*  GNU General protected License for more details.
-*
-*  This copyright notice MUST APPEAR in all copies of the script!
-***************************************************************/
 
 /**
  * Factory for model objects
@@ -53,7 +37,7 @@ class ExtensionConfigurationService extends AbstractExtensionService
     /**
      * Calling extension query settings
      *
-     * @var QuerySettingsInterface
+     * @var \TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface
      */
     protected $originalTypo3QuerySettings;
 
@@ -66,6 +50,12 @@ class ExtensionConfigurationService extends AbstractExtensionService
      * @var \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface
      */
     protected $configurationManager;
+
+    /**
+     * @var QuerySettingsInterface
+     */
+    private $extDefaultQuerySettings;
+
     /**
      * @param \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface $configurationManager
      */
@@ -100,7 +90,7 @@ class ExtensionConfigurationService extends AbstractExtensionService
      */
     public function initializeObject(): void
     {
-        # store calling extension configuration
+        // store calling extension configuration
         $this->originalConfiguration = $this->configurationManager->getConfiguration(
             ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK
         );
@@ -148,7 +138,6 @@ class ExtensionConfigurationService extends AbstractExtensionService
     /**
      * Set default query settings to those of th_rating
      * (could be different if services are called from other extensions
-     * @return void
      * @throws FeUserStoragePageException
      * @throws InvalidStoragePageException
      */
@@ -164,7 +153,7 @@ class ExtensionConfigurationService extends AbstractExtensionService
     /**
      * @return bool
      */
-    protected function getCookieProtection(): Boolean
+    protected function getCookieProtection(): bool
     {
         $this->cookieLifetime = abs((int)$this->thRatingConfiguration['settings']['cookieLifetime']);
         $this->logger->log(
@@ -179,7 +168,6 @@ class ExtensionConfigurationService extends AbstractExtensionService
      * Checks storagePid settings of th_rating and tx_felogin_pi1 and
      * concatenates them to the new storagePid setting
      *
-     * @return void
      * @throws InvalidStoragePageException if plugin.tx_thrating.storagePid has not been set
      * @throws FeUserStoragePageException if plugin.tx_felogin_pi1.storagePid has not been set
      */
@@ -202,7 +190,7 @@ class ExtensionConfigurationService extends AbstractExtensionService
      * @return int
      * @throws FeUserStoragePageException
      */
-    private function getFeUserStoragePage():int
+    private function getFeUserStoragePage(): int
     {
         $feUserStoragePid = array_merge(
             GeneralUtility::intExplode(

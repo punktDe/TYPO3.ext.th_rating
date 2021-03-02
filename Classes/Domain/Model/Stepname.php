@@ -1,39 +1,22 @@
 <?php
 declare(strict_types = 1);
+
+/*
+ * This file is part of the package thucke/th-rating.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE file that was distributed with this source code.
+ */
+
 namespace Thucke\ThRating\Domain\Model;
 
-use phpDocumentor\Reflection\Types\Integer;
+use TYPO3\CMS\Extbase\Annotation as Extbase;
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
-use TYPO3\CMS\Extbase\Annotation as Extbase;
-
-/***************************************************************
-*  Copyright notice
-*
-*  (c) 2010 Thomas Hucke <thucke@web.de>
-*  All rights reserved
-*
-*  This script is part of the TYPO3 project. The TYPO3 project is
-*  free software; you can redistribute it and/or modify
-*  it under the terms of the GNU General Public License as published by
-*  the Free Software Foundation; either version 2 of the License, or
-*  (at your option) any later version.
-*
-*  The GNU General Public License can be found at
-*  http://www.gnu.org/copyleft/gpl.html.
-*
-*  This script is distributed in the hope that it will be useful,
-*  but WITHOUT ANY WARRANTY; without even the implied warranty of
-*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-*  GNU General Public License for more details.
-*
-*  This copyright notice MUST APPEAR in all copies of the script!
-***************************************************************/
 
 /**
  * Model for ratingstep configuration names
  *
- * @author  Thomas Hucke <thucke@web.de>
  * @copyright  Copyright belongs to the respective authors
  * @license  http://opensource.org/licenses/gpl-license.php GNU Public License, version 2
  * @entity
@@ -63,19 +46,9 @@ class Stepname extends AbstractEntity
     protected $l18nParent;
 
     /**
-     * languageUid will be mapped to column sys_language_uid
-     * @Extbase\Validate("NotEmpty")
      * @var int
      */
-    protected $languageUid;
-
-    /**
-     * _languageUid will be mapped to column sys_language_uid
-     * @deprecated will be removed in when support for TYPO3 v9 is dropped
-     * @Extbase\Validate("NotEmpty")
-     * @var int
-     */
-    protected $_languageUid;
+    protected $sysLanguageUid;
 
     /**
      * Sets the stepconf this rating is part of
@@ -114,7 +87,6 @@ class Stepname extends AbstractEntity
      *
      * @return string Stepconfig name
      */
-    /** @noinspection PhpUnused */
     public function getStepname(): string
     {
         $value = $this->stepname;
@@ -139,7 +111,7 @@ class Stepname extends AbstractEntity
     }
 
     /**
-     * @param $l18nParent
+     * @param int $l18nParent
      */
     public function setL18nParent($l18nParent): void
     {
@@ -147,38 +119,23 @@ class Stepname extends AbstractEntity
     }
 
     /**
-     * @deprecated will be removed in when support for TYPO3 v9 is dropped
-     * @param int $languageUid
-     */
-    public function set_languageUid($languageUid): void
-    {
-        $this->_languageUid = $languageUid;
-    }
-
-    /**
-     * @deprecated will be removed in when support for TYPO3 v9 is dropped
+     * Get sys language
+     *
      * @return int
      */
-    public function get_languageUid()
+    public function getSysLanguageUid(): int
     {
         return $this->_languageUid;
     }
 
     /**
-     * @param int $languageUid
+     * Set sys language
+     *
+     * @param int $sysLanguageUid language uid
      */
-    public function setLanguageUid($languageUid): void
+    public function setSysLanguageUid($sysLanguageUid): void
     {
-        $this->languageUid = $languageUid;
-        $this->set_languageUid($languageUid);
-    }
-
-    /**
-     * @return int
-     */
-    public function getLanguageUid()
-    {
-        return $this->languageUid ?? $this->_languageUid;
+        $this->_languageUid = $sysLanguageUid;
     }
 
     /**
