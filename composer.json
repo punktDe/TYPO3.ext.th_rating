@@ -134,9 +134,10 @@
 		"jangregor/phpstan-prophecy": "^0.8.0",
         "roave/security-advisories": "dev-master",
         "codeception/codeception": "^4.1",
-		"phpspec/prophecy-phpunit": "^9",
+		"phpspec/prophecy-phpunit": "*",
 		"saschaegerer/phpstan-typo3": "^0.13.1",
-		"phpstan/extension-installer": "^1.1"
+		"phpstan/extension-installer": "^1.1",
+        "phpunit/phpunit": "^9"
     },
 	"replace" : {
 		"thucke/th-rating" : "self.version"
