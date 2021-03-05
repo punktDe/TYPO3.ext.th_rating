@@ -273,7 +273,7 @@ class VoteController extends ActionController
             //read unique AJAX identification on AJAX request
             $this->ajaxSelections['ajaxRef'] = $this->request->getArgument(self::AJAX_REFERENCE_ID);
             /** @noinspection PhpElementIsNotAvailableInCurrentPhpVersionInspection */
-            $this->settings = json_decode($this->request->getArgument('settings'), true, 512, PHP_MINOR_VERSION>=3 ? JSON_THROW_ON_ERROR : null);
+            $this->settings = json_decode($this->request->getArgument('settings'), true, 512, JSON_THROW_ON_ERROR);
             $frameworkConfiguration['settings'] = $this->settings;
             $this->logger->log(
                 LogLevel::INFO,
@@ -440,7 +440,7 @@ class VoteController extends ActionController
                         //set cookie to prevent multiple anonymous ratings
                         $this->cookieService->setVoteCookie(
                             $this->prefixId . '_AnonymousRating_' . $vote->getRating()->getUid(),
-                            json_encode($anonymousRating),
+                            json_encode($anonymousRating, JSON_THROW_ON_ERROR),
                             $expireTime
                         );
                     }
@@ -995,11 +995,11 @@ class VoteController extends ActionController
                         'voter' => $vote->getVoter()->getUid(),
                         'rating' => $vote->getRating()->getUid(),
                         'ratingName' => $this->ratingName,
-                        'settings' => json_encode($this->settings, PHP_MINOR_VERSION>=3 ? JSON_THROW_ON_ERROR : null, 512),
+                        'settings' => json_encode($this->settings, JSON_THROW_ON_ERROR, 512),
                         'actionName' => strtolower($this->request->getControllerActionName()),
                         self::AJAX_REFERENCE_ID => $this->ajaxSelections['ajaxRef'],
                         /** @phpstan-ignore-next-line */
-                    ], PHP_MINOR_VERSION>=3 ? JSON_THROW_ON_ERROR : null, 512)
+                    ], JSON_THROW_ON_ERROR, 512)
                 );
                 $this->ajaxSelections['json'][$key] = (string)$stepConf;
                 $this->ajaxSelections['steporder'][$stepConf->getSteporder()]['step'] = $stepConf;
@@ -1184,7 +1184,7 @@ class VoteController extends ActionController
                 $currentRates = round($currentRatesArray['currentrate'], 2);
             } else {
                 //do update using whole currentrates JSON array
-                $currentRates = json_encode($currentRatesArray);
+                $currentRates = json_encode($currentRatesArray, JSON_THROW_ON_ERROR);
             }
 
             /** @var \TYPO3\CMS\Core\Database\Query\QueryBuilder $queryBuilder */
