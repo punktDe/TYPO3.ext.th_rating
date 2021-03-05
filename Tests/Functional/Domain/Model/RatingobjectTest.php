@@ -47,7 +47,7 @@ class RatingobjectTest extends FunctionalTestCase
             1,
             [
                 $extAbsPath . '/Tests/Functional/Fixtures/Frontend/Basic.typoscript',
-                'EXT:fluid_styled_content/Configuration/TypoScript/setup.txt',
+                'EXT:fluid_styled_content/Configuration/TypoScript/setup.typoscript',
                 $extAbsPath . '/Configuration/TypoScript/setup.typoscript'
             ]
         );
@@ -89,10 +89,10 @@ class RatingobjectTest extends FunctionalTestCase
         $rating = new Rating($ratingobject, 1);
 
         $ratingobject->addRating($rating);
-        $this->assertEquals($ratingobject->getRatings()->current(), $rating);
+        self::assertEquals($ratingobject->getRatings()->current(), $rating);
 
         $rating2 = new Rating($ratingobject, 2);
         $ratingobject->addRating($rating2);
-        $this->assertEquals($ratingobject->getRatings()->current(), $rating2);
+        self::assertEquals($ratingobject->getRatings()->current(), $rating2);
     }
 }

@@ -13,7 +13,7 @@
 			<f:else>
 			<li data-role="onCurrentRateActive" class="current-rating {barimage} {f:if(condition: '{0: ratingClass} == {0: \'tilt\'}', then: 'tx_thrating_ajax-ratingCalculatedRateHeight', else: 'tx_thrating_ajax-ratingCalculatedRateWidth')}"
 				style="{f:if(condition: '{0: ratingClass} == {0: \'tilt\'}', then: 'height:{rating.calculatedRate}%;', else: 'width:{rating.calculatedRate}%;')} {f:if(condition: '{rating.calculatedRate}', then: '', else: 'display:none;')}"
-				title="<f:translate key='fluid.template.ratinglinks.currentRating' default='fluid.template.ratinglinks.currentRating' arguments='{1:currentRates, 2:stepCount}'/>">
+				title="<f:translate key='fluid.template.ratinglinks.currentRating.title' default='fluid.template.ratinglinks.currentRating.title' arguments='{1:currentRates, 2:stepCount}'/>">
 				<f:format.raw><f:translate key='fluid.template.ratinglinks.currentRating' default='fluid.template.ratinglinks.currentRating' arguments='{1:currentRates, 2:stepCount}'/></f:format.raw>
 			</li>
 			</f:else></f:if>

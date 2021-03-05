@@ -281,7 +281,7 @@ class Rating extends AbstractEntity
         }
         $currentratesDecoded['numAllVotes'] = $numAllVotes;
         $currentratesDecoded['anonymousVotes'] = $numAllAnonymousVotes;
-        $this->currentrates = json_encode($currentratesDecoded);
+        $this->currentrates = json_encode($currentratesDecoded, JSON_THROW_ON_ERROR);
     }
 
     /**
@@ -294,7 +294,7 @@ class Rating extends AbstractEntity
         if (empty($this->currentrates)) {
             $this->checkCurrentrates(); //initialize entry
         }
-        $currentratesDecoded = json_decode($this->currentrates, true);
+        $currentratesDecoded = json_decode($this->currentrates, true, 512, JSON_THROW_ON_ERROR);
         $currentratesDecoded['numAllVotes']++;
         if ($voting->isAnonymous()) {
             $currentratesDecoded['anonymousVotes']++;
@@ -306,7 +306,7 @@ class Rating extends AbstractEntity
         $votingStepweight = $votingStep->getStepweight();
         $currentratesDecoded['weightedVotes'][$votingSteporder] += $votingStepweight;
         $currentratesDecoded['sumWeightedVotes'][$votingSteporder] += $votingStepweight * $votingSteporder;
-        $this->currentrates = json_encode($currentratesDecoded);
+        $this->currentrates = json_encode($currentratesDecoded, JSON_THROW_ON_ERROR);
     }
 
     /**
@@ -319,7 +319,7 @@ class Rating extends AbstractEntity
         if (empty($this->currentrates)) {
             $this->checkCurrentrates(); //initialize entry
         }
-        $currentratesDecoded = json_decode($this->currentrates, true);
+        $currentratesDecoded = json_decode($this->currentrates, true, 512, JSON_THROW_ON_ERROR);
         $currentratesDecoded['numAllVotes']--;
         if ($voting->isAnonymous()) {
             $currentratesDecoded['anonymousVotes']--;
@@ -331,7 +331,7 @@ class Rating extends AbstractEntity
         $votingStepweight = $votingStep->getStepweight();
         $currentratesDecoded['weightedVotes'][$votingSteporder] -= $votingStepweight;
         $currentratesDecoded['sumWeightedVotes'][$votingSteporder] -= $votingStepweight * $votingSteporder;
-        $this->currentrates = json_encode($currentratesDecoded);
+        $this->currentrates = json_encode($currentratesDecoded, JSON_THROW_ON_ERROR);
     }
 
     /**
@@ -341,10 +341,10 @@ class Rating extends AbstractEntity
      */
     public function getCurrentrates(): array
     {
-        $currentratesDecoded = json_decode($this->currentrates, true);
+        $currentratesDecoded = json_decode($this->currentrates, true, 512, JSON_THROW_ON_ERROR);
         if (empty($currentratesDecoded['numAllVotes'])) {
             $this->checkCurrentrates();
-            $currentratesDecoded = json_decode($this->currentrates, true);
+            $currentratesDecoded = json_decode($this->currentrates, true, 512, JSON_THROW_ON_ERROR);
         }
         $numAllVotes = $currentratesDecoded['numAllVotes'];
         if (!empty($numAllVotes)) {

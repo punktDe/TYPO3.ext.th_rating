@@ -70,7 +70,7 @@ class RatingobjectRepositoryTest extends FunctionalTestCase
             1,
             [
                 $extAbsPath . '/Tests/Functional/Fixtures/Frontend/Basic.typoscript',
-                'EXT:fluid_styled_content/Configuration/TypoScript/setup.txt',
+                'EXT:fluid_styled_content/Configuration/TypoScript/setup.typoscript',
                 $extAbsPath . '/Configuration/TypoScript/setup.typoscript'
             ]
         );

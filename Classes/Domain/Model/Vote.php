@@ -204,7 +204,12 @@ class Vote extends AbstractEntity
      */
     public function hasAnonymousVote($prefixId = 'DummyPrefix'): bool
     {
-        $anonymousRating = json_decode($_COOKIE[$prefixId . '_AnonymousRating_' . $this->getRating()->getUid()], true);
+        $anonymousRating = json_decode(
+            $_COOKIE[$prefixId . '_AnonymousRating_' . $this->getRating()->getUid()],
+            true,
+            512,
+            JSON_THROW_ON_ERROR
+        );
         return !empty($anonymousRating['voteUid']);
     }
 

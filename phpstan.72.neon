@@ -1,8 +1,0 @@
-includes:
-    - phpstan.neon
-parameters:
-    ignoreErrors:
-    -
-        message: "#^Constant JSON_THROW_ON_ERROR not found\\.$#"
-        count: 3
-        path: Classes/Controller/VoteController.php

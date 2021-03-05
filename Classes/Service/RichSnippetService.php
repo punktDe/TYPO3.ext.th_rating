@@ -89,7 +89,7 @@ class RichSnippetService extends AbstractExtensionService
      */
     public function getRichSnippetConfig()
     {
-        return json_encode($this->richSnippetConfig);
+        return json_encode($this->richSnippetConfig, JSON_THROW_ON_ERROR);
     }
 
     /**

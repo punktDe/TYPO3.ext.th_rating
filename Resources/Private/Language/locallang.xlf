@@ -327,8 +327,12 @@
 				<source>Update of foreign field has failed.</source>
 			</trans-unit>
 			<trans-unit id="fluid.template.ratinglinks.currentRating" xml:space="preserve" approved="yes">
-				<note>Forwarded arguments: 1:currentRate, 2:stepCount; This entry must be embedded into >f:format.raw> when read by fluid</note>
+				<note><![CDATA[Forwarded arguments: 1:currentRate, 2:stepCount; This entry must be embedded into <f:format.raw> when read by fluid]]></note>
 				<source><![CDATA[Current rating is <span class='tx_thrating_ajax-ratingCurrentratesCurrentrate' itemprop='ratingValue'>%1.1f</span> out of <span class='tx_thrating_ajax-stepCount' itemprop='bestRating'>%2$d</span>]]></source>
+			</trans-unit>
+			<trans-unit id="fluid.template.ratinglinks.currentRating.title" xml:space="preserve" approved="yes">
+				<note>Forwarded arguments: 1:currentRate, 2:stepCount; This entry must only contain plain text</note>
+				<source>Current rating is %1.1f out of %2$d</source>
 			</trans-unit>
 			<trans-unit id="fluid.layout.default.currentRating" xml:space="preserve" approved="yes">
 				<note>Forwarded arguments: 1:currentRate, 2:number of rating.votes; This entry must be embedded into >f:format.raw> when read by fluid</note>
@@ -343,15 +347,19 @@
 				<source>No rating done at all.</source>
 			</trans-unit>
 			<trans-unit id="fluid.partial.usersRating.usersRate" xml:space="preserve" approved="yes">
-				<note>Forwarded arguments: 1:voting, 2:voting.vote.steporder, 3:stepCount; This entry must be embedded into >f:format.raw> when read by fluid</note>
+				<note><![CDATA[Forwarded arguments: 1:voting, 2:voting.vote.steporder, 3:stepCount; This entry must be embedded into <f:format.raw> when read by fluid]]></note>
 				<source><![CDATA[Your vote was '<span class='tx_thrating_ajax-votingStepname'>%1$s</span>' (<span class='tx_thrating_ajax-votingVoteSteporder'>%2$d</span> of <span class='tx_thrating_ajax-stepCount'>%3$d</span>)]]></source>
+			</trans-unit>
+			<trans-unit id="fluid.partial.usersRating.usersRate.title" xml:space="preserve" approved="yes">
+				<note>Forwarded arguments: 1:voting, 2:voting.vote.steporder, 3:stepCount; This entry must only contain plain text</note>
+				<source>Your vote was '%1$s' (%2$d of %3$d)</source>
 			</trans-unit>
 			<trans-unit id="fluid.partial.usersRating.noRating" xml:space="preserve" approved="yes">
 				<note>Forwarded arguments: None</note>
 				<source>No rating done yet.</source>
 			</trans-unit>
 			<trans-unit id="fluid.partial.infoBlock.anonymousVoting" xml:space="preserve" approved="yes">
-				<note>Forwarded arguments: None; This entry must be embedded into >f:format.raw> when read by fluid</note>
+				<note><![CDATA[Forwarded arguments: None; This entry must be embedded into <f:format.raw> when read by fluid]]></note>
 				<source><![CDATA[You are an anonymous user.<br/>You may log on to do personalized votings<br/>]]></source>
 			</trans-unit>
 			<trans-unit id="fluid.partial.infoBlock.logonForRatings" xml:space="preserve" approved="yes">
