@@ -20,6 +20,8 @@ jobs:
             php: '7.3'
           - typo3: ^9.5
             php: '7.4'
+          - typo3: ^9.5
+            php: '7.3'
 
     steps:
       - name: Start database server
@@ -70,3 +72,4 @@ jobs:
           typo3DatabaseName: t3func
           typo3DatabasePassword: root
           typo3DatabaseUsername: root
+          TYPO3_CONEXT: Development

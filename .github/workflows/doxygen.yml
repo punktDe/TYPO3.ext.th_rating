@@ -1,0 +1,29 @@
+name: Update GH-Pages on merge
+
+on:
+  #pull_request:
+  push:
+    branches:
+      - 107
+    types: [ closed ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v2
+
+      - name: Generate Doxygen
+        uses: mattnotmitt/doxygen-action@v1
+        with:
+          working-directory: 'deploy/doxygen/'
+          doxyfile-path: 'Build/.doxygen'
+
+      #- name: Deploy Doxygen
+      #  uses: peaceiris/actions-gh-pages@v3
+      #  with:
+      #    github_token: ${{ secrets.GITHUB_TOKEN }}
+      #    publish_dir: deploy/doxygen/
