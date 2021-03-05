@@ -1,13 +1,12 @@
 <?php
-/***************************************************************
- * Extension Manager/Repository config file for ext "th_rating".
+
+/*
+ * This file is part of the package thucke/th-rating.
  *
- * Auto generated 15-03-2014 11:57
- *
- * Manual updates:
- * Only the data in the array - everything else is removed by next
- * writing. "version" and "dependencies" must not be touched!
- ***************************************************************/
+ * For the full copyright and license information, please read the
+ * LICENSE file that was distributed with this source code.
+ */
+
 /** @noinspection PhpUndefinedVariableInspection */
 $EM_CONF[$_EXTKEY] = [
     'title' => 'Rating AX',

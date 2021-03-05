@@ -74,7 +74,7 @@ class RatingRepositoryTest extends FunctionalTestCase
         $this->setUpFrontendRootPage(
             1,
             [
-                'EXT:fluid_styled_content/Configuration/TypoScript/setup.txt',
+                'EXT:fluid_styled_content/Configuration/TypoScript/setup.typoscript',
                 $extAbsPath . '/Configuration/TypoScript/setup.typoscript',
                 $extAbsPath . '/Tests/Functional/Fixtures/Frontend/Basic.typoscript',
             ]

@@ -43,7 +43,6 @@ composer.lock
 .ddev/**/*.example
 .ddev/**/*.txt
 .ddev/commands/
-Build/.phpunit.result.cache
 Documentation-*
 config/
 node_modules/

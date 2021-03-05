@@ -15,7 +15,6 @@ use Thucke\ThRating\Service\ExtensionManagementService;
 use Thucke\ThRating\Service\LoggingService;
 use TYPO3\CMS\Core\Log\Logger;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
-use Prophecy\PhpUnit\ProphecyTrait;
 
 /**
  * Test case.
@@ -70,7 +69,7 @@ class ExtensionManagementServiceTest extends FunctionalTestCase
         $this->setUpFrontendRootPage(
             1,
             [
-                'EXT:fluid_styled_content/Configuration/TypoScript/setup.txt',
+                'EXT:fluid_styled_content/Configuration/TypoScript/setup.typoscript',
                 $extAbsPath . '/Configuration/TypoScript/setup.typoscript',
                 $extAbsPath . '/Tests/Functional/Fixtures/Frontend/Basic.typoscript',
             ]

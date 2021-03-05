@@ -64,10 +64,10 @@
             "phplint"
         ],
         "thucke:test:php:unit": [
-            "phpunit -c Build/UnitTests.xml"
+            "phpunit -c Tests/Build/UnitTests.xml"
         ],
         "thucke:test:php:functional": [
-            "phpunit -c Build/FunctionalTests.xml"
+            "phpunit -c Tests/Build/FunctionalTests.xml"
         ],
         "thucke:test:php:unit:cover": [
             "Composer\\Config::disableProcessTimeout",
@@ -85,7 +85,7 @@
             "php-cs-fixer --using-cache=yes --diff -v fix"
         ],
         "thucke:phpstan:classes": [
-            "phpstan analyse Classes"
+            "TYPO3_CONTEXT=Development; phpstan analyse Classes"
         ],
         "thucke:phpstan:tests": [
             "phpstan analyze Tests"
@@ -134,7 +134,7 @@
 		"phpspec/prophecy-phpunit": "*",
 		"saschaegerer/phpstan-typo3": "^0.13.1",
 		"phpstan/extension-installer": "^1.1",
-        "phpunit/phpunit": "^7 || ^9"
+        "phpunit/phpunit": "^7"
     },
 	"replace" : {
 		"thucke/th-rating" : "self.version"

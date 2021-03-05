@@ -21,7 +21,6 @@ $GLOBALS['TYPO3_CONF_VARS']['SYS']['fluid']['namespaces']['thr'][] = 'Thucke\\Th
  */
 $GLOBALS['TYPO3_CONF_VARS']['SYS']['fluid']['namespaces']['thr'][] = 'Thucke\\ThRating\\ViewHelpers';
 
-
 /**
  * Configure the Plugin to call the
  * right combination of Controller and Action according to

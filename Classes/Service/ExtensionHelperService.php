@@ -359,8 +359,12 @@ class ExtensionHelperService extends AbstractExtensionService
         if (!$frontendUserUid && !empty($settings['mapAnonymous'])) {
             //set anonymous vote
             $voter = $this->accessControllService->getFrontendVoter($settings['mapAnonymous']);
-            $anonymousRating = json_decode($_COOKIE[$prefixId . '_AnonymousRating_' . $rating->getUid()], true, 512,
-                JSON_THROW_ON_ERROR);
+            $anonymousRating = json_decode(
+                $_COOKIE[$prefixId . '_AnonymousRating_' . $rating->getUid()],
+                true,
+                512,
+                JSON_THROW_ON_ERROR
+            );
             if (!empty($anonymousRating['voteUid'])) {
                 $vote = $this->voteRepository->findByUid($anonymousRating['voteUid']);
             }

@@ -1,17 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <phpunit
-    backupGlobals="true"
-    backupStaticAttributes="false"
-    bootstrap="UnitTestsBootstrap.php"
-    colors="true"
-    convertErrorsToExceptions="true"
-    convertWarningsToExceptions="true"
-    forceCoversAnnotation="false"
-    processIsolation="false"
-    stopOnError="false"
-    stopOnFailure="false"
-    stopOnIncomplete="false"
-    stopOnSkipped="false"
-    verbose="false"
-    convertDeprecationsToExceptions="false"
-	cacheResultFile="../.phpunit.result.cache"
-/>
+	backupGlobals="true"
+	bootstrap="../../.build/vendor/typo3/testing-framework/Resources/Core/Build/UnitTestsBootstrap.php"
+	colors="true"
+	convertErrorsToExceptions="true"
+	convertWarningsToExceptions="true"
+	forceCoversAnnotation="false"
+	stopOnError="false"
+	stopOnFailure="false"
+	stopOnIncomplete="false"
+	stopOnSkipped="false"
+	verbose="false"
+	convertDeprecationsToExceptions="false"
+	processIsolation="false"
+	backupStaticAttributes="false"
+>
+	<testsuites>
+		<testsuite name="Rating AX Extension">
+			<directory>../Unit</directory>
+		</testsuite>
+	</testsuites>
+	<filter>
+		<whitelist processUncoveredFilesFromWhitelist="true">
+			<directory suffix=".php">../../Classes/</directory>
+		</whitelist>
+	</filter>
+	<php>
+		<ini name="display_errors" value="1" />
+		<env name="TYPO3_CONTEXT" value="Testing" />
+	</php>
+</phpunit>
