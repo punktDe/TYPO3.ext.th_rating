@@ -26,7 +26,7 @@ jobs:
         path: source
 
     - name: Show files
-      run: find ${GITHUB_WORKSPACE} -type d -exec ls -al {} \;
+      run: find ${GITHUB_WORKSPACE} -type f -exec ls -al {} \;
       
     - name: Create Doxygen target directory
       run: mkdir -p ${GITHUB_WORKSPACE}/target
@@ -38,7 +38,7 @@ jobs:
         doxyfile-path: /github/workspace/source/Build/.doxygen
 
     - name: Show files
-      run: find ${GITHUB_WORKSPACE} -type d -exec ls -al {} \;
+      run: find ${GITHUB_WORKSPACE} -type f -exec ls -al {} \;
       
       
       
