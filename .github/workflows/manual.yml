@@ -35,4 +35,10 @@ jobs:
     - name: Show files
       run: find ${GITHUB_WORKSPACE} -type f -exec ls -al {} \;
       
+    - name: Create Doxygen target directory
+      run: mkdir -p ${GITHUB_WORKSPACE}/target
+      
+    - name: Show files
+      run: find ${GITHUB_WORKSPACE} -type f -exec ls -al {} \;
+      
       
