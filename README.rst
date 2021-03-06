@@ -55,7 +55,10 @@ Guide to the TYPO3 extension to make ratings of any content object.
 Support welcome
 ===============
 Please support this extension by doing some translations.
-Just check [Crowdin](https://crowdin.com/project/typo3-extension-thrating) if you're interested.
+
+Just check `Crowdin<https://crowdin.com/project/typo3-extension-thrating>`_ if you're interested.
+If it happens that your favorite language is missing, please don't hesitate to contact the extension author
+asking to activate it.
 
 Important updates
 =================
