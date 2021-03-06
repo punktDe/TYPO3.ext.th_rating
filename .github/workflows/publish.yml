@@ -48,3 +48,41 @@ jobs:
 
       - name: Publish to TER
         run: php ~/.composer/vendor/bin/tailor ter:publish --comment "${{ steps.get-comment.outputs.comment }}" ${{ steps.get-version.outputs.version }}
+
+  doxygen:
+    name: Update Doxygen content on Github pages
+    if: startsWith(github.ref, 'refs/tags/')
+    runs-on: ubuntu-latest
+
+    steps:
+      # Check statuses of Github
+      - name: Check GitHub Pages status
+        uses: crazy-max/ghaction-github-status@v2
+        with:
+          pages_threshold: major_outage
+
+      - name: Checkout Code
+        if: success()
+        uses: actions/checkout@v2
+        with:
+          path: source
+
+      - name: Create Doxygen target directory
+        run: mkdir -p ${GITHUB_WORKSPACE}/target
+
+      - name: Generate Doxygen
+        if: success()
+        uses: mattnotmitt/doxygen-action@v1
+        with:
+          working-directory: /github/workspace/target
+          doxyfile-path: /github/workspace/source/Build/.doxygen
+
+      - name: Deploy Doxygen
+        if: success()
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: target/html
+          keep_files: false
+          commit_message: Update Doxygen for new release
+
