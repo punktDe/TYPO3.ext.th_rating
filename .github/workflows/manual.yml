@@ -52,7 +52,7 @@ jobs:
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ${GITHUB_WORKSPACE}/target
+          publish_dir: target
           destination_dir: new_actions
           keep_files: true
           commit_message: Update Doxygen for new release
