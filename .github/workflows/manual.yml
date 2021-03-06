@@ -34,7 +34,7 @@ jobs:
     - name: Generate Doxygen
       uses: mattnotmitt/doxygen-action@v1
       with:
-        working-directory: ${GITHUB_WORKSPACE}/target
+        working-directory: target
         doxyfile-path: source/Build/.doxygen
 
     - name: Show files
