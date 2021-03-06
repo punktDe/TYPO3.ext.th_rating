@@ -17,28 +17,44 @@ jobs:
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
     # Runs a single command using the runners shell
-    - name: Show GITHUB_WORKSPACE
-      run: echo "GITHUB_WORKSPACE ${GITHUB_WORKSPACE}"
+      - name: Check GitHub Pages status
+        uses: crazy-max/ghaction-github-status@v2
+        with:
+          pages_threshold: major_outage
+          
+      - name: Show GITHUB_WORKSPACE
+        run: echo "GITHUB_WORKSPACE ${GITHUB_WORKSPACE}"
       
-    - name: Checkout Code
-      uses: actions/checkout@v2
-      with:
-        path: source
+      - name: Checkout Code
+        if: success()
+        uses: actions/checkout@v2
+        with:
+          path: source
 
-    - name: Show files
-      run: find ${GITHUB_WORKSPACE} -type f -exec ls -al {} \;
-      
-    - name: Create Doxygen target directory
-      run: mkdir -p ${GITHUB_WORKSPACE}/target
-      
-    - name: Generate Doxygen
-      uses: mattnotmitt/doxygen-action@v1
-      with:
-        working-directory: /github/workspace/target
-        doxyfile-path: /github/workspace/source/Build/.doxygen
+      - name: Show files
+        run: find ${GITHUB_WORKSPACE} -type f -exec ls -al {} \;
 
-    - name: Show files
-      run: find ${GITHUB_WORKSPACE} -type f -exec ls -al {} \;
-      
-      
-      
+      - name: Create Doxygen target directory
+        run: mkdir -p ${GITHUB_WORKSPACE}/target
+
+      - name: Generate Doxygen
+        if: success()
+        uses: mattnotmitt/doxygen-action@v1
+        with:
+          working-directory: /github/workspace/target
+          doxyfile-path: /github/workspace/source/Build/.doxygen
+
+      - name: Show files
+        run: find ${GITHUB_WORKSPACE} -type f -exec ls -al {} \;
+
+      - name: Deploy to GitHub Pages
+        if: success()
+        uses: crazy-max/ghaction-github-pages@v2
+        with:
+          target_branch: gh-pages
+          build_dir: ${GITHUB_WORKSPACE}/target
+          commit_message: Update Doxygen for new release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}    
+
+
