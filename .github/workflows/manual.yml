@@ -47,14 +47,12 @@ jobs:
       - name: Show files
         run: find ${GITHUB_WORKSPACE} -type f -exec ls -al {} \;
 
-      - name: Deploy to GitHub Pages
+      - name: Deploy Doxygen
         if: success()
-        uses: crazy-max/ghaction-github-pages@v2
+        uses: peaceiris/actions-gh-pages@v3
         with:
-          target_branch: gh-pages
-          build_dir: ${GITHUB_WORKSPACE}/target
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ${GITHUB_WORKSPACE}/target
+          destination_dir: new_actions
+          keep_files: true
           commit_message: Update Doxygen for new release
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}    
-
-
