@@ -17,25 +17,28 @@ jobs:
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
     # Runs a single command using the runners shell
-    - name: Send greeting
+    - name: Show GITHUB_WORKSPACE
       run: echo "GITHUB_WORKSPACE ${GITHUB_WORKSPACE}"
       
     - name: Checkout Code
       uses: actions/checkout@v2
+      with:
+        path: source
 
     - name: Show files
       run: find ${GITHUB_WORKSPACE} -type d -exec ls -al {} \;
       
     - name: Create Doxygen target directory
-      run: mkdir -p ${GITHUB_WORKSPACE}/../target
-      
-    - name: Show files
-      run: find ${GITHUB_WORKSPACE}/.. -type d -exec ls -al {} \;
+      run: mkdir -p ${GITHUB_WORKSPACE}/target
       
     - name: Generate Doxygen
       uses: mattnotmitt/doxygen-action@v1
       with:
-        working-directory: ${GITHUB_WORKSPACE}/../target
-        doxyfile-path: Build/.doxygen
+        working-directory: ${GITHUB_WORKSPACE}/target
+        doxyfile-path: source/Build/.doxygen
+
+    - name: Show files
+      run: find ${GITHUB_WORKSPACE} -type d -exec ls -al {} \;
+      
       
       
