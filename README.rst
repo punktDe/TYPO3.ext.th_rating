@@ -56,7 +56,7 @@ Support welcome
 ===============
 Please support this extension by doing some translations.
 
-Just check `Crowdin<https://crowdin.com/project/typo3-extension-thrating>`_ if you're interested.
+Just check `Crowdin <https://crowdin.com/project/typo3-extension-thrating>`__ if you're interested.
 If it happens that your favorite language is missing, please don't hesitate to contact the extension author
 asking to activate it.
 
