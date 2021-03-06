@@ -33,7 +33,7 @@ jobs:
       uses: actions/checkout@v2
 
     - name: Show files
-      run: find ${GITHUB_WORKSPACE} -type f -exec ls -al {} \;
+      run: find ${GITHUB_WORKSPACE} -type d -exec ls -al {} \;
       
     - name: Create Doxygen target directory
       run: mkdir -p ${GITHUB_WORKSPACE}/target
