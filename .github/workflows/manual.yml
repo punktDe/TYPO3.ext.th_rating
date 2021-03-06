@@ -6,15 +6,6 @@ name: Manual workflow
 # or API.
 on:
   workflow_dispatch:
-    # Inputs the workflow accepts.
-    inputs:
-      name:
-        # Friendly description to be shown in the UI instead of 'name'
-        description: 'Person to greet'
-        # Default value if no value is explicitly provided
-        default: 'World'
-        # Input has to be provided for the workflow to run
-        required: true
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -27,7 +18,7 @@ jobs:
     steps:
     # Runs a single command using the runners shell
     - name: Send greeting
-      run: echo "Hello ${{ github.event.inputs.name }}"
+      run: echo "GITHUB_WORKSPACE ${{ GITHUB_WORKSPACE }}"
       
     - name: Checkout Code
       uses: actions/checkout@v2
@@ -36,9 +27,9 @@ jobs:
       run: find ${GITHUB_WORKSPACE} -type d -exec ls -al {} \;
       
     - name: Create Doxygen target directory
-      run: mkdir -p ${GITHUB_WORKSPACE}/target
+      run: mkdir -p ${GITHUB_WORKSPACE}/../target
       
     - name: Show files
-      run: find ${GITHUB_WORKSPACE} -type d -exec ls -al {} \;
+      run: find ${GITHUB_WORKSPACE}/.. -type d -exec ls -al {} \;
       
       
