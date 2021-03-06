@@ -39,6 +39,6 @@ jobs:
       run: mkdir -p ${GITHUB_WORKSPACE}/target
       
     - name: Show files
-      run: find ${GITHUB_WORKSPACE} -type f -exec ls -al {} \;
+      run: find ${GITHUB_WORKSPACE} -type d -exec ls -al {} \;
       
       
