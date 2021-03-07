@@ -27,7 +27,6 @@ use Thucke\ThRating\Service\CookieService;
 use Thucke\ThRating\Service\ExtensionConfigurationService;
 use Thucke\ThRating\Service\ExtensionHelperService;
 use Thucke\ThRating\Service\ExtensionManagementService;
-use Thucke\ThRating\Service\JsonService;
 use Thucke\ThRating\Service\RichSnippetService;
 use Thucke\ThRating\View\JsonView;
 use TYPO3\CMS\Core\Database\ConnectionPool;
@@ -1001,7 +1000,7 @@ class VoteController extends ActionController
 
             /** @var \Thucke\ThRating\Domain\Model\Stepconf $stepConf */
             foreach ($vote->getRating()->getRatingobject()->getStepconfs() as $i => $stepConf) {
-                                /** @noinspection PhpElementIsNotAvailableInCurrentPhpVersionInspection */
+                /** @noinspection PhpElementIsNotAvailableInCurrentPhpVersionInspection */
                 $key = utf8_encode(
                     $this->jsonService->encodeToJson([
                         'value' => $stepConf->getUid(),
