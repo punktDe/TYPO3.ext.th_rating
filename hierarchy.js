@@ -35,8 +35,8 @@ var hierarchy =
       [ "Vote", "classThucke_1_1ThRating_1_1Domain_1_1Model_1_1Vote.html", null ]
     ] ],
     [ "AbstractValidator", null, [
-      [ "RatingobjectValidator", "classThucke_1_1ThRating_1_1Domain_1_1Validator_1_1RatingobjectValidator.html", null ],
       [ "RatingValidator", "classThucke_1_1ThRating_1_1Domain_1_1Validator_1_1RatingValidator.html", null ],
+      [ "RatingobjectValidator", "classThucke_1_1ThRating_1_1Domain_1_1Validator_1_1RatingobjectValidator.html", null ],
       [ "StepconfValidator", "classThucke_1_1ThRating_1_1Domain_1_1Validator_1_1StepconfValidator.html", null ],
       [ "StepnameValidator", "classThucke_1_1ThRating_1_1Domain_1_1Validator_1_1StepnameValidator.html", null ],
       [ "VoteValidator", "classThucke_1_1ThRating_1_1Domain_1_1Validator_1_1VoteValidator.html", null ]
@@ -62,15 +62,17 @@ var hierarchy =
       [ "VoterRepository", "classThucke_1_1ThRating_1_1Domain_1_1Repository_1_1VoterRepository.html", null ]
     ] ],
     [ "FunctionalTestCase", null, [
-      [ "RatingobjectRepositoryTest", "classThucke_1_1ThRating_1_1Tests_1_1Functional_1_1Domain_1_1Repository_1_1RatingobjectRepositoryTest.html", null ],
+      [ "JsonServiceTest", "classThucke_1_1ThRating_1_1Service_1_1JsonServiceTest.html", null ],
+      [ "RatingobjectTest", "classThucke_1_1ThRating_1_1Tests_1_1Functional_1_1Domain_1_1Model_1_1RatingobjectTest.html", null ],
       [ "RatingRepositoryTest", "classThucke_1_1ThRating_1_1Tests_1_1Functional_1_1Domain_1_1Repository_1_1RatingRepositoryTest.html", null ],
+      [ "RatingobjectRepositoryTest", "classThucke_1_1ThRating_1_1Tests_1_1Functional_1_1Domain_1_1Repository_1_1RatingobjectRepositoryTest.html", null ],
       [ "StepconfRepositoryTest", "classThucke_1_1ThRating_1_1Tests_1_1Functional_1_1Domain_1_1Repository_1_1StepconfRepositoryTest.html", null ],
       [ "StepnameRepositoryTest", "classThucke_1_1ThRating_1_1Tests_1_1Functional_1_1Domain_1_1Repository_1_1StepnameRepositoryTest.html", null ],
       [ "ExtensionManagementServiceTest", "classThucke_1_1ThRating_1_1Tests_1_1Functional_1_1Service_1_1ExtensionManagementServiceTest.html", null ]
     ] ],
     [ "Repository", null, [
-      [ "RatingobjectRepository", "classThucke_1_1ThRating_1_1Domain_1_1Repository_1_1RatingobjectRepository.html", null ],
       [ "RatingRepository", "classThucke_1_1ThRating_1_1Domain_1_1Repository_1_1RatingRepository.html", null ],
+      [ "RatingobjectRepository", "classThucke_1_1ThRating_1_1Domain_1_1Repository_1_1RatingobjectRepository.html", null ],
       [ "StepconfRepository", "classThucke_1_1ThRating_1_1Domain_1_1Repository_1_1StepconfRepository.html", null ],
       [ "StepnameRepository", "classThucke_1_1ThRating_1_1Domain_1_1Repository_1_1StepnameRepository.html", null ],
       [ "VoteRepository", "classThucke_1_1ThRating_1_1Domain_1_1Repository_1_1VoteRepository.html", null ]
@@ -82,12 +84,14 @@ var hierarchy =
         [ "ExtensionConfigurationService", "classThucke_1_1ThRating_1_1Service_1_1ExtensionConfigurationService.html", null ],
         [ "ExtensionHelperService", "classThucke_1_1ThRating_1_1Service_1_1ExtensionHelperService.html", null ],
         [ "ExtensionManagementService", "classThucke_1_1ThRating_1_1Service_1_1ExtensionManagementService.html", null ],
+        [ "JsonService", "classThucke_1_1ThRating_1_1Service_1_1JsonService.html", null ],
         [ "RichSnippetService", "classThucke_1_1ThRating_1_1Service_1_1RichSnippetService.html", null ]
       ] ]
     ] ],
     [ "UnitTestCase", null, [
-      [ "RatingTest", "classThucke_1_1ThRating_1_1Tests_1_1Domain_1_1Model_1_1RatingTest.html", null ],
-      [ "RatingobjectTest", "classThucke_1_1ThRating_1_1Tests_1_1Unit_1_1Domain_1_1Model_1_1RatingobjectTest.html", null ],
+      [ "RatingTest", "classThucke_1_1ThRating_1_1Tests_1_1Domain_1_1Model_1_1RatingTest.html", null ]
+    ] ],
+    [ "UnitTestCase", null, [
       [ "DeprecationHelperUtilityTest", "classThucke_1_1ThRating_1_1Tests_1_1Unit_1_1Utility_1_1DeprecationHelperUtilityTest.html", null ]
     ] ],
     [ "ViewHelperBaseTestcase", null, [

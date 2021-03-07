@@ -4,6 +4,7 @@ var classThucke_1_1ThRating_1_1Service_1_1AccessControlService =
     [ "getFrontendUser", "classThucke_1_1ThRating_1_1Service_1_1AccessControlService.html#ad6b5e000412e727815d0d0b28c12c909", null ],
     [ "getFrontendUserGroups", "classThucke_1_1ThRating_1_1Service_1_1AccessControlService.html#a85cbfcf914c02cc38e95fc313c81028e", null ],
     [ "getFrontendUserUid", "classThucke_1_1ThRating_1_1Service_1_1AccessControlService.html#ac902eb5ea667016b5388dee6617f932e", null ],
+    [ "hasLoggedInFrontendUser", "classThucke_1_1ThRating_1_1Service_1_1AccessControlService.html#a6d0428e006f90a42e23f4d7d75d46f00", null ],
     [ "injectContext", "classThucke_1_1ThRating_1_1Service_1_1AccessControlService.html#ac0153b9c846e82969492f98be5608ff3", null ],
     [ "injectFrontendUserRepository", "classThucke_1_1ThRating_1_1Service_1_1AccessControlService.html#a980860a037528ff787a0cdf9821bdabc", null ],
     [ "injectVoterRepository", "classThucke_1_1ThRating_1_1Service_1_1AccessControlService.html#ad2950d1b71270950bc19914f2b5e4479", null ],

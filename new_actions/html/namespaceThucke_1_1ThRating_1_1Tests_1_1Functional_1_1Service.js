@@ -1,4 +1,0 @@
-var namespaceThucke_1_1ThRating_1_1Tests_1_1Functional_1_1Service =
-[
-    [ "ExtensionManagementServiceTest", "classThucke_1_1ThRating_1_1Tests_1_1Functional_1_1Service_1_1ExtensionManagementServiceTest.html", "classThucke_1_1ThRating_1_1Tests_1_1Functional_1_1Service_1_1ExtensionManagementServiceTest" ]
-];
