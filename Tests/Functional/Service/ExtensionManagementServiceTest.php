@@ -46,7 +46,7 @@ class ExtensionManagementServiceTest extends FunctionalTestCase
     protected $loggingServiceMock;
 
     /**
-     * @var []
+     * @var array
      */
     protected $testRatingObject = [
         'ratetable' =>'ExtTestTable',
