@@ -48,8 +48,8 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "AbstractExtensionService_8php.html",
-"classThucke_1_1ThRating_1_1Domain_1_1Model_1_1Stepconf.html#ab8b00ef2f6d54aea6573d8cfed290a3b",
-"classThucke_1_1ThRating_1_1Tests_1_1Functional_1_1Domain_1_1Repository_1_1RatingobjectRepositoryTest.html#a0bc688732d2b3b162ffebaf7812e78da"
+"classThucke_1_1ThRating_1_1Domain_1_1Model_1_1Stepconf.html#a7f4596b82b61cbb07caf84c9b7788789",
+"classThucke_1_1ThRating_1_1Tests_1_1Functional_1_1Domain_1_1Repository_1_1RatingRepositoryTest.html#a73a1b0348919b6755e4f69dcc70eba64"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';
