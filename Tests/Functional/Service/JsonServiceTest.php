@@ -1,5 +1,12 @@
 <?php
 
+/*
+ * This file is part of the package thucke/th-rating.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE file that was distributed with this source code.
+ */
+
 namespace Thucke\ThRating\Service;
 
 use TYPO3\CMS\Core\Log\Logger;
@@ -17,6 +24,12 @@ class JsonServiceTest extends FunctionalTestCase
      * @var JsonService
      */
     protected $subject;
+
+
+    /**
+     * @var \PHPUnit\Framework\MockObject\MockObject
+     */
+    protected $loggingServiceMock;
 
     protected function setUp(): void
     {
@@ -50,7 +63,7 @@ class JsonServiceTest extends FunctionalTestCase
     public function encodeArrayToJson(): void
     {
         $expectedJson = '["foo","bar","baz","blong"]';
-        $sourceArray = ["foo","bar","baz","blong"];
+        $sourceArray = ['foo', 'bar', 'baz', 'blong'];
         self::assertSame($expectedJson, $this->subject->encodeToJson($sourceArray));
     }
 
@@ -60,11 +73,11 @@ class JsonServiceTest extends FunctionalTestCase
     public function decodeJson(): void
     {
         $expectedArray = [
-            a => 1,
-            b => 2,
-            c => 3,
-            d => 4,
-            e => 5
+            'a' => 1,
+            'b' => 2,
+            'c' => 3,
+            'd' => 4,
+            'e' => 5
         ];
         $sourceJson = '{"a":1,"b":2,"c":3,"d":4,"e":5}';
         self::assertSame($expectedArray, $this->subject->decodeJsonToArray($sourceJson));

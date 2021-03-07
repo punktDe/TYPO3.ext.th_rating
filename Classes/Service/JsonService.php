@@ -34,14 +34,17 @@ class JsonService extends AbstractExtensionService
             try {
                 return json_encode($content, JSON_THROW_ON_ERROR);
             } catch (\JsonException $e) {
-                $this->logger->log(LogLevel::WARNING,
+                $this->logger->log(
+                    LogLevel::WARNING,
                     LocalizationUtility::translate('system.warning.json.encode', 'ThRating', [
                             1 => $content,
-                        ]), [
+                        ]),
+                    [
                         'errorCode' => 1615051494,
                         'JSON' => $content,
                         'Exception' => $e,
-                    ]);
+                    ]
+                );
             }
         }
         return false;
@@ -51,23 +54,26 @@ class JsonService extends AbstractExtensionService
      * Encode a string to JSON
      * Log a warning on error
      *
-     * @param $content
+     * @param string $content
      * @return array|false  The domain to be used on setting cookies
      */
-    public function decodeJsonToArray($content)
+    public function decodeJsonToArray(string $content)
     {
         if (!empty($content)) {
             try {
                 return json_decode($content, true, 512, JSON_THROW_ON_ERROR);
             } catch (\JsonException $e) {
-                $this->logger->log(LogLevel::WARNING,
+                $this->logger->log(
+                    LogLevel::WARNING,
                     LocalizationUtility::translate('system.warning.json.encode', 'ThRating', [
                         1 => $content,
-                    ]), [
+                    ]),
+                    [
                         'errorCode' => 1615051494,
                         'JSON' => $content,
                         'Exception' => $e,
-                    ]);
+                    ]
+                );
             }
         }
         return false;
