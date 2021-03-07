@@ -1,31 +1,27 @@
 <?php
-declare(strict_types=1);
-namespace Thucke\ThRating\Tests\Functional\Service;
+declare(strict_types = 1);
 
 /*
- * This file is part of the TYPO3 CMS project.
- *
- * It is free software; you can redistribute it and/or modify it under
- * the terms of the GNU General Public License, either version 2
- * of the License, or any later version.
+ * This file is part of the package thucke/th-rating.
  *
  * For the full copyright and license information, please read the
- * LICENSE.txt file that was distributed with this source code.
- *
- * The TYPO3 project - inspiring people to share!
+ * LICENSE file that was distributed with this source code.
  */
+
+namespace Thucke\ThRating\Tests\Functional\Service;
 
 use Thucke\ThRating\Domain\Model\Ratingobject;
 use Thucke\ThRating\Service\ExtensionManagementService;
 use Thucke\ThRating\Service\LoggingService;
-use Nimut\TestingFramework\TestCase\FunctionalTestCase;
 use TYPO3\CMS\Core\Log\Logger;
+use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 /**
  * Test case.
  */
 class ExtensionManagementServiceTest extends FunctionalTestCase
 {
+
     /**
      * @var string[]
      */
@@ -40,17 +36,17 @@ class ExtensionManagementServiceTest extends FunctionalTestCase
     protected $coreExtensionsToLoad = ['extbase', 'fluid'];
 
     /**
-     * @var \Thucke\ThRating\Service\ExtensionHelperService|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface
+     * @var \Thucke\ThRating\Service\ExtensionHelperService
      */
     protected $extensionHelperServiceMock;
 
     /**
-     * @var \Thucke\ThRating\Service\LoggingService|\TYPO3\CMS\Core\Tests\AccessibleObjectInterface
+     * @var \Thucke\ThRating\Service\LoggingService
      */
     protected $loggingServiceMock;
 
     /**
-     * @var []
+     * @var array
      */
     protected $testRatingObject = [
         'ratetable' =>'ExtTestTable',
@@ -68,14 +64,14 @@ class ExtensionManagementServiceTest extends FunctionalTestCase
         parent::setUp();
         $extAbsPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('th_rating');
 
-        $this->importDataSet($extAbsPath.'/Tests/Functional/Fixtures/Database/pages.xml');
+        $this->importDataSet($extAbsPath . '/Tests/Functional/Fixtures/Database/pages.xml');
 
         $this->setUpFrontendRootPage(
             1,
             [
-                'EXT:fluid_styled_content/Configuration/TypoScript/setup.txt',
-                $extAbsPath.'/Configuration/TypoScript/setup.typoscript',
-                $extAbsPath.'/Tests/Functional/Fixtures/Frontend/Basic.typoscript',
+                'EXT:fluid_styled_content/Configuration/TypoScript/setup.typoscript',
+                $extAbsPath . '/Configuration/TypoScript/setup.typoscript',
+                $extAbsPath . '/Tests/Functional/Fixtures/Frontend/Basic.typoscript',
             ]
         );
 
@@ -86,17 +82,14 @@ class ExtensionManagementServiceTest extends FunctionalTestCase
         $this->subject->injectExtensionHelperService($this->extensionHelperServiceMock);
     }
 
-    /**
-     * @return void
-     */
     private function prepareLoggingServiceMock(): void
     {
-        $loggerMock = $this->getMockBuilder( Logger::class)
+        $loggerMock = $this->getMockBuilder(Logger::class)
             ->setConstructorArgs(['MockLogger'])
             ->setMethods(['log'])
             ->getMock();
 
-        $this->loggingServiceMock = $this->getMockBuilder( LoggingService::class)
+        $this->loggingServiceMock = $this->getMockBuilder(LoggingService::class)
             ->disableOriginalConstructor()
             ->setMethods(['getLogger'])
             ->getMock();
@@ -105,11 +98,10 @@ class ExtensionManagementServiceTest extends FunctionalTestCase
             ->willReturn($loggerMock);
     }
 
-
     /**
      * @return Ratingobject
      */
-    private function getTestedRatingobject():Ratingobject
+    private function getTestedRatingobject(): Ratingobject
     {
         $ratingobject = new Ratingobject(
             $this->testRatingObject['ratetable'],
@@ -119,9 +111,6 @@ class ExtensionManagementServiceTest extends FunctionalTestCase
         return $ratingobject;
     }
 
-    /**
-     * @return void
-     */
     private function prepareExtensionHelperServiceMock(): void
     {
         $this->extensionHelperServiceMock = $this->getMockBuilder(
@@ -150,5 +139,4 @@ class ExtensionManagementServiceTest extends FunctionalTestCase
         $this->assertObjectHasAttribute( 'sdfsdfg', $createdRatingobject); */
         $this->assertTrue(true);
     }
-
 }

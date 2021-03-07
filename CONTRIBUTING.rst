@@ -30,6 +30,14 @@ Make changes (create pull requests)
 * See `Writing Documentation <https://docs.typo3.org/typo3cms/HowToDocument/>`__ for further
   information
 
+
+Translations
+------------
+Just check `Crowdin <https://crowdin.com/project/typo3-extension-thrating>`__ if you're interested.
+If it happens that your favorite language is missing, please don't hesitate to contact the extension author
+asking to activate it.
+
+
 Get help
 --------
 

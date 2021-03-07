@@ -1,41 +1,25 @@
 <?php
+
+/*
+ * This file is part of the package thucke/th-rating.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE file that was distributed with this source code.
+ */
+
 namespace Thucke\ThRating\Domain\Model;
 
 use Thucke\ThRating\Domain\Repository\RatingRepository;
 use Thucke\ThRating\Domain\Repository\StepconfRepository;
 use Thucke\ThRating\Service\ExtensionHelperService;
+use TYPO3\CMS\Extbase\Annotation as Extbase;
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
-use TYPO3\CMS\Extbase\Annotation as Extbase;
-
-/***************************************************************
-*  Copyright notice
-*
-*  (c) 2010 Thomas Hucke <thucke@web.de>
-*  All rights reserved
-*
-*  This script is part of the TYPO3 project. The TYPO3 project is
-*  free software; you can redistribute it and/or modify
-*  it under the terms of the GNU General Public License as published by
-*  the Free Software Foundation; either version 2 of the License, or
-*  (at your option) any later version.
-*
-*  The GNU General Public License can be found at
-*  http://www.gnu.org/copyleft/gpl.html.
-*
-*  This script is distributed in the hope that it will be useful,
-*  but WITHOUT ANY WARRANTY; without even the implied warranty of
-*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-*  GNU General Public License for more details.
-*
-*  This copyright notice MUST APPEAR in all copies of the script!
-***************************************************************/
 
 /**
  * Aggregate object for rating of content objects
  *
  * @version  $Id:$
- * @author  Thomas Hucke <thucke@web.de>
  * @copyright  Copyright belongs to the respective authors
  * @license  http://opensource.org/licenses/gpl-license.php GNU Public License, version 2
  * @entity
@@ -136,10 +120,12 @@ class Ratingobject extends AbstractEntity
     {
         //Initialize rating storage if ratingobject is new
         if (!is_object($this->ratings)) {
+            /* @phpstan-ignore-next-line */
             $this->ratings = new ObjectStorage();
         }
         //Initialize stepconf storage if ratingobject is new
         if (!is_object($this->stepconfs)) {
+            /* @phpstan-ignore-next-line */
             $this->stepconfs = new ObjectStorage();
         }
     }
@@ -212,6 +198,7 @@ class Ratingobject extends AbstractEntity
      */
     public function removeAllRatings(): void
     {
+        /* @phpstan-ignore-next-line */
         $this->ratings = new ObjectStorage();
     }
 
@@ -235,7 +222,6 @@ class Ratingobject extends AbstractEntity
      * @param \TYPO3\CMS\Extbase\Persistence\ObjectStorage<\Thucke\ThRating\Domain\Model\Stepconf> $stepconfs
      *        The step configurations for this ratingobject
      */
-    /** @noinspection PhpUnused */
     public function setStepconfs(ObjectStorage $stepconfs)
     {
         $this->stepconfs = $stepconfs;

@@ -1,5 +1,12 @@
 <?php
-/** @noinspection PhpFullyQualifiedNameUsageInspection */
+
+/*
+ * This file is part of the package thucke/th-rating.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE file that was distributed with this source code.
+ */
+
 namespace Thucke\ThRating\Service;
 
 use TYPO3\CMS\Core\Database\ConnectionPool;
@@ -7,29 +14,6 @@ use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Log\LogLevel;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
-
-/***************************************************************
- *  Copyright notice
- *
- *  (c) 2018 Thomas Hucke <thucke@web.de>
- *  All rights reserved
- *
- *  This script is part of the TYPO3 project. The TYPO3 project is
- *  free software; you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation; either version 2 of the License, or
- *  (at your option) any later version.
- *
- *  The GNU General Public License can be found at
- *  http://www.gnu.org/copyleft/gpl.html.
- *
- *  This script is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- *  GNU General Public License for more details.
- *
- *  This copyright notice MUST APPEAR in all copies of the script!
- ***************************************************************/
 
 /**
  * The voter
@@ -101,18 +85,16 @@ class RichSnippetService extends AbstractExtensionService
     }
 
     /**
-     * @return string
+     * @return string|false
      */
-    /** @noinspection PhpUnused */
     public function getRichSnippetConfig()
     {
-        return json_encode($this->richSnippetConfig);
+        return json_encode($this->richSnippetConfig, JSON_THROW_ON_ERROR);
     }
 
     /**
      * @return string
      */
-    /** @noinspection PhpUnused */
     public function getSchema()
     {
         return $this->schema;
@@ -142,8 +124,7 @@ class RichSnippetService extends AbstractExtensionService
     /**
      * @return string
      */
-    /** @noinspection PhpUnused */
-    public function getAnchor()
+    public function getAnchor(): string
     {
         return $this->anchor;
     }
@@ -151,7 +132,7 @@ class RichSnippetService extends AbstractExtensionService
     /**
      * @param string $anchor
      */
-    public function setAnchor($anchor)
+    public function setAnchor($anchor): void
     {
         $this->anchor = $anchor;
     }
@@ -159,7 +140,7 @@ class RichSnippetService extends AbstractExtensionService
     /**
      * @param mixed $name
      */
-    public function setName($name)
+    public function setName($name): void
     {
         $this->name = $name;
     }
@@ -167,7 +148,7 @@ class RichSnippetService extends AbstractExtensionService
     /**
      * @return string
      */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }
@@ -175,7 +156,7 @@ class RichSnippetService extends AbstractExtensionService
     /**
      * @return string
      */
-    public function getDescription()
+    public function getDescription(): string
     {
         return $this->description;
     }
@@ -183,7 +164,7 @@ class RichSnippetService extends AbstractExtensionService
     /**
      * @param string $description
      */
-    public function setDescription($description)
+    public function setDescription($description): void
     {
         $this->description = $description;
     }
@@ -191,9 +172,9 @@ class RichSnippetService extends AbstractExtensionService
     /**
      * @param int $uid
      * @throws \Thucke\ThRating\Exception\InvalidAggregateRatingSchemaTypeException
-     * @return string
+     * @return RichSnippetService
      */
-    public function getRichSnippetObject($uid)
+    public function getRichSnippetObject($uid): self
     {
         $this->logger->log(LogLevel::DEBUG, 'getRichSnippetObject Entry point');
         $this->setSchema($this->richSnippetConfig['richSnippetFields']['aggregateRatingSchemaType']);

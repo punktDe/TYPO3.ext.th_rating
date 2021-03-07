@@ -1,43 +1,27 @@
 <?php
+
+/*
+ * This file is part of the package thucke/th-rating.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE file that was distributed with this source code.
+ */
+
 namespace Thucke\ThRating\Domain\Model;
 
 use Thucke\ThRating\Domain\Repository\VoteRepository;
 use Thucke\ThRating\Service\ExtensionHelperService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Annotation as Extbase;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManager;
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
-use TYPO3\CMS\Extbase\Annotation as Extbase;
-
-/***************************************************************
-*  Copyright notice
-*
-*  (c) 2010 Thomas Hucke <thucke@web.de>
-*  All rights reserved
-*
-*  This script is part of the TYPO3 project. The TYPO3 project is
-*  free software; you can redistribute it and/or modify
-*  it under the terms of the GNU General Public License as published by
-*  the Free Software Foundation; either version 2 of the License, or
-*  (at your option) any later version.
-*
-*  The GNU General Public License can be found at
-*  http://www.gnu.org/copyleft/gpl.html.
-*
-*  This script is distributed in the hope that it will be useful,
-*  but WITHOUT ANY WARRANTY; without even the implied warranty of
-*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-*  GNU General Public License for more details.
-*
-*  This copyright notice MUST APPEAR in all copies of the script!
-***************************************************************/
 
 /**
  * Model for object rating
  *
- * @author  Thomas Hucke <thucke@web.de>
  * @copyright  Copyright belongs to the respective authors
  * @license  http://opensource.org/licenses/gpl-license.php GNU Public License, version 2
  * @entity
@@ -165,6 +149,7 @@ class Rating extends AbstractEntity
 
         //Initialize vote storage if rating is new
         if (!is_object($this->votes)) {
+            /* @phpstan-ignore-next-line */
             $this->votes = new ObjectStorage();
         }
     }
@@ -254,6 +239,7 @@ class Rating extends AbstractEntity
     /** @noinspection PhpUnused */
     public function removeAllVotes()
     {
+        /* @phpstan-ignore-next-line */
         $this->votes = new ObjectStorage();
         unset($this->currentrates);
     }
@@ -295,7 +281,7 @@ class Rating extends AbstractEntity
         }
         $currentratesDecoded['numAllVotes'] = $numAllVotes;
         $currentratesDecoded['anonymousVotes'] = $numAllAnonymousVotes;
-        $this->currentrates = json_encode($currentratesDecoded);
+        $this->currentrates = json_encode($currentratesDecoded, JSON_THROW_ON_ERROR);
     }
 
     /**
@@ -308,7 +294,7 @@ class Rating extends AbstractEntity
         if (empty($this->currentrates)) {
             $this->checkCurrentrates(); //initialize entry
         }
-        $currentratesDecoded = json_decode($this->currentrates, true);
+        $currentratesDecoded = json_decode($this->currentrates, true, 512, JSON_THROW_ON_ERROR);
         $currentratesDecoded['numAllVotes']++;
         if ($voting->isAnonymous()) {
             $currentratesDecoded['anonymousVotes']++;
@@ -320,7 +306,7 @@ class Rating extends AbstractEntity
         $votingStepweight = $votingStep->getStepweight();
         $currentratesDecoded['weightedVotes'][$votingSteporder] += $votingStepweight;
         $currentratesDecoded['sumWeightedVotes'][$votingSteporder] += $votingStepweight * $votingSteporder;
-        $this->currentrates = json_encode($currentratesDecoded);
+        $this->currentrates = json_encode($currentratesDecoded, JSON_THROW_ON_ERROR);
     }
 
     /**
@@ -333,7 +319,7 @@ class Rating extends AbstractEntity
         if (empty($this->currentrates)) {
             $this->checkCurrentrates(); //initialize entry
         }
-        $currentratesDecoded = json_decode($this->currentrates, true);
+        $currentratesDecoded = json_decode($this->currentrates, true, 512, JSON_THROW_ON_ERROR);
         $currentratesDecoded['numAllVotes']--;
         if ($voting->isAnonymous()) {
             $currentratesDecoded['anonymousVotes']--;
@@ -345,7 +331,7 @@ class Rating extends AbstractEntity
         $votingStepweight = $votingStep->getStepweight();
         $currentratesDecoded['weightedVotes'][$votingSteporder] -= $votingStepweight;
         $currentratesDecoded['sumWeightedVotes'][$votingSteporder] -= $votingStepweight * $votingSteporder;
-        $this->currentrates = json_encode($currentratesDecoded);
+        $this->currentrates = json_encode($currentratesDecoded, JSON_THROW_ON_ERROR);
     }
 
     /**
@@ -355,10 +341,10 @@ class Rating extends AbstractEntity
      */
     public function getCurrentrates(): array
     {
-        $currentratesDecoded = json_decode($this->currentrates, true);
+        $currentratesDecoded = json_decode($this->currentrates, true, 512, JSON_THROW_ON_ERROR);
         if (empty($currentratesDecoded['numAllVotes'])) {
             $this->checkCurrentrates();
-            $currentratesDecoded = json_decode($this->currentrates, true);
+            $currentratesDecoded = json_decode($this->currentrates, true, 512, JSON_THROW_ON_ERROR);
         }
         $numAllVotes = $currentratesDecoded['numAllVotes'];
         if (!empty($numAllVotes)) {
@@ -400,10 +386,9 @@ class Rating extends AbstractEntity
     /**
      * Returns the calculated rating in percent
      *
-     * @return string
+     * @return int
      */
-    /** @noinspection PhpUnused */
-    public function getCalculatedRate(): string
+    public function getCalculatedRate(): int
     {
         $currentrate = $this->getCurrentrates();
         if (!empty($currentrate['weightedVotes'])) {
@@ -411,7 +396,6 @@ class Rating extends AbstractEntity
         } else {
             $calculatedRate = 0;
         }
-
         return $calculatedRate;
     }
 }

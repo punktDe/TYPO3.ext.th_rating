@@ -1,3 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en"
+	xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+	xmlns:thr="Thucke\ThRating\ViewHelpers"
+	data-namespace-typo3-fluid="true">
+
 <f:comment><!-- display check --></f:comment>
 <f:if condition="{settings.fluid.partials.usersRating.showTextInfo}"><f:then>
 	<span data-role="onVotingActive" style="{f:if(condition: voting, then: '', else: 'display:none;')}">
@@ -9,7 +15,7 @@
 	<div class='tx-thrating-ratinglinks thRating-RObj{ratingobject.uid}-{ratingName}'>
 		<ul class='thRating thRating-{ratingClass}'>
 			<li class="current-rating {f:if(condition: '{0: ratingClass} == {0: \'tilt\'}', then: 'tx_thrating_ajax-usersRateHeight', else: 'tx_thrating_ajax-usersRateWidth')}"
-				style="{f:if(condition: '{0: ratingClass} == {0: \'tilt\'}', then: 'height:{usersRate}', else: 'width:{usersRate}')}" title="<f:translate key='fluid.partial.usersRating.usersRate' default='fluid.partial.usersRating.usersRate' arguments='{1:voting, 2:voting.vote.steporder, 3:stepCount}'/>">
+				style="{f:if(condition: '{0: ratingClass} == {0: \'tilt\'}', then: 'height:{usersRate}', else: 'width:{usersRate}')}" title="<f:translate key='fluid.partial.usersRating.usersRate.title' default='fluid.partial.usersRating.usersRate.title' arguments='{1:voting, 2:voting.vote.steporder, 3:stepCount}'/>">
 				<f:translate key='fluid.partial.usersRating.usersRate' default='fluid.partial.usersRating.usersRate' arguments='{1:voting, 2:voting.vote.steporder, 3:stepCount}'/>
 			</li>
 		</ul>

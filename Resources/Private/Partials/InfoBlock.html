@@ -1,3 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en"
+	xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+	xmlns:thr="Thucke\ThRating\ViewHelpers"
+	data-namespace-typo3-fluid="true">
+
 <f:comment><!-- display check --></f:comment>
 <span data-role="onVotingHidden" style="{f:if(condition: voting, then: 'display:none;', else: '')}">
 	<f:if condition="{settings.fluid.partials.infoBlock.showAnonymousVotes}"><f:then>
@@ -10,7 +16,7 @@
 		<f:if condition="{ratingName}"><f:then>
 			<f:comment><!--This is a special entry for the ratinglink action --></f:comment>
 			<f:translate key='fluid.partial.infoBlock.clickRatingBar' default='fluid.partial.infoBlock.clickRatingBar'/>
-		</f:then></f:if>	
+		</f:then></f:if>
 	</span>
 	<span data-role="onVoterHidden" style="{f:if(condition: voter, then: 'display:none;', else: '')}">
 		<f:translate key='fluid.partial.infoBlock.logonForRatings' default='fluid.partial.infoBlock.logonForRatings'/>

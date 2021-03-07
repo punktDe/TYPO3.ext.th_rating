@@ -1,42 +1,26 @@
 <?php
+
+/*
+ * This file is part of the package thucke/th-rating.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE file that was distributed with this source code.
+ */
+
 namespace Thucke\ThRating\Domain\Model;
 
 use Thucke\ThRating\Domain\Repository\StepconfRepository;
 use Thucke\ThRating\Domain\Repository\StepnameRepository;
 use Thucke\ThRating\Service\ExtensionHelperService;
+use TYPO3\CMS\Extbase\Annotation as Extbase;
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
 use TYPO3\CMS\Extbase\Persistence\Generic\LazyLoadingProxy;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
-use TYPO3\CMS\Extbase\Annotation as Extbase;
-
-/***************************************************************
-*  Copyright notice
-*
-*  (c) 2010 Thomas Hucke <thucke@web.de>
-*  All rights reserved
-*
-*  This script is part of the TYPO3 project. The TYPO3 project is
-*  free software; you can redistribute it and/or modify
-*  it under the terms of the GNU General Public License as published by
-*  the Free Software Foundation; either version 2 of the License, or
-*  (at your option) any later version.
-*
-*  The GNU General Public License can be found at
-*  http://www.gnu.org/copyleft/gpl.html.
-*
-*  This script is distributed in the hope that it will be useful,
-*  but WITHOUT ANY WARRANTY; without even the implied warranty of
-*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-*  GNU General Public License for more details.
-*
-*  This copyright notice MUST APPEAR in all copies of the script!
-***************************************************************/
 
 /**
  * Model for ratingstep configuration
  *
- * @author  Thomas Hucke <thucke@web.de>
  * @copyright  Copyright belongs to the respective authors
  * @license  http://opensource.org/licenses/gpl-license.php GNU Public License, version 2
  * @entity
@@ -62,8 +46,9 @@ class Stepconf extends AbstractEntity
     /**
      * The weight of this config entry
      *
+     * @Extbase\Validate("Integer")
      * @Extbase\Validate("NumberRange", options={"minimum": 1})
-     * @var float  default is 1 which is equal weight
+     * @var int default is 1 which is equal weight
      */
     protected $stepweight;
 
@@ -93,7 +78,6 @@ class Stepconf extends AbstractEntity
     /**
      * @param \TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager
      */
-    /** @noinspection PhpUnused */
     public function injectObjectManager(ObjectManagerInterface $objectManager)
     {
         $this->objectManager = $objectManager;
@@ -107,7 +91,6 @@ class Stepconf extends AbstractEntity
     /**
      * @param \Thucke\ThRating\Domain\Repository\StepnameRepository $stepnameRepository
      */
-    /** @noinspection PhpUnused */
     public function injectStepnameRepository(StepnameRepository $stepnameRepository)
     {
         $this->stepnameRepository = $stepnameRepository;
@@ -121,7 +104,6 @@ class Stepconf extends AbstractEntity
     /**
      * @param \Thucke\ThRating\Service\ExtensionHelperService $extensionHelperService
      */
-    /** @noinspection PhpUnused */
     public function injectExtensionHelperService(ExtensionHelperService $extensionHelperService)
     {
         $this->extensionHelperService = $extensionHelperService;
@@ -130,7 +112,7 @@ class Stepconf extends AbstractEntity
     /**
      * Constructs a new stepconfig object
      * @param \Thucke\ThRating\Domain\Model\Ratingobject|null $ratingobject
-     * @param null $steporder
+     * @param int|null $steporder
      */
     public function __construct(Ratingobject $ratingobject = null, $steporder = null)
     {
@@ -150,6 +132,7 @@ class Stepconf extends AbstractEntity
     {
         //Initialize vote storage if rating is new
         if (!is_object($this->votes)) {
+            /* @phpstan-ignore-next-line */
             $this->votes = new ObjectStorage();
         }
     }
@@ -214,7 +197,6 @@ class Stepconf extends AbstractEntity
     public function getStepweight()
     {
         empty($this->stepweight) && $this->stepweight = $this->steporder;
-
         return $this->stepweight;
     }
 
@@ -235,15 +217,13 @@ class Stepconf extends AbstractEntity
             if (is_object($defaultLanguageObject)) {
                 //handle localization if an entry for the default language exists
                 $stepname->setL18nParent($defaultLanguageObject->getUid());
-            } else {
-                $stepname->setL18nParent(null);
-                $this->stepname = $stepname;
             }
             $this->stepnameRepository->add($stepname);
             $this->extensionHelperService->persistRepository(StepnameRepository::class, $stepname);
             $stepname->getStepconf()->getStepname();
             $this->extensionHelperService->persistRepository(StepconfRepository::class, $this);
             $this->extensionHelperService->clearDynamicCssFile();
+            $this->stepname = $stepname;
         } else {
             //warning - existing stepname entry for a language will not be overwritten
             $success = false;
@@ -257,8 +237,9 @@ class Stepconf extends AbstractEntity
      *
      * @return \Thucke\ThRating\Domain\Model\Stepname|null
      */
-    public function getStepname()
+    public function getStepname(): ?Stepname
     {
+        /* @phpstan-ignore-next-line */
         if ($this->stepname instanceof LazyLoadingProxy) {
             $this->stepname = $this->stepname->_loadRealInstance();
         }

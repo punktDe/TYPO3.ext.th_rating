@@ -1,0 +1,75 @@
+name: CI
+
+on: [ push, pull_request ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        typo3: [ ^9.5, ^10.4 ]
+        php: [ '7.4' ]
+        include:
+          - typo3: ^10.4
+            php: '7.4'
+            coverage: true
+          - typo3: ^10.4
+            php: '7.3'
+          - typo3: ^9.5
+            php: '7.4'
+          - typo3: ^9.5
+            php: '7.3'
+
+    steps:
+      - name: Start database server
+        run: sudo /etc/init.d/mysql start
+
+      - name: Checkout Code
+        uses: actions/checkout@v2
+
+      - name: Set up PHP version ${{ matrix.php }}
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          tools: composer:v2, php-cs-fixer
+
+      - name: Environment Check
+        run: |
+          php --version
+          composer --version
+
+      - name: Validate composer.json and composer.lock
+        run: composer validate
+
+      - name: Install dependencies with typo3/cms-core:${{ matrix.typo3 }}
+        run: |
+          composer require typo3/cms-core:${{ matrix.typo3 }} --no-progress
+          git checkout composer.json
+
+      - name: Info
+        run: composer info
+
+      - name: CGL
+        run: composer thucke:cgl
+
+      - name: PHPStan Classes
+        if: matrix.php > '7.2'
+        run: composer thucke:phpstan:classes
+
+      - name: Lint PHP
+        run: composer thucke:test:php:lint
+
+      - name: Unit Tests without coverage
+        run: composer thucke:test:php:unit
+
+      - name: Functional Tests without coverage
+        run: composer thucke:test:php:functional
+        env:
+          typo3DatabaseHost: 127.0.0.1
+          typo3DatabaseName: t3func
+          typo3DatabasePassword: root
+          typo3DatabaseUsername: root
+          TYPO3_CONEXT: Development

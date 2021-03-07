@@ -1,18 +1,13 @@
 <?php
-namespace Thucke\ThRating\Utility;
 
 /*
- * This file is part of the TYPO3 CMS project.
- *
- * It is free software; you can redistribute it and/or modify it under
- * the terms of the GNU General Public License, either version 2
- * of the License, or any later version.
+ * This file is part of the package thucke/th-rating.
  *
  * For the full copyright and license information, please read the
- * LICENSE.txt file that was distributed with this source code.
- *
- * The TYPO3 project - inspiring people to share!
+ * LICENSE file that was distributed with this source code.
  */
+
+namespace Thucke\ThRating\Utility;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\VersionNumberUtility;
@@ -26,6 +21,8 @@ class DeprecationHelperUtility
 {
 
     /**
+     * Checks if current TYPO3 version is lower than the given one
+     *
      * @param string $testVersion
      * @return bool|int
      */

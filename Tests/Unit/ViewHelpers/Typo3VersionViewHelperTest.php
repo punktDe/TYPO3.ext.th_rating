@@ -1,27 +1,23 @@
 <?php
-/** @noinspection PhpFullyQualifiedNameUsageInspection */
+
+/*
+ * This file is part of the package thucke/th-rating.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE file that was distributed with this source code.
+ */
 
 /** @noinspection PhpUnnecessaryFullyQualifiedNameInspection */
 namespace Thucke\ThRating\Tests\Unit;
 
-/*
- * This file is part of the TYPO3 extension Rating AX <EXT:th_rating>.
- *
- * It is free software; you can redistribute it and/or modify it under
- * the terms of the GNU General Public License, either version 2
- * of the License, or any later version.
- *
- * For the full copyright and license information, please read
- * LICENSE file that was distributed with this source code.
- */
-use Nimut\TestingFramework\MockObject\AccessibleMockObjectInterface;
-use Nimut\TestingFramework\TestCase\ViewHelperBaseTestcase;
 use Thucke\ThRating\ViewHelpers\Typo3VersionViewHelper;
 use TYPO3\CMS\Core\Utility\VersionNumberUtility;
+use TYPO3\TestingFramework\Core\AccessibleObjectInterface;
+use TYPO3\TestingFramework\Fluid\Unit\ViewHelpers\ViewHelperBaseTestcase;
 
 class Typo3VersionViewHelperTest extends ViewHelperBaseTestcase
 {
-    /** @var \PHPUnit_Framework_MockObject_MockObject|AccessibleMockObjectInterface|\Thucke\ThRating\ViewHelpers\Typo3VersionViewHelper */
+    /** @var \PHPUnit_Framework_MockObject_MockObject|AccessibleObjectInterface|\Thucke\ThRating\ViewHelpers\Typo3VersionViewHelper */
     protected $mockedViewHelper;
 
     /** @var string */

@@ -31,6 +31,11 @@
    :target: https://github.com/thucke/TYPO3.ext.th_rating/releases
    :alt: GitHub commits since latest release
 
+.. |Crowdin| image:: https://badges.crowdin.net/typo3-extension-thrating/localized.svg
+   :target: https://crowdin.com/project/typo3-extension-thrating
+   :alt: Crowdin translation status
+
+
 .. _readme:
 
 \|
@@ -40,12 +45,20 @@
 Rating AX
 =========
 
-|Latest Stable Version| |License| |Downloads| |PHP| |Issues| |New commits|
+|Latest Stable Version| |License| |Downloads| |PHP| |Issues| |New commits| |Crowdin|
 
 Guide to the TYPO3 extension to make ratings of any content object.
 
 :Repository:  https://github.com/thucke/TYPO3.ext.th_rating
 :Read online: https://docs.typo3.org/p/thucke/th-rating/master/en-us/
+
+Support welcome
+===============
+Please support this extension by doing some translations.
+
+Just check `Crowdin <https://crowdin.com/project/typo3-extension-thrating>`__ if you're interested.
+If it happens that your favorite language is missing, please don't hesitate to contact the extension author
+asking to activate it.
 
 Important updates
 =================
@@ -57,6 +70,7 @@ Because of that the following is not needed anymore:
 * dependency to the extension "static_info_tables"
 * website language system records
 
+Version 1.9.0 dropped support for PHP 7.2
 
 |phpstorm.png|
 

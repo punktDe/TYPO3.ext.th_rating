@@ -1,36 +1,19 @@
 <?php
-/** @noinspection PhpUnnecessaryFullyQualifiedNameInspection */
+
+/*
+ * This file is part of the package thucke/th-rating.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE file that was distributed with this source code.
+ */
+
 /** @noinspection PhpFullyQualifiedNameUsageInspection */
 namespace Thucke\ThRating\Service;
 
+use Thucke\ThRating\Domain\Model\Voter;
 use Thucke\ThRating\Exception\FeUserNotFoundException;
-use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Extbase\Domain\Repository\FrontendUserRepository;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
-use \Thucke\ThRating\Domain\Model\Voter;
-
-/***************************************************************
-*  Copyright notice
-*
-*  (c) 2013 Thomas Hucke <thucke@web.de>
-*  All rights reserved
-*
-*  This script is part of the TYPO3 project. The TYPO3 project is
-*  free software; you can redistribute it and/or modify
-*  it under the terms of the GNU General protected License as published by
-*  the Free Software Foundation; either version 2 of the License, or
-*  (at your option) any later version.
-*
-*  The GNU General protected License can be found at
-*  http://www.gnu.org/copyleft/gpl.html.
-*
-*  This script is distributed in the hope that it will be useful,
-*  but WITHOUT ANY WARRANTY; without even the implied warranty of
-*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-*  GNU General protected License for more details.
-*
-*  This copyright notice MUST APPEAR in all copies of the script!
-***************************************************************/
 
 /**
  * An access control service
@@ -88,9 +71,6 @@ class AccessControlService extends AbstractExtensionService
      */
     public function isLoggedIn(\TYPO3\CMS\Extbase\Domain\Model\FrontendUser $person = null): bool
     {
-        if ($person instanceof \TYPO3\CMS\Extbase\Persistence\Generic\LazyObjectStorage) {
-            $person->current();
-        }
         if (is_object($person)) {
             if ($person->getUid() &&
                     ($person->getUid() === $this->getFrontendUserUid())) {
@@ -115,7 +95,6 @@ class AccessControlService extends AbstractExtensionService
      */
     public function hasLoggedInFrontendUser(): bool
     {
-        /** @var Context $context */
         return $this->context->getPropertyFromAspect('frontend.user', 'isLoggedIn');
     }
 

@@ -16,11 +16,38 @@
 nbproject
 
 # some additional exclusions
-.php_cs.cache
 var/*
+.ssh/authorized_keys
+.ssh/id_rsa
 
 #exclusion according to https://docs.typo3.org/m/typo3/reference-coreapi/master/en-us/Testing/ExtensionTesting.html
 .Build/
 .idea/
 Build/testing-docker/.env
+
+
+# PHPStorm
+.idea
+
+# OSX
+.DS_Store
+
+# Composer
+vendor/
+bin/
+logs/
 composer.lock
+
+# Build stuff
+.build/
+.ddev/**/*.example
+.ddev/**/*.txt
+.ddev/commands/
+Documentation-*
+config/
+node_modules/
+var/
+
+# Cache
+*.cache
+

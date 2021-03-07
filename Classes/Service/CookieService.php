@@ -1,32 +1,16 @@
 <?php
-/** @noinspection PhpTraditionalSyntaxArrayLiteralInspection */
+
+/*
+ * This file is part of the package thucke/th-rating.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE file that was distributed with this source code.
+ */
+
 namespace Thucke\ThRating\Service;
 
 use TYPO3\CMS\Core\Log\LogLevel;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-
-/***************************************************************
-*  Copyright notice
-*
-*  (c) 2013 Thomas Hucke <thucke@web.de>
-*  All rights reserved
-*
-*  This script is part of the TYPO3 project. The TYPO3 project is
-*  free software; you can redistribute it and/or modify
-*  it under the terms of the GNU General protected License as published by
-*  the Free Software Foundation; either version 2 of the License, or
-*  (at your option) any later version.
-*
-*  The GNU General protected License can be found at
-*  http://www.gnu.org/copyleft/gpl.html.
-*
-*  This script is distributed in the hope that it will be useful,
-*  but WITHOUT ANY WARRANTY; without even the implied warranty of
-*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-*  GNU General protected License for more details.
-*
-*  This copyright notice MUST APPEAR in all copies of the script!
-***************************************************************/
 
 /**
  * Service for setting cookies like Typo3 does
@@ -70,9 +54,9 @@ class CookieService extends AbstractExtensionService
                 if ($matchCnt === false) {
                     $this->logger->log(
                         LogLevel::ERROR,
-                        'getCookieDomain: The regular expression for the cookie domain contains errors.'.
+                        'getCookieDomain: The regular expression for the cookie domain contains errors.' .
                         'The session is not shared across sub-domains.',
-                        ['cookieDomain' => $cookieDomain, 'errorCode' => 1399137882,]
+                        ['cookieDomain' => $cookieDomain, 'errorCode' => 1399137882]
                     );
                 } elseif ($matchCnt) {
                     $result = $match[0];
@@ -91,11 +75,11 @@ class CookieService extends AbstractExtensionService
      *
      * @param    string $cookieName identifier for the cookie
      * @param    string $cookieValue cookie value
-     * @param    int $cookieExpire expire time for the cookie
+     * @param    int $cookieExpire expire time for the cookie (UNIX timestamp)
      *
      * @throws Exception
      */
-    public function setVoteCookie($cookieName, $cookieValue, $cookieExpire = 0)
+    public function setVoteCookie($cookieName, $cookieValue, $cookieExpire = 0): void
     {
         // do not set session cookies
         if (!empty($cookieExpire)) {
@@ -104,8 +88,6 @@ class CookieService extends AbstractExtensionService
             $cookieDomain = $this->getCookieDomain();
             // If no cookie domain is set, use the base path:
             $cookiePath = ($cookieDomain ? '/' : GeneralUtility::getIndpEnv('TYPO3_SITE_PATH'));
-            // If the cookie lifetime is set, use it:
-            $cookieExpire = (int)$GLOBALS['EXEC_TIME'] + $cookieExpire;
             // Use the secure option when the current request is served by a secure connection:
             $cookieSecure = (bool)$settings['cookieSecure'] && GeneralUtility::getIndpEnv('TYPO3_SSL');
             // Deliver cookies only via HTTP and prevent possible XSS by JavaScript:
