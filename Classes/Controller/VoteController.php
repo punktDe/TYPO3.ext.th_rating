@@ -27,6 +27,7 @@ use Thucke\ThRating\Service\CookieService;
 use Thucke\ThRating\Service\ExtensionConfigurationService;
 use Thucke\ThRating\Service\ExtensionHelperService;
 use Thucke\ThRating\Service\ExtensionManagementService;
+use Thucke\ThRating\Service\JsonService;
 use Thucke\ThRating\Service\RichSnippetService;
 use Thucke\ThRating\View\JsonView;
 use TYPO3\CMS\Core\Database\ConnectionPool;
@@ -90,13 +91,24 @@ class VoteController extends ActionController
      * @var \Thucke\ThRating\Service\AccessControlService
      */
     protected $accessControlService;
-
     /**
      * @param \Thucke\ThRating\Service\AccessControlService $accessControlService
      */
     public function injectAccessControlService(AccessControlService $accessControlService): void
     {
         $this->accessControlService = $accessControlService;
+    }
+
+    /**
+     * @var \Thucke\ThRating\Service\JsonService
+     */
+    protected $jsonService;
+    /**
+     * @param \Thucke\ThRating\Service\JsonService $jsonService
+     */
+    public function injectJsonService(\Thucke\ThRating\Service\JsonService $jsonService)
+    {
+        $this->jsonService = $jsonService;
     }
 
     /**
@@ -273,7 +285,7 @@ class VoteController extends ActionController
             //read unique AJAX identification on AJAX request
             $this->ajaxSelections['ajaxRef'] = $this->request->getArgument(self::AJAX_REFERENCE_ID);
             /** @noinspection PhpElementIsNotAvailableInCurrentPhpVersionInspection */
-            $this->settings = json_decode($this->request->getArgument('settings'), true, 512, JSON_THROW_ON_ERROR);
+            $this->settings = $this->jsonService->decodeJsonToArray($this->request->getArgument('settings'));
             $frameworkConfiguration['settings'] = $this->settings;
             $this->logger->log(
                 LogLevel::INFO,
@@ -437,10 +449,11 @@ class VoteController extends ActionController
                     //TODO: switch to session store according to https://t3terminal.com/blog/de/typo3-cookie/
                     if (!empty($this->cookieLifetime)) {
                         $expireTime = (new \DateTime('NOW'))->add(\DateInterval::createFromDateString($this->cookieLifetime . ' days'))->getTimestamp();
+
                         //set cookie to prevent multiple anonymous ratings
                         $this->cookieService->setVoteCookie(
                             $this->prefixId . '_AnonymousRating_' . $vote->getRating()->getUid(),
-                            json_encode($anonymousRating, JSON_THROW_ON_ERROR),
+                            $this->jsonService->encodeToJson($anonymousRating),
                             $expireTime
                         );
                     }
@@ -988,18 +1001,17 @@ class VoteController extends ActionController
 
             /** @var \Thucke\ThRating\Domain\Model\Stepconf $stepConf */
             foreach ($vote->getRating()->getRatingobject()->getStepconfs() as $i => $stepConf) {
-                /** @noinspection PhpElementIsNotAvailableInCurrentPhpVersionInspection */
+                                /** @noinspection PhpElementIsNotAvailableInCurrentPhpVersionInspection */
                 $key = utf8_encode(
-                    json_encode([
+                    $this->jsonService->encodeToJson([
                         'value' => $stepConf->getUid(),
                         'voter' => $vote->getVoter()->getUid(),
                         'rating' => $vote->getRating()->getUid(),
                         'ratingName' => $this->ratingName,
-                        'settings' => json_encode($this->settings, JSON_THROW_ON_ERROR, 512),
+                        'settings' => $this->jsonService->encodeToJson($this->settings),
                         'actionName' => strtolower($this->request->getControllerActionName()),
-                        self::AJAX_REFERENCE_ID => $this->ajaxSelections['ajaxRef'],
-                        /** @phpstan-ignore-next-line */
-                    ], JSON_THROW_ON_ERROR, 512)
+                        self::AJAX_REFERENCE_ID => $this->ajaxSelections['ajaxRef']
+                    ])
                 );
                 $this->ajaxSelections['json'][$key] = (string)$stepConf;
                 $this->ajaxSelections['steporder'][$stepConf->getSteporder()]['step'] = $stepConf;
@@ -1184,7 +1196,7 @@ class VoteController extends ActionController
                 $currentRates = round($currentRatesArray['currentrate'], 2);
             } else {
                 //do update using whole currentrates JSON array
-                $currentRates = json_encode($currentRatesArray, JSON_THROW_ON_ERROR);
+                $currentRates = $this->jsonService->encodeToJson($currentRatesArray);
             }
 
             /** @var \TYPO3\CMS\Core\Database\Query\QueryBuilder $queryBuilder */

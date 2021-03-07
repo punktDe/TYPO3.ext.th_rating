@@ -16,6 +16,7 @@ use TYPO3\CMS\Extbase\Configuration\Exception\InvalidConfigurationTypeException;
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
+use Thucke\ThRating\Service\ExtensionHelperService;
 
 /**
  * Model for rating votes
@@ -61,12 +62,28 @@ class Vote extends AbstractEntity
     protected $objectManager;
 
     /**
+     * @var \TYPO3\CMS\Core\Log\Logger
+     */
+    protected $logger;
+
+    /**
      * @param \TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager
      */
-    /** @noinspection PhpUnused */
     public function injectObjectManager(ObjectManagerInterface $objectManager)
     {
         $this->objectManager = $objectManager;
+    }
+
+    /**
+     * @var \Thucke\ThRating\Service\ExtensionHelperService
+     */
+    protected $extensionHelperService;
+    /**
+     * @param \Thucke\ThRating\Service\ExtensionHelperService $extensionHelperService
+     */
+    public function injectExtensionHelperService(ExtensionHelperService $extensionHelperService): void
+    {
+        $this->extensionHelperService = $extensionHelperService;
     }
 
     /**
@@ -104,6 +121,10 @@ class Vote extends AbstractEntity
         if (empty($this->objectManager)) {
             $this->objectManager = GeneralUtility::makeInstance(ObjectManager::class);
         }
+        if (empty($this->extensionHelperService)) {
+            $this->extensionHelperService = GeneralUtility::makeInstance(ExtensionHelperService::class);
+        }
+        $this->logger = $this->extensionHelperService->getLogger(__CLASS__);
         $this->settings = $this->objectManager->get(ConfigurationManager::class)->getConfiguration(
             'Settings',
             'thRating',
@@ -204,12 +225,8 @@ class Vote extends AbstractEntity
      */
     public function hasAnonymousVote($prefixId = 'DummyPrefix'): bool
     {
-        $anonymousRating = json_decode(
-            $_COOKIE[$prefixId . '_AnonymousRating_' . $this->getRating()->getUid()],
-            true,
-            512,
-            JSON_THROW_ON_ERROR
-        );
+        $anonymousRating = GeneralUtility::makeInstance(\Thucke\ThRating\Service\JsonService::class)
+            ->decodeJsonToArray($_COOKIE[$prefixId . '_AnonymousRating_' . $this->getRating()->getUid()]);
         return !empty($anonymousRating['voteUid']);
     }
 
