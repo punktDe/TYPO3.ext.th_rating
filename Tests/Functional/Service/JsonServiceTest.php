@@ -25,7 +25,6 @@ class JsonServiceTest extends FunctionalTestCase
      */
     protected $subject;
 
-
     /**
      * @var \PHPUnit\Framework\MockObject\MockObject
      */
@@ -70,6 +69,15 @@ class JsonServiceTest extends FunctionalTestCase
     /**
      * @test
      */
+    public function encodeArrayToJsonAcceptsEmpty(): void
+    {
+        self::assertFalse($this->subject->encodeToJson(null));
+        self::assertFalse($this->subject->encodeToJson(array()));
+    }
+
+    /**
+     * @test
+     */
     public function decodeJson(): void
     {
         $expectedArray = [
@@ -81,5 +89,14 @@ class JsonServiceTest extends FunctionalTestCase
         ];
         $sourceJson = '{"a":1,"b":2,"c":3,"d":4,"e":5}';
         self::assertSame($expectedArray, $this->subject->decodeJsonToArray($sourceJson));
+    }
+
+    /**
+     * @test
+     */
+    public function decodeJsonAcceptsEmpty() :void
+    {
+        self::assertFalse($this->subject->decodeJsonToArray(null));
+        self::assertFalse($this->subject->decodeJsonToArray(''));
     }
 }
