@@ -54,10 +54,10 @@ class JsonService extends AbstractExtensionService
      * Encode a string to JSON
      * Log a warning on error
      *
-     * @param string $content
+     * @param string|null $content
      * @return array|false  The domain to be used on setting cookies
      */
-    public function decodeJsonToArray(string $content)
+    public function decodeJsonToArray(string $content=null)
     {
         if (!empty($content)) {
             try {

@@ -11,6 +11,7 @@ namespace Thucke\ThRating\Domain\Model;
 
 use Thucke\ThRating\Domain\Repository\VoteRepository;
 use Thucke\ThRating\Service\ExtensionHelperService;
+use Thucke\ThRating\Service\JsonService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Annotation as Extbase;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManager;
@@ -59,7 +60,6 @@ class Rating extends AbstractEntity
      * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface
      */
     protected $objectManager;
-
     /**
      * @param \TYPO3\CMS\Extbase\Object\ObjectManagerInterface $objectManager
      */
@@ -70,10 +70,21 @@ class Rating extends AbstractEntity
     }
 
     /**
+     * @var \Thucke\ThRating\Service\JsonService
+     */
+    protected $jsonService;
+    /**
+     * @param \Thucke\ThRating\Service\JsonService $jsonService
+     */
+    public function injectJsonService(JsonService $jsonService)
+    {
+        $this->jsonService = $jsonService;
+    }
+
+    /**
      * @var \Thucke\ThRating\Domain\Repository\VoteRepository
      */
     protected $voteRepository;
-
     /**
      * @param \Thucke\ThRating\Domain\Repository\VoteRepository $voteRepository
      */
@@ -281,7 +292,7 @@ class Rating extends AbstractEntity
         }
         $currentratesDecoded['numAllVotes'] = $numAllVotes;
         $currentratesDecoded['anonymousVotes'] = $numAllAnonymousVotes;
-        $this->currentrates = json_encode($currentratesDecoded, JSON_THROW_ON_ERROR);
+        $this->currentrates = $this->jsonService->encodeToJson($currentratesDecoded);
     }
 
     /**
@@ -294,7 +305,7 @@ class Rating extends AbstractEntity
         if (empty($this->currentrates)) {
             $this->checkCurrentrates(); //initialize entry
         }
-        $currentratesDecoded = json_decode($this->currentrates, true, 512, JSON_THROW_ON_ERROR);
+        $currentratesDecoded = $this->jsonService->decodeJsonToArray($this->currentrates);
         $currentratesDecoded['numAllVotes']++;
         if ($voting->isAnonymous()) {
             $currentratesDecoded['anonymousVotes']++;
@@ -306,7 +317,7 @@ class Rating extends AbstractEntity
         $votingStepweight = $votingStep->getStepweight();
         $currentratesDecoded['weightedVotes'][$votingSteporder] += $votingStepweight;
         $currentratesDecoded['sumWeightedVotes'][$votingSteporder] += $votingStepweight * $votingSteporder;
-        $this->currentrates = json_encode($currentratesDecoded, JSON_THROW_ON_ERROR);
+        $this->currentrates = $this->jsonService->encodeToJson($currentratesDecoded);
     }
 
     /**
@@ -319,7 +330,7 @@ class Rating extends AbstractEntity
         if (empty($this->currentrates)) {
             $this->checkCurrentrates(); //initialize entry
         }
-        $currentratesDecoded = json_decode($this->currentrates, true, 512, JSON_THROW_ON_ERROR);
+        $currentratesDecoded = $this->jsonService->decodeJsonToArray($this->currentrates);
         $currentratesDecoded['numAllVotes']--;
         if ($voting->isAnonymous()) {
             $currentratesDecoded['anonymousVotes']--;
@@ -331,7 +342,7 @@ class Rating extends AbstractEntity
         $votingStepweight = $votingStep->getStepweight();
         $currentratesDecoded['weightedVotes'][$votingSteporder] -= $votingStepweight;
         $currentratesDecoded['sumWeightedVotes'][$votingSteporder] -= $votingStepweight * $votingSteporder;
-        $this->currentrates = json_encode($currentratesDecoded, JSON_THROW_ON_ERROR);
+        $this->currentrates = $this->jsonService->encodeToJson($currentratesDecoded);
     }
 
     /**
@@ -341,10 +352,10 @@ class Rating extends AbstractEntity
      */
     public function getCurrentrates(): array
     {
-        $currentratesDecoded = json_decode($this->currentrates, true, 512, JSON_THROW_ON_ERROR);
+        $currentratesDecoded = $this->jsonService->decodeJsonToArray($this->currentrates);
         if (empty($currentratesDecoded['numAllVotes'])) {
             $this->checkCurrentrates();
-            $currentratesDecoded = json_decode($this->currentrates, true, 512, JSON_THROW_ON_ERROR);
+            $currentratesDecoded = $this->jsonService->decodeJsonToArray($this->currentrates);
         }
         $numAllVotes = $currentratesDecoded['numAllVotes'];
         if (!empty($numAllVotes)) {
