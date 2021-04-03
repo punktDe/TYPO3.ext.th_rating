@@ -12,4 +12,4 @@ modules:
             cleanup: false # run populator before each test
             populator: 'cat $dbcreate $dump | mysql -u$user -p$password -h$host mysql'
             dbcreate: 'Tests/Acceptance/_data/dbcreate_t3acceptance.sql'
-            dump: 'Tests/Acceptance/_data/t3acceptance_^10.4.sql'
+            dump: 'Tests/Acceptance/_data/t3acceptance_^9.5.sql'
