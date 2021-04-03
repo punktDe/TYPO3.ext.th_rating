@@ -25,10 +25,6 @@ var/*
 .idea/
 Build/testing-docker/.env
 
-
-# PHPStorm
-.idea
-
 # OSX
 .DS_Store
 
@@ -39,12 +35,11 @@ logs/
 composer.lock
 
 # Build stuff
-.build/
+.Build.sik
 .ddev/**/*.example
 .ddev/**/*.txt
 .ddev/commands/
 Documentation-*
-config/
 node_modules/
 var/
 

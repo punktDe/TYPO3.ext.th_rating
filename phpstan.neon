@@ -4,7 +4,7 @@ parameters:
         - Classes
         - Tests
     bootstrapFiles:
-        - .build/vendor/typo3/testing-framework/Resources/Core/Build/UnitTestsBootstrap.php
+        - .Build/vendor/typo3/testing-framework/Resources/Core/Build/UnitTestsBootstrap.php
     excludes_analyse:
         - 'Classes/Utility/LocalizationUtility.php'
         - 'Classes/Domain/Validator/StepconfValidator.php'

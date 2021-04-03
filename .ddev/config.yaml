@@ -1,6 +1,6 @@
 name: th-rating
 type: typo3
-docroot: .build/web
+docroot: .Build/public
 php_version: "7.3"
 webserver_type: apache-fpm
 dbaimage: phpmyadmin/phpmyadmin:4.9.4

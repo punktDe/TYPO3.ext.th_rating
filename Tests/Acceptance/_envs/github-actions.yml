@@ -1,0 +1,15 @@
+modules:
+    config:
+        WebDriver:
+            url: http://LOCAL_DOMAIN/
+            host: 127.0.0.1
+        Db:
+            dsn: 'mysql:host=127.0.0.1'
+            user: 'root'
+            password: 'root'
+            dbname: "t3acceptance"
+            populate: true # run populator before all tests
+            cleanup: false # run populator before each test
+            populator: 'cat $dbcreate $dump | mysql -u$user -p$password -h$host mysql'
+            dbcreate: 'Tests/Acceptance/_data/dbcreate_t3acceptance.sql'
+            dump: 'Tests/Acceptance/_data/t3acceptance_%matrix_typo3%.sql'

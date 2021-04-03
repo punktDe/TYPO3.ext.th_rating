@@ -4,4 +4,4 @@ cache: .phplint.cache
 extensions:
     - php
 exclude:
-    - .build
+    - .Build
