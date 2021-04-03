@@ -27,6 +27,8 @@ return [
                     'charset' => 'utf8mb4',
                     'collate' => 'utf8mb4_unicode_ci',
                 ],
+                /**  default configuration to fit github actions requirements
+                will be overridden in DDEV via AdditionalConfiguration.php */
                 'dbname' => 't3acceptance',
                 'host' => '127.0.0.1',
                 'password' => 'root',
