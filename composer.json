@@ -76,6 +76,7 @@
             "cp -R Tests/Acceptance/_data/typo3conf .Build/public/",
             "cp -R Tests/Acceptance/_data/config .Build/",
             "typo3cms install:generatepackagestates",
+            "typo3cms configuration:show DB",
             "codecept run acceptance --env=${CODECEPTION_ENV} -d -c Tests/Build/AcceptanceTests.yml --html"
         ],
         "thucke:typo3:export": [
