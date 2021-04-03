@@ -77,6 +77,9 @@ jobs:
           CODECEPTION_ENV: github-actions
           TYPO3_CONEXT: Development
           matrix_typo3: ${{ matrix.typo3 }}
+          typo3DatabaseHost: 127.0.0.1
+          typo3DatabasePassword: root
+          typo3DatabaseUsername: root
 
       - name: Upload Codeception output
         if: ${{ always() }}
