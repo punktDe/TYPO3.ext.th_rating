@@ -72,7 +72,7 @@ class JsonServiceTest extends FunctionalTestCase
     public function encodeArrayToJsonAcceptsEmpty(): void
     {
         self::assertFalse($this->subject->encodeToJson(null));
-        self::assertFalse($this->subject->encodeToJson(array()));
+        self::assertFalse($this->subject->encodeToJson([]));
     }
 
     /**
@@ -94,7 +94,7 @@ class JsonServiceTest extends FunctionalTestCase
     /**
      * @test
      */
-    public function decodeJsonAcceptsEmpty() :void
+    public function decodeJsonAcceptsEmpty(): void
     {
         self::assertFalse($this->subject->decodeJsonToArray(null));
         self::assertFalse($this->subject->decodeJsonToArray(''));

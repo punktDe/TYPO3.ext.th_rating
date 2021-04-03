@@ -39,10 +39,10 @@
         }
     },
     "config": {
-        "bin-dir": ".build/bin",
+        "bin-dir": ".Build/bin",
         "discard-changes": true,
         "optimize-autoloader": true,
-        "vendor-dir": ".build/vendor"
+        "vendor-dir": ".Build/vendor"
     },
     "extra": {
         "branch-alias": {
@@ -50,8 +50,8 @@
         },
         "typo3/cms": {
             "extension-key": "th_rating",
-            "web-dir": ".build/web",
-            "app-dir": ".build"
+            "web-dir": ".Build/public",
+            "app-dir": ".Build"
         },
         "phpstan": {
             "includes": [
@@ -69,13 +69,41 @@
         "thucke:test:php:functional": [
             "phpunit -c Tests/Build/FunctionalTests.xml"
         ],
+        "thucke:test:php:acceptance": [
+            "@composer validate",
+            "@composer install --no-progress",
+            "@putenv IS_T3ACCEPTANCE_RUN=true",
+            "cp -R Tests/Acceptance/_data/typo3conf .Build/public/",
+            "cp -R Tests/Acceptance/_data/config .Build/",
+            "typo3cms install:generatepackagestates",
+            "codecept run acceptance --env=${CODECEPTION_ENV} -d -c Tests/Build/AcceptanceTests.yml --html"
+        ],
+        "thucke:typo3:export": [
+            "typo3cms configuration:show DB",
+            "typo3cms cache:flush",
+            "typo3cms database:export -c Default >Tests/Acceptance/_data/ddev.sql",
+            "typo3cms configuration:show DB",
+            "echo 'Finished'"
+        ],
+        "thucke:typo3:recreateddevdb:10.4": [
+            "cat Tests/Acceptance/_data/dbcreate_db.sql Tests/Acceptance/_data/t3acceptance_^10.4.sql | mysql -uroot -proot -hdb mysql",
+            "typo3cms cache:flush",
+            "typo3cms configuration:show DB",
+            "echo 'Finished'"
+        ],
+        "thucke:typo3:recreateddevdb:9.5": [
+            "cat Tests/Acceptance/_data/dbcreate_db.sql Tests/Acceptance/_data/t3acceptance_^9.5.sql | mysql -u$user -p$password -h$host mysql",
+            "typo3cms cache:flush",
+            "typo3cms configuration:show DB",
+            "echo 'Finished'"
+        ],
         "thucke:test:php:unit:cover": [
             "Composer\\Config::disableProcessTimeout",
             "mkdir -p var/log/junit/ && phpunit -c Build/UnitTests.xml --log-junit var/log/junit/phpunit.xml --coverage-clover var/log/junit/coverage-unit.xml"
         ],
         "thucke:test:php:functional:cover": [
             "Composer\\Config::disableProcessTimeout",
-            "mkdir -p var/log/junit/ && .build/bin/phpunit -c Build/FunctionalTests.xml --log-junit var/log/junit/phpunit.xml --coverage-clover var/log/junit/coverage-functional.xml"
+            "mkdir -p var/log/junit/ && .Build/bin/phpunit -c Build/FunctionalTests.xml --log-junit var/log/junit/phpunit.xml --coverage-clover var/log/junit/coverage-functional.xml"
         ],
         "thucke:test": [
             "@thucke:test:php:lint",
@@ -91,8 +119,10 @@
             "phpstan analyze Tests"
         ],
         "post-autoload-dump": [
-            "mkdir -p .build/web/typo3conf/ext/",
-            "[ -L .build/web/typo3conf/ext/th_rating ] || ln -snvf ../../../../. .build/web/typo3conf/ext/th_rating"
+            "mkdir -p .Build/public/typo3conf/ext/",
+            "[ -L .Build/public/typo3conf/ext/th_rating ] || ln -snvf ../../../../. .Build/public/typo3conf/ext/th_rating",
+            "[ -f .Build/public/.htaccess ] || cp .ddev/homeadditions/.htaccess .Build/public",
+            "TYPO3\\TestingFramework\\Composer\\ExtensionTestEnvironment::prepare"
         ]
     },
     "suggest": {
@@ -102,8 +132,7 @@
         "php" : ">=7.3 <7.5",
         "ext-json": "*",
         "ext-pdo": "*",
-        "psr/http-message": "^1.0",
-        "typo3/cms-backend": "^9.5 || ^10.4",
+        "typo3/cms-backend": ">=9.5 <11",
         "typo3/cms-core" : ">=9.5 <11",
         "typo3/cms-extbase": ">=9.5 <11",
         "typo3/cms-extensionmanager": "^9.5 || ^10.4",
@@ -113,29 +142,28 @@
         "typo3/cms-install": "^9.5 || ^10.4",
         "typo3fluid/fluid": "^2.6",
         "psr/http-client": "^1.0",
-        "psr/http-factory": "^1.0"
+        "psr/http-factory": "^1.0",
+        "psr/http-message": "^1.0"
     },
 	"require-dev": {
-        "typo3/cms-belog": "^9.5 || ^10.4",
-        "typo3/cms-beuser": "^9.5 || ^10.4",
-        "typo3/cms-seo": "^9.5 || ^10.4",
-        "typo3/cms-filelist": "^9.5 || ^10.4",
-		"typo3/cms-fluid-styled-content" : ">=9.5 <11",
-        "typo3/cms-lowlevel": "^9.5 || ^10.4",
-        "typo3/cms-setup": "^9.5 || ^10.4",
-        "typo3/cms-tstemplate": "^9.5 || ^10.4",
-        "typo3/cms-rte-ckeditor": "^9.5 || ^10.4",
+        "typo3/cms-base-distribution" : ">=9.5 <11",
         "friendsofphp/php-cs-fixer": "^2.18",
+        "helhum/typo3-console": "*",
+        "typo3/coding-standards": "^0.3.0",
         "typo3/testing-framework": "^4.15 || ^5.0 || ^6.4",
+        "typo3/tailor": "^1.3",
         "overtrue/phplint": "^2.3",
 		"jangregor/phpstan-prophecy": "^0.8.0",
-        "roave/security-advisories": "dev-master",
+        "phpstan/extension-installer": "^1.1",
+        "saschaegerer/phpstan-typo3": "^0.13.1",
+        "roave/security-advisories": "dev-latest",
         "codeception/codeception": "^4.1",
 		"phpspec/prophecy-phpunit": "*",
-		"saschaegerer/phpstan-typo3": "^0.13.1",
-		"phpstan/extension-installer": "^1.1",
         "phpunit/phpunit": "^7",
-		"typo3/tailor": "^1.3"
+        "codeception/module-asserts": "^1.3",
+        "codeception/module-webdriver": "^1.2",
+        "codeception/module-db": "^1.1",
+        "codeception/module-phpbrowser": "^1.0"
     },
 	"replace" : {
 		"thucke/th-rating" : "self.version"

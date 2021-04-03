@@ -1,10 +1,13 @@
 version: '3.6'
 
 services:
-  web:
-    environment:
-      - TYPO3_CONTEXT=Development
-      - typo3DatabaseHost=db
-      - typo3DatabaseName=t3func
-      - typo3DatabasePassword=root
-      - typo3DatabaseUsername=root
+    web:
+        environment:
+            - TYPO3_CONTEXT=Development
+            - typo3DatabaseHost=db
+            - typo3DatabasePassword=root
+            - typo3DatabaseUsername=root
+            - PHP_IDE_CONFIG=serverName=${DDEV_SITENAME}.ddev.site
+            - CODECEPTION_ENV=ddev
+        ports:
+            - "9922:22"

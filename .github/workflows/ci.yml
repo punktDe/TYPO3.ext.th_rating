@@ -1,9 +1,15 @@
-name: CI
+name: CI tests (on pull requests and manually)
 
-on: [ push, pull_request ]
+on:
+  pull_request:
+    branches:
+      - master
+      - develop
+  workflow_dispatch:
 
 jobs:
-  build:
+  unitAndFunctionalTests:
+    name: Unit and functional tests
 
     # needed because of missing auth_plugin_caching_sha2_password in PHP 7.3
     # Ubuntu 20.04 contains Mysql 8.0 that requires this as default_authentication_plugin
@@ -14,22 +20,13 @@ jobs:
       fail-fast: false
       matrix:
         typo3: [ ^9.5, ^10.4 ]
-        php: [ '7.4' ]
+        php: [ '7.3', '7.4' ]
         include:
           - typo3: ^10.4
             php: '7.4'
             coverage: true
-          - typo3: ^10.4
-            php: '7.3'
-          - typo3: ^9.5
-            php: '7.4'
-          - typo3: ^9.5
-            php: '7.3'
 
     steps:
-      - name: Start database server
-        run: sudo /etc/init.d/mysql start
-
       - name: Checkout Code
         uses: actions/checkout@v2
 
@@ -38,6 +35,9 @@ jobs:
         with:
           php-version: ${{ matrix.php }}
           tools: composer:v2, php-cs-fixer
+
+      - name: Start database server
+        run: sudo /etc/init.d/mysql start
 
       - name: Environment Check
         run: |
