@@ -1,9 +1,10 @@
 <?php
 
-/**
- * #ddev-generated: Automatically generated TYPO3 AdditionalConfiguration.php file.
- * ddev manages this file and may delete or overwrite the file unless this comment is removed.
- * It is recommended that you leave this file alone.
+/*
+ * This file is part of the package thucke/th-rating.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE file that was distributed with this source code.
  */
 
 if (getenv('IS_DDEV_PROJECT') == 'true') {
