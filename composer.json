@@ -87,13 +87,13 @@
             "echo 'Finished'"
         ],
         "thucke:typo3:recreateddevdb:10.4": [
-            "cat Tests/Acceptance/_data/dbcreate_db.sql Tests/Acceptance/_data/t3acceptance_^10.4.sql | mysql -u${typo3DatabaseUsername} -p${typo3DatabasePassword} -h${typo3DatabaseHost} mysql",
+            "cat Tests/Acceptance/_data/dbcreate_${typo3DatabaseName}.sql Tests/Acceptance/_data/t3acceptance_^10.4.sql | mysql -u${typo3DatabaseUsername} -p${typo3DatabasePassword} -h${typo3DatabaseHost} mysql",
             "typo3cms cache:flush",
             "typo3cms configuration:show DB",
             "echo 'Finished'"
         ],
         "thucke:typo3:recreateddevdb:9.5": [
-            "cat Tests/Acceptance/_data/dbcreate_db.sql Tests/Acceptance/_data/t3acceptance_^9.5.sql | mysql -u${typo3DatabaseUsername} -p${typo3DatabasePassword} -h${typo3DatabaseHost} mysql",
+            "cat Tests/Acceptance/_data/dbcreate_${typo3DatabaseName}.sql Tests/Acceptance/_data/t3acceptance_^9.5.sql | mysql -u${typo3DatabaseUsername} -p${typo3DatabasePassword} -h${typo3DatabaseHost} mysql",
             "typo3cms cache:flush",
             "typo3cms configuration:show DB",
             "echo 'Finished'"

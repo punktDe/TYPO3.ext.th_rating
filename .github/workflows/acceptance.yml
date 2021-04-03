@@ -80,6 +80,7 @@ jobs:
           typo3DatabaseHost: 127.0.0.1
           typo3DatabasePassword: root
           typo3DatabaseUsername: root
+          IS_T3ACCEPTANCE_RUN: true
 
       - name: Upload Codeception output
         if: ${{ always() }}
