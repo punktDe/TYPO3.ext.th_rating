@@ -75,3 +75,92 @@ jobs:
           typo3DatabasePassword: root
           typo3DatabaseUsername: root
           TYPO3_CONEXT: Development
+
+  AcceptanceTests:
+    # needed because of missing auth_plugin_caching_sha2_password in PHP 7.3
+    # Ubuntu 20.04 contains Mysql 8.0 that requires this as default_authentication_plugin
+    # another option would be to put [mysqld] default_authentication_plugin=mysql_native_password into ~./.mysql.cnf
+    runs-on: ubuntu-18.04
+
+    strategy:
+      fail-fast: false
+      matrix:
+        typo3: [ ^9.5, ^10.4 ]
+        php: [ '7.3', '7.4' ]
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v2
+
+      - name: Set up PHP version ${{ matrix.php }}
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          tools: composer:v2
+
+      - name: Start database server
+        run: sudo /etc/init.d/mysql start
+
+      - name: Environment Check
+        run: |
+          php --version
+          composer --version
+
+      - name: Validate composer.json and composer.lock
+        run: composer validate
+
+      - name: Install dependencies with typo3/cms-core:${{ matrix.typo3 }}
+        run: |
+          composer require typo3/cms-core:${{ matrix.typo3 }} --no-progress
+          composer update
+
+      - name: Info
+        run: composer info
+
+      - name: Initialize TYPO3 environment
+        run: |
+          cp -R Tests/Acceptance/_data/typo3conf .Build/public/
+          cp -R Tests/Acceptance/_data/config .Build/
+          .Build/bin/typo3cms install:generatepackagestates
+        env:
+          TYPO3_CONEXT: Development
+
+      - name: Run PHP webserver
+        run: |
+          export APP_IP=`ip addr show eth0 | grep -Po 'inet \K[\d.]+'`
+          sed -i -e "s/LOCAL_DOMAIN/$APP_IP:8888/" Tests/Acceptance/_envs/github-actions.yml
+          php -S 0.0.0.0:8888 -t .Build/public/ &> php.log.txt &
+          sleep 2;
+
+      - name: Test PHP webserver and initialize TYPO3 cache
+        run: |
+          export APP_IP=`ip addr show eth0 | grep -Po 'inet \K[\d.]+'`
+          curl "$APP_IP:8888"
+
+      - name: Start Selenium standalone
+        run: |
+          echo $SELENIUM_JAR_PATH
+          java -Djava.awt.headless=true -jar $SELENIUM_JAR_PATH &
+          sleep 3;
+
+      - name: Acceptance Tests
+        run: |
+          composer thucke:test:php:acceptance
+        env:
+          CODECEPTION_ENV: github-actions
+          TYPO3_CONEXT: Development
+          matrix_typo3: ${{ matrix.typo3 }}
+
+      - name: Upload Codeception output
+        if: ${{ always() }}
+        uses: actions/upload-artifact@v2
+        with:
+          name: codeception-results
+          path: .Build/var/acceptance
+
+      - name: Upload PHP log
+        if: ${{ failure() }}
+        uses: actions/upload-artifact@v2
+        with:
+          name: php-log
+          path: php.log.txt
