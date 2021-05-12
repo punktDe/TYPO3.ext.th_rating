@@ -69,7 +69,7 @@ jobs:
     steps:
       # Check statuses of Github
       - name: Check GitHub Pages status
-        uses: crazy-max/ghaction-github-status@v2
+        uses: crazy-max/ghaction-github-status@v2.2.0
         with:
           pages_threshold: major_outage
 
