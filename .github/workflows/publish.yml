@@ -84,7 +84,7 @@ jobs:
 
       - name: Generate Doxygen
         if: success()
-        uses: mattnotmitt/doxygen-action@v1
+        uses: mattnotmitt/doxygen-action@v1.3.3
         with:
           working-directory: /github/workspace/target
           doxyfile-path: /github/workspace/source/.doxygen
