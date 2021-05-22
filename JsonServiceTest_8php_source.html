@@ -145,7 +145,7 @@ $(document).ready(function(){initNavTree('JsonServiceTest_8php_source.html','');
 <div class="line"><a name="l00072"></a><span class="lineno"><a class="line" href="classThucke_1_1ThRating_1_1Service_1_1JsonServiceTest.html#a9e2cb3089d59ffbbc253f596a5becfce">   72</a></span>&#160;    <span class="keyword">public</span> <span class="keyword">function</span> <a class="code" href="classThucke_1_1ThRating_1_1Service_1_1JsonServiceTest.html#a9e2cb3089d59ffbbc253f596a5becfce">encodeArrayToJsonAcceptsEmpty</a>(): void</div>
 <div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;    {</div>
 <div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;        self::assertFalse($this-&gt;subject-&gt;encodeToJson(<span class="keyword">null</span>));</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;        self::assertFalse($this-&gt;subject-&gt;encodeToJson(array()));</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;        self::assertFalse($this-&gt;subject-&gt;encodeToJson([]));</div>
 <div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;    }</div>
 <div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160; </div>
 <div class="line"><a name="l00081"></a><span class="lineno"><a class="line" href="classThucke_1_1ThRating_1_1Service_1_1JsonServiceTest.html#a8b04084a2bf65866c8492673795172d7">   81</a></span>&#160;    <span class="keyword">public</span> <span class="keyword">function</span> <a class="code" href="classThucke_1_1ThRating_1_1Service_1_1JsonServiceTest.html#a8b04084a2bf65866c8492673795172d7">decodeJson</a>(): void</div>
@@ -161,7 +161,7 @@ $(document).ready(function(){initNavTree('JsonServiceTest_8php_source.html','');
 <div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;        self::assertSame($expectedArray, $this-&gt;subject-&gt;decodeJsonToArray($sourceJson));</div>
 <div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;    }</div>
 <div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160; </div>
-<div class="line"><a name="l00097"></a><span class="lineno"><a class="line" href="classThucke_1_1ThRating_1_1Service_1_1JsonServiceTest.html#aab54590da1ba83cdffd2b3f2e617de70">   97</a></span>&#160;    <span class="keyword">public</span> <span class="keyword">function</span> <a class="code" href="classThucke_1_1ThRating_1_1Service_1_1JsonServiceTest.html#aab54590da1ba83cdffd2b3f2e617de70">decodeJsonAcceptsEmpty</a>() :void</div>
+<div class="line"><a name="l00097"></a><span class="lineno"><a class="line" href="classThucke_1_1ThRating_1_1Service_1_1JsonServiceTest.html#aab54590da1ba83cdffd2b3f2e617de70">   97</a></span>&#160;    <span class="keyword">public</span> <span class="keyword">function</span> <a class="code" href="classThucke_1_1ThRating_1_1Service_1_1JsonServiceTest.html#aab54590da1ba83cdffd2b3f2e617de70">decodeJsonAcceptsEmpty</a>(): void</div>
 <div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;    {</div>
 <div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;        self::assertFalse($this-&gt;subject-&gt;decodeJsonToArray(<span class="keyword">null</span>));</div>
 <div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;        self::assertFalse($this-&gt;subject-&gt;decodeJsonToArray(<span class="stringliteral">&#39;&#39;</span>));</div>

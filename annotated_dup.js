@@ -104,6 +104,21 @@ var annotated_dup =
           [ "SelectViewHelper", "classThucke_1_1ThRating_1_1ViewHelpers_1_1SelectViewHelper.html", "classThucke_1_1ThRating_1_1ViewHelpers_1_1SelectViewHelper" ],
           [ "Typo3VersionViewHelper", "classThucke_1_1ThRating_1_1ViewHelpers_1_1Typo3VersionViewHelper.html", "classThucke_1_1ThRating_1_1ViewHelpers_1_1Typo3VersionViewHelper" ]
         ] ]
+      ] ],
+      [ "Timezones", null, [
+        [ "Tests", null, [
+          [ "Acceptance", null, [
+            [ "Frontend", "namespaceThucke_1_1Timezones_1_1Tests_1_1Acceptance_1_1Frontend.html", [
+              [ "FrontendPagesCest", "classThucke_1_1Timezones_1_1Tests_1_1Acceptance_1_1Frontend_1_1FrontendPagesCest.html", "classThucke_1_1Timezones_1_1Tests_1_1Acceptance_1_1Frontend_1_1FrontendPagesCest" ]
+            ] ],
+            [ "Support", "namespaceThucke_1_1Timezones_1_1Tests_1_1Acceptance_1_1Support.html", [
+              [ "Helper", "namespaceThucke_1_1Timezones_1_1Tests_1_1Acceptance_1_1Support_1_1Helper.html", [
+                [ "Acceptance", "classThucke_1_1Timezones_1_1Tests_1_1Acceptance_1_1Support_1_1Helper_1_1Acceptance.html", null ]
+              ] ],
+              [ "AcceptanceTester", "classThucke_1_1Timezones_1_1Tests_1_1Acceptance_1_1Support_1_1AcceptanceTester.html", null ]
+            ] ]
+          ] ]
+        ] ]
       ] ]
     ] ]
 ];

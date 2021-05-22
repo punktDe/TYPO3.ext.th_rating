@@ -31,6 +31,14 @@ var namespaces_dup =
         [ "Utility", "namespaceThucke_1_1ThRating_1_1Utility.html", "namespaceThucke_1_1ThRating_1_1Utility" ],
         [ "View", "namespaceThucke_1_1ThRating_1_1View.html", "namespaceThucke_1_1ThRating_1_1View" ],
         [ "ViewHelpers", "namespaceThucke_1_1ThRating_1_1ViewHelpers.html", "namespaceThucke_1_1ThRating_1_1ViewHelpers" ]
+      ] ],
+      [ "Timezones", null, [
+        [ "Tests", null, [
+          [ "Acceptance", null, [
+            [ "Frontend", "namespaceThucke_1_1Timezones_1_1Tests_1_1Acceptance_1_1Frontend.html", "namespaceThucke_1_1Timezones_1_1Tests_1_1Acceptance_1_1Frontend" ],
+            [ "Support", "namespaceThucke_1_1Timezones_1_1Tests_1_1Acceptance_1_1Support.html", "namespaceThucke_1_1Timezones_1_1Tests_1_1Acceptance_1_1Support" ]
+          ] ]
+        ] ]
       ] ]
     ] ]
 ];
