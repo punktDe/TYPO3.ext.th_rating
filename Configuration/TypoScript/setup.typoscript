@@ -247,6 +247,30 @@ lib.thrating.ratingInstanceUrl {
   3.data=TSFE:id
 }
 
+#used to render properties of rich snippets
+#it should read the uid row of given database table column
+lib.thrating.richSnippetProperty.DB = COA
+lib.thrating.richSnippetProperty.DB {
+  10 = LOAD_REGISTER
+  10.ratefield.field = ratefield
+  20 = CONTENT
+  20 {
+    table.field = ratetable
+    select {
+      uidInList.field = ratedobjectuid
+      #pidInList = 0
+      pidInList.cObject = TEXT
+      pidInList.cObject {
+        dataWrap = DB:{field:ratetable}:{field:ratedobjectuid}:pid
+        wrap3 = {|}
+        insertData = 1
+      }
+    }
+    renderObj = TEXT
+    renderObj.field.dataWrap = {register:ratefield}
+  }
+}
+
 #########################################################################
 # Include all needed javascript and CSS styles
 #########################################################################

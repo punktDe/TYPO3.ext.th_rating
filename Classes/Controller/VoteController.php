@@ -1029,7 +1029,7 @@ class VoteController extends ActionController
      *
      * @throws \Thucke\ThRating\Exception\InvalidAggregateRatingSchemaTypeException
      */
-    protected function fillSummaryView()
+    protected function fillSummaryView(): void
     {
         $this->view->assign('settings', $this->settings);
         $this->view->assign('ajaxRef', $this->ajaxSelections['ajaxRef']);
@@ -1037,7 +1037,6 @@ class VoteController extends ActionController
         $this->view->assign('voter', $this->vote->getVoter());
 
         if ($this->richSnippetService->setRichSnippetConfig($this->settings)) {
-            /** @var \Thucke\ThRating\Service\RichSnippetService $richSnippetObject */
             $richSnippetObject =
                 $this->richSnippetService->getRichSnippetObject($this->vote->getRating()->getRatedobjectuid());
             $richSnippetObject->setAnchor('RatingAX_' . $this->vote->getRating()->getRatingobject()->getUid() .

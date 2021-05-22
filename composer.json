@@ -97,11 +97,11 @@
         ],
         "thucke:test:php:unit:cover": [
             "Composer\\Config::disableProcessTimeout",
-            "mkdir -p var/log/junit/ && phpunit -c Build/UnitTests.xml --log-junit var/log/junit/phpunit.xml --coverage-clover var/log/junit/coverage-unit.xml"
+            "mkdir -p var/log/junit/ && phpunit -c Tests/Build/UnitTests.xml --log-junit var/log/junit/phpunit.xml --coverage-clover var/log/junit/coverage-unit.xml"
         ],
         "thucke:test:php:functional:cover": [
             "Composer\\Config::disableProcessTimeout",
-            "mkdir -p var/log/junit/ && .Build/bin/phpunit -c Build/FunctionalTests.xml --log-junit var/log/junit/phpunit.xml --coverage-clover var/log/junit/coverage-functional.xml"
+            "mkdir -p var/log/junit/ && .Build/bin/phpunit -c Tests/Build/FunctionalTests.xml --log-junit var/log/junit/phpunit.xml --coverage-clover var/log/junit/coverage-functional.xml"
         ],
         "thucke:test": [
             "@thucke:test:php:lint",

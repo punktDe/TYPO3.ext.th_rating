@@ -16,28 +16,14 @@
 			<f:render section="content" />
 		</f:then></f:if>
 		<f:if condition="{settings.fluid.layouts.default.showSummary}"><f:then>
-		<div class='tx-thrating-summary' itemscope itemtype="http://schema.org/{richSnippetObject.schema}">
+		<div class='tx-thrating-summary'>
 			<f:comment><!-- display check regarding rating summary information --></f:comment>
 			<f:if condition="{settings.fluid.layouts.default.showCurrentRates}"><f:then>
-				<meta itemprop="name" content="{richSnippetObject.name}"/>
-				<meta itemprop="description" content="{richSnippetObject.description}"/>
-				<f:if condition="{lib.thrating.ratedObjectUrl}"><f:then>
-					<meta itemprop="url" content="<f:cObject typoscriptObjectPath='lib.thrating.ratedObjectUrl' />">
-				</f:then><f:else>
-					<meta itemprop="url" content="<f:cObject typoscriptObjectPath='lib.thrating.ratingInstanceUrl' />#{richSnippetObject.anchor}">
-				</f:else></f:if>
-				<f:if condition="{lib.thrating.ratedObjectImage}"><f:then>
-					<meta itemprop="image" content="<f:cObject typoscriptObjectPath='lib.thrating.ratedObjectImage' />">
-				</f:then></f:if>
-				<span data-role="onCurrentRateActive" style="{f:if(condition: rating.currentRates.currentrate, then: '', else: 'display:none;')}" itemprop="aggregateRating" itemscope itemtype="http://schema.org/AggregateRating">
+				<span data-role="onCurrentRateActive" style="{f:if(condition: rating.currentRates.currentrate, then: '', else: 'display:none;')}">
 					<f:format.raw><f:translate key='fluid.layout.default.currentRating' default='fluid.layout.default.currentRating' arguments="{1:rating.currentRates.currentrate, 2:'{f:count(subject:\"{rating.votes}\")}'}"/></f:format.raw>
 					<f:if condition="{anonymousVotes}"><f:then>
 					<br/><f:format.raw><f:translate key='fluid.layout.default.anonymousVotes' default='fluid.layout.default.anonymousVotes' arguments='{1:anonymousVotes}'/></f:format.raw>
 					</f:then></f:if>
-					<meta itemprop="bestRating" content="{stepCount}"/>
-					<meta itemprop="worstRating" content="1"/>
-					<meta itemprop="ratingValue" content="{rating.currentRates.currentrate}"/>
-					<meta itemprop="ratingCount" content="{rating.currentRates.numAllVotes}"/>
 				</span>
 				<span data-role="onCurrentRateHidden" style="{f:if(condition: rating.currentRates.currentrate, then: 'display:none;', else: '')}">
 					<f:translate key='fluid.layout.default.noRatingDone' default='fluid.layout.default.noRatingDone'/>
@@ -51,6 +37,25 @@
 				<f:render partial="InfoBlock" arguments="{voting:voting, anonymousVoting:anonymousVoting, voter:voter, ratingName:ratingName}"/>
 			</f:else></f:if>
 		</div>
+		</f:then></f:if>
+		<f:cObject typoscriptObjectPath="lib.thrating.richSnippetProperty.DB"
+			data="{ratedobjectuid:rating.ratedobjectuid,ratetable:rating.ratingobject.ratetable,ratefield:rating.ratingobject.ratefield}" />
+		<f:if condition="{settings.fluid.layouts.default.richSnippet}"><f:then>
+		<script type="application/ld+json">
+			<f:format.raw>{</f:format.raw>
+				"@context": "https://schema.org/",
+				"@type": "{richSnippetObject.schema}",
+				"name": "{richSnippetObject.name}",
+				"description": "{richSnippetObject.name}",
+				"aggregateRating": <f:format.raw>{</f:format.raw>
+					"@type": "AggregateRating",
+					"bestRating": "{stepCount}",
+					"worstRating": "1",
+					"ratingCount": "{rating.currentRates.numAllVotes}",
+					"ratingValue": "{rating.currentRates.currentrate}"
+				}
+			}
+		</script>
 		</f:then></f:if>
 	</f:then><f:else>
 		<p style="white-space:nowrap;">
