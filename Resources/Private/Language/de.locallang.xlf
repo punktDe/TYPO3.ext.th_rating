@@ -1,0 +1,383 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xliff version="1.0">
+  <file source-language="en" datatype="plaintext" original="EXT:th_rating/Resources/Private/Language/locallang.xlf" product-name="th_rating" target-language="de">
+    <header/>
+    <body>
+      <trans-unit id="stepnames.bad" xml:space="preserve" approved="yes">
+				<source>Bad</source>
+			<target state="final">Schlecht</target></trans-unit>
+      <trans-unit id="stepnames.better" xml:space="preserve" approved="yes">
+				<source>Better</source>
+			<target state="final">Besser</target></trans-unit>
+      <trans-unit id="stepnames.good" xml:space="preserve" approved="yes">
+				<source>Good</source>
+			<target state="final">Gut</target></trans-unit>
+      <trans-unit id="stepnames.best" xml:space="preserve" approved="yes">
+				<source>Best</source>
+			<target state="final">Beste</target></trans-unit>
+      <trans-unit id="flexform.sheet_general" xml:space="preserve" approved="yes">
+				<source>General</source>
+			<target state="final">Basis</target></trans-unit>
+      <trans-unit id="flexform.general_actions" xml:space="preserve" approved="yes">
+				<source>Plugin action</source>
+			<target state="final">Aktion des Plugins</target></trans-unit>
+      <trans-unit id="flexform.general_actions_1" xml:space="preserve" approved="yes">
+				<source>Display</source>
+			<target state="final">Ansicht</target></trans-unit>
+      <trans-unit id="flexform.general_actions_2" xml:space="preserve" approved="yes">
+				<source>Ratinglinks</source>
+			<target state="final">Bewertungsverknüpfungen</target></trans-unit>
+      <trans-unit id="flexform.general_actions_3" xml:space="preserve" approved="yes">
+				<source>Voteform</source>
+			<target state="final">Bewertungsformular</target></trans-unit>
+      <trans-unit id="flexform.general_actions_4" xml:space="preserve" approved="yes">
+				<source>Index</source>
+			<target state="final">Index</target></trans-unit>
+      <trans-unit id="flexform.general_actions_5" xml:space="preserve" approved="yes">
+				<source>Polling</source>
+			<target state="final">Abstimmung</target></trans-unit>
+      <trans-unit id="flexform.general_actions_6" xml:space="preserve" approved="yes">
+				<source>Mark</source>
+			<target state="final">Markieren</target></trans-unit>
+      <trans-unit id="flexform.general_display" xml:space="preserve" approved="yes">
+				<source>Ratinglink configuration</source>
+			<target state="final">Ratinglink Darstellung</target></trans-unit>
+      <trans-unit id="flexform.general_showNotRated" xml:space="preserve" approved="yes">
+				<source>Show info if no rating has be done yet</source>
+			<target state="final">Zeige Info, wenn noch keine Bewertung erfolgte</target></trans-unit>
+      <trans-unit id="flexform.general_cookieLifetime" xml:space="preserve" approved="yes">
+				<source>Enter value to activate cookie protection for anonymous votes</source>
+			<target state="final">Wert zur Aktivierung von Cookies bei anonymen Bewertungen</target></trans-unit>
+      <trans-unit id="flexform.fluid.ratinglinksConfig" xml:space="preserve" approved="yes">
+				<source>Ratinglink Views</source>
+			<target state="final">Ratinglink Ansicht</target></trans-unit>
+      <trans-unit id="flexform.fluid.layoutConfig" xml:space="preserve" approved="yes">
+				<source>General display</source>
+			<target state="final">Generelle Anzeigeeinstellung</target></trans-unit>
+      <trans-unit id="flexform.fluid.layoutConfig_showSummary" xml:space="preserve" approved="yes">
+				<source>Show overall rating summary</source>
+			<target state="final">Bewertungszusammenfassung anzeigen</target></trans-unit>
+      <trans-unit id="flexform.fluid.layoutConfig_showRichSnippets" xml:space="preserve">
+				<source>Include JSON-LD block to support rich snippets</source>
+			<target state="needs-translation">Include JSON-LD block to support rich snippets</target></trans-unit>
+      <trans-unit id="flexform.fluid.layoutConfig_showCurrentRates" xml:space="preserve" approved="yes">
+				<source>Show users given rating</source>
+			<target state="final">Bewertung des Anwenders anzeigen</target></trans-unit>
+      <trans-unit id="flexform.fluid.layoutConfig_showSectionContent" xml:space="preserve" approved="yes">
+				<source>Display action module content section</source>
+			<target state="final">Inhaltsbereich des Aktionsmoduls anzeigen</target></trans-unit>
+      <trans-unit id="flexform.fluid.partialInfoBlockConfig_showAnonymousVotes" xml:space="preserve" approved="yes">
+				<source>Display given anonymous votings</source>
+			<target state="final">Anonyme Bewertung anzeigen</target></trans-unit>
+      <trans-unit id="flexform.fluid.partialUsersRatingConfig_showTextInfo" xml:space="preserve" approved="yes">
+				<source>Display given users voting (text)</source>
+			<target state="final">Bewertung des Anwenders als Text anzeigen</target></trans-unit>
+      <trans-unit id="flexform.fluid.partialUsersRatingConfig_showGraphicInfo" xml:space="preserve" approved="yes">
+				<source>Display given users voting (graphic)</source>
+			<target state="final">Bewertung des Anwenders als Grafik anzeigen</target></trans-unit>
+      <trans-unit id="flexform.fluid.ratinglinksConfig_tooltips" xml:space="preserve" approved="yes">
+				<source>Show HTML generated tooltips on ratinglinks</source>
+			<target state="final">HTML tooltips bei Ratinglinks anzeigen</target></trans-unit>
+      <trans-unit id="flexform.fluid.ratinglinksConfig_likesMode" xml:space="preserve" approved="yes">
+				<source>likesMode activated</source>
+			<target state="final">likesMode aktivieren</target></trans-unit>
+      <trans-unit id="flexform.sheet_paths" xml:space="preserve" approved="yes">
+				<source>Paths</source>
+			<target state="final">Pfade</target></trans-unit>
+      <trans-unit id="flexform.paths_templateRootPath" xml:space="preserve" approved="yes">
+				<source>Template root path</source>
+			<target state="final">Wurzelverzeichnis für Templates</target></trans-unit>
+      <trans-unit id="flexform.paths_partialRootPath" xml:space="preserve" approved="yes">
+				<source>Partial root path</source>
+			<target state="final">Wurzelverzeichnis für Partials</target></trans-unit>
+      <trans-unit id="flexform.paths_layoutRootPath" xml:space="preserve" approved="yes">
+				<source>Layout root path</source>
+			<target state="final">Wurzelverzeichnis für Layouts</target></trans-unit>
+      <trans-unit id="tca.BE.new" xml:space="preserve" approved="yes">
+				<source>New</source>
+			<target state="final">Neu</target></trans-unit>
+      <trans-unit id="tca.BE.unknown" xml:space="preserve" approved="yes">
+				<source>Unknown</source>
+			<target state="final">Unbekannt</target></trans-unit>
+      <trans-unit id="tca.BE.all" xml:space="preserve" approved="yes">
+				<source>All</source>
+			<target state="final">Alle</target></trans-unit>
+      <trans-unit id="tca.BE.default" xml:space="preserve" approved="yes">
+				<source>Default</source>
+			<target state="final">Standard</target></trans-unit>
+      <trans-unit id="tca.model.rating.ratingobject" xml:space="preserve" approved="yes">
+				<source>Ratingobject</source>
+			<target state="final">Bewertungsobjekt</target></trans-unit>
+      <trans-unit id="tca.model.rating.ratedobjectuid" xml:space="preserve" approved="yes">
+				<source>Rated Object Uid</source>
+			<target state="final">UID des bewerteten Objekts</target></trans-unit>
+      <trans-unit id="tca.model.rating.votes" xml:space="preserve" approved="yes">
+				<source>Votes</source>
+			<target state="final">Bewertungen</target></trans-unit>
+      <trans-unit id="tca.model.rating.currentrates" xml:space="preserve" approved="yes">
+				<source>Calculated values</source>
+			<target state="final">Berechnete Bewertung</target></trans-unit>
+      <trans-unit id="tca.model.rating.uid" xml:space="preserve" approved="yes">
+				<source>Rating list</source>
+			<target state="final">UID der Bewertung</target></trans-unit>
+      <trans-unit id="tca.model.rating.title" xml:space="preserve" approved="yes">
+				<source>Rating</source>
+			<target state="final">Bewertung</target></trans-unit>
+      <trans-unit id="tca.model.ratingobject.ratetable" xml:space="preserve" approved="yes">
+				<source>Rating Object Tablename</source>
+			<target state="final">Tabellenname des Bewertungsobjekts</target></trans-unit>
+      <trans-unit id="tca.model.ratingobject.ratefield" xml:space="preserve" approved="yes">
+				<source>Rating Object Fieldname</source>
+			<target state="final">Feldname des Bewertungsobjekts</target></trans-unit>
+      <trans-unit id="tca.model.ratingobject.ratingobject" xml:space="preserve" approved="yes">
+				<source>Rating object list</source>
+			<target state="final">Bewertungsobjektliste</target></trans-unit>
+      <trans-unit id="tca.model.ratingobject.uid" xml:space="preserve" approved="yes">
+				<source>Ratingobject configurations</source>
+			<target state="final">Bewertungsobjekt Konfigurationen</target></trans-unit>
+      <trans-unit id="tca.model.ratingobject.title" xml:space="preserve" approved="yes">
+				<source>RatingObjects</source>
+			<target state="final">Bewertungsobjekt</target></trans-unit>
+      <trans-unit id="tca.model.ratingobject.ratings" xml:space="preserve" approved="yes">
+				<source>Ratings</source>
+			<target state="final">Bewertungen</target></trans-unit>
+      <trans-unit id="tca.model.ratingobject.stepconfs" xml:space="preserve" approved="yes">
+				<source>Ratingstep configuration</source>
+			<target state="final">Konfiguration Bewertungsschritt</target></trans-unit>
+      <trans-unit id="tca.model.stepconf.ratingobject" xml:space="preserve" approved="yes">
+				<source>Rating Object</source>
+			<target state="final">Bewertungsobjekt</target></trans-unit>
+      <trans-unit id="tca.model.stepconf.steporder" xml:space="preserve" approved="yes">
+				<source>Ratingstep order</source>
+			<target state="final">Bewertung Reihenfolge</target></trans-unit>
+      <trans-unit id="tca.model.stepconf.stepweight" xml:space="preserve" approved="yes">
+				<source>Ratingstep weight</source>
+			<target state="final">Bewertung Gewichtung</target></trans-unit>
+      <trans-unit id="tca.model.stepconf.stepname" xml:space="preserve" approved="yes">
+				<source>Ratingstep names</source>
+			<target state="final">Ratingstep Bezeichnungen</target></trans-unit>
+      <trans-unit id="tca.model.stepconf.votes" xml:space="preserve" approved="yes">
+				<source>Assigned votes</source>
+			<target state="final">Bewertungen</target></trans-unit>
+      <trans-unit id="tca.model.stepconf.uid" xml:space="preserve" approved="yes">
+				<source>Ratingstep configuration list</source>
+			<target state="final">UID des Bewertungsschritts</target></trans-unit>
+      <trans-unit id="tca.model.stepconf.title" xml:space="preserve" approved="yes">
+				<source>Ratingstep configuration</source>
+			<target state="final">Bewertungskonfiguration</target></trans-unit>
+      <trans-unit id="tca.model.stepname.title" xml:space="preserve" approved="yes">
+				<source>Ratingstep name</source>
+			<target state="final">Ratingstep Bezeichnung</target></trans-unit>
+      <trans-unit id="tca.model.stepname.stepconf" xml:space="preserve" approved="yes">
+				<source>Ratingstep configuration</source>
+			<target state="final">Bewertungskonfiguration</target></trans-unit>
+      <trans-unit id="tca.model.stepname.stepname" xml:space="preserve" approved="yes">
+				<source>Ratingstep name</source>
+			<target state="final">Ratingstep Bezeichnung</target></trans-unit>
+      <trans-unit id="tca.model.stepname.uid" xml:space="preserve" approved="yes">
+				<source>Ratingstep name list</source>
+			<target state="final">Ratingstep Bezeichnungen</target></trans-unit>
+      <trans-unit id="tca.model.vote.rating" xml:space="preserve" approved="yes">
+				<source>Rating</source>
+			<target state="final">Bewertetes Objekt</target></trans-unit>
+      <trans-unit id="tca.model.vote.voter" xml:space="preserve" approved="yes">
+				<source>FE User</source>
+			<target state="final">Bewertende Person</target></trans-unit>
+      <trans-unit id="tca.model.vote.vote" xml:space="preserve" approved="yes">
+				<source>Vote</source>
+			<target state="final">Bewertung</target></trans-unit>
+      <trans-unit id="tca.model.vote.uid" xml:space="preserve" approved="yes">
+				<source>Vote list</source>
+			<target state="final">UID der Bewertung</target></trans-unit>
+      <trans-unit id="tca.model.vote.title" xml:space="preserve" approved="yes">
+				<source>Votings</source>
+			<target state="final">Bewertungen</target></trans-unit>
+      <trans-unit id="flash.vote.general.invalidStoragePid" xml:space="preserve" approved="yes">
+				<source>Constant "plugin.tx_thrating.settings.pluginStoragePid" is not set.</source>
+			<target state="final">Die Konstante "plugin.tx_thrating.settings.pluginStoragePid" muss konfiguriert werden.</target></trans-unit>
+      <trans-unit id="flash.pluginConfiguration.missing.feUserStoragePid" xml:space="preserve" approved="yes">
+				<source>"plugin.tx_felogin_pi1.storagePid" not set.</source>
+			<target state="final">"plugin.tx_felogin_pi1.storagePid" ist nicht gesetzt.</target></trans-unit>
+      <trans-unit id="flash.pluginConfiguration.missing.feUser" xml:space="preserve" approved="yes">
+				<source>Configured frontend user (uid: %s) could not be determinded.
+				Please check 'plugin.tx_thrating.feUsersStoragePid' and uid.</source>
+			<target state="final">Konfigurierter Frontend-Benutzer (uid: %s) konnte nicht ermittelt werden.
+				Bitte überprüfen Sie 'plugin.tx_thrating.feUsersStoragePid' und uid.</target></trans-unit>
+      <trans-unit id="flash.pluginConfiguration.missing.anonymousUser" xml:space="preserve" approved="yes">
+				<source>Configured anonymous user (uid: %s) could not be determined. Please check
+				'plugin.tx_thrating.feUsersStoragePid' and/or constant setting 'plugin.tx_thrating.config.mapAnonymous'.
+				</source>
+			<target state="final">Der konfigurierte anonyme Benutzer (uid: %s) konnte nicht ermittelt werden. Bitte überprüfen Sie „plugin.tx_thrating.feUsersStoragePid“ und/oder setzen Sie die Konstante „plugin.tx_thrating.config.mapAnonymous“.</target></trans-unit>
+      <trans-unit id="error.validator.ratingobject_table_extbase" xml:space="preserve" approved="yes">
+				<source>Missing table name in ratingobject.</source>
+			<target state="final">Fehlender Tabellenname ín Ratingobject.</target></trans-unit>
+      <trans-unit id="error.validator.ratingobject_field_extbase" xml:space="preserve" approved="yes">
+				<source>Missing field name in ratingobject.</source>
+			<target state="final">Fehlender Feldbezeichner in Ratingobject.</target></trans-unit>
+      <trans-unit id="error.validator.stepconf.ratingobject" xml:space="preserve" approved="yes">
+				<source>Missing ratingobject in stepconf.</source>
+			<target state="final">Fehlerndes Ratingobject in Stepconf.</target></trans-unit>
+      <trans-unit id="error.validator.stepconf.steps" xml:space="preserve" approved="yes">
+				<source>Missing steps in stepconf.</source>
+			<target state="final">Fehlende Stufen in Stepconf.</target></trans-unit>
+      <trans-unit id="error.validator.stepconf.invalidSteporderNumber" xml:space="preserve" approved="yes">
+				<source>Invalid number in steporder. Must be of positive integer.</source>
+			<target state="final">Nummer bei Steporder muss positive Ganzzahl sein.</target></trans-unit>
+      <trans-unit id="error.validator.stepconf.maxSteporder" xml:space="preserve" approved="yes">
+				<source>Steporder too high. Maximum steporder number + 1 is allowed.</source>
+			<target state="final">Nummer bei Steporder zu groß. Maximal höchste Steporder + 1 erlaubt.</target></trans-unit>
+      <trans-unit id="error.validator.stepconf.defaultStepname" xml:space="preserve" approved="yes">
+				<source>Missing stepname entry for default language in stepconf %s.</source>
+			<target state="final">Fehlender Eintrag beim Schrittnamen für die Standardsprache in Stepconf %s.</target></trans-unit>
+      <trans-unit id="error.validator.stepconf.doubleLangEntry" xml:space="preserve" approved="yes">
+				<source>Multiple stepnames for one language in stepconf %s.</source>
+			<target state="final">Mehrere Schrittbezeichnungen für eine Sprache bei Stepconf %s.</target></trans-unit>
+      <trans-unit id="error.validator.stepconf.notExistingLanguage" xml:space="preserve" approved="yes">
+				<source>Stepname %s one language does not exist in this website.</source>
+			<target state="final">Eine Übersetzung bei Schrittbezeichnung %s existiert nicht in dieser Website.</target></trans-unit>
+      <trans-unit id="error.validator.stepconf.empty" xml:space="preserve" approved="yes">
+				<source>Empty stepconf</source>
+			<target state="final">Leere Bewertungskonfiguration</target></trans-unit>
+      <trans-unit id="error.validator.rating.ratedobjectuid" xml:space="preserve" approved="yes">
+				<source>Missing UID in rating.</source>
+			<target state="final">Fehlende UID in Rating.</target></trans-unit>
+      <trans-unit id="error.validator.rating.ratingobject" xml:space="preserve" approved="yes">
+				<source>False ratingobject in rating</source>
+			<target state="final">Falsches Ratingobject in Rating</target></trans-unit>
+      <trans-unit id="error.validator.rating.empty" xml:space="preserve" approved="yes">
+				<source>Empty rating</source>
+			<target state="final">Leeres Rating</target></trans-unit>
+      <trans-unit id="error.validator.vote.vote" xml:space="preserve" approved="yes">
+				<source>Missing vote</source>
+			<target state="final">Keine Bewertung</target></trans-unit>
+      <trans-unit id="error.validator.vote.voter" xml:space="preserve" approved="yes">
+				<source>False voter reference in vote</source>
+			<target state="final">Falsche Bewerterreferenz in Vote</target></trans-unit>
+      <trans-unit id="error.validator.vote.stepconf" xml:space="preserve" approved="yes">
+				<source>False voting reference in vote</source>
+			<target state="final">Falsche Bewertungsreferenz in Vote</target></trans-unit>
+      <trans-unit id="error.validator.vote.empty" xml:space="preserve" approved="yes">
+				<source>Empty vote</source>
+			<target state="final">Leere Bewertung</target></trans-unit>
+      <trans-unit id="error.validator.stepname.stepconf" xml:space="preserve" approved="yes">
+				<source>False stepconf reference in stepname</source>
+			<target state="final">Falsche Referenz auf Bewertungsschritt</target></trans-unit>
+      <trans-unit id="error.validator.stepname.sysLang" xml:space="preserve" approved="yes">
+				<source>Language does not exist in website configuration</source>
+			<target state="final">Sprache existiert nicht in Konfiguration der Website</target></trans-unit>
+      <trans-unit id="error.validator.stepname.defaultLang" xml:space="preserve" approved="yes">
+				<source>Missing entry for default language</source>
+			<target state="final">Fehlende Referenz mit Standardsprache</target></trans-unit>
+      <trans-unit id="error.richSnippetConfiguration.AggregateRatingPropertySchema" xml:space="preserve" approved="yes">
+				<note>An invalid schema has been configured. Usage of aggregateRating property is limited.</note>
+				<source>An invalid schema has been configured. Usage of aggregateRating property is limited. Check http://schema.org/aggregateRating for valid types.</source>
+			<target state="final">Ein ungültiges Schema für aggregateRating ist konfiguriert. Gültige Typen in http://schema.org/aggregateRating prüfen.</target></trans-unit>
+      <trans-unit id="flash.ratingobject.noRatingsteps" xml:space="preserve" approved="yes">
+				<source>No ratingsteps configured!</source>
+			<target state="final">Ratingsteps fehlen!</target></trans-unit>
+      <trans-unit id="flash.vote.noFEuser" xml:space="preserve" approved="yes">
+				<source>FE user cannot be identified!</source>
+			<target state="final">Benutzer nicht identifizierbar!</target></trans-unit>
+      <trans-unit id="flash.vote.renderCSS.defaultImage" xml:space="preserve" approved="yes">
+				<source>Issue found with configuration for rating display - using default image.</source>
+			<target state="final">Fehler in Konfiguration für die Ratinganzeige gefunden - verwende Standardbild.</target></trans-unit>
+      <trans-unit id="flash.vote.show.notRated" xml:space="preserve" approved="yes">
+				<source>Not already rated</source>
+			<target state="final">Noch unbewertet</target></trans-unit>
+      <trans-unit id="flash.vote.ratinglinks.wrongDisplayConfig" xml:space="preserve" approved="yes">
+				<source>Check TSConfig setting for 'display name'.</source>
+			<target state="final">Prüfe TSConfig Einstellungen für 'display name'.</target></trans-unit>
+      <trans-unit id="flash.vote.create.noPermission" xml:space="preserve" approved="yes">
+				<source>No permission for this action.</source>
+			<target state="final">Du hast keine Berechtigung um die Aktion auszuführen.</target></trans-unit>
+      <trans-unit id="flash.heading.error" xml:space="preserve" approved="yes">
+				<source>Error !!!!</source>
+			<target state="final">Fehler !!!!</target></trans-unit>
+      <trans-unit id="flash.configuration.error" xml:space="preserve" approved="yes">
+				<source>Error in configuration of extension 'Rating AX'</source>
+			<target state="final">Fehler in der Konfiguration der Erweiterung 'Rating AX'</target></trans-unit>
+      <trans-unit id="flash.heading.warning" xml:space="preserve" approved="yes">
+				<source>Warning!</source>
+			<target state="final">Achtung!</target></trans-unit>
+      <trans-unit id="flash.heading.info" xml:space="preserve" approved="yes">
+				<source>Information</source>
+			<target state="final">Information</target></trans-unit>
+      <trans-unit id="flash.heading.notice" xml:space="preserve" approved="yes">
+				<source>Notification</source>
+			<target state="final">Hinweis</target></trans-unit>
+      <trans-unit id="flash.heading.ok" xml:space="preserve" approved="yes">
+				<source>Success</source>
+			<target state="final">Verarbeitung erfolgreich</target></trans-unit>
+      <trans-unit id="flash.renderCSS.noStepconf" xml:space="preserve" approved="yes">
+				<source>Stepconf missing in ratingobject configuration of UID %1$s - check PID %2$s.</source>
+			<target state="final">Fehlende Bewertungsschritt(e) beim Bewertungsobjekt mit der UID %1$s - prüfe PID %2$s.</target></trans-unit>
+      <trans-unit id="flash.renderCSS.incompatible620" xml:space="preserve" approved="yes">
+				<source>Incompatible version - please upgrade to at least TYPO3 6.2.1</source>
+			<target state="final">Inkompatible Version - upgrade auf mindestens TYPO3 6.2.1 nötig</target></trans-unit>
+      <trans-unit id="flash.vote.create.updateExistingVote" xml:space="preserve" approved="yes">
+				<note>Forwarded arguments: 1:steporder, 2:stepname</note>
+				<source>Your vote has been updated. It was step %1$d - '%2$s'.</source>
+			<target state="final">Die Bewertung wurde aktualisiert. Sie war %1$d - '%2$s'.</target></trans-unit>
+      <trans-unit id="flash.vote.create.noUpdateSameVote" xml:space="preserve" approved="yes">
+				<source>Your vote is identical as before. No update needed.</source>
+			<target state="final">Die Bewertung wurde nicht geändert. Keine Aktualisierung nötig.</target></trans-unit>
+      <trans-unit id="flash.vote.create.alreadyRated" xml:space="preserve" approved="yes">
+				<source>Already rated.</source>
+			<target state="final">Du hast bereits eine Bewertung vorgenommen.</target></trans-unit>
+      <trans-unit id="flash.vote.create.newCreated" xml:space="preserve" approved="yes">
+				<source>Your new vote was created.</source>
+			<target state="final">Die Stimme wurde gezählt.</target></trans-unit>
+      <trans-unit id="flash.vote.create.foreignUpdateFailed" xml:space="preserve" approved="yes">
+				<source>Update of foreign field has failed.</source>
+			<target state="final">Update der Fremdtabelle fehlgeschlagen.</target></trans-unit>
+      <trans-unit id="fluid.template.ratinglinks.currentRating" xml:space="preserve" approved="yes">
+				<note><![CDATA[Forwarded arguments: 1:currentRate, 2:stepCount; This entry must be embedded into <f:format.raw> when read by fluid]]></note>
+				<source><![CDATA[Current rating is <span class='tx_thrating_ajax-ratingCurrentratesCurrentrate' itemprop='ratingValue'>%1.1f</span> out of <span class='tx_thrating_ajax-stepCount' itemprop='bestRating'>%2$d</span>]]></source>
+			<target state="final"><![CDATA[Aktuelle Bewertung &lt;span class='tx_thrating_ajax-ratingCurrentratesCurrentrate' itemprop='ratingValue'&gt;%1.1f&lt;/span&gt; von &lt;span class='tx_thrating_ajax-stepCount' itemprop='bestRating'&gt;%2$d&lt;/span&gt;]]></target></trans-unit>
+      <trans-unit id="fluid.template.ratinglinks.currentRating.title" xml:space="preserve" approved="yes">
+				<note>Forwarded arguments: 1:currentRate, 2:stepCount; This entry must only contain plain text</note>
+				<source>Current rating is %1.1f out of %2$d</source>
+			<target state="final">Die aktuelle Bewertung beträgt %1.1f von %2$d</target></trans-unit>
+      <trans-unit id="fluid.layout.default.currentRating" xml:space="preserve" approved="yes">
+				<note>Forwarded arguments: 1:currentRate, 2:number of rating.votes; This entry must be embedded into &gt;f:format.raw&gt; when read by fluid</note>
+				<source><![CDATA[Rating: <span class='tx_thrating_ajax-ratingCurrentratesCurrentrate' itemprop='ratingValue'>%1.1f</span>. <span class='tx_thrating_ajax-ratingCurrentratesNumAllVotes' itemprop='ratingCount'>%2$d</span> vote(s).]]></source>
+			<target state="final"><![CDATA[Bewertung: &lt;span class='tx_thrating_ajax-ratingCurrentratesCurrentrate' itemprop='ratingValue'&gt;%1.1f&lt;/span&gt;. &lt;span class='tx_thrating_ajax-ratingCurrentratesNumAllVotes' itemprop='ratingCount'&gt;%2$d&lt;/span&gt; Bewertung(en).]]></target></trans-unit>
+      <trans-unit id="fluid.layout.default.anonymousVotes" xml:space="preserve" approved="yes">
+				<note>Forwarded arguments: 1:anonymousVotes; This entry must be embedded into &gt;f:format.raw&gt; when read by fluid</note>
+				<source><![CDATA[<span class='tx_thrating_ajax-ratingCurrentratesAnonymousVotes'>%1$d</span> anonymous votes]]></source>
+			<target state="final"><![CDATA[&lt;span class='tx_thrating_ajax-ratingCurrentratesAnonymousVotes'&gt;%1$d&lt;/span&gt; anonyme Bewertungen]]></target></trans-unit>
+      <trans-unit id="fluid.layout.default.noRatingDone" xml:space="preserve" approved="yes">
+				<note>Forwarded arguments: None</note>
+				<source>No rating done at all.</source>
+			<target state="final">Noch keine Bewertung erfolgt.</target></trans-unit>
+      <trans-unit id="fluid.partial.usersRating.usersRate" xml:space="preserve" approved="yes">
+				<note><![CDATA[Forwarded arguments: 1:voting, 2:voting.vote.steporder, 3:stepCount; This entry must be embedded into <f:format.raw> when read by fluid]]></note>
+				<source><![CDATA[Your vote was '<span class='tx_thrating_ajax-votingStepname'>%1$s</span>' (<span class='tx_thrating_ajax-votingVoteSteporder'>%2$d</span> of <span class='tx_thrating_ajax-stepCount'>%3$d</span>)]]></source>
+			<target state="final"><![CDATA[Deine Bewertung war '&lt;span class='tx_thrating_ajax-votingStepname'&gt;%1$s&lt;/span&gt;' (&lt;span class='tx_thrating_ajax-votingVoteSteporder'&gt;%2$d&lt;/span&gt; von &lt;span class='tx_thrating_ajax-stepCount'&gt;%3$d&lt;/span&gt;)]]></target></trans-unit>
+      <trans-unit id="fluid.partial.usersRating.usersRate.title" xml:space="preserve" approved="yes">
+				<note>Forwarded arguments: 1:voting, 2:voting.vote.steporder, 3:stepCount; This entry must only contain plain text</note>
+				<source>Your vote was '%1$s' (%2$d of %3$d)</source>
+			<target state="final">Deine Bewertung war '%1$s' (%2$d von %3$d)</target></trans-unit>
+      <trans-unit id="fluid.partial.usersRating.noRating" xml:space="preserve" approved="yes">
+				<note>Forwarded arguments: None</note>
+				<source>No rating done yet.</source>
+			<target state="final">Noch keine Bewertung erfolgt.</target></trans-unit>
+      <trans-unit id="fluid.partial.infoBlock.anonymousVoting" xml:space="preserve" approved="yes">
+				<note><![CDATA[Forwarded arguments: None; This entry must be embedded into <f:format.raw> when read by fluid]]></note>
+				<source><![CDATA[You are an anonymous user.<br/>You may log on to do personalized votings<br/>]]></source>
+			<target state="final"><![CDATA[Du arbeitest aktuell als anonymer Benutzer.&lt;br/&gt;Melde Dich für personalisierte Bewertungen an.&lt;br/&gt;]]></target></trans-unit>
+      <trans-unit id="fluid.partial.infoBlock.logonForRatings" xml:space="preserve" approved="yes">
+				<note>Forwarded arguments: None</note>
+				<source>Please log on to do ratings</source>
+			<target state="final">Melde Dich bitte an, um zu bewerten</target></trans-unit>
+      <trans-unit id="fluid.layout.default.noRatingSteps" xml:space="preserve" approved="yes">
+				<note>Forwarded arguments: None</note>
+				<source>No ratingsteps configured.</source>
+			<target state="final">Keine Bewertungsschritte konfiguriert.</target></trans-unit>
+      <trans-unit id="fluid.partial.infoBlock.clickRatingBar" xml:space="preserve" approved="yes">
+				<note>Forwarded arguments: None</note>
+				<source>Click the rating bar to rate this item</source>
+			<target state="final">Klicke in die Bewertungsleiste</target></trans-unit>
+    </body>
+  </file>
+</xliff>
