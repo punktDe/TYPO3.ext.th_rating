@@ -51,9 +51,9 @@ var NAVTREE =
 
 var NAVTREEINDEX =
 [
-"AbstractExtensionService_8php.html",
-"classThucke_1_1ThRating_1_1Domain_1_1Model_1_1Stepconf.html#a05fbb5c200cab1a14dfae9826fc931fb",
-"classThucke_1_1ThRating_1_1Tests_1_1Functional_1_1Domain_1_1Model_1_1RatingobjectTest.html#a47094dc941e72950570900d1418f89c6"
+"",
+"classThucke_1_1ThRating_1_1Domain_1_1Model_1_1Ratingobject.html#aabe7b890eb485d6cbe57c58741b111d1",
+"classThucke_1_1ThRating_1_1Tests_1_1Domain_1_1Model_1_1StepconfigTest.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';
