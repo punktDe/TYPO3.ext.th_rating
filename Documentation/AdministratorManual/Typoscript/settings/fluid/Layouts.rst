@@ -33,8 +33,9 @@ Reference DefaultLayout
    Property                             Title                                                  Type
    ==================================== ====================================================== ===============
    :ref:`tsShowSummaryDefault`          Switch to display rating summary info in output        boolean
+   :ref:`tsShowRichSnippetsDefault`     Switch to display the complete action content section  boolean
    :ref:`tsShowCurrentRatesDefault`     Switch to display the current rating statistics        boolean
-   showSectionContent_                  Switch to display the complete action content section  boolean
+   :ref:`tsShowSectionContentDefault`   Switch to display the complete action content section  boolean
    ==================================== ====================================================== ===============
 
    :ts:`[tsref:plugin.tx_thrating.settings.fluid.layouts.default]`
@@ -55,6 +56,30 @@ showSummary
 
    Description
       Switch to display rating summary info in output.
+
+   Default
+      :ts:`1`
+
+
+.. _tsShowRichSnippetsDefault:
+
+showRichSnippets
+^^^^^^^^^^^^^^^^
+
+.. container:: table-row
+
+   Property
+      showRichSnippets
+
+   Data type
+      :ref:`t3tsref:data-type-boolean`
+
+   Description
+      Switch to include info block for rich snippets
+
+      .. warning::
+
+         You must at least also define a :ref:`rsfAggregateRatingSchemaType`
 
    Default
       :ts:`1`

@@ -1,42 +1,50 @@
 
 name: Publish new version
 
+#run automatically when a new release is done
 on:
-  push:
-    tags:
-      - "*"
+  release:
+    types: [released]
 
 jobs:
   publish:
     name: Publish new version to TER
     if: startsWith(github.ref, 'refs/tags/')
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     env:
       TYPO3_EXTENSION_KEY: ${{ secrets.TYPO3_EXTENSION_KEY }}
       TYPO3_API_TOKEN: ${{ secrets.TYPO3_API_TOKEN }}
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v2.3.4
 
-      - name: Check tag
-        run: |
-          if ! [[ ${{ github.ref }} =~ ^refs/tags/[0-9]{1,3}.[0-9]{1,3}.[0-9]{1,3}$ ]]; then
-            exit 1
-          fi
       - name: Get version
         id: get-version
         run: echo ::set-output name=version::${GITHUB_REF/refs\/tags\//}
 
-      - name: Get comment
-        id: get-comment
+      - name: Fetch release details from thucke/TYPO3.ext.th_rating
+        id: get_latest_release
+        uses: octokit/request-action@v2.x
+        with:
+          route: GET /repos/${{ github.repository }}/releases/tags/${{ steps.get-version.outputs.version }}
+          owner: dummy
+          repo: TYPO3.ext.th_rating
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      #see: https://trstringer.com/github-actions-multiline-strings/
+      #substituting the %, \n, and \r characters
+      - name: Store release body
+        id: set-release-body
         run: |
-          readonly local comment=$(git tag -n10 -l ${{ steps.get-version.outputs.version }} | sed "s/^[0-9.]*[ ]*//g")
-          if [[ -z "${comment// }" ]]; then
-            echo ::set-output name=comment::Released version ${{ steps.get-version.outputs.version }} of ${{ env.TYPO3_EXTENSION_KEY }}
-          else
-            echo ::set-output name=comment::$comment
-          fi
+          RELEASE_BODY="${RELEASE_BODY//'%'/'%25'}"
+          RELEASE_BODY="${RELEASE_BODY//$'\n'/'%0A'}"
+          RELEASE_BODY="${RELEASE_BODY//$'\r'/'%0D'}"
+          echo ::set-output name=release_body::"$RELEASE_BODY"
+        env:
+          RELEASE_BODY: ${{ fromJson(steps.get_latest_release.outputs.data).body }}
+
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
@@ -50,7 +58,7 @@ jobs:
         run: php ~/.composer/vendor/bin/tailor set-version ${{ steps.get-version.outputs.version }}
 
       - name: Publish to TER
-        run: php ~/.composer/vendor/bin/tailor ter:publish --comment "${{ steps.get-comment.outputs.comment }}" ${{ steps.get-version.outputs.version }}
+        run: php ~/.composer/vendor/bin/tailor ter:publish --comment "${{ steps.set-release-body.outputs.release_body}}" ${{ steps.get-version.outputs.version }}
 
   doxygen:
     name: Update Doxygen content on Github pages
@@ -66,7 +74,7 @@ jobs:
 
       - name: Checkout Code
         if: success()
-        uses: actions/checkout@v2
+        uses: actions/checkout@v2.3.4
         with:
           path: source
 
@@ -78,14 +86,13 @@ jobs:
         uses: mattnotmitt/doxygen-action@v1
         with:
           working-directory: /github/workspace/target
-          doxyfile-path: /github/workspace/source/Build/.doxygen
+          doxyfile-path: /github/workspace/source/.doxygen
 
       - name: Deploy Doxygen
         if: success()
-        uses: peaceiris/actions-gh-pages@v3
+        uses: peaceiris/actions-gh-pages@v3.8.0
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: target/html
           keep_files: false
           commit_message: Update Doxygen for new release
-

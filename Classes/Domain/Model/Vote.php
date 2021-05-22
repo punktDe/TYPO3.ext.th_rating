@@ -9,6 +9,7 @@
 
 namespace Thucke\ThRating\Domain\Model;
 
+use Thucke\ThRating\Service\ExtensionHelperService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Annotation as Extbase;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManager;
@@ -16,7 +17,6 @@ use TYPO3\CMS\Extbase\Configuration\Exception\InvalidConfigurationTypeException;
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
-use Thucke\ThRating\Service\ExtensionHelperService;
 
 /**
  * Model for rating votes
@@ -212,8 +212,8 @@ class Vote extends AbstractEntity
      */
     public function isAnonymous(): bool
     {
-        return $this->getVoter()->getUid() === (int)$this->settings['mapAnonymous'] &&
-            !empty($this->settings['mapAnonymous']);
+        return !empty($this->settings['mapAnonymous']) && !empty($this->getVoter()) &&
+            $this->getVoter()->getUid() === (int)$this->settings['mapAnonymous'];
     }
 
     /**
