@@ -160,7 +160,6 @@ class Rating extends AbstractEntity
 
         //Initialize vote storage if rating is new
         if (!is_object($this->votes)) {
-            /* @phpstan-ignore-next-line */
             $this->votes = new ObjectStorage();
         }
     }
@@ -250,7 +249,6 @@ class Rating extends AbstractEntity
     /** @noinspection PhpUnused */
     public function removeAllVotes()
     {
-        /* @phpstan-ignore-next-line */
         $this->votes = new ObjectStorage();
         unset($this->currentrates);
     }

@@ -57,6 +57,9 @@
 			<trans-unit id="flexform.fluid.layoutConfig_showSummary" xml:space="preserve">
 				<source>Show overall rating summary</source>
 			</trans-unit>
+			<trans-unit id="flexform.fluid.layoutConfig_showRichSnippets" xml:space="preserve">
+				<source>Include JSON-LD block to support rich snippets</source>
+			</trans-unit>
 			<trans-unit id="flexform.fluid.layoutConfig_showCurrentRates" xml:space="preserve">
 				<source>Show users given rating</source>
 			</trans-unit>

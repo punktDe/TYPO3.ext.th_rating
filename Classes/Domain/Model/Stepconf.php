@@ -132,7 +132,6 @@ class Stepconf extends AbstractEntity
     {
         //Initialize vote storage if rating is new
         if (!is_object($this->votes)) {
-            /* @phpstan-ignore-next-line */
             $this->votes = new ObjectStorage();
         }
     }
