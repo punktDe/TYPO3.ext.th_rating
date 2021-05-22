@@ -44,6 +44,7 @@ plugin.tx_thrating {
       fluid {
         layouts {
           default {
+            showRichSnippets = 1
             showSummary = 1
             showCurrentRates = 1
             showSectionContent = 1
@@ -142,6 +143,7 @@ plugin.tx_thrating {
     fluid {
       layouts {
         default {
+          showRichSnippets = 1
           showSummary = 0
           showCurrentRates = 1
           showSectionContent = 1
@@ -209,6 +211,7 @@ plugin.tx_thrating {
         fluid {
           layouts {
             default {
+              showRichSnippets = 1
               showSummary = 0
               showCurrentRates = 0
               showSectionContent = 1

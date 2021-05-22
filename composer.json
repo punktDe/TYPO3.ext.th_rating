@@ -116,6 +116,9 @@
         "thucke:phpstan:tests": [
             "phpstan analyze Tests"
         ],
+        "thucke:generate-documentation": [
+            "source <(docker run --rm t3docs/render-documentation show-shell-commands) && dockrun_t3rd makehtml"
+        ],
         "post-autoload-dump": [
             "mkdir -p .Build/public/typo3conf/ext/",
             "[ -L .Build/public/typo3conf/ext/th_rating ] || ln -snvf ../../../../. .Build/public/typo3conf/ext/th_rating",

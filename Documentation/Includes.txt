@@ -45,3 +45,5 @@
 .. --------------------------------------------------
 
 .. _Google rich snippets: https://developers.google.com/structured-data/rich-snippets/
+
+.. _Google rich snippets types: https://developers.google.com/search/docs/data-types/review-snippet
