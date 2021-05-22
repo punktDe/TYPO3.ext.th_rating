@@ -101,6 +101,15 @@
 							</config>
 						</TCEforms>
 					</settings.fluid.layouts.default.showSectionContent>
+					<settings.fluid.layouts.default.showRichSnippets>
+						<TCEforms>
+							<label>LLL:EXT:th_rating/Resources/Private/Language/locallang.xlf:flexform.fluid.layoutConfig_showRichSnippets</label>
+							<config>
+								<type>check</type>
+								<default>true</default>
+							</config>
+						</TCEforms>
+					</settings.fluid.layouts.default.showRichSnippets>
 					<settings.fluid.layouts.default.showSummary>
 						<TCEforms>
 							<onChange>reload</onChange>
