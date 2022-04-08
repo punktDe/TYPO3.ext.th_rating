@@ -85,14 +85,14 @@ jobs:
 
       - name: Upload Codeception output
         if: ${{ always() }}
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: codeception-results
           path: .Build/var/acceptance
 
       - name: Upload PHP log
         if: ${{ failure() }}
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: php-log
           path: php.log.txt
