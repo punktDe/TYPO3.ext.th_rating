@@ -41,9 +41,9 @@
 \|
 `Contributing <CONTRIBUTING.rst>`__  \|
 
-=========
-Rating AX
-=========
+=============================
+Rating AX (maintainer wanted)
+=============================
 
 |Latest Stable Version| |License| |Downloads| |PHP| |Issues| |New commits| |Crowdin|
 
