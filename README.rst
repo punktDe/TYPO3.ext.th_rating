@@ -24,11 +24,11 @@
    :alt: PHP version
 
 .. |Issues| image:: https://img.shields.io/github/issues/thucke/TYPO3.ext.th_rating
-   :target: https://github.com/thucke/TYPO3.ext.th_rating/issues
+   :target: https://github.com/punktDe/TYPO3.ext.th_rating/issues
    :alt: Number of open issues
 
 .. |New commits| image:: https://img.shields.io/github/commits-since/thucke/th_rating/latest
-   :target: https://github.com/thucke/TYPO3.ext.th_rating/releases
+   :target: https://github.com/punktDe/TYPO3.ext.th_rating/releases
    :alt: GitHub commits since latest release
 
 .. |Crowdin| image:: https://badges.crowdin.net/typo3-extension-thrating/localized.svg
@@ -42,22 +42,15 @@
 `Contributing <CONTRIBUTING.rst>`__  \|
 
 =============================
-Rating AX (maintainer wanted)
+Rating AX
 =============================
 
 |Latest Stable Version| |License| |Downloads| |PHP| |Issues| |New commits| |Crowdin|
 
 Guide to the TYPO3 extension to make ratings of any content object.
 
-:Repository:  https://github.com/thucke/TYPO3.ext.th_rating
+:Repository:  https://github.com/punktDe/TYPO3.ext.th_rating
 :Read online: https://docs.typo3.org/p/thucke/th-rating/master/en-us/
-
-Maintainer needed
-=================
-Due to personal reasons I cannot provide support for this extension anymore.
-If one would feel to take over the responsibility I'll be exited to transfer the extension to him. 
-He may still contact me to answer questions etc.
-
 
 Support welcome
 ===============
