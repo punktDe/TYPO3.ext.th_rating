@@ -44,6 +44,9 @@ jobs:
           php --version
           composer --version
 
+      - name: Allow composer plugins
+        run: composer config --no-plugins allow-plugins.typo3/cms-composer-installers true
+
       - name: Validate composer.json and composer.lock
         run: composer validate
 
