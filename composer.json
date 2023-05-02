@@ -1,5 +1,5 @@
 {
-	"name" : "thucke/th-rating",
+	"name" : "punktde/th-rating",
 	"type" : "typo3-cms-extension",
     "license" : "GPL-2.0-or-later",
 	"description" : "Highly flexible AJAX rating based on extbase/fluid/jquery. Allows multiple ratings within one page. Could be used as a cObj by other extensions or included in every FLUID template using the viewhelper. Each ratingstep could be configured having a name - international localization included.",
@@ -8,6 +8,10 @@
     "authors": [
         {
             "name": "Thomas Hucke",
+            "role": "Developer"
+        },
+        {
+            "name": "punkt.de GmbH",
             "role": "Developer"
         }
     ],
@@ -24,9 +28,9 @@
         "likeButton"
     ],
     "support": {
-        "issues": "https://github.com/thucke/TYPO3.ext.th_rating/issues",
+        "issues": "https://github.com/punktDe/TYPO3.ext.th_rating/issues",
         "docs": "https://docs.typo3.org/typo3cms/extensions/th_rating/",
-        "source": "https://github.com/thucke/TYPO3.ext.th_rating"
+        "source": "https://github.com/punktDe/TYPO3.ext.th_rating"
     },
     "autoload" : {
         "psr-4" : {
