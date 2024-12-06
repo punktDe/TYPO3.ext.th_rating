@@ -9,7 +9,7 @@ Create Issues
 -------------
 
 * If you find something missing or something is wrong in this manual,
-  you are welcome to write an `issue <https://github.com/thucke/TYPO3.ext.th_rating/issues/new>`__
+  you are welcome to write an `issue <https://github.com/punktDe/TYPO3.ext.th_rating/issues/new>`__
   describing the problem.
 * If you can, please try to fix the problem yourself.
 * For minor changes, it is not necessary to create an issue first.

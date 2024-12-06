@@ -35,7 +35,7 @@ EXT: Rating AX
         Thomas Hucke
 
     :Email:
-        thucke@web.de
+        t3extensions@punkt.de
 
     :License:
         Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International
