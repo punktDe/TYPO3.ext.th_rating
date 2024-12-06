@@ -8,19 +8,19 @@
    :align: top
 
 .. |Latest Stable Version| image:: https://img.shields.io/packagist/v/thucke/th-rating.svg
-   :target: https://packagist.org/packages/thucke/th-rating
+   :target: https://packagist.org/packages/punkt-de/th-rating
    :alt: Latest stable version
 
 .. |License| image:: https://img.shields.io/packagist/l/thucke/th-rating.svg
-   :target: https://packagist.org/packages/thucke/th-rating
+   :target: https://packagist.org/packages/punkt-de/th-rating
    :alt: Licence
 
 .. |Downloads| image:: https://img.shields.io/packagist/dt/thucke/th-rating
-   :target: https://packagist.org/packages/thucke/th-rating
+   :target: https://packagist.org/packages/punkt-de/th-rating
    :alt: Packagist downloads
 
 .. |PHP| image:: https://img.shields.io/packagist/php-v/thucke/th-rating.svg
-   :target: https://packagist.org/packages/thucke/th-rating
+   :target: https://packagist.org/packages/punkt-de/th-rating
    :alt: PHP version
 
 .. |Issues| image:: https://img.shields.io/github/issues/thucke/TYPO3.ext.th_rating

@@ -1,5 +1,5 @@
 {
-	"name" : "punktde/th-rating",
+	"name" : "punkt-de/th-rating",
 	"type" : "typo3-cms-extension",
     "license" : "GPL-2.0-or-later",
 	"description" : "Highly flexible AJAX rating based on extbase/fluid/jquery. Allows multiple ratings within one page. Could be used as a cObj by other extensions or included in every FLUID template using the viewhelper. Each ratingstep could be configured having a name - international localization included.",
